@@ -1,0 +1,43 @@
+/ci2 [$] = >>>
+    assign(@player, if(equals($, ''), player(), $))
+    assign(@a, array())
+    foreach(range(36), @i,
+        array_set(@a, string(@i), null))
+    #armour
+    foreach(range(100,104), @i,
+        array_set(@a, string(@i), null))
+    
+    if(and(has_permission('nerdch.cmd.ci.self'), equals(@player, player())),
+        set_pinv(@player, @a)
+        msg(concat(color(gray), 'Your inventory has been cleared.')),
+    #else:
+        if(has_permission('nerdch.cmd.ci.all'),
+            try(
+                set_pinv(@player, @a)
+                call_alias(concat('/mb Inventory of ', @player, ' cleared.')),
+            @e,
+                msg(concat(color(red), 'Player not online!'))),
+        #else:
+             msg(concat(color(red), 'You do not have permission to do that!'))))
+<<<
+
+/empty2 [$] = call_alias(/ci2 $)
+
+###TODO: Base this off blacklist
+
+mods:/cb $player = >>>
+    assign(@banned, array(7,'8:0','9:0','10:0','11:0','23:0','46:0',51,52,79,325,326,327,259, 90))
+    assign(@inv, pinv($player))
+    for(assign(@i, 0), lt(@i, array_size(@inv)), inc(@i),
+	 if(not(equals(null, @inv[@i])),
+            if(array_contains(@banned, @inv[@i][0]),
+                if(or(equals(@inv[@i][0], 326), equals(@inv[@i][0], 327)),
+                    set_pinv($player, @i, 3, 1)
+                ,
+                    set_pinv($player, @i, 3, 1)
+                )
+            )
+	 )
+    )
+    run(/mb pinfo($player)[4] had their banned items cleared)
+<<<

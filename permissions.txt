@@ -1,0 +1,22 @@
+        C       S/P         permissions
+ban:    mods    mods        mod_1
+mb:     mods    mods        mod_1
+b:      mods    modmode     mod_2
+ab      admins  admins      admin
+ci      mods    modmode     mod_2
+coords  all     all         
+give    all     modmode     mod_2 | cmode
+help    all     all         
+home    all     modmode     mod_2 | cmode
+kit     mods    modmode     mod_2
+lb      mods    mods        mod_1
+misc    varies  varies      varies
+mode    mods    modmode     mod_2
+heal    *       modmode     mod_2
+modtrs  N/A     N/A         
+msg     all     all         
+spleef  mods                mod_2 & cmode
+thor    mods    mods?       mod_1?
+time    mods    modmode     mod_1
+we      mods    modmode
+wg      mods                mod_2 & cmode

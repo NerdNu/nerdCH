@@ -1,0 +1,19 @@
+# New /msg, etc
+
+mods:/cmsg $player [$] = _message(1,  player(), $player, $)
+all:/msg $player [$]   = _message(0, player(), $player, $)
+all:/r [$]             = >>>
+
+    assign(@to, get_value(concat('last_message_', to_lower(strip_colors(player())))))
+
+    #msg(concat('Debug2: ', @to))
+
+    if(not(equals(@to, '')),
+        _message(false, player(), @to, $),
+    #else:
+        msg(concat(color(red), 'Error: you have no one to reply to!')))
+<<<
+
+all:/m $player [$] = call_alias(/msg $player $)
+all:/tell $player [$] = call_alias(/msg $player $)
+all:/t $player [$] = call_alias(/msg $player $)

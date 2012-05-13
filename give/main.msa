@@ -1,0 +1,45 @@
+#TODO: Do we still need this?
+
+#kicks assholes that use a botnet to spam items
+all:/i glass 15000 = kick(player(), 'oops!')
+
+
+all:/i2 $ = >>>
+    assign(@a, _parseiargs($))
+    if(equals(@a, null),
+        msg(concat(color(gray), 'Usage: /i <itemid>[:metadata] [quantity]')),
+    #else:
+        pgive_item(concat(@a[0], ':', @a[1]), @a[2])
+        msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]))))
+
+<<<
+
+all:/give2 $player $ = >>>
+    assign(@a, _parseiargs($))
+    if(equals(@a, null),
+        msg(concat(color(gray), 'Usage: /give <player> <itemid>[:metadata] [quantity]')),
+    #else:
+        try(
+            pgive_item($player, concat(@a[0], ':', @a[1]), @a[2])
+            msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]), ' to ', $player)),
+        @e,
+            msg(concat(color(red), 'Player not found!'))))
+<<<
+
+all:/give-that2 [$qty=64] = >>>
+	if(equals(get_block_at(pcursor()), '0:0'), 
+	    die('No block in sight!'))
+	#else:
+	    call_alias(concat('/i2 ', get_block_at(pcursor()), ' ', $qty))
+<<<
+
+/enchant2 [$] = >>>
+    assign(@m, reg_match('^(.*) ([0-9]+)$', $))
+    if(array_index_exists(@m,0),
+        try(
+            enchant_inv(null, @m[1], integer(@m[2])),
+        @e,
+            msg(concat(color(red), 'Error\'d! Check the enchantment name and level'))),
+    #else:
+        msg(concat(color(red), 'Usage: /enchant <enchantment name> <level>')))
+<<<

@@ -1,0 +1,44 @@
+#Shortcuts for modtrs
+mods:/check $id = >>>
+	if(has_permission('modreq.check'),
+		if(not(equals($id, '-')),
+			store_value(concat(player(), 'modreq'), $id)
+			run(/check $id)
+		, #else
+			run(/check get_value(concat(player(), 'modreq')))
+		)
+	, #else
+		run(/check $id)
+	)
+<<<
+
+mods:/claim [$id='-'] = >>>
+	if(not(equals($id, '-')),
+		store_value(concat(player(), 'modreq'), $id)
+		run(/claim $id)
+	,
+		run(/claim get_value(concat(player(), 'modreq')))
+	)
+<<<
+
+mods:/done [$id='-'] [$]= >>>
+	if(not(equals($id, '-')),
+		run(/done $id $)
+	,
+		run(/done get_value(concat(player(), 'modreq')) $)
+	)
+<<<
+
+mods:/tp-id [$id='-'] = >>>
+	if(not(equals($id, '-')),
+		run(/tp-id $id)
+	,
+		run(/tp-id get_value(concat(player(), 'modreq')))
+	)
+<<<
+
+/done-range $from $to = >>>
+	foreach(range($from, add(1, $to)), @id,
+		run(/done @id)
+	) 
+<<<

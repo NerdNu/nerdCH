@@ -1,0 +1,26 @@
+#Easy LB rollbacks
+/lbrb $p = /lb rollback player $p since 21 days
+/lbrb-r $p $r = /lb rollback player $p area $r since 21 days
+/lbredo $player [$since=21] = /lb redo player $player area 10000 since $since days
+/lbredo-r $player $radius [$since=21] = /lb redo player $player area $radius since $since days
+mods:/lb redo [$] = >>>
+	if(equals($, 'last'), run(/lb redo last) die())
+	if(lt(reg_count('player', $), 1), die(concat(color(red), 'lol, you forgot the player')), run(/lb redo $))
+<<<
+
+#Easy LB Lookups
+/trace $wtf = /lookup $wtf \ /lb player $wtf area 10000 sum blocks
+/trace-r $player $r = /lookup $player \ /lb player $player area $r sum blocks
+
+#/trace $wtf = /lookup $wtf
+mods:/tpinfo $num = /tp-id $num \ /check $num
+mods:/tpc $num = /claim $num \ /tp-id $num \ /check $num
+
+/seen2 [$] = >>>
+    if(equals($, ''),
+        msg(concat(color(gray), 'Shows the last edit of a user.'))
+        msg(concat(color(gray), 'Usage: /seen <player>')),
+    #else:
+        msg(concat(color(gray), 'Showing the last edit by ', $))
+        run(concat('/lb since 28 days limit 1 player ', $)))
+<<<

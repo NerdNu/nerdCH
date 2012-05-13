@@ -1,0 +1,11 @@
+/time2 [$] = >>>
+    try(
+        set_world_time($)
+        msg(concat(color(gray), 'Time set to ',$,'.')),
+    @ex,
+        msg(concat(color(red), 'Syntax: /time day|night|4.30pm|etc')))
+<<<
+
+#Time shortcuts
+/d = call_alias(/time day)
+/n = call_alias(/time night)

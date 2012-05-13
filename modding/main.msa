@@ -1,0 +1,78 @@
+###
+###
+###
+
+#TODO: This must be replaced in kitchen sink!
+#/ri = /remove items 9999 \ /remove arrows 9999
+
+
+#TODO: Shouldn't be necessary once Deaygo's TP stuff is done.
+#mods:/tphere $ = /tpohere $
+
+/mode $player = >>>
+        if(equals(pmode($player), 'SURVIVAL'),
+		set_pmode($player,'CREATIVE')
+		msg(concat(color(green), $player, ' is now in creative mode'))
+	,
+                set_pmode($player,'SURVIVAL')
+		msg(concat(color(green), $player, ' is now in survival mode'))
+	)
+<<<
+
+/mode = >>>
+	if(equals(pmode(), 'SURVIVAL'), set_pmode('CREATIVE'),
+		set_pmode('SURVIVAL'))
+<<<
+
+
+
+mods:/spawnp $player = runas($player, /spawn)
+
+/heal2 = >>>
+    set_pfood(20)
+    set_phealth(20)
+<<<
+
+/spawnmob2 [$] = >>>
+    assign(@m, reg_match('^([a-z:]+) ?([0-9]*)$', $))
+    if(array_index_exists(@m,0),
+        try(
+            assign(@loc, pcursor())
+            array_set(@loc, 1, add(@loc[1], 1))
+            spawn_mob(@m[1], integer(if(not(equals(@m[2], '')),@m[2], 1)), @loc),
+        @e,
+            msg(concat(color(red), 'Unknown mob!'))),
+    #else:
+        msg(concat(color(red), 'Spawns a mob on the block you\'re looking at'))
+        msg(concat(color(red), 'Usage: /spawnmob <mob>[:<data>] [quantity]')))
+<<<
+
+mods:/rain $true_false = storm($true_false)
+
+mods:/supavanish [$mob='chicken'] = >>>
+	assign(@pcursor, pcursor(player()))
+	lightning(array(array_get(@pcursor, 0), 0, array_get(@pcursor, 2)))
+	run('/vanish')
+	spawn_mob($mob)
+<<<
+
+/hat [$data] = if(equals(pinv(player(), 103), null), set_pinv(103, if(equals($data, ''), 298, $data)), set_pinv(103, 0))
+/speed = set_peffect(player(), 1, 5)
+/slow = set_peffect(player(), 2, 5)
+
+#TODO: Probably not needed as we can just use WE's /jumpto
+
+#/jump2 = >>>
+#    try(
+#        assign(@coords, pcursor())
+#        assign(@count, 0)
+#        for(assign(@y, @coords[1]), lt(@y, 255), inc(@y),
+#            if(equals(get_block_at(@coords[0], @y, @coords[2], @coords[3]), '0:0'),
+#                inc(@count))
+#            if(equals(@count, 2),
+#                set_ploc(add(@coords[0], 0.5), subtract(@y,2), add(@coords[2], 0.5))
+#                break())),
+#    @ex, 
+#        msg(concat(color(red), 'No block in range')),
+#    array(RangeException))
+#<<<

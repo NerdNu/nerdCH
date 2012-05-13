@@ -1,0 +1,5 @@
+#Create Region with proper flags and fix flags
+/cregion $name $owner = /region define $name $owner \ /region flag $name use allow \ /region flag $name chest-access allow \ /region flag $name vehicle-place allow  \ /region flag $name vehicle-destroy allow
+/cregion $name = msg('You must specify an owner as well. /cregion <name> <owner>')
+/addflags $name = /region flag $name use allow \ /region flag $name chest-access allow \ /region flag $name vehicle-place allow  \ /region flag $name vehicle-destroy allow
+

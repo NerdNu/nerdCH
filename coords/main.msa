@@ -1,0 +1,21 @@
+all:/compass = >>>
+    assign(@l, mod(floor(divide(add(pfacing()[0], 22.5), 45)), 8))
+    if(array_contains(array(3,4,5), @l), assign(@o, concat(@o, 'N')))
+    if(array_contains(array(7,0,1), @l), assign(@o, concat(@o, 'S')))
+    if(array_contains(array(1,2,3), @l), assign(@o, concat(@o, 'W')))
+    if(array_contains(array(5,6,7), @l), assign(@o, concat(@o, 'E')))
+    msg(concat(color(gray), 'Bearing: ', @o, ' (', mod(add(integer(pfacing()[0]),180),360), ' degrees)'))
+<<<
+
+all:/coords = >>>
+    assign(@l, ploc())
+    assign(@w, array('world': 'overworld', 'world_nether': 'nether', 'world_the_end': 'end'))
+    msg(concat(color(gray), 'You are in the ', @w[@l[3]], '.'))
+    msg(concat(color(gray), 'X: ', integer(@l[0]), ' (+East <-> -West)'))
+    msg(concat(color(gray), 'Y: ', integer(@l[1]), ' (+Up <-> -Down)'))
+    msg(concat(color(gray), 'Z: ', integer(@l[2]), ' (+South <-> -North)'))
+    call_alias(/compass)
+    msg(concat(color(gray), 'Pitch: ', multiply(integer(pfacing()[1]), -1), ' degrees'))
+<<<
+
+all:/yp = msg('Yaw:' pfacing()[0] '-' 'Pitch:' pfacing()[1])

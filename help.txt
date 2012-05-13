@@ -1,0 +1,14 @@
+&c+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+Welcome to &dc.nerd.nu 
+To fly, &adouble-tap space
+To ascend, &ahold space
+To descend, &ahold shift
+Common commands are:
+  &6/tp <name>
+  &6/tpa <name>
+  &6/tptoggle
+  &6/home <name>
+  &6/sethome <name>
+  &6/modreq <request>
+  &bEnjoy your time here!
+&c+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-

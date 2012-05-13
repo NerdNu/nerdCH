@@ -1,0 +1,78 @@
+all:/sethome2 [$] = >>>
+    assign(@modes, array('public','private','unlisted'))
+    assign(@m, reg_split(' ', $))
+    assign(@name,
+        if(equals(@m[0], ''),
+            'default',
+            @m[0]))
+    assign(@mode, 
+        if(equals(@name, 'default'),
+            'private',
+            if(equals(array_size(@m), 2),
+                @m[1],
+                'unlisted')))
+    
+    if(array_contains(@modes, @mode),
+        store_value(concat('homes.', player(), '.', @name, '.loc'), ploc())
+        store_value(concat('homes.', player(), '.', @name, '.mode'), @mode)
+        msg(concat(color(gray), 'Home set.')),
+    #else:
+        msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']')))
+<<<
+
+all:/home2 [$] = >>>
+    assign(@m, reg_split(' ', $))
+    if(equals(array_size(@m), 2),
+        assign(@player, @m[0])
+        array_remove(@m, 0),
+    #else:
+        assign(@player, player()))
+    
+    assign(@name,
+        if(equals(@m[0], ''),
+            'default',
+            @m[0]))
+    
+    assign(@prefix, concat('homes.', @player, '.', @name, '.'))
+    
+    if(has_value(concat(@prefix, 'loc')),
+        if(or(
+            equals(@player, player()),
+            array_contains(array('public', 'unlisted'), get_value(concat(@prefix, 'mode'))),
+            has_permission('homes.override')),
+            
+            set_ploc(get_value(concat(@prefix, 'loc'))),
+        #else:
+            msg(concat(color(red), 'You do not have permission to visit that home'))),
+    #else:
+        msg(concat(color(red), 'Unknown home!'))
+        call_alias(/listhomes2))
+
+<<<
+
+all:/listhomes2 [$] = >>>
+    assign(@player,
+        if(equals($, ''),
+            player(),
+            $))
+    
+    msg(concat(color(gray), if(equals(@player, player()), 'Your', concat(@player, '\'s')), ' homes:'))
+    if(or(
+        equals(@player, player()),
+        has_permission('homes.override')),
+        
+        
+        foreach(array_keys(get_values(concat('homes.', @player))), @name,
+            assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
+            if(array_index_exists(@m,0),
+                msg(concat(color(gray), ' - ', @m[1], ' [', get_value(concat('homes.', @player, '.', @m[1], '.mode')), ']')))),
+    #else:
+        foreach(array_keys(get_values(concat('homes.', @player))), @name,
+            assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
+            if(and(
+                array_index_exists(@m,0),
+                equals('public', get_value(concat('homes.', @player, '.', @m[1], '.mode')))),
+                
+                msg(concat(color(gray), ' - ', @m[1])))))
+   
+<<<
