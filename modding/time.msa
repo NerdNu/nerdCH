@@ -1,4 +1,4 @@
-/time2 [$] = >>>
+/time [$] = >>>
     try(
         set_world_time($)
         msg(concat(color(gray), 'Time set to ',$,'.')),

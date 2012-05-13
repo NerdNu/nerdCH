@@ -1,4 +1,0 @@
-all:/help = >>>
-    foreach(reg_split('\n', _convertcolors(read('../help.txt'))), @l,
-        msg(@l))
-<<<

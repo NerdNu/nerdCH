@@ -4,7 +4,7 @@
 all:/i glass 15000 = kick(player(), 'oops!')
 
 
-all:/i2 $ = >>>
+all:/i $ = >>>
     assign(@a, _parseiargs($))
     if(equals(@a, null),
         msg(concat(color(gray), 'Usage: /i <itemid>[:metadata] [quantity]')),
@@ -14,7 +14,7 @@ all:/i2 $ = >>>
 
 <<<
 
-all:/give2 $player $ = >>>
+all:/give $player $ = >>>
     assign(@a, _parseiargs($))
     if(equals(@a, null),
         msg(concat(color(gray), 'Usage: /give <player> <itemid>[:metadata] [quantity]')),
@@ -26,14 +26,14 @@ all:/give2 $player $ = >>>
             msg(concat(color(red), 'Player not found!'))))
 <<<
 
-all:/give-that2 [$qty=64] = >>>
+all:/give-that [$qty=64] = >>>
 	if(equals(get_block_at(pcursor()), '0:0'), 
 	    die('No block in sight!'))
 	#else:
-	    call_alias(concat('/i2 ', get_block_at(pcursor()), ' ', $qty))
+	    call_alias(concat('/i ', get_block_at(pcursor()), ' ', $qty))
 <<<
 
-/enchant2 [$] = >>>
+/enchant [$] = >>>
     assign(@m, reg_match('^(.*) ([0-9]+)$', $))
     if(array_index_exists(@m,0),
         try(
@@ -43,3 +43,26 @@ all:/give-that2 [$qty=64] = >>>
     #else:
         msg(concat(color(red), 'Usage: /enchant <enchantment name> <level>')))
 <<<
+
+all:/armor up = >>>
+    set_pinv(array(
+        100: array(type:305),
+        101: array(type:304),
+        102: array(type:303),
+        103: array(type:304)))
+<<<
+
+all:/armor down = >>>
+    set_pinv(array(
+        100: null,
+        101: null,
+        102: null,
+        103: null))
+<<<
+
+#Fucking brits
+all:/armour up = call_alias(/armor up)
+all:/armour down = call_alias(/armor down)
+
+mods:/armor up $player = scriptas($player, call_alias(/armor up))
+mods:/armor down $player = scriptas($player, call_alias(/armor down))

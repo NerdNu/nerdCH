@@ -47,4 +47,5 @@ mods:/warn $player = >>>
     call_alias(/thor $player)
     /jail $player
     set_peffect($player, 1, 20)
+
 <<<

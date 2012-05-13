@@ -1,4 +1,4 @@
-/ci2 [$] = >>>
+/ci [$] = >>>
     assign(@player, if(equals($, ''), player(), $))
     assign(@a, array())
     foreach(range(36), @i,
@@ -7,11 +7,11 @@
     foreach(range(100,104), @i,
         array_set(@a, string(@i), null))
     
-    if(and(has_permission('nerdch.cmd.ci.self'), equals(@player, player())),
+    if(and(has_permission('nerdch.ci.self'), equals(@player, player())),
         set_pinv(@player, @a)
         msg(concat(color(gray), 'Your inventory has been cleared.')),
     #else:
-        if(has_permission('nerdch.cmd.ci.all'),
+        if(has_permission('nerdch.ci.all'),
             try(
                 set_pinv(@player, @a)
                 call_alias(concat('/mb Inventory of ', @player, ' cleared.')),
@@ -21,7 +21,7 @@
              msg(concat(color(red), 'You do not have permission to do that!'))))
 <<<
 
-/empty2 [$] = call_alias(/ci2 $)
+/empty [$] = call_alias(/ci $)
 
 ###TODO: Base this off blacklist
 

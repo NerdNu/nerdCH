@@ -16,7 +16,7 @@ mods:/lb redo [$] = >>>
 mods:/tpinfo $num = /tp-id $num \ /check $num
 mods:/tpc $num = /claim $num \ /tp-id $num \ /check $num
 
-/seen2 [$] = >>>
+/seen [$] = >>>
     if(equals($, ''),
         msg(concat(color(gray), 'Shows the last edit of a user.'))
         msg(concat(color(gray), 'Usage: /seen <player>')),

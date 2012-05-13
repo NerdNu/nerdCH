@@ -1,4 +1,4 @@
-all:/sethome2 [$] = >>>
+all:/sethome [$] = >>>
     assign(@modes, array('public','private','unlisted'))
     assign(@m, reg_split(' ', $))
     assign(@name,
@@ -20,7 +20,7 @@ all:/sethome2 [$] = >>>
         msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']')))
 <<<
 
-all:/home2 [$] = >>>
+all:/home [$] = >>>
     assign(@m, reg_split(' ', $))
     if(equals(array_size(@m), 2),
         assign(@player, @m[0])
@@ -46,11 +46,11 @@ all:/home2 [$] = >>>
             msg(concat(color(red), 'You do not have permission to visit that home'))),
     #else:
         msg(concat(color(red), 'Unknown home!'))
-        call_alias(/listhomes2))
+        call_alias(/listhomes))
 
 <<<
 
-all:/listhomes2 [$] = >>>
+all:/listhomes [$] = >>>
     assign(@player,
         if(equals($, ''),
             player(),
@@ -65,7 +65,7 @@ all:/listhomes2 [$] = >>>
         foreach(array_keys(get_values(concat('homes.', @player))), @name,
             assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
             if(array_index_exists(@m,0),
-                msg(concat(color(gray), ' - ', @m[1], ' [', get_value(concat('homes.', @player, '.', @m[1], '.mode')), ']')))),
+                msg(concat(color(gray), '  ', @m[1], ' [', get_value(concat('homes.', @player, '.', @m[1], '.mode')), ']')))),
     #else:
         foreach(array_keys(get_values(concat('homes.', @player))), @name,
             assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
@@ -73,6 +73,6 @@ all:/listhomes2 [$] = >>>
                 array_index_exists(@m,0),
                 equals('public', get_value(concat('homes.', @player, '.', @m[1], '.mode')))),
                 
-                msg(concat(color(gray), ' - ', @m[1])))))
+                msg(concat(color(gray), '  ', @m[1])))))
    
 <<<

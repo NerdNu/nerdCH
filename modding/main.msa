@@ -1,7 +1,3 @@
-###
-###
-###
-
 #TODO: This must be replaced in kitchen sink!
 #/ri = /remove items 9999 \ /remove arrows 9999
 
@@ -9,31 +5,15 @@
 #TODO: Shouldn't be necessary once Deaygo's TP stuff is done.
 #mods:/tphere $ = /tpohere $
 
-/mode $player = >>>
-        if(equals(pmode($player), 'SURVIVAL'),
-		set_pmode($player,'CREATIVE')
-		msg(concat(color(green), $player, ' is now in creative mode'))
-	,
-                set_pmode($player,'SURVIVAL')
-		msg(concat(color(green), $player, ' is now in survival mode'))
-	)
-<<<
-
-/mode = >>>
-	if(equals(pmode(), 'SURVIVAL'), set_pmode('CREATIVE'),
-		set_pmode('SURVIVAL'))
-<<<
-
-
 
 mods:/spawnp $player = runas($player, /spawn)
 
-/heal2 = >>>
+/heal = >>>
     set_pfood(20)
     set_phealth(20)
 <<<
 
-/spawnmob2 [$] = >>>
+/spawnmob [$] = >>>
     assign(@m, reg_match('^([a-z:]+) ?([0-9]*)$', $))
     if(array_index_exists(@m,0),
         try(

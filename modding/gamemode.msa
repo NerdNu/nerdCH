@@ -1,0 +1,14 @@
+/mode $player = >>>
+        if(equals(pmode($player), 'SURVIVAL'),
+		set_pmode($player,'CREATIVE')
+		msg(concat(color(green), $player, ' is now in creative mode'))
+	,
+                set_pmode($player,'SURVIVAL')
+		msg(concat(color(green), $player, ' is now in survival mode'))
+	)
+<<<
+
+/mode = >>>
+	if(equals(pmode(), 'SURVIVAL'), set_pmode('CREATIVE'),
+		set_pmode('SURVIVAL'))
+<<<
