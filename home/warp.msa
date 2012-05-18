@@ -7,6 +7,15 @@
         msg(concat(color(gray), 'Warp set!')))
 <<<
 
+/delwarp [$] = >>>
+    _assertperm('mod2', 0)
+    if(equals($, ''),
+        msg(concat(color(red), 'Usage: /delwarp <name>')),
+    #else:
+        clear_value(concat('warps.', @name))
+        msg(concat(color(gray), 'Warp deleted!')))
+<<<
+
 /warp [$] = >>>
     _assertperm('mod2', 1)
     
