@@ -56,6 +56,18 @@ mods:/spawnp $player = runas($player, /spawn)
     set_peffect(player(), 2, 5)
 <<<
 
+#spleef:/spleef $id = for( assign( @firstx, 730 ), lte( @firstx, 743 ), inc( @firstx ), for( assign( @firsty, 185 ), lte( @firsty, 198 ), inc( @firsty ), set_block_at(@firstx,63,@firsty,$id) ) )
+
+#TODO: Make this run /setspleef
+
+*:/drunk_spleef $ = >>>
+    _assertperm('restricted', 0)
+	assign(@players, parse_args($))
+	foreach(@players, @p,
+		set_peffect(@p, 9, 1, 100)
+	)
+<<<
+
 #TODO: Probably not needed as we can just use WE's /jumpto
 
 #/jump2 = >>>
@@ -72,3 +84,23 @@ mods:/spawnp $player = runas($player, /spawn)
 #        msg(concat(color(red), 'No block in range')),
 #    array(RangeException))
 #<<<
+
+*:/rainbow = >>>
+    _assertperm('restricted', 0) #Sorry guys ;)
+    spawn_mob('sheep:black')
+    spawn_mob('sheep:red')
+    spawn_mob('sheep:green')
+    spawn_mob('sheep:brown')
+    spawn_mob('sheep:blue')
+    spawn_mob('sheep:purple')
+    spawn_mob('sheep:cyan')
+    spawn_mob('sheep:silver')
+    spawn_mob('sheep:gray')
+    spawn_mob('sheep:pink')
+    spawn_mob('sheep:lime')
+    spawn_mob('sheep:yellow')
+    spawn_mob('sheep:light_blue')
+    spawn_mob('sheep:magenta')
+    spawn_mob('sheep:orange')
+    spawn_mob('sheep:white')
+<<<

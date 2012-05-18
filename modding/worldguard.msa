@@ -10,14 +10,37 @@
     runas(~op, //sel cuboid)
 <<<
 
-#spleef:/spleef $id = for( assign( @firstx, 730 ), lte( @firstx, 743 ), inc( @firstx ), for( assign( @firsty, 185 ), lte( @firsty, 198 ), inc( @firsty ), set_block_at(@firstx,63,@firsty,$id) ) )
+*:/members $region = >>>
+        assign(@ro, array_get(sk_region_info($region, pworld()), 1))
+        assign(@rm, array_get(sk_region_info($region, pworld()), 2))
+        assign(@first, true)
+        foreach(@ro, @player,
+                if(equals(@first, true),
+                        assign(@first, false)
+                        assign(@final, concat(@final, @player)),
+                        assign(@final, concat(@final, ', ', @player))
+                )
+        )
+        foreach(@rm, @player,
+                if(equals(@first, true),
+                        assign(@first, false)
+                        assign(@final, concat(@final, @player)),
+                        assign(@final, concat(@final, ', ', @player))
+                )
+        )
 
-#TODO: Make this run /setspleef
+        msg(concat(color(gray), 'Members of ', $region, ': ', color(white), @final))
+<<<
 
-*:/drunk_spleef $ = >>>
-    _assertperm('restricted', 0)
-	assign(@players, parse_args($))
-	foreach(@players, @p,
-		set_peffect(@p, 9, 1, 100)
-	)
+*:/owners $region = >>>
+        assign(@ro, array_get(sk_region_info($region, pworld()), 1))
+        assign(@first, true)
+        foreach(@ro, @player,
+                if(equals(@first, true),
+                        assign(@first, false)
+                        assign(@final, concat(@final, @player)),
+                        assign(@final, concat(@final, ', ', @player))
+                )
+        )
+        msg(concat(color(gray), 'Owners of ', $region, ': ', color(white), @final))
 <<<
