@@ -17,4 +17,6 @@ mods://removenear $ = >>>
 
 mods:/removenear $ = call_alias(//removenear $)
 
+/ri = /remove items 9999 \ /remove arrows 9999
+
 /deselect = //sel cuboid
