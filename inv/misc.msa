@@ -1,4 +1,5 @@
-/enchant [$] = >>>
+*:/enchant [$] = >>>
+    _assertperm('restricted', 1)
     assign(@m, reg_match('^(.*) ([0-9]+)$', $))
     if(array_index_exists(@m,0),
         try(
@@ -9,7 +10,8 @@
         msg(concat(color(red), 'Usage: /enchant <enchantment name> <level>')))
 <<<
 
-all:/armor up = >>>
+*:/armor up = >>>
+    _assertperm('restricted', 1)
     set_pinv(array(
         100: array(type:305),
         101: array(type:304),
@@ -17,7 +19,8 @@ all:/armor up = >>>
         103: array(type:304)))
 <<<
 
-all:/armor down = >>>
+*:/armor down = >>>
+    _assertperm('restricted', 1)
     set_pinv(array(
         100: null,
         101: null,
@@ -26,8 +29,10 @@ all:/armor down = >>>
 <<<
 
 #Fucking brits
-all:/armour up = call_alias(/armor up)
-all:/armour down = call_alias(/armor down)
+*:/armour up = call_alias(/armor up)
+*:/armour down = call_alias(/armor down)
 
-mods:/armor up $player = scriptas($player, call_alias(/armor up))
-mods:/armor down $player = scriptas($player, call_alias(/armor down))
+###TODO: Probably won't work with new perms.
+
+#*:/armor up $player = scriptas($player, call_alias(/armor up))
+#*:/armor down $player = scriptas($player, call_alias(/armor down))

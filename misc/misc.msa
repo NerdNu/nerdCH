@@ -27,7 +27,7 @@
 # Commands for unprivileged users
 #
 
-all:/compass = >>>
+*:/compass = >>>
     assign(@l, mod(floor(divide(add(pfacing()[0], 22.5), 45)), 8))
     if(array_contains(array(3,4,5), @l), assign(@o, concat(@o, 'N')))
     if(array_contains(array(7,0,1), @l), assign(@o, concat(@o, 'S')))
@@ -36,7 +36,7 @@ all:/compass = >>>
     msg(concat(color(gray), 'Bearing: ', @o, ' (', mod(add(integer(pfacing()[0]),180),360), ' degrees)'))
 <<<
 
-all:/coords = >>>
+*:/coords = >>>
     assign(@l, ploc())
     assign(@w, array('world': 'overworld', 'world_nether': 'nether', 'world_the_end': 'end'))
     msg(concat(color(gray), 'You are in the ', @w[@l[3]], '.'))
@@ -47,20 +47,20 @@ all:/coords = >>>
     msg(concat(color(gray), 'Pitch: ', multiply(integer(pfacing()[1]), -1), ' degrees'))
 <<<
 
-all:/yp = msg('Yaw:' pfacing()[0] '-' 'Pitch:' pfacing()[1])
+*:/yp = msg('Yaw:' pfacing()[0] '-' 'Pitch:' pfacing()[1])
 
-all:/helpreq $ = /modreq $
-all:/rules = msg('Rules can be found at nerd.nu/rules and on the noticeboards at spawn')
-all:/ping = msg(concat(color(gray), 'Pong!'))
+*:/helpreq $ = /modreq $
+*:/rules = msg('Rules can be found at nerd.nu/rules and on the noticeboards at spawn')
+*:/ping = msg(concat(color(gray), 'Pong!'))
 
-all:/modlist = >>>
+*:/modlist = >>>
         assign(@mods, _get_mods())
         msg(concat(color(dark_aqua), 'Online Mods: ', color(white), array_implode(@mods, ', ')))
 <<<
 
 ### TOO SLOW!!! Needs bukkit
 
-#all:/list2 = >>>
+#*:/list2 = >>>
 #    assign(@all, array())
 #    foreach(all_players(), @p,
 #        assign(@group, pgroup(@p)[0])
@@ -72,7 +72,7 @@ all:/modlist = >>>
 
 #TODO: Shouldn't be necessary once Deaygo's TP stuff is done.
 
-#all:/tp $player = >>>
+#*:/tp $player = >>>
 #	if(or(
 #		array_contains(_get_mods(), player()),
 #		array_contains(_get_admins(), player())
@@ -94,6 +94,6 @@ all:/modlist = >>>
 
 #TODO: Do we want these?
 
-#all:/drunk = set_peffect(player(), 9, 1, 30) msg(concat(color(gold), 'You been drinkin?'))
-#all:/sniper = set_peffect(player(), 2, 10)
-#all:/sober = set_peffect(player(), 9, 1, 0)
+#*:/drunk = set_peffect(player(), 9, 1, 30) msg(concat(color(gold), 'You been drinkin?'))
+#*:/sniper = set_peffect(player(), 2, 10)
+#*:/sober = set_peffect(player(), 9, 1, 0)

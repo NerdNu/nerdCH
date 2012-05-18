@@ -4,12 +4,14 @@
 
 mods:/spawnp $player = runas($player, /spawn)
 
-/heal = >>>
+*:/heal = >>>
+    _assertperm('restricted', 0)
     set_pfood(20)
     set_phealth(20)
 <<<
 
-/spawnmob [$] = >>>
+*:/spawnmob [$] = >>>
+    _assertperm('restricted', 0)
     assign(@m, reg_match('^([a-z:]+) ?([0-9]*)$', $))
     if(array_index_exists(@m,0),
         try(
@@ -23,18 +25,36 @@ mods:/spawnp $player = runas($player, /spawn)
         msg(concat(color(red), 'Usage: /spawnmob <mob>[:<data>] [quantity]')))
 <<<
 
-mods:/rain $true_false = storm($true_false)
+*:/rain $true_false = >>>
+    _assertperm('restricted', 0)
+    storm($true_false)
+<<<
 
-mods:/supavanish [$mob='chicken'] = >>>
+
+*:/supavanish [$mob='chicken'] = >>>
+    _assertperm('restricted', 0)
 	assign(@pcursor, pcursor(player()))
 	lightning(array(array_get(@pcursor, 0), 0, array_get(@pcursor, 2)))
 	run('/vanish')
 	spawn_mob($mob)
 <<<
 
-/hat [$data] = if(equals(pinv(player(), 103), null), set_pinv(103, if(equals($data, ''), 298, $data)), set_pinv(103, 0))
-/speed = set_peffect(player(), 1, 5)
-/slow = set_peffect(player(), 2, 5)
+*:/hat [$data] = >>>
+    _assertperm('restricted', 0)
+    if(equals(pinv(player(), 103), null), 
+        set_pinv(103, if(equals($data, ''), 298, $data)),
+    #else:
+        set_pinv(103, 0))
+<<<
+
+*:/speed = >>>
+    _assertperm('restricted', 0)
+    set_peffect(player(), 1, 5)
+<<<
+*:/speed = >>>
+    _assertperm('restricted', 0)
+    set_peffect(player(), 2, 5)
+<<<
 
 #TODO: Probably not needed as we can just use WE's /jumpto
 

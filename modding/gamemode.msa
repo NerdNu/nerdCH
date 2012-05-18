@@ -1,14 +1,11 @@
-/mode $player = >>>
-        if(equals(pmode($player), 'SURVIVAL'),
-		set_pmode($player,'CREATIVE')
-		msg(concat(color(green), $player, ' is now in creative mode'))
-	,
-                set_pmode($player,'SURVIVAL')
-		msg(concat(color(green), $player, ' is now in survival mode'))
-	)
-<<<
-
-/mode = >>>
-	if(equals(pmode(), 'SURVIVAL'), set_pmode('CREATIVE'),
-		set_pmode('SURVIVAL'))
+*:/mode [$] = >>>
+    _assertperm('restricted', 0)
+    
+    assign(@p, if(equals($, ''), player(), $))
+    if(equals(pmode(@p), 'SURVIVAL'), 
+        set_pmode(@p, 'CREATIVE'),
+        msg(concat(color(gray), @p, ' is now in creative mode'))
+    #else:
+        set_pmode(@p, 'SURVIVAL')
+        msg(concat(color(gray), @p, ' is now in survival mode')))
 <<<

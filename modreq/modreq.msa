@@ -1,5 +1,6 @@
 #Shortcuts for modtrs
-mods:/check $id = >>>
+*:/check $id = >>>
+    _assertperm('mod', 0)
 	if(has_permission('modreq.check'),
 		if(not(equals($id, '-')),
 			store_value(concat(player(), 'modreq'), $id)
@@ -12,7 +13,8 @@ mods:/check $id = >>>
 	)
 <<<
 
-mods:/claim [$id='-'] = >>>
+*:/claim [$id='-'] = >>>
+    _assertperm('mod', 0)
 	if(not(equals($id, '-')),
 		store_value(concat(player(), 'modreq'), $id)
 		run(/claim $id)
@@ -21,7 +23,8 @@ mods:/claim [$id='-'] = >>>
 	)
 <<<
 
-mods:/done [$id='-'] [$]= >>>
+*:/done [$id='-'] [$]= >>>
+    _assertperm('mod', 0)
 	if(not(equals($id, '-')),
 		run(/done $id $)
 	,
@@ -29,7 +32,8 @@ mods:/done [$id='-'] [$]= >>>
 	)
 <<<
 
-mods:/tp-id [$id='-'] = >>>
+*:/tp-id [$id='-'] = >>>
+    _assertperm('mod', 0)
 	if(not(equals($id, '-')),
 		run(/tp-id $id)
 	,
@@ -37,7 +41,8 @@ mods:/tp-id [$id='-'] = >>>
 	)
 <<<
 
-/done-range $from $to = >>>
+*:/done-range $from $to = >>>
+    _assertperm('admin', 0)
 	foreach(range($from, add(1, $to)), @id,
 		run(/done @id)
 	) 

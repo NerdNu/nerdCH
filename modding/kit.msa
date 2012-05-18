@@ -1,4 +1,5 @@
-/kit [$] = >>>
+*:/kit [$] = >>>
+    _assertperm('restricted', 0)
     if(equals($, ''),
         assign(@kits, array())
         foreach(reg_split('\n', read('kits.txt')), @l,

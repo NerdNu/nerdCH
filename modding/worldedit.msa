@@ -1,10 +1,10 @@
 #mods:/removenear $item $radius = if(gt($radius,25), die(color(red) 'Whoa, whoa, whoa. Step it down a notch, turbo.'), run(/removenear $item $radius))
-//fixwater $radius = if(gt($radius, 25), die(color(red) 'Whoa, whoa, whoa. Step it down a notch, turbo.'), run(/fixwater $radius))
-//fixlava $radius = if(gt($radius, 25), die(concat(color(red), 'TROGDOR THE BURNINATOR can only do up to //fixlava 25. Sorry.')), run(/fixlava $radius))
-/fixwater $ = call_alias(//fixwater $)
-/fixlava $ = call_alias(//fixlava $)
+*://fixwater $radius = if(gt($radius, 25), die(color(red) 'Whoa, whoa, whoa. Step it down a notch, turbo.'), run(/fixwater $radius))
+*://fixlava $radius = if(gt($radius, 25), die(concat(color(red), 'TROGDOR THE BURNINATOR can only do up to //fixlava 25. Sorry.')), run(/fixlava $radius))
+*:/fixwater $ = call_alias(//fixwater $)
+*:/fixlava $ = call_alias(//fixlava $)
 
-mods://removenear $ = >>> 
+*://removenear $ = >>> 
         assign(@match, parse_args($))
         if(equals(array_size(@match), 2),
                 if(lt(@match[1], 25),
@@ -15,8 +15,8 @@ mods://removenear $ = >>>
                 msg(concat(color(red), 'Syntax: /removenear block_id radius')))
 <<<
 
-mods:/removenear $ = call_alias(//removenear $)
+*:/removenear $ = call_alias(//removenear $)
 
-/ri = /remove items 9999 \ /remove arrows 9999
+*:/ri = /remove items 9999 \ /remove arrows 9999
 
-/deselect = //sel cuboid
+*:/deselect = //sel cuboid

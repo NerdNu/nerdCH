@@ -1,5 +1,5 @@
-/setwarp [$] = >>>
-    _assertperm('mod2', 0)
+*:/setwarp [$] = >>>
+    _assertperm('restricted', 0)
     if(equals($, ''),
         msg(concat(color(red), 'Usage: /setwarp <name>')),
     #else:
@@ -7,8 +7,8 @@
         msg(concat(color(gray), 'Warp set!')))
 <<<
 
-/delwarp [$] = >>>
-    _assertperm('mod2', 0)
+*:/delwarp [$] = >>>
+    _assertperm('restricted', 0)
     if(equals($, ''),
         msg(concat(color(red), 'Usage: /delwarp <name>')),
     #else:
@@ -16,8 +16,8 @@
         msg(concat(color(gray), 'Warp deleted!')))
 <<<
 
-/warp [$] = >>>
-    _assertperm('mod2', 1)
+*:/warp [$] = >>>
+    _assertperm('restricted', 1)
     
     assign(@o, concat('Available warps: ', color(gray)))
     

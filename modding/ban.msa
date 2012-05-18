@@ -1,4 +1,5 @@
 /ban $ = >>>
+    _assertperm('mod', 0)
     if(_contains('nerd.nu/appeal', $),
 	    /ban $
 	, #else:

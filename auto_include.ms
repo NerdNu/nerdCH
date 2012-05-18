@@ -1,5 +1,6 @@
 proc(_assertperm, @name, @cmodetrumps
     if(not(or(
+        pisop(),
         equals(@name, '~console'),
         or(
             has_permission(concat('nerdch.level.', @name)),

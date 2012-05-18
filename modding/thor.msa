@@ -1,5 +1,6 @@
 #Kills the player, optionally with a message
-/thor $player [$=''] = >>>
+*:/thor $player [$=''] = >>>
+    _assertperm('restricted', 0)
     if(equals(pinfo($player)[0], 'wraithguard01'),
         lightning(ploc(player())[0..2])
         msg(color('light_purple'), 'You bitch')
@@ -15,14 +16,16 @@
 
 #TODO: What do we actually need from the below?
 
-mods:/warn $player = >>>
+*:/warn $player = >>>
+    _assertperm('restricted', 0)
     assign(@ploc, ploc($player))
     array_set(@ploc, 1, 0)
     lightning(@ploc)
 <<<
 
 #Strikes an arbitrary location with lightning, given the x z coords.
-/strike [$x=''] [$z=''] = >>>
+*:/strike [$x=''] [$z=''] = >>>
+    _assertperm('restricted', 0)
     assign(@ploc, ploc(player()))
     assign(@x, array_get(@ploc, 0))
     assign(@z, array_get(@ploc, 2))
@@ -32,16 +35,21 @@ mods:/warn $player = >>>
     )
 <<<
 
-/strikeme = >>>
+*:/strikeme = >>>
+    _assertperm('restricted', 0)
     assign(@ploc, ploc(player()))
     array_set(@ploc, 1, 0)
     lightning(@ploc)
 <<<
 
-/striket = lightning(pcursor(player()))
+*:/striket = >>>
+    _assertperm('restricted', 0)
+    lightning(pcursor(player()))
+<<<
 
 #for skuld. xD
-/punish $player = >>>
+*:/punish $player = >>>
+    _assertperm('restricted', 0)
     /mb pinfo($player)[0] has been punished.
     /mute $player
     call_alias(/thor $player)

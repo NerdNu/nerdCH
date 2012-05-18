@@ -1,4 +1,5 @@
-all:/sethome [$] = >>>
+*:/sethome [$] = >>>
+    _assertperm('restricted', 1)
     assign(@modes, array('public','private','unlisted'))
     assign(@m, reg_split(' ', $))
     assign(@name,
@@ -20,7 +21,8 @@ all:/sethome [$] = >>>
         msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']')))
 <<<
 
-all:/home [$] = >>>
+*:/home [$] = >>>
+    _assertperm('restricted', 1)
     assign(@m, reg_split(' ', $))
     if(equals(array_size(@m), 2),
         assign(@player, @m[0])
@@ -50,7 +52,8 @@ all:/home [$] = >>>
 
 <<<
 
-all:/listhomes [$] = >>>
+*:/listhomes [$] = >>>
+    _assertperm('restricted', 1)
     assign(@player,
         if(equals($, ''),
             player(),
