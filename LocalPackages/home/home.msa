@@ -2,6 +2,7 @@
     _assertperm('restricted', 1)
     assign(@modes, array('public','private','unlisted'))
     assign(@m, reg_split(' ', $))
+    assign(@p, strip_colors(player()))
     assign(@name,
         if(equals(@m[0], ''),
             'default',
@@ -14,8 +15,8 @@
                 'unlisted')))
     
     if(array_contains(@modes, @mode),
-        store_value(concat('homes.', player(), '.', @name, '.loc'), ploc())
-        store_value(concat('homes.', player(), '.', @name, '.mode'), @mode)
+        store_value(concat('homes.', @p, '.', @name, '.loc'), ploc())
+        store_value(concat('homes.', @p, '.', @name, '.mode'), @mode)
         msg(concat(color(gray), 'Home set.')),
     #else:
         msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']')))
@@ -28,7 +29,7 @@
         assign(@player, @m[0])
         array_remove(@m, 0),
     #else:
-        assign(@player, player()))
+        assign(@player, strip_colors(player())))
     
     assign(@name,
         if(equals(@m[0], ''),
@@ -39,7 +40,7 @@
     
     if(has_value(concat(@prefix, 'loc')),
         if(or(
-            equals(@player, player()),
+            equals(@player, strip_colors(player())),
             array_contains(array('public', 'unlisted'), get_value(concat(@prefix, 'mode'))),
             has_permission('homes.override')),
             
@@ -56,12 +57,12 @@
     _assertperm('restricted', 1)
     assign(@player,
         if(equals($, ''),
-            player(),
+            strip_colors(player()),
             $))
     
-    msg(concat(color(gray), if(equals(@player, player()), 'Your', concat(@player, '\'s')), ' homes:'))
+    msg(concat(color(gray), if(equals(@player, strip_colors(player())), 'Your', concat(@player, '\'s')), ' homes:'))
     if(or(
-        equals(@player, player()),
+        equals(@player, strip_colors(player())),
         has_permission('homes.override')),
         
         

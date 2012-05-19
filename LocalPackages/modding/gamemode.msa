@@ -1,0 +1,11 @@
+*:/mode [$] = >>>
+    _assertperm('op', 0)
+    
+    assign(@p, if(equals($, ''), player(), _getonlinename($)))
+    if(equals(pmode(@p), 'SURVIVAL'), 
+        set_pmode(@p, 'CREATIVE')
+        msg(concat(color(gray), @p, ' is now in creative mode')),
+    #else:
+        set_pmode(@p, 'SURVIVAL')
+        msg(concat(color(gray), @p, ' is now in survival mode')))
+<<<

@@ -58,6 +58,11 @@
         msg(concat(color(dark_aqua), 'Online Mods: ', color(white), array_implode(@mods, ', ')))
 <<<
 
+all:/help = >>>
+    foreach(reg_split('\n', _convertcolors(read('../../help.txt'))), @l,
+        msg(@l))
+<<<
+
 ### TOO SLOW!!! Needs bukkit
 
 #*:/list2 = >>>

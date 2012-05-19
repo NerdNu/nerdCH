@@ -1,5 +1,5 @@
 #Kills the player, optionally with a message
-*:/thor $player [$=''] = >>>
+*:/thor $player [$] = >>>
     _assertperm('restricted', 0)
     if(equals(pinfo($player)[0], 'wraithguard01'),
         lightning(ploc(player())[0..2])
@@ -11,20 +11,20 @@
     msg(color('light_purple'), 'Thou hast smote the evil player ', pinfo($player,0), ' with thy mighty hand')
     tmsg($player, color('red'), if(equals($, ''), 'You have been smote by Thor\'s Hammer!', $))
     kill($player)
-    /mod-broadcast pinfo($player, 0) has been smote.
+    call_alias(concat('/mb ', pinfo($player, 0), ' has been smote.'))
 <<<
 
 #TODO: What do we actually need from the below?
 
-*:/warn $player = >>>
-    _assertperm('restricted', 0)
-    assign(@ploc, ploc($player))
-    array_set(@ploc, 1, 0)
-    lightning(@ploc)
-<<<
+#*:/warn $player = >>>
+#    _assertperm('restricted', 0)
+#    assign(@ploc, ploc($player))
+#    array_set(@ploc, 1, 0)
+#    lightning(@ploc)
+#<<<
 
 #Strikes an arbitrary location with lightning, given the x z coords.
-*:/strike [$x=''] [$z=''] = >>>
+*:/strike [$x] [$z] = >>>
     _assertperm('restricted', 0)
     assign(@ploc, ploc(player()))
     assign(@x, array_get(@ploc, 0))

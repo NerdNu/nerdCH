@@ -3,7 +3,7 @@
     if(equals($, ''),
         msg(concat(color(red), 'Usage: /setwarp <name>')),
     #else:
-        store_value(concat('warps.', @name), ploc())
+        store_value(concat('warps.', $), ploc())
         msg(concat(color(gray), 'Warp set!')))
 <<<
 
@@ -12,14 +12,14 @@
     if(equals($, ''),
         msg(concat(color(red), 'Usage: /delwarp <name>')),
     #else:
-        clear_value(concat('warps.', @name))
+        clear_value(concat('warps.', $))
         msg(concat(color(gray), 'Warp deleted!')))
 <<<
 
 *:/warp [$] = >>>
     _assertperm('restricted', 1)
     
-    assign(@o, concat('Available warps: ', color(gray)))
+    assign(@o, concat('Available warps:', color(gray)))
     
     if(equals($, ''),
         foreach(array_keys(get_values('warps')), @name,

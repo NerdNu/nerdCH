@@ -1,0 +1,18 @@
+*:/ban $ = >>>
+    _assertperm('mod', 0)
+    if(_contains('nerd.nu/appeal', $),
+        runas(~op, /ban $)
+    , #else:
+        runas(~op, /ban $ 'nerd.nu/appeal')
+    )
+<<<
+
+*:/unban $player = >>>
+    _assertperm('mod', 0)
+    runas(~op, /unban $player)
+<<<
+
+*:/rbban $p $ = >>>
+    call_alias(concat('/lbrb ', $p))
+    call_alias(concat('/ban ', $p, ' ', $))
+<<<

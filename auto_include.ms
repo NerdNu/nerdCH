@@ -52,3 +52,17 @@ proc(_mbroadcast, @msg,
                 tmsg(@a, @msg)
         )*/
 )
+
+proc(_getonlinename, @name,
+    if(equals(@name, '~console'), return('console'))
+    assign(@pattern, concat('^', to_lower(strip_colors(@name))))
+    foreach(all_players(), @p,
+        assign(@m, reg_match(@pattern, to_lower(strip_colors(@p))))
+        if(gt(array_size(@m), 0),
+            return(@p)))
+    return(null))
+
+proc(_contains, @needle, @haystack,
+        assign(@repl, replace(to_lower(@haystack), to_lower(@needle), ''))
+        if(equals(to_lower(@haystack), to_lower(@repl)), return(false), return(true))
+)

@@ -1,0 +1,59 @@
+#Shortcuts for modtrs
+*:/check [$id] = >>>
+    _assertperm('mod', 0)
+	if(has_permission('modtrs.command.check'),
+	    msg('You have permission!')
+		if(equals($id, '-'),
+		    run(/check get_value(concat(strip_colors(player()), 'modreq'))),
+		#else:
+		    if(equals($id, ''),
+		        run(/check),
+		    #else:
+                store_value(concat(strip_colors(player()), 'modreq'), $id)
+			    run(/check $id))))
+<<<
+
+*:/claim [$id] = >>>
+    _assertperm('mod', 0)
+	if(not(equals($id, '')),
+		store_value(concat(strip_colors(player()), 'modreq'), $id)
+		run(/claim $id)
+	,
+		run(/claim get_value(concat(strip_colors(player()), 'modreq')))
+	)
+<<<
+
+*:/done [$id] [$] = >>>
+    _assertperm('mod', 0)
+	if(not(equals($id, '')),
+		run(/done $id $)
+	,
+		run(/done get_value(concat(strip_colors(player()), 'modreq')) $)
+	)
+<<<
+
+*:/tp-id [$id] = >>>
+    _assertperm('mod', 0)
+	if(not(equals($id, '')),
+		run(/tp-id $id)
+	,
+		run(/tp-id get_value(concat(strip_colors(player()), 'modreq')))
+	)
+<<<
+
+*:/tpinfo $num = >>>
+    run(concat('/tp-id ', $num))
+    run(concat('/check ', $num))
+<<<
+*:/tpc $num = >>>
+    run(concat('/claim ', $num))
+    run(concat('/tp-id ', $num))
+    run(concat('/check ', $num))
+<<<
+
+#*:/done-range $from $to = >>>
+#    _assertperm('admin', 0)
+#	foreach(range($from, add(1, $to)), @id,
+#		run(/done @id)
+#	) 
+#<<<

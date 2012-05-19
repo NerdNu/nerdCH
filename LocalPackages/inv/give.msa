@@ -22,16 +22,16 @@
         msg(concat(color(gray), 'Usage: /give <player> <itemid>[:metadata] [quantity]')),
     #else:
         try(
-            pgive_item($player, concat(@a[0], ':', @a[1]), @a[2])
+            pgive_item(_getonlinename($player), concat(@a[0], ':', @a[1]), @a[2])
             msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]), ' to ', $player)),
         @e,
             msg(concat(color(red), 'Player not found!'))))
 <<<
 
-*:/give-that [$qty=64] = >>>
+*:/givethat = >>>
     _assertperm('restricted', 1)
 	if(equals(get_block_at(pcursor()), '0:0'), 
-	    die('No block in sight!'))
+	    die('No block in sight!'),
 	#else:
-	    call_alias(concat('/i ', get_block_at(pcursor()), ' ', $qty))
+	    call_alias(concat('/i ', get_block_at(pcursor()))))
 <<<

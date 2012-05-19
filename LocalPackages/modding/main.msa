@@ -42,18 +42,14 @@ mods:/spawnp $player = runas($player, /spawn)
 *:/hat [$data] = >>>
     _assertperm('restricted', 0)
     if(equals(pinv(player(), 103), null), 
-        set_pinv(103, if(equals($data, ''), 298, $data)),
+        set_pinv(array(103: array(type: if(equals($data, ''), 298, $data)))),
     #else:
-        set_pinv(103, 0))
+        set_pinv(array(103: null)))
 <<<
 
 *:/speed = >>>
     _assertperm('restricted', 0)
     set_peffect(player(), 1, 5)
-<<<
-*:/speed = >>>
-    _assertperm('restricted', 0)
-    set_peffect(player(), 2, 5)
 <<<
 
 #spleef:/spleef $id = for( assign( @firstx, 730 ), lte( @firstx, 743 ), inc( @firstx ), for( assign( @firsty, 185 ), lte( @firsty, 198 ), inc( @firsty ), set_block_at(@firstx,63,@firsty,$id) ) )

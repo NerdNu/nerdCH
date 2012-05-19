@@ -1,11 +1,11 @@
 #TODO: Blacklisting (inc pots)
 
-proc(_parseiargs, $input
-    assign(@m, reg_match('^([^ :]+)(:[0-9]+)?( [0-9]+)?$', $input))
+proc(_parseiargs, @input, 
+    assign(@m, reg_match('^([^ :]+)(:[0-9]+)?( [0-9]+)?$', @input))
     if(array_index_exists(@m,0),
         assign(@itemid,  data_values(@m[1]))
         assign(@metadata, 0)
-        assign(@quantity, if(equals(pmode(), 'CREATIVE'), 1, 64))
+        assign(@quantity, if(equals(pmode(), 'CREATIVE'), 1, max_stack_size(@itemid)))
         
         #ITEM ID
         if(equals(@itemid, null),

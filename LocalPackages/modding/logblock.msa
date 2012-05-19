@@ -13,8 +13,6 @@
 *:/trace-r $player $r = /lookup $player \ /lb player $player area $r sum blocks
 
 #/trace $wtf = /lookup $wtf
-*:/tpinfo $num = /tp-id $num \ /check $num
-*:/tpc $num = /claim $num \ /tp-id $num \ /check $num
 
 *:/seen [$] = >>>
     if(equals($, ''),

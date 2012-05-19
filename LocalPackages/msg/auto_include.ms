@@ -1,15 +1,6 @@
 #This set of commands, /msg, /r, and /cmsg replaces the built in message system
 #and allows for colored messages, so they are more prominent
 
-proc(_getonlinename, @name,
-    if(equals(@name, '~console'), return(@name))
-    assign(@pattern, concat('^', to_lower(strip_colors(@name))))
-    foreach(all_players(), @p,
-        assign(@m, reg_match(@pattern, to_lower(strip_colors(@p))))
-        if(gt(array_size(@m), 0),
-            return(@p)))
-    return(null))
-
 proc(_message, @highlight, @from, @to, @text,
         assign(@from2, _getonlinename(@from))
         assign(@to2,   _getonlinename(@to))

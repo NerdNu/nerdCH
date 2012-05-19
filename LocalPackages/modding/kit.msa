@@ -2,7 +2,7 @@
     _assertperm('restricted', 0)
     if(equals($, ''),
         assign(@kits, array())
-        foreach(reg_split('\n', read('kits.txt')), @l,
+        foreach(reg_split('\n', read('../../kits.txt')), @l,
             assign(@m, reg_match('^([^:]+)', @l))
             if(array_index_exists(@m,0),
                 array_push(@kits, @m[1])))
@@ -10,7 +10,7 @@
         msg(concat(color(gray), 'Available kits: ', array_implode(@kits, ', '))),
     #else:
         assign(@found, 0)
-        foreach(reg_split('\n', read('kits.txt')), @l,
+        foreach(reg_split('\n', read('../../kits.txt')), @l,
             assign(@m, reg_match(concat('^', $, ': (.*)$'), @l))
             if(array_index_exists(@m,0),
                 assign(@found, 1)
