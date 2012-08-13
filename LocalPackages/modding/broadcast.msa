@@ -19,7 +19,7 @@
 
 *:/o [$] = >>>
     _assertperm('mod', 0)
-    broadcast(concat(color('white'), '<', color('red'), player(), color('white'), '>', color('white'), ' ', color('green'), $))
+    broadcast(concat(color('white'), '<', color('red'), player(), color('white'), '> ', color('green'), $))
 <<<
 
 #TODO: Allow other server admins to access this.
