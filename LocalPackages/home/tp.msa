@@ -1,5 +1,5 @@
-*:/tp $player = >>>
-    _assertperm('restricted', 1)
+*:/tpo $player = >>>
+    _assertperm('mod', 0)
     assign(@pl, _getonlinename($player))
     if(not(is_null(@pl)),
         set_ploc(player(), ploc(@pl))
@@ -7,7 +7,7 @@
 <<<
  
 *:/tphere $player = >>>
-    _assertperm('restricted', 0)
+    _assertperm('mod', 0)
     assign(@pl, _getonlinename($player))
     if(not(is_null(@pl)),
         set_ploc(@pl, ploc(player()))
