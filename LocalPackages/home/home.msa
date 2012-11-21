@@ -22,6 +22,23 @@
         msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']')))
 <<<
 
+*:/delhome [$] = >>>
+    _assertperm('restricted', 1)
+    if(equals($, ''),
+        msg(concat(color(red), 'Usage: /delhome <name>'))
+        call_alias(/listhomes),
+    #else:
+        assign(@str, concat('homes.', pinfo()[0], '.', $, '.loc'))
+        if(has_value(@str),
+            clear_value(@str)
+            msg('Home' $ 'cleared.'),
+        #else:
+            msg(concat(color(red), 'Home ' , $, ' not found.'))
+            call_alias(/listhomes)
+        )
+    )
+<<<
+
 *:/home [$] = >>>
     _assertperm('restricted', 1)
     assign(@m, reg_split(' ', $))

@@ -14,6 +14,21 @@
 
 #/trace $wtf = /lookup $wtf
 
+*:/furnace-top [$time] = >>>
+    _assertperm('mod', 0)
+    if(equals($time, ''),
+        /say lb sum players created block 61 62 since 20m,
+    #else:
+        if (is_integer($time),
+            /lb sum players created block 61 62 since concat($time, m),
+        #else:
+            /lb sum players created block 61 62 since $time
+        )
+    )
+<<<
+
+*:/furnace [$time] = call_alias('/furnace-top' $time)
+
 *:/seen [$] = >>>
     if(equals($, ''),
         msg(concat(color(gray), 'Shows the last edit of a user.'))
