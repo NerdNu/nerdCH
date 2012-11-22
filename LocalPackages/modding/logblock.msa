@@ -17,8 +17,8 @@
 *:/furnace-top [$] = >>>
     _assertperm('mod', 0)
     if(equals($, ''),
-        /lb sum players created block 61 62 since 20m
-    else:
+        /lb sum players created block 61 62 since 20m,
+    #else:
         assign(@time, replace($, '.0', 'd'))
         if(is_integer(@time),
             run(/lb sum players created block 61 62 since concat(@time, m)),
