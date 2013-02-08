@@ -1,10 +1,10 @@
 #Create Region with proper flags and fix flags
 *:/cregion $name $owner = >>>
-    run(concat('/region define ', $name, ' ', $owner))
-    run(concat('/region flag ', $name, ' use allow'))
-    run(concat('/region flag ', $name, ' chest-access allow'))
-    run(concat('/region flag ', $name, ' vehicle-place allow'))
-    run(concat('/region flag ', $name, ' vehicle-destroy allow'))
+    if(array_contains_ic(sk_all_regions(pworld()), $name),
+        msg(concat(color(RED), 'That region is already defined. Use redefine instead.')),
+        run(concat('/region define ', $name, ' ', $owner))
+        run(concat('/addflags ', $name))
+    )
 <<<
 *:/cregion $name = msg('You must specify an owner as well. /cregion <name> <owner>')
 *:/addflags $name = >>>
