@@ -64,19 +64,19 @@ all:/help = >>>
 <<<
 
 #calculates time since last restart (or last /reloadaliases) and
-#subtracts that from 2 hours to give  time until next scheduled restart
+#subtracts that from 2 hours to give time until next scheduled restart
+
 *:/nextrestart = >>>
-assign(@elapsedseconds, subtract(round(expr(nano_time() * pow(10, -9))), get_value('time'.'key')))
-  assign(@remainingminutes, expr( ((120 * 60) - @elapsedseconds) / 60 ) )
-  if(@remainingminutes < 1) {
-      assign(@remainingtime, round(expr( ((120 * 60) - @elapsedseconds) ) ) )
-      msg(player(), 'The sever will restart in about '.@remainingtime.' seconds' )
- 
-  } else {
- 
-  msg(player(), 'The server will restart in about '.round(@remainingminutes).' minutes' )
-  }
+	assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
+	assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
+	if (@remainingSecs < 60) {
+		msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
+	} else {
+		assign(@remainingMins, round(expr(@remainingSecs / 60)))
+		msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
+	}
 <<<
+
 
 ### TOO SLOW!!! Needs bukkit
 
