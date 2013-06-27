@@ -20,8 +20,8 @@
 
 *:'/spawn-tame-mob' $type $player = >>>
 	_assertperm('restricted')
-	@mob = if (equals_ic($type,'DOG'),'WOLF',$type)
-	@mob = if (equals_ic(@mob,'CAT'),'OCELOT',@mob)
+	if (equals_ic($type,'DOG'), @mob = 'WOLF', @mob = $type)
+	if (equals_ic(@mob,'CAT'),  @mob = 'OCELOT')
 	if (!equals_ic(@mob,'OCELOT') && !equals_ic(@mob,'WOLF')) {
 		die(color(red).'We can\'t spawn a '.@mob.'!')
 	}
@@ -31,6 +31,7 @@
 	@loc[1] = @loc[1] + 1
 	tame_mob($player, spawn_mob(@mob, 1, @loc)[0])
 
+	msg(color(gold).'Spawned '.to_lower(@mob).' owned by '.$player.'.')
 	if (equals_ic(@mob,'OCELOT')) {
 		msg(color(gold).'Currently, we can\'t set the cat type. Sorry about that. :/')
 	}
