@@ -29,10 +29,12 @@
 	# Prevent the mob from spawning *inside* the block at the player's feet. ;_;
 	@loc = ploc()
 	@loc[1] = @loc[1] + 1
-	tame_mob($player, spawn_mob(@mob, 1, @loc)[0])
 
-	msg(color(gold).'Spawned '.to_lower(@mob).' owned by '.$player.'.')
+	# Randomly select a cat type.
 	if (equals_ic(@mob,'OCELOT')) {
-		msg(color(gold).'Currently, we can\'t set the cat type. Sorry about that. :/')
+		@mob = @mob.':'.array(BLACK_CAT, RED_CAT, SIAMESE_CAT)[rand(3)]
 	}
+
+	tame_mob($player, spawn_mob(@mob, 1, @loc)[0])
+	msg(color(gold).'Spawned '.to_lower(@mob).' owned by '.$player.'.')
 <<<
