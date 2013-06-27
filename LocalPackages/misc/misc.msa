@@ -17,7 +17,7 @@
 
 /kickforrestart = call_alias('/kickall Server restarting.')
 
-/runas $player $ = runas($player, $)
+#/runas $player $ = runas($player, $)
 
 /reloadit = runas(~op, /reload)
 
@@ -58,51 +58,46 @@
         msg(concat(color(dark_aqua), 'Online Mods: ', color(white), array_implode(@mods, ', ')))
 <<<
 
+
+*:/lag off = >>>
+	msg(color(gray).'Lag disabled.')
+<<<
+*:/lag on = >>>
+	set_timeout(10000, closure(
+		msg(color(gray).'Lag enabled.')
+	))
+<<<
+
 all:/help = >>>
     foreach(reg_split('\n', _convertcolors(read('../../help.txt'))), @l,
         msg(@l))
 <<<
 
-#calculates time since last restart (or last /reloadaliases) and
-#subtracts that from 2 hours to give time until next scheduled restart
 
-*:/nextrestart = >>>
-	assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
-	assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
-	if (@remainingSecs < 60) {
-		msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
-	} else {
-		assign(@remainingMins, round(expr(@remainingSecs / 60)))
-		msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
+*:/list = >>>
+    assign(@all, array())
+    assign(@players, all_players())
+    array_sort(@players)
+    foreach(@players, @p,
+        assign(@group, pgroup(@p))
+        assign(@group, if(array_index_exists(@group, 0), @group[0], 'default'))
+        if(not(array_index_exists(@all, @group)), array_set(@all, @group, array()))
+        array_push(@all[@group], @p)
+    )
+    foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'moderators', 'modmode'), @key,
+        if(array_index_exists(@all, @key)){
+            assign(@coloredArray, array())
+            assign(@count, 0)
+            foreach(@all[@key], @p,
+		@count++
+            	array_push(@coloredArray, if(@count % 2 == 0, color(gray), color(white)) . @p)
+            )
+            msg(color(gold) . @key . ': ' . array_implode(@coloredArray, ' '))
 	}
+    )
+    msg(concat(color(gray), 'Total: ', color(white), array_size(@players), ' players'))
 <<<
 
-
-### TOO SLOW!!! Needs bukkit
-
-#*:/list2 = >>>
-#    assign(@all, array())
-#    foreach(all_players(), @p,
-#        assign(@group, pgroup(@p)[0])
-#        if(not(array_index_exists(@all, @group)), array_set(@a, @group, array()))
-#        array_push(@all[@group], @p))
-#    foreach(array('Default', 'CAdmins', 'SAdmins', 'PAdmins', 'Moderators', 'ModMode'), @key,
-#        
-#<<<
-
-#TODO: Shouldn't be necessary once Deaygo's TP stuff is done.
-
-#*:/tp $player = >>>
-#	if(or(
-#		array_contains(_get_mods(), player()),
-#		array_contains(_get_admins(), player())
-#	), 
-#		#if
-#		run(/tpo $player),
-#		#else
-#		run(/tp $player)
-#	)
-#<<<
 
 #TODO: Do we need these?
 
@@ -117,3 +112,170 @@ all:/help = >>>
 #*:/drunk = set_peffect(player(), 9, 1, 30) msg(concat(color(gold), 'You been drinkin?'))
 #*:/sniper = set_peffect(player(), 2, 10)
 #*:/sober = set_peffect(player(), 9, 1, 0)
+
+*:/cinfo [$] = >>>
+    _assertperm('cinfo', 0)
+    run('/cinfo')
+<<<
+
+*:/lwc info = call_alias('/cinfo')
+*:/lwc -info = call_alias('/cinfo')
+*:/lwc owners = call_alias('/cinfo')
+*:/lwc owner = call_alias('/cinfo')
+*:/lwc i = call_alias('/cinfo')
+*:/lwc -i = call_alias('/cinfo')
+*:/lwc -o = call_alias('/cinfo')
+*:/lwc o = call_alias('/cinfo')
+
+/tpi [$] = call_alias('/tpinfo' $)
+
+/mobtower $mob [$height=5] = >>>
+	_assertperm('admin')
+	assign(@lastRider, null)
+	foreach(range($height), @i,
+		assign(@lastSpawned, spawn_mob($mob, 1, pcursor())[0])
+		if(@lastRider != null){
+			set_entity_rider(@lastRider, @lastSpawned)
+		}
+		assign(@lastRider, @lastSpawned)
+	)
+<<<
+
+/mobride $mob $player = >>>
+	_assertperm('admin')
+	set_ploc($player, ploc())
+	set_entity_rider(spawn_mob($mob)[0], pinfo($player, 13))
+<<<
+
+mods:/kick $player [$] = >>>
+	# We can add people who shouldn't be kickable here.
+	assign(@unkickable, array('LadyCailin'))
+	if(array_contains(@unkickable, player($player))){
+		kick(player(), 'NOPE, BITCH')
+	} else {
+		run('/kick' $player $)
+	}
+<<<
+
+*:/drama [$] = >>>
+	msg(color(red).'L'.color(gold).'l'.color(yellow).'a'.color(green).'m'.color(blue).'a')
+<<<
+
+*:/signtext [$line] [$] = >>>
+	_assertperm('admin')
+	if($line == ''){
+		msg(color(red).'Usage: /signtext $line $text')
+		msg('Supported color codes:')
+		msg(colorize('&0&&0'))
+		msg(colorize('&1&&1'))
+		msg(colorize('&2&&2'))
+		msg(colorize('&3&&3'))
+		msg(colorize('&4&&4'))
+		msg(colorize('&5&&5'))
+		msg(colorize('&6&&6'))
+		msg(colorize('&7&&7'))
+		msg(colorize('&8&&8'))
+		msg(colorize('&9&&9'))
+		msg(colorize('&a&&a'))
+		msg(colorize('&b&&b'))
+		msg(colorize('&c&&c'))
+		msg(colorize('&d&&d'))
+		msg(colorize('&e&&e'))
+		msg(colorize('&f&&f'))
+		msg('Typing && twice gives a single, literal &')
+		die()
+	}
+	if($line < 1 || $line > 4){
+		die(color(red).'The line number must be between 1 and 4!')
+	}
+	if(is_sign_at(pcursor())){
+		@array = get_sign_text(pcursor())
+		@array[$line - 1] = colorize($)
+		set_sign_text(pcursor(), @array)
+	} else {
+		die('You aren\'t looking at a sign!')
+	}
+
+<<<
+
+
+/fw $colors [$fade='white'] [$type='ball_large'] [$qty=5] = >>>
+	_assertperm('admin')
+	foreach(range($qty), @i,
+		launch_firework(pcursor(), 
+			array(colors: $colors, strength: 2, flicker: true, type: $type, fade: $fade)
+		)
+	)
+<<<
+
+'/player-detect' = >>>
+	_assertperm('admin')
+	@array = array()
+	foreach(players_in_radius(15), @p,
+		if(@p != player()){
+			array_push(@array, @p)
+		}
+	)
+	msg(array_implode(@array, ', '))
+<<<
+
+/lolno = /lolno help
+
+/randomthor = >>>
+	_assertperm('admin')
+	execute(closure(lightning(ploc(array_get(array_rand(all_players(),1,false),0))))),false
+<<<
+
+/fortunecookie [$=''] = >>>
+	_assertperm('admin')
+	if(pinv(player(), null) != null){
+		die(color(RED).'Clear the current slot in your inventory to use this command')
+	}
+	@fortunes = array(
+		'You will be loved long time',
+		'"Welcome" is a powerful word.',
+		'A dubious friend may be an enemy in camouflage',
+		'A feather in the hand is better than a bird in the air',
+		'A fresh start will put you on your way',
+		'A friend is a present you give yourself',
+		'A gambler not only will lose what he has, but also will lose what he doesn\'t have',
+		'A golden egg of opportunity falls into your lap this month.',
+		'A good time to finish up old tasks.',
+		'A hunch is creativity trying to tell you something.',
+		'A light heart carries you through all the hard times.',
+		'A new perspective will come with the new year.',
+		'A person is never too old to learn.',
+		'A person of words and not deeds is like a garden full of weeds.',
+		'A pleasant surprise is waiting for you.',
+		'A smile is your personal welcome mat.',
+		'A smooth long journey! Great expectations.',
+		'A soft voice may be awfully persuasive.',
+		'A truly rich life contains love and art in abundance.',
+		'You will have a bad day today',
+		'Watch out for that creeper',
+		'Hi Mom!',
+		'Don\'t let your money get in the way of being rich',
+		'Don\'t forget to brush your teeth',
+		'http://i.imgur.com/psu515W.gif',
+		'http://i.imgur.com/EUKubB9.jpg',
+		'http://www.google.com - Where the internet finds things',
+		'c.nerd.nu!',
+		'p.nerd.nu!',
+		's.nerd.nu!',
+	)
+	set_pinv(array(null: array(type: 357)))
+	set_itemmeta(null, array(lore: array(if($ == '', array_rand(@fortunes, 1, false), $))))
+	enchant_inv_unsafe(null, 'LOOT_BONUS_BLOCKS', 1)
+<<<
+
+*:/nextrestart = >>>
+        assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
+        assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
+        if (@remainingSecs < 60) {
+                msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
+        } else {
+                assign(@remainingMins, round(expr(@remainingSecs / 60)))
+                msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
+        }
+<<<
+
