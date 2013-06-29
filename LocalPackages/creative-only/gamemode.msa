@@ -1,20 +1,3 @@
-*:/mode [$] = >>>
-	if(has_value('modelock.'.player())){
-		die(color(red).'Sorry, your mode is locked!')
-	}
-	assign(@p, if(equals($, ''), player(), player($)))
-	if(!has_permission('commandhelper.alias.mods') && @p != player()){
-		die('You can only /mode yourself!')
-	}
-	if(equals(pmode(@p), 'SURVIVAL')){ 
-		set_pmode(@p, 'CREATIVE')
-		msg(concat(color(gray), @p, ' is now in creative mode'))
-	} else {
-		set_pmode(@p, 'SURVIVAL')
-		msg(concat(color(gray), @p, ' is now in survival mode'))
-	}
-<<<
-
 *:'/mode-lock' $player [$mode=''] = >>>
 	_assertperm('restricted')
 	assign(@mode, pmode(player($player)))
