@@ -27,7 +27,7 @@ mods:/spawnp $player = runas($player, /spawn)
 
 #*:/rain [$status='clear'] = >>>
 #    _assertperm('admin', 0)
-#    runas(~op, concat('/weather ', $status))
+#    sudo(concat('/weather ', $status))
 #    msg(concat(color(red), 'Set weather to ', $status))
 #<<<
 
@@ -91,8 +91,33 @@ mods:/spawnp $player = runas($player, /spawn)
 <<<
 
 *:/fakeop $player = >>>
-    _assertperm('restricted', 0)
-    tmsg($player, concat(color('yellow'), 'You are now op!'))
+	_assertperm('restricted', 0)
+	@player = player($player)
+	if(has_permission(@player, 'nerdch.level.admin')){
+		if(!has_permission('nerdch.level.admin')){
+			die(color(red).'lol, can\'t fakeop an admin')
+		}
+	}
+	if(import('fakeop.'.@player)){
+		unbind(import('fakeop.'.@player))
+	} else {
+		tmsg(@player, concat(color('yellow'), 'You are now op!'))
+		msg(@player.' is now fake op\'d')
+		@bound = bind(player_command, null, array(player: @player), @event,
+			cancel()
+			@random = array(
+				color(red).'An error occurred while running that command. Have you tried checking your configuration? (Maybe just try running the command again)',
+				'Command run successfully',
+				'Done.',
+			)
+			msg(@random[rand(array_size(@random))])
+			@mods = _get_mods()
+			foreach(@mods, @mod,
+				tmsg(@mod, concat('[', color(red), 'Fake Op - ', player(), color(white), '] ', color(green), 'Tried running command: ', @event['command']))
+    			)
+		)
+		export('fakeop.'.@player, @bound)
+	}
 <<<
 
 #TODO: Probably not needed as we can just use WE's /jumpto
