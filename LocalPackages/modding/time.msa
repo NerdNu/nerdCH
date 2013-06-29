@@ -1,5 +1,5 @@
 *:/time [$] = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
     try(
         set_world_time($)
         msg(concat(color(gray), 'Time set to ',$,'.')),

@@ -1,9 +1,9 @@
 *:/ban $ = >>>
     _assertperm('mod', 0)
     if(_contains('nerd.nu/appeal', $),
-        runas(~op, /ban $)
+        runas(player(), /ban $)
     , #else:
-        runas(~op, /ban $ 'nerd.nu/appeal')
+        runas(player(), /ban $ 'nerd.nu/appeal')
     )
 <<<
 

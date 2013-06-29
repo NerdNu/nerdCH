@@ -1,0 +1,16 @@
+*:/'xray-top' $ = >>>
+    _assertperm('mod', 0)
+    run(concat('/lb sum players destroyed block 56 since ', $))
+
+<<<
+
+*:/'xray-edits' $ = >>>
+    _assertperm('mod', 0)
+    run(concat('/lb coords destroyed block 56 player ', $, ' since 28 days'))
+<<<
+
+*:/'xray-rb' $ = >>>
+    _assertperm('mod', 0)
+    call_alias(concat('/lbrb ', $))
+    run(concat('/lb redo destroyed block 56 player ', $, ' since 28 days'))
+<<<

@@ -1,13 +1,13 @@
 #Kills the player, optionally with a message
 *:/thor $player [$] = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
     if(equals(pinfo($player)[0], 'wraithguard01'),
         lightning(ploc(player())[0..2])
         msg(color('light_purple'), 'You bitch')
         kill(player())
         die()
     )
-    lightning(ploc($player)[0..2])
+    lightning(ploc($player))
     msg(color('light_purple'), 'Thou hast smote the evil player ', pinfo($player,0), ' with thy mighty hand')
     tmsg($player, color('red'), if(equals($, ''), 'You have been smote by Thor\'s Hammer!', $))
     kill($player)
@@ -16,44 +16,14 @@
 
 #TODO: What do we actually need from the below?
 
-#*:/warn $player = >>>
-#    _assertperm('restricted', 0)
-#    assign(@ploc, ploc($player))
-#    array_set(@ploc, 1, 0)
-#    lightning(@ploc)
-#<<<
-
-#Strikes an arbitrary location with lightning, given the x z coords.
-*:/strike [$x] [$z] = >>>
-    _assertperm('restricted', 0)
-    assign(@ploc, ploc(player()))
-    assign(@x, array_get(@ploc, 0))
-    assign(@z, array_get(@ploc, 2))
-    if(or(equals($x, ''), equals($z, '')),
-        lightning(array(@x, 0, @z)),
-        lightning(array($x, 0, $z))
-    )
-<<<
-
-*:/strikeme = >>>
-    _assertperm('restricted', 0)
-    assign(@ploc, ploc(player()))
+*:/warn $player = >>>
+    _assertperm('admin', 0)
+    assign(@ploc, ploc(_getonlinename($player)))
     array_set(@ploc, 1, 0)
     lightning(@ploc)
 <<<
 
 *:/striket = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
     lightning(pcursor(player()))
-<<<
-
-#for skuld. xD
-*:/punish $player = >>>
-    _assertperm('restricted', 0)
-    /mb pinfo($player)[0] has been punished.
-    /mute $player
-    call_alias(/thor $player)
-    /jail $player
-    set_peffect($player, 1, 20)
-
 <<<

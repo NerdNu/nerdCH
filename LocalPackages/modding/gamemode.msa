@@ -1,5 +1,5 @@
 *:/mode [$] = >>>
-    _assertperm('op', 0)
+    _assertperm('admin', 0)
     
     assign(@p, if(equals($, ''), player(), _getonlinename($)))
     if(equals(pmode(@p), 'SURVIVAL'), 

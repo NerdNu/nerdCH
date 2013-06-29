@@ -1,0 +1,61 @@
+#Arena plugin
+*:/arena [$tf=''] = >>>
+    _assertperm('restricted', 0)
+    switch($tf,
+        '0',
+            
+            #runas(~op, '/region flag arena_stands pvp')
+            
+            #runas(~op, '//sel')
+            #for(assign(@i, 1), lte(@i, 4), inc(@i),
+            #    runas(~op, concat('/region select arena_door', @i))
+            #    runas(~op, concat('//set ladder:', add(@i, 1))))
+            #runas(~op, '//sel')
+            
+            store_value('arena_mode', '0')
+            broadcast(concat(color(green), 'The arena is now closed! Get out!')),
+        
+        
+        
+        '1',
+            #runas(~op, '/region flag arena_stands pvp deny')
+            #runas(~op, '//sel')
+            #for(assign(@i, 1), lte(@i, 4), inc(@i),
+            #    runas(~op, concat('/region select arena_door', @i))
+            #    runas(~op, '//set 43:6'))
+            #runas(~op, '//sel')
+            
+            store_value('arena_mode', '1')
+            broadcast(concat(color(green), 'The arena is now open! Type /spawnme to be warped to the arena!')),
+        
+        
+        #default:
+            msg(concat(color(gray), 'Usage: /arena <0|1>')))
+<<<
+
+*:/spawnme = >>>
+    if(equals(get_value('arena_mode'), '1'),
+        #runas(~op, /warp arena),
+        set_ploc(get_value('warps.arena')),
+    #else:
+        msg(concat(color(red), 'The arena is currently closed!')))
+<<<
+
+*:/leavearena = >>>
+    if(equals(get_value('arena_mode'), '1'),
+        runas(~op, /spawn),
+        #set_ploc(get_value(@name)
+        #set_ploc(1995,12,-1987),
+    #else:
+        msg(concat(color(red), 'The arena is currently closed!')))
+<<<
+
+#Arena plugin
+*:/boxes [$tf='0'] = >>>
+    _assertperm('restricted', 0)
+    runas(~op, '//sel')
+    for(assign(@i, 1), lte(@i, 4), inc(@i),
+        runas(~op, concat('/region select arena_box_door', @i))
+        runas(~op, concat('//set ', if(equals($tf, '1'), 'glass', 'air'))))
+    runas(~op, '//sel')
+<<<

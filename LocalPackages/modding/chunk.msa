@@ -1,0 +1,16 @@
+*:/chunktraveler [$max=2000] [$step=100] = >>>
+        _assertperm('admin', 0)
+        assign(@ploc, ploc(player()))
+	set_ploc(player(), 0, array_get(@ploc, 1), 0)
+        for(assign(@x, 0), lt(@x, $max), assign(@x, add(@x, $step)),
+                for(assign(@z, array_get(@ploc, 2)), lt(@z, $max), assign(@z, add(@z, $step)),
+                        set_ploc(player(), @x, array_get(@ploc, 1), @z)
+#                        sleep(1)
+                )
+        )
+<<<
+
+*:/tpchunk $x $z = >>>
+	_assertperm('restricted', 0)
+	set_ploc(player(), multiply($x, 16), array_get(ploc(player()), 1), multiply($z, 16))
+<<<

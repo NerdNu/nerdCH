@@ -1,16 +1,17 @@
 #Shortcut to /mod-broadcast
 *:/mb $ = >>>
     _assertperm('mod', 0)
-	assign(@mods, _get_mods())
-	foreach(@mods, @mod,
-		tmsg(@mod, concat('[', color(red), 'Mod - ', player(), color(white), '] ', color(green), $))	
-	)
+    assign(@mods, _get_mods())
+    foreach(@mods, @mod,
+        tmsg(@mod, concat('[', color(red), 'Mod - ', player(), color(white), '] ', color(green), $))	
+    )
+    console(concat('[', color(red), 'Mod - ', player(), color(white), '] ', color(green), $))
 <<<
 
 *:/mod-broadcast [$] = call_alias(/mb $)
 
 #Broadcast shortcut
-*:/b $ = >>>
+*:/broadcast $ = >>>
     _assertperm('mod', 0)
     broadcast(concat(color(white), '[', color(red), 'Broadcast', color(white), '] ', color(green), $))
 <<<
@@ -19,15 +20,16 @@
 
 *:/o [$] = >>>
     _assertperm('mod', 0)
-    broadcast(concat(color('white'), '<', color('red'), player(), color('white'), '> ', color('green'), $))
+    broadcast(concat(color('white'), '<', color('red'), player(), color('white'), '>', color('white'), ' ', color('green'), $))
 <<<
 
 #TODO: Allow other server admins to access this.
 
 *:/ab $ = >>>
     _assertperm('adminchat', 0)
-	assign(@al, _get_admins())
+	assign(@al, _get_chat_admins())
 	foreach(@al, @a,
 		tmsg(@a, concat('[', color(red), 'Admin - ', player(), color(white), '] ', color(gold), $))
 	)
+    console(concat('[', color(red), 'Admin - ', player(), color(white), '] ', color(gold), $))
 <<<
