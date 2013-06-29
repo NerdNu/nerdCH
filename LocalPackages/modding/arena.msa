@@ -4,13 +4,13 @@
     switch($tf,
         '0',
             
-            #runas(~op, '/region flag arena_stands pvp')
+            #sudo('/region flag arena_stands pvp')
             
-            #runas(~op, '//sel')
+            #sudo('//sel')
             #for(assign(@i, 1), lte(@i, 4), inc(@i),
-            #    runas(~op, concat('/region select arena_door', @i))
-            #    runas(~op, concat('//set ladder:', add(@i, 1))))
-            #runas(~op, '//sel')
+            #    sudo(concat('/region select arena_door', @i))
+            #    sudo(concat('//set ladder:', add(@i, 1))))
+            #sudo('//sel')
             
             store_value('arena_mode', '0')
             broadcast(concat(color(green), 'The arena is now closed! Get out!')),
@@ -18,12 +18,12 @@
         
         
         '1',
-            #runas(~op, '/region flag arena_stands pvp deny')
-            #runas(~op, '//sel')
+            #sudo('/region flag arena_stands pvp deny')
+            #sudo('//sel')
             #for(assign(@i, 1), lte(@i, 4), inc(@i),
-            #    runas(~op, concat('/region select arena_door', @i))
-            #    runas(~op, '//set 43:6'))
-            #runas(~op, '//sel')
+            #    sudo(concat('/region select arena_door', @i))
+            #    sudo('//set 43:6'))
+            #sudo('//sel')
             
             store_value('arena_mode', '1')
             broadcast(concat(color(green), 'The arena is now open! Type /spawnme to be warped to the arena!')),
@@ -35,7 +35,7 @@
 
 *:/spawnme = >>>
     if(equals(get_value('arena_mode'), '1'),
-        #runas(~op, /warp arena),
+        #sudo(/warp arena),
         set_ploc(get_value('warps.arena')),
     #else:
         msg(concat(color(red), 'The arena is currently closed!')))
