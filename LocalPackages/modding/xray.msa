@@ -1,3 +1,13 @@
+*:/nightvision = >>>
+	# Allow defaults on creative and staff anywhere to use /nightvision or /nv.
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted')
+	}
+	set_peffect(player(), 16, 10, 60 * 10)
+<<<
+
+*:/nv = call_alias('/nightvision')
+
 *:/'xray-top' [$time=1d] = >>>
 	_assertperm('mod', 0)
 	run('/lb sum players destroyed block 56 since '.$time)

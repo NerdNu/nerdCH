@@ -56,9 +56,6 @@
 	broadcast(color(gold).player().' rolled a '.rand(1, 21))
 <<<
 
-*:/nightvision = set_peffect(player(), 16, 10, 60 * 10)
-*:/nv = call_alias('/nightvision')
-
 /rainbowhat [$player] = >>>
         @player = player()
         if($player != '', @player = player($player))
