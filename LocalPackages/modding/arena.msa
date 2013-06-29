@@ -43,7 +43,7 @@
 
 *:/leavearena = >>>
     if(equals(get_value('arena_mode'), '1'),
-        runas(~op, /spawn),
+        sudo(/spawn),
         #set_ploc(get_value(@name)
         #set_ploc(1995,12,-1987),
     #else:
@@ -53,9 +53,9 @@
 #Arena plugin
 *:/boxes [$tf='0'] = >>>
     _assertperm('restricted', 0)
-    runas(~op, '//sel')
+    sudo('//sel')
     for(assign(@i, 1), lte(@i, 4), inc(@i),
-        runas(~op, concat('/region select arena_box_door', @i))
-        runas(~op, concat('//set ', if(equals($tf, '1'), 'glass', 'air'))))
-    runas(~op, '//sel')
+        sudo(concat('/region select arena_box_door', @i))
+        sudo(concat('//set ', if(equals($tf, '1'), 'glass', 'air'))))
+    sudo('//sel')
 <<<
