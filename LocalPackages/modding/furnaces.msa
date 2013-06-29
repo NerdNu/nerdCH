@@ -1,0 +1,14 @@
+*:/furnace-top [$time] = >>>
+    _assertperm('mod', 0)
+    if(equals($time, ''),
+        run('/lb sum players created block 61 62 since 20m'),
+    #else:
+        if (is_integer($time),
+            run(concat('/lb sum players created block 61 62 since ', $time , 'm')),
+        #else:
+            run(concat('/lb sum players created block 61 62 since ', $time)),
+        )
+    )
+<<<
+
+*:/furnace [$time] = call_alias('/furnace-top' $time)
