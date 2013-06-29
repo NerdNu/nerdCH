@@ -1,0 +1,24 @@
+
+*:/i $ = >>>
+    assign(@a, _parseiargs($))
+    if(equals(@a, null),
+        msg(concat(color(gray), 'Usage: /i <itemid>[:metadata] [quantity]')),
+    #else:
+        pgive_item(concat(@a[0], ':', @a[1]), @a[2])
+        msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]))))
+
+<<<
+
+*:/give $player $ = >>>
+    assign(@a, _parseiargs($))
+    if(equals(@a, null),
+        msg(concat(color(gray), 'Usage: /give <player> <itemid>[:metadata] [quantity]')),
+    #else:
+        try(
+            pgive_item(player(), concat(@a[0], ':', @a[1]), @a[2])
+            msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]), ' to ', $player)),
+        @e,
+            msg(concat(color(red), 'Player not found!'))))
+<<<
+
+
