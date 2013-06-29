@@ -9,7 +9,7 @@
 
 *:/unban $player = >>>
     _assertperm('mod', 0)
-    runas(~op, /unban $player)
+    sudo(/unban $player)
 <<<
 
 *:/rbban $p $ = >>>
