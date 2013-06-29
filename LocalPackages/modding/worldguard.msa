@@ -14,12 +14,6 @@
     run(concat('/region flag ', $name, ' vehicle-destroy allow'))
 <<<
 
-*:/setspleef $block = >>>
-    _assertperm('admin', 0)
-    runas(~op, /region select spleef_floor)
-    runas(~op, //set $block)
-    runas(~op, //sel cuboid)
-<<<
 
 *:/members $region = >>>
         assign(@ro, array_get(sk_region_info($region, pworld()), 1))
