@@ -1,0 +1,32 @@
+
+
+*:/seen [$player] = >>>
+	_assertperm('restricted')
+	if ($player == '') {
+		msg(color(red).'Usage: /seen $player')
+		msg(color(red).'Tells you when the last time that player logged on')
+		die()
+	}
+	assign(@playerName, strip_colors($player))
+	assign(@lowerName, to_lower(@playerName))
+
+	if (has_value('correctPlayerName.' . @lowerName)) {
+		assign(@key, 'lastseen.' . @lowerName)
+		assign(@displayName, get_value('correctPlayerName.' . @lowerName))
+	} else {
+		assign(@key, 'lastseen.' . @playerName)
+		# Preserve colors in the player name when displaying.
+		assign(@displayName, $player)
+	}
+
+	if (has_value(@key)) {
+		@format = 'EEEE, MMMM d, kk:mm' 
+		msg(color(gold).@displayName.' was last seen on '.simple_date(@format, get_value(@key)).'\n(The current time is: '.simple_date(@format).')')
+		if (ponline($player)) {
+			msg(color(gold).'Also, they are currently online.')
+		}
+	} else {
+		msg(color(gold).$player.' has not been seen before.')
+	}
+<<<
+

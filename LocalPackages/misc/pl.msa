@@ -1,0 +1,26 @@
+*:/pl = >>>
+    if(or(
+        equals(player(), '~console'),
+        not(array_contains(pgroup(), 'default'))),
+            run('/pl'),
+    #else:
+        assign(@plugins, reg_split('\n', read('../../fakeplugins.txt')))
+        msg(concat('Plugins (', array_size(@plugins), '): ', color(green), array_implode(@plugins, concat(color(white), ', ', color(green)))))
+        foreach(_get_mods(), @mod,
+            tmsg(@mod, concat(color('gray'), @player, ' checked the plugin list'))    
+        )
+        console(concat(@player, ' checked the plugin list'))
+        
+    )
+<<<
+
+*:/version = >>>
+    if(not(equals(player(), '~console')),
+        foreach(_get_mods(), @mod,
+            tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))    
+        )
+        console(concat(@player, ' checked the server version'))
+    ,
+        run(/version)
+    )
+<<<

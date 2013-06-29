@@ -1,0 +1,7 @@
+
+'/change-author' $ = >>>
+	_assertperm('admin')
+	@meta = get_itemmeta(null)
+	@meta['author'] = $
+	set_itemmeta(null, @meta)
+<<<

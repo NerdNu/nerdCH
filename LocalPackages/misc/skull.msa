@@ -1,0 +1,23 @@
+
+*:/skull [$player] = >>>
+	if(!has_permission('nerdch.level.creative') && !has_permission('nerdch.level.restricted')){
+		die(color(RED).'You do not have permission for that command')
+	}
+	if($player == ''){
+		msg(color(red).'Usage: /skull $player')
+		msg(color(red).'Note that this works with offline players, but the name must be exact')
+		die()
+	} else {	
+		# Find the first slot that's empty
+		foreach(0..31, @i,
+			if(pinv(player(), @i) == null){
+				# Perfect, found it
+				@array = associative_array()
+				@array[@i] = array(type: 397, data: 3, meta: array(owner: $player))
+				set_pinv(player(), @array)
+				msg('Player head added!')
+				break()
+			}
+		)
+	}
+<<<
