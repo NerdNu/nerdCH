@@ -18,7 +18,7 @@
 # Spawn a cat or dog tamed to the specified player where you are standing.
 # Supported types are cat, dog, ocelot and wolf, case-insensitive.
 
-'/spawn-tame-mob' $type $player = >>>
+*:'/spawn-tame-mob' $type $player = >>>
 	_assertperm('restricted')
 	if (equals_ic($type,'DOG'), @mob = 'WOLF', @mob = $type)
 	if (equals_ic(@mob,'CAT'),  @mob = 'OCELOT')
