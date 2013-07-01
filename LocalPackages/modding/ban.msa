@@ -90,7 +90,7 @@
 
 
 # /bangrief player [message]
-#	Ban a player for crop grief. Additional aruments are added to the ban message after a semicolon.
+#	Ban a player for general grief. Additional aruments are added to the ban message after a semicolon.
 #	The player name must match exactly.
 
 *:/bangrief $player [$] = >>>
