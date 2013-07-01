@@ -62,18 +62,41 @@
 	)
 	@closest = 10000
 	@closestPlace = null
-	foreach(@places, @place,
-		@dist = _distance(ploc(), @place['coord'])
-		if(@dist < @closest){
-			@closestPlace = @place
-			@closest = @dist
+	if ($ == ''){
+		foreach(@places, @place,
+			@dist = _distance(ploc(), @place['coord'])
+			if(@dist < @closest){
+				@closestPlace = @place
+				@closest = @dist
+			}
+		
+		)
+		if(@closestPlace != null){
+			call_alias('/place '.@closestPlace['name'])
+		} else {
+			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
 		}
-	)
-	if(@closestPlace != null){
-		call_alias('/place '.@closestPlace['name'])
-	} else {
-		msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
+		die();
 	}
+
+	@args = parse_args($)
+	if (array_size(@args) == 3){
+		foreach(@places, @place,
+			@dist = _distance(@args, @place['coord'])
+			if (@dist < @closest){
+				@closestPlace = @place
+				@closest = @dist
+			}
+		)
+		if(@closestPlace != null){
+			call_alias('/place '.@closestPlace['name'])
+		} else {
+			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
+		}
+		die()
+	}
+
+	msg(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>](coordinates are optional) ')
 <<<
 
 /warpplace [$] = >>>
