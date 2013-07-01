@@ -1,9 +1,9 @@
 *:/plugins = call_alias(/pl)
 
 *:/pl = >>>
-#	if (player() == '~console') || !array_contains(pgroup(), 'default')) {
-#		run('/pl')
-#	} else {
+	if (player() == '~console' || !array_contains(pgroup(), 'default')) {
+		run('/pl')
+	} else {
 		try (
 			# Symlinked script locations was breaking read().
 			# Co-locate the fake plugin list with the script instead.
@@ -18,7 +18,7 @@
 			tmsg(@mod, concat(color('gray'), @player, ' checked the plugin list'))
 	        )
 		console(concat(@player, ' checked the plugin list'))
-#	}
+	}
 <<<
 
 *:/version = >>>
