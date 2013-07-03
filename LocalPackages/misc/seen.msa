@@ -1,7 +1,7 @@
 
 
 *:/seen [$player] = >>>
-	_assertperm('restricted')
+	_assertperm('seen')
 	if ($player == '') {
 		msg(color(red).'Usage: /seen $player')
 		msg(color(red).'Tells you when the last time that player logged on')
