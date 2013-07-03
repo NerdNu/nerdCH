@@ -89,6 +89,15 @@
 <<<
 
 
+# /rbbancrops player [message]
+#	Ban the player for crop grief (as with /bancrops) and do a full global rollback.
+
+*:/rbbancrops $player [$] = >>>
+	call_alias(concat('/bancrops ', $player, ' ', $))
+	call_alias(concat('/lbrb ', $player))
+<<<
+
+
 # /bangrief player [message]
 #	Ban a player for general grief. Additional aruments are added to the ban message after a semicolon.
 #	The player name must match exactly.
@@ -101,4 +110,13 @@
 		@message = @message.'; '.$
 	}
 	call_alias('/ban '.$player.' '.@message)
+<<<
+
+
+# /rbbangrief player [message]
+#	Ban the player for general grief (as with /bangrief) and do a full global rollback.
+
+*:/rbbangrief $player [$] = >>>
+	call_alias(concat('/bangrief ', $player, ' ', $))
+	call_alias(concat('/lbrb ', $player))
 <<<
