@@ -170,7 +170,7 @@ mods:/spawnp $player = runas($player, /spawn)
 # radius (defaulting to 30 blocks).
 
 *:'/list-invisible' [$radius] = >>>
-	_assertperm('mod')
+	_assertperm('restricted')
 	@radius = if (is_numeric($radius), integer($radius), 30)
 	@players = players_in_radius(ploc(), @radius)
 	@invisible = array()
