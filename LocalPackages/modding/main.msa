@@ -220,6 +220,6 @@ mods:/spawnp $player = runas($player, /spawn)
 	)
 	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
 	foreach (@types, @type,
-		msg(color(GOLD).@type.'		'.@counts[@type])
+		msg(color(GOLD).sprintf('%-10d %s',@counts[@type],@type))
 	)
 <<<
