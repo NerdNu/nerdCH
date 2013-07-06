@@ -16,7 +16,6 @@
 
 
 # Spawn a cat or dog tamed to the specified player where you are standing.
-# Supported types are cat, dog, ocelot and wolf, case-insensitive.
 
 *:'/spawn-tame-mob' $type $player = >>>
 	_assertperm('restricted')
@@ -38,3 +37,24 @@
 	tame_mob($player, spawn_mob(@mob, 1, @loc)[0])
 	msg(color(gold).'Spawned '.to_lower(@mob).' owned by '.$player.'.')
 <<<
+
+
+*:'/send-pet-home' [$] = >>>
+	_assertperm('restricted')
+	@range = 3
+	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF))
+	if (array_size(@pets) == 0) {
+		die(color(RED).'There are no pets within '.@range.' blocks of that block.')
+	} else if (array_size(@pets) == 1) {
+		@owner = get_mob_owner(@pets[0])
+		@bed = pbed_location(@owner)
+		set_ploc(@bed)
+		set_entity_loc(@pets[0], @bed)
+		set_timeout(3000, closure(set_entity_loc(@pets[0], @bed)))
+		die(color(GOLD).'Sending '.@owner.'\'s '.to_lower(entity_type(@pets[0])).' to '.@bed.'.')
+	} else {
+		msg(color(RED).'There are multiple pets at that location.')
+		call_alias('/petowner')
+	}
+<<<
+
