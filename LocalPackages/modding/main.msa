@@ -164,3 +164,62 @@ mods:/spawnp $player = runas($player, /spawn)
     _assertperm('admin', 0)
     broadcast(concat('<', $user, '> ', $))
 <<<
+
+
+# List all players who have the invisibility potion effect within the specified
+# radius (defaulting to 30 blocks).
+
+*:'/list-invisible' [$radius] = >>>
+	_assertperm('mod')
+	@radius = if (is_numeric($radius), integer($radius), 30)
+	@players = players_in_radius(ploc(), @radius)
+	@invisible = array()
+	foreach (@players, @p,
+		if (ponline(@p) && _has_peffect(@p, 14)) {
+			array_push(@invisible, @p)
+		}
+	)
+	if (array_size(@invisible) == 0) {
+		msg(color(GOLD).'There are no invisible players within '.@radius.' blocks of you.')
+	} else {
+		msg(color(GOLD).'The following invisible players are within '.@radius.
+		    ' blocks of you: '.array_implode(@invisible, ' '))
+	}
+<<<
+
+
+# /count-entities <radius> [<type1> ... ]
+#	Count all entities within the specified radius of the player and show the 
+#	totals by type. An optional list of types may be specified after the radius.
+
+*:'/count-entities' = >>>
+	msg(color(RED).'Usage: /count-entities <radius> [<type1> ...]')
+	msg(color(RED).'List total entities by type within a specified radius (maximum 100).')
+	msg(color(RED).'The second and subsequent arguments are entity types, case-insensitive.')
+	die()
+<<<
+
+*:'/count-entities' $radius [$] = >>>
+	_assertperm('admin')
+	if (! is_numeric($radius)) {
+		die(color(RED).'The first argument must be the radius.')
+	}
+	@maxRadius = 200
+	@radius = if ($radius > @maxRadius, @maxRadius, $radius)
+	@types = array()
+	@counts = associative_array()
+	foreach (parse_args($), @type, 
+		@key = to_lower(@type)
+		array_push(@types, @key)
+		@counts[@key] = 0
+	)
+	@entities = entities_in_radius(ploc(), @radius, @types)
+	#msg(array_implode(@entities, ', '))
+	foreach (@entities, @e, 
+		inc(@counts[to_lower(entity_type(@e))])
+	)
+	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
+	foreach (@types, @type,
+		msg(color(GOLD).@type.'		'.@counts[@type])
+	)
+<<<
