@@ -26,6 +26,9 @@
 		@player = player($player)
 		run('/mute '.@player)
 		set_ploc(@player, @jail)
+		if (import('sharedata.source') == 'creative') {
+			set_pmode(@player, SURVIVAL)
+		}
 		tmsg(@player, color(AQUA).'You have been jailed. Please wait for a staff member to contact you.')
 
 		@mods = _get_mods()
@@ -53,6 +56,9 @@
 		@player = player($player)
 		run('/unmute '.@player)
 		set_ploc(@player, get_spawn('world'))
+		if (import('sharedata.source') == 'creative') {
+			set_pmode(@player, CREATIVE)
+		}
 		tmsg(@player, color(AQUA).'You have been released. Play nice!')
 
 		@mods = _get_mods()
