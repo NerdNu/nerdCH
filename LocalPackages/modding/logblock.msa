@@ -1,12 +1,12 @@
 #trace
 *:'/trace-r' $player $r = >>>
     run(concat('/lookup ', $player))
-    run(concat('/lb player ', $player, ' area ', $r, ' sum blocks since 14 days'))
+    run(concat('/lb player ', $player, ' area ', $r, ' sum blocks since 21 days'))
 <<<
 *:/trace $player = >>>
     _assertperm('mod', 0)
     run(concat('/lookup ', $player))
-    run(concat('/lb player ', $player, ' area 10000 sum blocks since 14 days'))
+    run(concat('/lb player ', $player, ' area 10000 sum blocks since 21 days'))
 <<<
 
 #rollback
