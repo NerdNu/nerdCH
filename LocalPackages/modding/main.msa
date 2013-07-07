@@ -100,9 +100,10 @@ mods:/spawnp $player = runas($player, /spawn)
 	}
 	if(import('fakeop.'.@player)){
 		unbind(import('fakeop.'.@player))
+		msg(color(GOLD).@player.' is no longer fake op\'d')
 	} else {
 		tmsg(@player, concat(color('yellow'), 'You are now op!'))
-		msg(@player.' is now fake op\'d')
+		msg(color(GOLD).@player.' is now fake op\'d')
 		@bound = bind(player_command, null, array(player: @player), @event,
 			cancel()
 			@random = array(
