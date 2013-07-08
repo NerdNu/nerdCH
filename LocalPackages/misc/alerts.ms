@@ -1,3 +1,15 @@
+# _get_alerts()
+#	Return a non-null array of strings containing the alert messages.
+
+proc(_get_alerts,
+        @alerts = get_value('server.alerts.messages')
+        return (if (is_null(@alerts), array(), @alerts))
+)
+
+
+# _start_alerts()
+#	Start the timer callback that broadcasts alerts.
+
 proc(_start_alerts,
 	@seconds = get_value('server.alerts.seconds')
 	if (is_null(@seconds)) {
@@ -6,8 +18,8 @@ proc(_start_alerts,
 	}
 
 	@task = set_interval(@seconds * 1000, closure(
-		@alerts = get_value('server.alerts.messages')
-		if (is_null(@alerts) || array_size(@alerts) == 0) {
+		@alerts = _get_alerts()
+		if (array_size(@alerts) == 0) {
 			# No messages to broadcast.
 			die()
 		}

@@ -21,11 +21,7 @@
 #	List all of the alerts. Anyone can run this.
 
 *:/alert list = >>>
-	@alerts = get_value('server.alerts.messages')
-	if (is_null(@alerts)) {
-		@alerts = array()
-	}
-
+	@alerts = _get_alerts()
 	msg(color(LIGHT_PURPLE).'There are '.array_size(@alerts).' alerts.')
 	@index = 1
 	foreach (@alerts, @a,
@@ -40,10 +36,7 @@
 
 *:/alert add $ = >>>
 	_assertperm('admin')
-	@alerts = get_value('server.alerts.messages')
-	if (is_null(@alerts)) {
-		@alerts = array()
-	}
+	@alerts = _get_alerts()
 	array_push(@alerts, $)
 	store_value('server.alerts.messages', @alerts)
 	msg(color(LIGHT_PURPLE).'Alert #'.array_size(@alerts).' added.')
@@ -56,10 +49,7 @@
 
 *:/alert remove $number = >>>
 	_assertperm('admin')
-	@alerts = get_value('server.alerts.messages')
-	if (is_null(@alerts)) {
-		@alerts = array()
-	}
+	@alerts = _get_alerts()
 	@number = $number
 	if (!is_integral(@number) || @number < 1 || @number > array_size(@alerts)) {
 		if (array_size(@alerts) == 0) {		
@@ -117,10 +107,7 @@
 
 *:/alert load $file = >>>
 	_assertperm('admin')
-	@alerts = get_value('server.alerts.messages')
-	if (is_null(@alerts)) {
-		@alerts = array()
-	}
+	@alerts = _get_alerts()
 	try(
 		@lines = split('\n', read($file))
 		@count = 0
