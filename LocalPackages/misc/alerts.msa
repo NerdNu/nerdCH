@@ -5,10 +5,10 @@
 
 *:/alert = >>>
 	msg(color(LIGHT_PURPLE).'Usage:')
-	msg(color(LIGHT_PURPLE).'    /alert add <message>')
-	msg(color(WHITE)       .'        Add the message to the broadcast rotation.')
 	msg(color(LIGHT_PURPLE).'    /alert list')
 	msg(color(WHITE)       .'        List all broadcast messages.')
+	msg(color(LIGHT_PURPLE).'    /alert add <message>')
+	msg(color(WHITE)       .'        Add the message to the broadcast rotation.')
 	msg(color(LIGHT_PURPLE).'    /alert remove <number>')
 	msg(color(WHITE)       .'        Remove a message by number.')
 	msg(color(LIGHT_PURPLE).'    /alert interval [<seconds>]')
@@ -108,8 +108,20 @@
 *:/alert load $file = >>>
 	_assertperm('admin')
 	@alerts = _get_alerts()
+
+	# Guard against file disclosure. Disallow '/' in filenames. Require '.alerts' suffix.
+	@file = $file
+	if (string_position(@file, '/') != -1) {
+		die(color(RED).'The file must be in the same directory as this script.')
+	}
+	@suffix = '.alerts'
+	if (string_position(@file, @suffix) + length(@suffix) != length(@file)) {
+		die(color(RED),'The file name must end in ".alerts".')
+	}
+
+	# Read file. Add lines that aren't blank.
 	try(
-		@lines = split('\n', read($file))
+		@lines = split('\n', read(@file))
 		@count = 0
 		foreach(@lines, @message,
 			@message = trim(@message)
