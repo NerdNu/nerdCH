@@ -1,6 +1,6 @@
-*:/plugins = call_alias(/pl)
+*:/plugins [$] = call_alias(/pl)
 
-*:/pl = >>>
+*:/pl [$] = >>>
 	if (player() == '~console' || !array_contains(pgroup(), 'default')) {
 		run('/pl')
 	} else {
@@ -21,7 +21,7 @@
 	}
 <<<
 
-*:/version = >>>
+*:/version [$] = >>>
     if(not(equals(player(), '~console')),
         foreach(_get_mods(), @mod,
             tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))    
