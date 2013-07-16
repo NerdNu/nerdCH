@@ -210,17 +210,20 @@ mods:/spawnp $player = runas($player, /spawn)
 	@types = array()
 	@counts = associative_array()
 	foreach (parse_args($), @type, 
-		@key = to_lower(@type)
-		array_push(@types, @key)
-		@counts[@key] = 0
+		array_push(@types, to_lower(@type))
 	)
 	@entities = entities_in_radius(ploc(), @radius, @types)
 	#msg(array_implode(@entities, ', '))
 	foreach (@entities, @e, 
-		inc(@counts[to_lower(entity_type(@e))])
+		@key = to_lower(entity_type(@e))
+		if (array_index_exists(@counts, @key)) {
+			inc(@counts[@key])
+		} else {
+			@counts[@key] = 1
+		}
 	)
 	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
-	foreach (@types, @type,
-		msg(color(GOLD).sprintf('%-10d %s',@counts[@type],@type))
+	foreach (array_keys(@counts), @type,
+		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
 	)
 <<<
