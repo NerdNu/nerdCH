@@ -22,16 +22,33 @@
     assign(@o, concat('Available warps:', color(gray)))
     
     if(equals($, ''),
-        foreach(array_keys(get_values('warps')), @name,
-            assign(@o, concat(@o, ' ', substr(@name, 6))))
+	assign(@count, 0)
+	#The get_value(@name) == null thing here and down there are workarounds for a bug in CH
+	foreach(array_keys(get_values('warps')), @name,
+		if(get_value(@name) == null){
+			continue()
+		}
+		assign(@color, 'white')
+		if(@count % 2 == 0){
+			assign(@color, gray)
+		}
+		@count++
+		assign(@o, @o . ' ' . color(@color) . substr(@name, 6))
+	)
         msg(@o),
     #else:
         assign(@found, 0)
         foreach(array_keys(get_values('warps')), @name,
-            if(equals_ic($, substr(@name, 6)),
-                assign(@found, 1)
-                set_ploc(get_value(@name))))
-        if(equals_ic(@found, 0),
+		if(equals_ic($, substr(@name, 6)),
+			assign(@warp, get_value(@name))
+			if(@warp == null){
+				continue()
+			}
+			assign(@found, 1)
+			set_ploc(@warp)
+		)
+	)
+        if(equals(@found, 0),
             msg(concat(color(red), 'Warp not found!'))
             call_alias('/warp')))
 <<<
@@ -47,7 +64,7 @@
                 if(equals_ic($, substr(@name, 6)),
                     assign(@found, 1)
                     set_ploc($player, get_value(@name))
-                    msg('Teleported' $player 'to' substr(@name, 6))
+                    msg('Teleported' $player 'to' @name)
                 )
             )
             if(equals_ic(@found, 0),
