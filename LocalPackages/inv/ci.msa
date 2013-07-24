@@ -1,6 +1,7 @@
 *:/ci [$] = >>>
     _assertperm('restricted', 1)
     assign(@player, if(equals($, ''), player(), _getonlinename($)))
+    if(is_null(@player), die('Player not found'))
     assign(@a, array())
     foreach(range(36), @i,
         array_set(@a, string(@i), null))
