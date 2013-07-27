@@ -16,13 +16,16 @@
 		_assertperm('restricted', 1)
 	}
 	@a = _parseiargs($)
-	@recipient = $player
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /give <player> <itemid>[:metadata] [quantity]')
 	} else {
 		try(
+			@recipient = player($player)
 			pgive_item(@recipient, @a[0].':'.@a[1], @a[2])
-			msg(color(GRAY).'Giving '.@a[2].' of '.data_name(@a[0]).' to '.$player)
+			if (@recipient != player()) {
+				tmsg(@recipient,player().' gave you '.@a[2].' '.data_name(@a[0]))
+			}
+			msg(color(GRAY).'Giving '.@a[2].' of '.data_name(@a[0]).' to '.@recipient)
 		@e,
 			msg(color(RED).'Player not found!')
 		)
