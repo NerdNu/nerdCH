@@ -98,8 +98,8 @@ proc(_update_player_mail, @player, @mail,
 # Proc for removing a player from the multiline-mail-composing list
 proc(_resolve_mail_list_removal, assign(@player, player()),
     
-    import(@mail_messages)
-    import(@recipients)
+    @mail_messages = import('mail.mail_messages')
+    @recipients = import('mail.recipients')
 
     # Is there actually anybody composing mail?
     # (Again, checks for an empty array ##wait until it works!##)
@@ -115,8 +115,8 @@ proc(_resolve_mail_list_removal, assign(@player, player()),
             # and unbind the two mail chat events.
             assign(@mail_messages, '')
             assign(@recipients, '')
-            export(@mail_messages)
-            export(@recipients)
+            export('mail.mail_messages', @mail_messages)
+            export('mail.recipients', @recipients)
             unbind('mail-hold-back-chat')
             unbind('mail-compose')
         
@@ -124,8 +124,8 @@ proc(_resolve_mail_list_removal, assign(@player, player()),
             # Otherwise, simply remove them from the lists.
             array_remove(@mail_messages, to_lower(@player))
             array_remove(@recipients, to_lower(@player))
-            export(@mail_messages)
-            export(@recipients)
+            export('mail.mail_messages', @mail_messages)
+            export('mail.recipients', @recipients)
         )
     )
 )
@@ -236,7 +236,7 @@ proc(_item_name_to_value, @i,
 )
 
 proc(_mail_debug, @msg,
-    import(@_mail_debug)
+    @_mail_debug = import('mail._mail_debug')
     
     if(equals(@_mail_debug, true),
         console(@msg)

@@ -45,15 +45,15 @@ include('senditem.ms')
 
 # Proc that will initialize multiline mail composition
 proc(_init_mail_chat, @recipient,
-    import(@mail_messages)
-    import(@recipients)
+    @mail_messages = import('mail.mail_messages')
+    @recipients = import('mail.recipients')
     
     # Add the user to the list of people composing mail, and add their message's recipient.
     assign(@mail_messages[to_lower(player())], null)
-    export(@mail_messages)
+    export('mail.mail_messages', @mail_messages)
     
     assign(@recipients[to_lower(player())], @recipient)
-    export(@recipients)
+    export('mail.recipients', @recipients)
     
     # Are there already people composing mail?
     # (check for an empty array too, just in case something derped ##wait until we make sure it actually works!##)
@@ -63,7 +63,7 @@ proc(_init_mail_chat, @recipient,
         # Event for accumulating chat messages to be sent back to the user upon completion of their mail message
         bind(player_chat, 'mail-hold-back-chat', null, @event,
         
-            import(@mail_messages)
+            @mail_messages = import('mail.mail_messages')
             
             # Is the user composing mail?
             if(array_index_exists(@mail_messages, to_lower(player())),
@@ -82,7 +82,7 @@ proc(_init_mail_chat, @recipient,
                 )
                 
                 # Then, add their chat to each mail-composing player's hold queue.
-                import(@held_back_chat)
+                @held_back_chat = import('mail.held_back_chat')
                 # The pinfo(4) here is to make sure the player's display name is used (instead of just player()) as it appears in the chat.
                 assign(@message, concat('<', pinfo(4), '> ', @event[message]))
                 
@@ -90,7 +90,7 @@ proc(_init_mail_chat, @recipient,
                     assign(@held_back_chat[@player], @message)
                 )
                 
-                export(@held_back_chat)
+                export('mail.held_back_chat', @held_back_chat)
                 
             )
         )
@@ -98,8 +98,8 @@ proc(_init_mail_chat, @recipient,
         # Event for composing multi-line mail messages
         bind(player_chat, 'mail-compose', null, @event,
         
-            import(@mail_messages)
-            import(@recipients)
+            @mail_messages = import('mail.mail_messages')
+            @recipients = import('mail.recipients')
             
             # Is the player actually composing mail?
             if(not(array_contains_ic(array_keys(@mail_messages), to_lower(player()))),
@@ -142,7 +142,7 @@ proc(_init_mail_chat, @recipient,
                             assign(@mail_messages[to_lower(player())], concat(@mail_messages[to_lower(player())], '\n', @event[message]))
                         )
                         
-                        export(@mail_messages)
+                        export('mail.mail_messages', @mail_messages)
                         
                         # Then, we give them back what they typed in the chat, for readability and mental organization.
                         msg(color(7), @event[message])
