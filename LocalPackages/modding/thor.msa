@@ -4,13 +4,13 @@
     if(equals(pinfo($player)[0], 'wraithguard01'),
         lightning(ploc(player())[0..2])
         msg(color('light_purple'), 'You bitch')
-        kill(player())
+        pkill(player())
         die()
     )
     lightning(ploc($player))
     msg(color('light_purple'), 'Thou hast smote the evil player ', pinfo($player,0), ' with thy mighty hand')
     tmsg($player, color('red'), if(equals($, ''), 'You have been smote by Thor\'s Hammer!', $))
-    kill($player)
+    pkill($player)
     call_alias(concat('/mb ', pinfo($player, 0), ' has been smote.'))
 <<<
 
