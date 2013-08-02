@@ -1,15 +1,16 @@
-proc(_assertperm, @name, @cmodetrumps
-    if(not(or(
-        pisop(),
-        equals(@name, '~console'),
-        or(
-            has_permission(concat('nerdch.level.', @name)),
-            and(
-                equals(@cmodetrumps, 1),
-                equals(pmode(), 'CREATIVE'))))),
-     #then:   
-        msg(concat(color(red), 'You do not have permission to do this!'))
-        die()))
+proc(_assertperm, @name, @cmodetrumps,
+    if(player() == '~console', return())
+    
+    if(pisop(), return())
+    
+    if(has_permission('nerdch.level.' . @name), return())
+    
+    if(@cmodetrumps == 1 && pmode() == 'CREATIVE', return())
+    
+    
+    
+    msg(concat(color(red), 'You do not have permission to do this! [ap]'))
+    die())
         
         
 #Gets the mods and admins on right now
@@ -17,13 +18,17 @@ proc(_get_mods,
         assign(@mods, array())
         assign(@ap, all_players())
         foreach(@ap, @p,
-                if(array_contains(pgroup(@p), 'Moderators'), array_push(@mods, @p))
-                if(array_contains(pgroup(@p), 'ModMode'), array_push(@mods, @p))
+		if(has_permission(@p, 'nerdch.level.mod'),
+			array_push(@mods, @p)
+#			console(sconcat(@p, 'has mod perm'))
+		)
+                #if(array_contains(pgroup(@p), 'Moderators'), array_push(@mods, @p))
+                #if(array_contains(pgroup(@p), 'ModMode'), array_push(@mods, @p))
         )
-        assign(@admins, _get_admins())
-        foreach(@admins, @admin,
-                array_push(@mods, @admin)
-        )
+        #assign(@admins, _get_admins())
+        #foreach(@admins, @admin,
+        #        array_push(@mods, @admin)
+        #)
         return(@mods)
 )
 
@@ -32,13 +37,30 @@ proc(_get_admins,
         assign(@admins, array())
         assign(@ap, all_players())
         foreach(@ap, @p,
-                if(or(
-                        array_contains(pgroup(@p), 'HeadAdmins'),
-                        array_contains(pgroup(@p), 'CAdmins'),
-                        array_contains(pgroup(@p), 'TechAdmins'),
-                        array_contains(pgroup(@p), 'SAdmins'),
-                        array_contains(pgroup(@p), 'PAdmins')
-                ), array_push(@admins, @p))
+                #if(or(
+                #        array_contains(pgroup(@p), 'HeadAdmins'),
+                #        array_contains(pgroup(@p), 'CAdmins'),
+                #        array_contains(pgroup(@p), 'TechAdmins'),
+                #        array_contains(pgroup(@p), 'SAdmins'),
+                #        array_contains(pgroup(@p), 'PAdmins')
+                #), array_push(@admins, @p))
+		if(has_permission(@p, 'nerdch.level.admin'), array_push(@admins, @p))
+        )
+        return(@admins)
+)
+
+proc(_get_chat_admins,
+	assign(@admins, array())
+        assign(@ap, all_players())
+        foreach(@ap, @p,
+                #if(or(
+                #        array_contains(pgroup(@p), 'HeadAdmins'),
+                #        array_contains(pgroup(@p), 'CAdmins'),
+                #        array_contains(pgroup(@p), 'TechAdmins'),
+                #        array_contains(pgroup(@p), 'SAdmins'),
+                #        array_contains(pgroup(@p), 'PAdmins')
+                #), array_push(@admins, @p))
+                if(has_permission(@p, 'nerdch.level.adminchat'), array_push(@admins, @p))
         )
         return(@admins)
 )
@@ -54,15 +76,70 @@ proc(_mbroadcast, @msg,
 )
 
 proc(_getonlinename, @name,
-    if(equals(@name, '~console'), return('console'))
-    assign(@pattern, concat('^', to_lower(strip_colors(@name))))
-    foreach(all_players(), @p,
-        assign(@m, reg_match(@pattern, to_lower(strip_colors(@p))))
-        if(gt(array_size(@m), 0),
-            return(@p)))
-    return(null))
+    if(equals(@name, ''),
+        return(player()),
+    #else:
+        try(
+            assign(@name2, player(@name))
+            return(if(equals(@name, '~console'), 'console', @name2)),
+        @ex,
+            try(
+                return(player(concat(color(10), @name))),
+            @ex,
+                return(null)))))
 
 proc(_contains, @needle, @haystack,
         assign(@repl, replace(to_lower(@haystack), to_lower(@needle), ''))
-        if(equals(to_lower(@haystack), to_lower(@repl)), return(false), return(true))
+        #if(equals(to_lower(@haystack), to_lower(@repl)), return(false), return(true))
+        return(not(equals_ic(@haystack, @repl)))
 )
+proc(_kit, @name, 
+    if(equals(@name, ''),
+        assign(@kits, array())
+        foreach(reg_split('\n', read('kits.txt')), @l,
+            assign(@m, reg_match('^([^:]+)', @l))
+            if(array_index_exists(@m,0),
+                array_push(@kits, @m[1])))
+        msg(concat(color(gray), 'Usage: /kit <name>'))
+        msg(concat(color(gray), 'Available kits: ', array_implode(@kits, ', '))),
+    #else:
+        assign(@found, 0)
+        foreach(reg_split('\n', read('kits.txt')), @l,
+            assign(@m, reg_match(concat('^', @name, ': (.*)$'), @l))
+            if(array_index_exists(@m,0),
+                assign(@found, 1)
+                assign(@l, @m[1])
+                for(assign(@i,0),true,inc(@i),
+                    assign(@m, reg_match('^([0-9]+)x ([0-9]+)[ ,]*(.*)$', @l))
+                    if(array_index_exists(@m,0),
+                        pgive_item(@m[2], @m[1])
+                        assign(@l, @m[3]),
+                    #else:
+                        break()))))
+        if(equals(@found, 0),
+            msg(concat(color(red), 'Kit not found!')))))
+
+#This set of commands, /msg, /r, and /cmsg replaces the built in message system
+#and allows for colored messages, so they are more prominent
+
+proc(_message, @highlight, @to, @text,
+        assign(@from2, player())
+        assign(@to2,   _getonlinename(@to))
+        if(is_null(@to2),
+            msg(concat(color(red), 'Error: that player is not online!'))
+            return())
+        #if(equals(@to2, @from2),
+        #    msg(concat(color(red), 'foreveralone.png'))
+        #    return())
+        assign(@text2, concat(if(equals(@highlight, 1),
+            color(green),
+            color(white)), @text))
+
+        msg(       concat(color(gray), '[me -> ', strip_colors(@to2),   '] ', @text2))
+        tmsg(@to2, concat(color(gray), '[', strip_colors(@from2), ' -> me] ', @text2))
+
+        console(concat('[msg: ', @from2, ' -> ', @to2, '] ', @text))
+        export(concat('last_message_', to_lower(strip_colors(@to2))), to_lower(strip_colors(@from2)))
+        export(concat('last_message_', to_lower(strip_colors(@from2))), to_lower(strip_colors(@to2)))
+)
+

@@ -10,10 +10,10 @@ proc(_spawn_horse, @loc, @variant, @color, @pattern,
 	@HORSE_COLORS = array(black, brown, chestnut, creamy, dark_brown, gray, white)
 	@HORSE_PATTERNS = array(none, socks, whitefield, white_dots, black_dots)
 
-	@variant = to_lower(@variant)
-	@color = to_lower(@color)
-	@pattern = to_lower(@pattern)
-	
+	@variant = if (is_null(@variant), '', to_lower(@variant))
+	@color = if (is_null(@color), '', to_lower(@color))
+	@pattern = if (is_null(@pattern), '', to_lower(@pattern))
+
 	if (@color != '' && ! array_contains(@HORSE_COLORS, @color)) {
 		die(color(RED).@color.' is not a valid horse color.')	
 	}
@@ -21,13 +21,13 @@ proc(_spawn_horse, @loc, @variant, @color, @pattern,
 		die(color(RED).@pattern.' is not a valid horse pattern.')	
 	}
 	
-	if (is_null(@variant) || @variant == '') {
+	if (@variant == '') {
 		@variant = if (rand(8) == 0, 'donkey', 'horse')
 	}
-	if (is_null(@color) || @color == '') {
+	if (@color == '') {
 		@color = @HORSE_COLORS[rand(array_size(@HORSE_COLORS))]
 	}
-	if (is_null(@pattern) || @pattern == '') {
+	if (@pattern == '') {
 		@pattern = @HORSE_PATTERNS[rand(array_size(@HORSE_PATTERNS))]
 	}
 	
