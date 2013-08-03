@@ -2,14 +2,15 @@
 *:/check [$id] = >>>
 	@id = $id
 	if (has_permission('modtrs.command.check')) {
+		@key = concat(strip_colors(player()),'modreq')
 		if (@id == '-') {
-			@id = get_value(strip_colors(player()).'modreq')
+			@id = get_value(@key)
 			run(/check @id)
 		} else if($id == '') {
 			run(/check)
 		} else {
-			store_value(concat(strip_colors(player()), 'modreq'), @id)
 			run(/check @id)
+			store_value(@key, @id)
 		}
 	} else {
 		run(/check)
