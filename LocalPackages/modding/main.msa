@@ -47,18 +47,6 @@ mods:/spawnp $player = runas($player, /spawn)
     )
 <<<
 
-# Don't let /vanish toggle the vanish state.
-
-*:/vanish [$] = >>>
-	_assertperm('restricted')
-	if ($ == 'check' || $ == 'on' || $ == 'off') {
-		run('/vanish '.$)
-	} else {
-		run('/vanish on')
-		run('/vanish check')
-	}
-<<<
-
 *:/supavanish [$mob='chicken'] = >>>
 	_assertperm('admin', 0)
 	assign(@pcursor, pcursor(player()))
