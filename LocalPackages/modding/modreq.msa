@@ -1,17 +1,20 @@
 #Shortcuts for modtrs
 *:/check [$id] = >>>
-    #_assertperm('mod', 0)
-	if(has_permission('modtrs.command.check'),
-		if(equals($id, '-'),
-		    run(/check get_value(concat(strip_colors(player()), 'modreq'))),
-		#else:
-		    if(equals($id, ''),
-		        run(/check),
-		    #else:
-                store_value(concat(strip_colors(player()), 'modreq'), $id)
-			    run(/check $id))),
-    #else:
-        run(/check))
+	@id = $id
+	if (has_permission('modtrs.command.check')) {
+		@key = concat(strip_colors(player()),'modreq')
+		if (@id == '-') {
+			@id = get_value(@key)
+			run(/check @id)
+		} else if($id == '') {
+			run(/check)
+		} else {
+			run(/check @id)
+			store_value(@key, @id)
+		}
+	} else {
+		run(/check)
+	}
 <<<
 
 *:/claim [$id] = >>>
