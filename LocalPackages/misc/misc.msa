@@ -11,7 +11,7 @@
 
 /kickall $ = >>>
     foreach(all_players(), @p, g(
-		kick(@p, $)
+		pkick(@p, $)
 	))
 <<<
 
@@ -146,7 +146,7 @@ mods:/kick $player [$] = >>>
 	# We can add people who shouldn't be kickable here.
 	assign(@unkickable, array('LadyCailin'))
 	if(array_contains(@unkickable, player($player))){
-		kick(player(), 'NOPE, BITCH')
+		pkick(player(), 'NOPE, BITCH')
 	} else {
 		run('/kick' $player $)
 	}

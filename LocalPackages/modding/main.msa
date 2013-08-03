@@ -59,7 +59,7 @@ mods:/spawnp $player = runas($player, /spawn)
     _assertperm('admin', 0)
     assign(@pl, ploc($player))
     run('/clearinventory' $player)
-    kill($player)
+    pkill($player)
     lightning(array(array_get(@pl, 0), subtract(array_get(@pl, 1), 10), array_get(@pl, 2)))
     spawn_mob($mob, 1, @pl)
 <<<
