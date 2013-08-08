@@ -125,3 +125,76 @@
 	)
 <<<
 
+
+# /find-pets $radius [$types='cat,dog,horse'] [$owner=''] [$name='']
+#	Find pets within the specified radius, of the specified types (comma-separated) owned 
+#	by the specified owner (default: anyone), with the specified name (default: any name).
+
+*:'/find-pets' = >>>
+	_assertperm('admin')
+	msg(color(GOLD).'Usage: /find-pets <radius> [<types>=dog,cat,horse] [<owner>=\'\'] [<name>=\'\']')
+	msg(color(GOLD).'	Find pets owned by the specified owner, with the specified name, within the specified radius.')
+	msg(color(GOLD).'	Multiple types can be specified by joining them with commas.')
+	msg(color(GOLD).'	If omitted, the owner and name are unconstrained.')
+	msg(color(GOLD).'Example:')
+	msg(color(GOLD).'	/find-pets 50 dog,cat,horse totemo Fluffy')
+<<<
+
+*:'/find-pets' $radius [$types='cat,dog,horse'] [$owner=''] [$name=''] = >>>
+	_assertperm('admin')
+	@MAX_RADIUS = 200
+	@radius = $radius
+	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
+		die(color(RED).'The first argument must be a number no more than '.@MAX_RADIUS.'.')
+	}
+	@types = split(',',replace(replace(to_lower($types),'dog','wolf'),'cat','ocelot'))
+	
+	try (
+		@mobs = entities_in_radius(ploc(), @radius, @types)
+		@MAX_COUNT = 100
+		if (array_size(@mobs) > @MAX_COUNT) {
+			die(color(RED).'There were more than '.@MAX_COUNT.' matches. Try restricting the search criteria.')
+		}
+		
+		@message = ''
+		@count = 0
+		foreach (@mobs, @mob,
+			if (is_tameable(@mob)) {
+				@mobOwner = get_mob_owner(@mob)
+				if (is_null(@mobOwner)) {
+					@mobOwner = ''
+				}
+				@mobName = get_mob_name(@mob)
+				if (is_null(@mobName)) {
+					@mobName = ''
+				}
+			} else {
+				@mobOwner = ''
+				@mobName = ''
+			}
+			
+			@mobName  = if (is_tameable(@mob), get_mob_name(@mob), '')
+			if (($owner == '' || equals_ic(@mobOwner, $owner)) && ($name  == '' || equals_ic(@mobName, $name))) {
+				inc(@count)
+			    @formattedNum = color(YELLOW) . '('.@count.') ' 
+			    @formattedOwner = color(WHITE) . if (@mobOwner != '', @mobOwner . '\'s ', '')
+			    @formattedType = color(YELLOW) . to_lower(entity_type(@mob)) . ' '
+			    @formattedName = color(GRAY) . '"' . @mobName . '" '
+				@loc = entity_loc(@mob)
+				@formattedCoords = color(GOLD) . '(' . round(@loc[0]) . ',' . round(@loc[1]) . ',' . round(@loc[2]) . ') '
+				@message = @message . @formattedNum . @formattedOwner . @formattedType . @formattedName . @formattedCoords 
+			}
+		)
+		
+		if (@count == 0) {
+			die(color(GOLD).'There were no matching mobs.')
+		} else {
+			die(color(GOLD).'Matching mobs ['.@count.']: '.@message)
+		}
+	#catch:
+	, @ex,  
+		msg(color(RED).'Something went wrong. Is the entity type name correct?')
+		die(color(RED).'')
+	)
+<<<
+

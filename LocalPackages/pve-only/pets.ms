@@ -13,7 +13,7 @@ proc(_spawn_horse, @loc, @variant, @color, @pattern,
 	@variant = if (is_null(@variant), '', to_lower(@variant))
 	@color = if (is_null(@color), '', to_lower(@color))
 	@pattern = if (is_null(@pattern), '', to_lower(@pattern))
-
+	
 	if (@color != '' && ! array_contains(@HORSE_COLORS, @color)) {
 		die(color(RED).@color.' is not a valid horse color.')	
 	}
