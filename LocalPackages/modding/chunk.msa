@@ -17,7 +17,7 @@
 *:'/visit-chunks' next $index = >>>
 	_assertperm('restricted')
 	try(
-		@next = integer(abs($index))
+		@next = integer(max(1, $index))
 		store_value('visitchunks.index.'.player(), @next - 1)
 		msg(color(GOLD).'The next visited position will be index '.@next.'.')
 	,
