@@ -10,7 +10,13 @@
 			run(/check)
 		} else {
 			run(/check @id)
-			store_value(@key, @id)
+			try(
+				#This can apparently happen sometimes.
+				#We can just supress the error, it
+				#won't cause any harm, but it won't
+				#work for this particular player.
+				store_value(@key, @id)
+			)
 		}
 	} else {
 		run(/check)
