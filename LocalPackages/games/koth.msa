@@ -25,7 +25,7 @@
 #
 # Set the location of the KOTH flag block.  Place a block at the desired
 # location, look at it and run this command.  Only coloured wool blocks
-# count towards the score. Use /koth team to associate a colour with a team.
+# count towards the score. 
 
 *:/koth block = >>>
 	_assertperm('admin')
