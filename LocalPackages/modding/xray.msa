@@ -31,9 +31,10 @@
 *:/'xray-rb' $player = >>>
 	_assertperm('mod', 0)
 	call_alias('/lbrb '.$player)
+	@days = _lb_retention_days()
 	@delay = 45
 	set_timeout(@delay * 1000, closure(
-		run('/lb redo destroyed block 14 15 16 21 56 73 74 129 player '.$player.' since 21 days')
+		run('/lb redo destroyed block 14 15 16 21 56 73 74 129 player '.$player.' since '.@days.' days')
 	))
 	set_timeout(2 * 1000, closure(
 		msg(color(GOLD).'Ore destructions by '.$player.' will be redone in '.@delay.' seconds.')
