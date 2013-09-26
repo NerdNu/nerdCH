@@ -4,6 +4,8 @@
 
 mods:/spawnp $player = runas($player, /spawn)
 
+*:/whatever = msg(pinfo(player(), 12))
+
 *:/heal = >>>
     _assertperm('restricted', 0)
     set_pfood(20)
@@ -39,19 +41,20 @@ mods:/spawnp $player = runas($player, /spawn)
 
 *:/rain $onoff = >>>
     _assertperm('admin', 0)
-    if(equals($onoff, 'on'),
+    if(equals($onoff, 'on')){
         storm(true)
-        msg(concat(color(red), 'Turned rain on')),
+        msg(concat(color(red), 'Turned rain on'))
+    } else {
         storm(false)
         msg(concat(color(red), 'Turned rain off'))
-    )
+    }
 <<<
 
 *:/supavanish [$mob='chicken'] = >>>
 	_assertperm('admin', 0)
 	assign(@pcursor, pcursor(player()))
 	lightning(array(array_get(@pcursor, 0), 0, array_get(@pcursor, 2)))
-	run('/vanish on')
+	run('/vanish')
 	spawn_mob($mob)
 <<<
 
