@@ -28,6 +28,6 @@
         )
         console(concat(@player, ' checked the server version'))
     ,
-        run(/version)
+        run(/version $)
     )
 <<<
