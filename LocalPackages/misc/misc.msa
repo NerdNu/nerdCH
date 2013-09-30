@@ -10,8 +10,8 @@
 <<<
 
 /kickall $ = >>>
-    foreach(all_players(), @p, g(
-		kick(@p, $)
+	foreach(all_players(), @p, g(
+		pkick(@p, $)
 	))
 <<<
 
@@ -54,7 +54,12 @@
 *:/ping = msg(concat(color(gray), 'Pong!'))
 
 *:/modlist = >>>
-        assign(@mods, _get_mods())
+	assign(@mods, array())
+        foreach(all_players(), @p,
+		if (is_null(get_value('list.hide.'.@p)) && has_permission(@p, 'nerdch.level.mod')) {
+			array_push(@mods, @p)
+		}
+	)
         msg(concat(color(dark_aqua), 'Online Mods: ', color(white), array_implode(@mods, ', ')))
 <<<
 
@@ -69,28 +74,42 @@
 <<<
 
 
+*:'/list-hide' $player = >>>
+	_assertperm('admin')
+	store_value('list.hide.'.to_lower($player), set)
+	msg(color(GOLD).$player.' will be hidden from the player list. Remember to vanish.')
+<<<
+
+*:'/list-show' $player = >>>
+	_assertperm('admin')
+	clear_value('list.hide.'.to_lower($player))
+	msg(color(GOLD).$player.' will be shown in the player list.')
+<<<
+
 *:/list = >>>
-    assign(@all, array())
-    assign(@players, all_players())
-    array_sort(@players)
-    foreach(@players, @p,
-        assign(@group, pgroup(@p))
-        assign(@group, if(array_index_exists(@group, 0), @group[0], 'default'))
-        if(not(array_index_exists(@all, @group)), array_set(@all, @group, array()))
-        array_push(@all[@group], @p)
-    )
-    foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'moderators', 'modmode'), @key,
-        if(array_index_exists(@all, @key)){
-            assign(@coloredArray, array())
-            assign(@count, 0)
-            foreach(@all[@key], @p,
-		@count++
-            	array_push(@coloredArray, if(@count % 2 == 0, color(gray), color(white)) . @p)
-            )
-            msg(color(gold) . @key . ': ' . array_implode(@coloredArray, ' '))
-	}
-    )
-    msg(concat(color(gray), 'Total: ', color(white), array_size(@players), ' players'))
+	assign(@all, array())
+	assign(@players, all_players())
+	array_sort(@players)
+	foreach(@players, @p,
+		if (is_null(get_value('list.hide.'.@p))) {
+			assign(@group, pgroup(@p))
+			assign(@group, if(array_index_exists(@group, 0), @group[0], 'default'))
+			if(not(array_index_exists(@all, @group)), array_set(@all, @group, array()))
+			array_push(@all[@group], @p)
+		}
+	)
+	foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'moderators', 'modmode'), @key,
+		if(array_index_exists(@all, @key)){
+			assign(@coloredArray, array())
+			assign(@count, 0)
+			foreach(@all[@key], @p,
+				@count++
+				array_push(@coloredArray, if(@count % 2 == 0, color(gray), color(white)) . @p)
+			)
+			msg(color(gold) . @key . ': ' . array_implode(@coloredArray, ' '))
+		}
+	)
+	msg(concat(color(gray), 'Total: ', color(white), array_size(@players), ' players'))
 <<<
 
 
@@ -146,7 +165,7 @@ mods:/kick $player [$] = >>>
 	# We can add people who shouldn't be kickable here.
 	assign(@unkickable, array('LadyCailin'))
 	if(array_contains(@unkickable, player($player))){
-		kick(player(), 'NOPE, BITCH')
+		pkick(player(), 'NOPE, BITCH')
 	} else {
 		run('/kick' $player $)
 	}
@@ -157,26 +176,12 @@ mods:/kick $player [$] = >>>
 <<<
 
 *:/signtext [$line] [$] = >>>
-	_assertperm('admin')
+	_assertperm('mod')
 	if($line == ''){
 		msg(color(red).'Usage: /signtext $line $text')
 		msg('Supported color codes:')
-		msg(colorize('&0&&0'))
-		msg(colorize('&1&&1'))
-		msg(colorize('&2&&2'))
-		msg(colorize('&3&&3'))
-		msg(colorize('&4&&4'))
-		msg(colorize('&5&&5'))
-		msg(colorize('&6&&6'))
-		msg(colorize('&7&&7'))
-		msg(colorize('&8&&8'))
-		msg(colorize('&9&&9'))
-		msg(colorize('&a&&a'))
-		msg(colorize('&b&&b'))
-		msg(colorize('&c&&c'))
-		msg(colorize('&d&&d'))
-		msg(colorize('&e&&e'))
-		msg(colorize('&f&&f'))
+		msg(colorize('&0&&0 &1&&1 &2&&2 &3&&3 &4&&4 &5&&5 &6&&6 &7&&7'))
+		msg(colorize('&8&&8 &9&&9 &a&&a &b&&b &c&&c &d&&d &e&&e &f&&f'))
 		msg('Typing && twice gives a single, literal &')
 		die()
 	}
@@ -263,14 +268,24 @@ mods:/kick $player [$] = >>>
 	enchant_inv_unsafe(null, 'LOOT_BONUS_BLOCKS', 1)
 <<<
 
-*:/nextrestart = >>>
-        assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
-        assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
-        if (@remainingSecs < 120) {
-                msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
-        } else {
-                assign(@remainingMins, round(expr(@remainingSecs / 60)))
-                msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
-        }
-<<<
+#*:/nextrestart = >>>
+#        assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
+#        assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
+#        if (@remainingSecs < 120) {
+#                msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
+#        } else {
+#                assign(@remainingMins, round(expr(@remainingSecs / 60)))
+#                msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
+#        }
+#<<<
 
+/whoami [$] = msg(player())
+
+# Used from console only.
+
+*:/performance = >>>
+	_assertperm('admin')
+	run_cmd(/tps)
+	run_cmd(/lag)
+	console('Online: '.array_size(all_players()))
+<<<
