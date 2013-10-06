@@ -20,9 +20,6 @@
 		)
 		@places = @temp
 		array_sort(@places, STRING_IC)
-		if(player() == 'LadyCailin'){
-			@places = array_rand(@places, array_size(@places), false)
-		}
 		foreach(@places, @place,
 			@color = GRAY
 			if(@count % 2 == 1){
@@ -32,6 +29,8 @@
 			array_push(@names, color(@color).@place)
 		)
 		msg('Places: '.array_implode(@names, ', '))
+		msg(color(LIGHT_PURPLE).'Run '.color(GRAY).'/place <place name>'color(LIGHT_PURPLE).' to get pointed at that place, or '
+			.color(GRAY).'/nearest-place'.color(LIGHT_PURPLE).' to get pointed at the nearest place')
 	} else {
 		foreach(@places, @place,
 			if(equals_ic(@place['name'], $)){

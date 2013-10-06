@@ -1,10 +1,11 @@
 bPermissions
 buttonlistener
-buttonLog
 CommandBlock
 CommandHelper
+Enchantism
 FishChecker
 IgnoreYou
+KitchenSink
 LogBlock
 LolNo
 LWC
@@ -17,9 +18,14 @@ NoCheatPlus
 NoLog
 PlumpXP
 ProperTime
+PvPTimer
+Rebalance
 SafeBuckets
 StrikeDeath
+TagAPI
 TPControl
+VanishNoPacket
+Villagers
 WorldBorder
 WorldEdit
 WorldGuard

@@ -77,10 +77,14 @@
 	} else if (array_size(@pets) == 1) {
 		@owner = get_mob_owner(@pets[0])
 		@bed = pbed_location(@owner)
-		set_ploc(@bed)
-		set_entity_loc(@pets[0], @bed)
-		set_timeout(3000, closure(set_entity_loc(@pets[0], @bed)))
-		die(color(GOLD).'Sending '.@owner.'\'s '.to_lower(entity_type(@pets[0])).' to '.@bed.'.')
+		if (is_null(@bed)) {
+			die(color(RED).'The owner of that '.to_lower(entity_type(@pets[0])).', '.@owner.', has no bed spawn set.')
+		} else {
+			set_ploc(@bed)
+			set_entity_loc(@pets[0], @bed)
+			set_timeout(3000, closure(set_entity_loc(@pets[0], @bed)))
+			die(color(GOLD).'Sending '.@owner.'\'s '.to_lower(entity_type(@pets[0])).' to '.@bed.'.')
+		}
 	} else {
 		msg(color(RED).'There are multiple pets at that location.')
 		call_alias('/petowner')
