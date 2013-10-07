@@ -1,5 +1,7 @@
 *:/sethome [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
     assign(@modes, array('public','private','unlisted'))
     assign(@m, reg_split(' ', $))
     assign(@p, strip_colors(player()))
@@ -29,7 +31,9 @@
 <<<
 
 *:/delhome [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
     if(equals($, ''),
         msg(concat(color(red), 'Usage: /delhome <name>'))
         call_alias(/listhomes),
@@ -46,7 +50,10 @@
 <<<
 
 *:/home [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+
     assign(@m, reg_split(' ', $))
     if(equals(array_size(@m), 2),
         assign(@player, @m[0])
@@ -77,7 +84,10 @@
 <<<
 
 *:/listhomes [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+
     assign(@player,
         if(equals($, ''),
             strip_colors(player()),
