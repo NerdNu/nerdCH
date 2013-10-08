@@ -156,13 +156,16 @@
 	try (
 		@mobs = entities_in_radius(ploc(), @radius, @types)
 		@MAX_COUNT = 100
-		if (array_size(@mobs) > @MAX_COUNT) {
-			die(color(RED).'There were more than '.@MAX_COUNT.' matches. Try restricting the search criteria.')
+		@limit = array_size(@mobs)
+		if (@limit > @MAX_COUNT) {
+			@limit = @MAX_COUNT
+			msg(color(RED).'There were more than '.@MAX_COUNT.' matches. Only the first '.@MAX_COUNT.' will be shown.')
 		}
 		
 		@message = ''
 		@count = 0
-		foreach (@mobs, @mob,
+		for (@i = 0, @i < @limit, inc(@i),		
+			@mob = @mobs[@i]
 			if (is_tameable(@mob)) {
 				@mobOwner = get_mob_owner(@mob)
 				if (is_null(@mobOwner)) {
