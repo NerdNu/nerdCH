@@ -1,6 +1,7 @@
-*:/dis [$type=bigger|massive|godzilla|wither|enderdragon|giant] [$] = >>>
+*:/dis bigger|massive|godzilla|wither|enderdragon|giant $ = >>>
 	msg(color(RED).'That mob type is disabled due to client lag.')
 <<<
 
-*:/disguise [$] = call_alias('/dis '.$)
-
+*:/disguise bigger|massive|godzilla|wither|enderdragon|giant $ = >>>
+	msg(color(RED).'That mob type is disabled due to client lag.')
+<<<
