@@ -79,3 +79,50 @@
 	sk_region_rename($oldName,$newName)
 	msg(color(GOLD).'Renamed region \''.$oldName.'\' as \''.$newName.'\'.')
 <<<
+
+
+# Test whether there are any regions intersecting the current selection.
+# Limitations: 
+# 	* There is no way to get the poly selection points, so a cuboid is assumed.
+#	* A temporary region is created since selections can't be tested. The temporary
+#	  region is immediately removed.
+#	* sk_pos[12]() stay set even after //desel (CH or WorldGuard bug?)
+
+*:'/region-intersects' = >>>
+	_assertperm('restricted')
+	@p1 = sk_pos1()
+	@p2 = sk_pos2()
+	msg(color(GOLD).'Point 1: '.color(YELLOW).@p1)
+	msg(color(GOLD).'Point 2: '.color(YELLOW).@p2)
+	if (is_null(@p1) || is_null(@p2)) {
+		die(color(RED).'You need to make a cuboid selection.')
+	} else {
+		@tempRegionName = player().'_intersection_test'
+		if (sk_region_exists(@tempRegionName)) {
+			# Unless there's a bug, the temp region should be removed.
+			sk_region_update(@tempRegionName, array(@p1, @p2))
+		} else {
+			sk_region_create(@tempRegionName, array(@p1, @p2))
+		}
+		try(
+			@testedRegions = sk_all_regions(pworld())
+			@regions = sk_region_intersect(pworld(), @tempRegionName, @testedRegions)
+			@message = color(GOLD).'Intersecting regions: '
+			@first = true
+			foreach (@regions, @region, 
+				if (@region != @tempRegionName) {
+					if (@first) {
+						@first = false
+					} else {
+						@message = @message.color(WHITE).', '
+					}
+					@message = @message.color(YELLOW).@region
+				}
+			)
+			msg(@message)
+		,@e,
+			msg(color(RED).'Error: '.e)
+		)
+		sk_region_remove(@tempRegionName)
+	}
+<<<
