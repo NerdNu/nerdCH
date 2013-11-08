@@ -116,7 +116,9 @@
 					} else {
 						@message = @message.color(WHITE).', '
 					}
-					@message = @message.color(YELLOW).@region
+					@owners = array_get(sk_region_info(@region, pworld()), 1)
+					@formattedOwners = array_implode(@owners, ', ')
+					@message = @message.color(YELLOW).@region.color(GRAY).' ('.@formattedOwners.')'
 				}
 			)
 			msg(@message)
