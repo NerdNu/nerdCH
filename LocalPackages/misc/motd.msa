@@ -1,0 +1,22 @@
+*:/motd set [$] = >>>
+	_assertperm('admin')
+	@motd = colorize($)
+	store_value('motd', @motd)
+	msg(color(GOLD).'MOTD set to:')
+	msg(@motd)
+<<<
+
+*:/motd clear [$] = >>>
+	_assertperm('admin')
+	store_value('motd', null)
+	msg(color(GOLD).'MOTD cleared.')
+<<<
+
+*:/motd [$] = >>>
+	_assertperm('admin')
+	@motd = get_value('motd')
+	msg(color(GOLD).'Current MOTD:')
+	msg(@motd)
+	msg(color(GOLD).'Usage: '.color(YELLOW).'/motd [set <message> | clear]')
+<<<
+
