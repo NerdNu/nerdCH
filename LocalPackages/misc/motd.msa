@@ -15,8 +15,12 @@
 *:/motd [$] = >>>
 	_assertperm('admin')
 	@motd = get_value('motd')
-	msg(color(GOLD).'Current MOTD:')
-	msg(@motd)
+	if (! is_null(@motd) && length(@motd) != 0) {
+		msg(color(GOLD).'Current MOTD:')
+		msg(@motd)
+	} else {
+		msg(color(GOLD).'The MOTD is currently not set.')
+	}
 	msg(color(GOLD).'Usage: '.color(YELLOW).'/motd [set <message> | clear]')
 <<<
 
