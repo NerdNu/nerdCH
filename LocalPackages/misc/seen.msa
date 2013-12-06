@@ -30,3 +30,20 @@
 	}
 <<<
 
+*:/ipseen [$player] = >>>
+	_assertperm('admin')
+	if ($player == '') {
+		msg(color(GOLD).'Usage: /ipseen $player')
+		msg(color(GOLD).'Shows the last IP used by a player.')
+		die()
+	}
+	assign(@playerName, strip_colors($player))
+	assign(@lowerName, to_lower(@playerName))
+
+	@ip = get_value('lastip.' . @lowerName)	
+	if (is_null(@ip)) {
+		msg(color(GOLD).@playerName.' has no recorded IP address.')
+	} else {
+		msg(color(GOLD).@playerName.': '.color(YELLOW).@ip)
+	}
+<<<
