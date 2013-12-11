@@ -11,7 +11,7 @@ add_recipe(
 	array(
 		type: 'SHAPED', 
 		result: array(type: 174, data: 0, qty: 4), 
-		shape: array(' AA', ' AA', '   '),
+		shape: array('   ', 'AA ', 'AA '),
 		ingredients: array('A': 79)
 	)
 )
