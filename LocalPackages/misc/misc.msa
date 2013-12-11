@@ -74,16 +74,18 @@
 <<<
 
 
-*:'/list-hide' $player = >>>
+*:'/list-hide' [$player] = >>>
+	@p = if($player == '', player(), $player)
 	_assertperm('admin')
-	store_value('list.hide.'.to_lower($player), set)
-	msg(color(GOLD).$player.' will be hidden from the player list. Remember to vanish.')
+	store_value('list.hide.'.to_lower(@p), set)
+	msg(color(GOLD).@p.' will be hidden from the player list. Remember to vanish.')
 <<<
 
-*:'/list-show' $player = >>>
+*:'/list-show' [$player] = >>>
+	@p = if($player == '', player(), $player)
 	_assertperm('admin')
-	clear_value('list.hide.'.to_lower($player))
-	msg(color(GOLD).$player.' will be shown in the player list.')
+	clear_value('list.hide.'.to_lower(@p))
+	msg(color(GOLD).@p.' will be shown in the player list.')
 <<<
 
 *:/list = >>>
@@ -91,7 +93,11 @@
 	assign(@players, all_players())
 	array_sort(@players)
 	foreach(@players, @p,
-		if (is_null(get_value('list.hide.'.@p))) {
+		@isShown = is_null(get_value('list.hide.'.to_lower(@p)))
+		@bypass = has_permission('nerdch.level.admin')
+		# I don't know why || doesn't work >.>
+		#console('????@iS: '.@isShown.' @b: '.@bypass.' ??? '.or(@isShown, @bypass))	
+		if (@isShown){
 			assign(@group, pgroup(@p))
 			assign(@group, if(array_index_exists(@group, 0), @group[0], 'default'))
 			if(not(array_index_exists(@all, @group)), array_set(@all, @group, array()))
@@ -159,6 +165,15 @@
 	_assertperm('admin')
 	set_ploc($player, ploc())
 	set_entity_rider(spawn_mob($mob)[0], pinfo($player, 13))
+<<<
+
+'/mobride-r' $mob $radius = >>>
+	_assertperm('admin')
+	foreach(entities_in_radius(ploc(), $radius, PLAYER), @playerId,
+		if (pinfo(player(), 13) != @playerId) {
+			set_entity_rider(spawn_mob($mob)[0], @playerId)
+		}
+	)
 <<<
 
 mods:/kick $player [$] = >>>
