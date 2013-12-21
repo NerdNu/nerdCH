@@ -45,7 +45,7 @@
 
 	# Prevent the mob from spawning *inside* the block at the player's feet. ;_;
 	@loc = ploc()
-	@loc[1] = @loc[1] + 1
+	@loc[y] = @loc[y] + 1
 
 	if (@mob == 'ocelot') {
 		@CAT_TYPES = array(black_cat, red_cat, siamese_cat)
@@ -202,6 +202,18 @@
 	, @ex,  
 		msg(color(RED).'Something went wrong. Is the entity type name correct?')
 		die(color(RED).'')
+	)
+<<<
+
+# Configure all mobs in a range of 5 blocks to be able to pick up items.
+
+*:'/can-pickup' = >>>
+	_assertperm('admin')
+	msg(color(GOLD).'Configuring mobs within 5 blocks to pick up items.')
+	foreach (entities_in_radius(ploc(), 5), @mob,
+		try(
+			set_can_pickup_items(@mob, true)
+		)
 	)
 <<<
 
