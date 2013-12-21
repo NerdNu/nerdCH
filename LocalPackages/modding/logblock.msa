@@ -8,13 +8,18 @@
 	}
 	@days = _lb_retention_days()
 	run(concat('/lb player ', $player, ' area ', @radius, ' sum blocks since ', @days, ' days'))
-	run(concat('/lookup ', $player))
+	
+	# Delay the /lookup so it follows the /lb output.
+	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
 <<<
+
 *:/trace $player = >>>
 	_assertperm('mod', 0)
 	@days = _lb_retention_days()
 	run(concat('/lb player ', $player, ' area 10000 sum blocks since ', @days, ' days'))
-	run(concat('/lookup ', $player))
+
+	# Delay the /lookup so it follows the /lb output.
+	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
 <<<
 
 #rollback
