@@ -23,3 +23,24 @@
 	@index = _get_tp_index($player, -1)
 	_tp_index(@index, all_players())
 <<<
+
+
+# /get-bed-spawn [player>]
+#	Show the coordinate's of the player's bed.
+
+*:'/get-bed-spawn' [$] = >>>
+	_assertperm('restricted')
+	if ($ == '') {
+		die(color(GOLD).'Usage: '.color(YELLOW).'/get-bed-spawn <player>'.color(WHITE).' - Show the player\'s bed spawn location.')
+	}
+	try(
+	@loc = pbed_location($)
+	if (is_null(@loc)) {
+		msg(color(GOLD).'No bed spawn set for '.$)
+	} else {
+		msg(color(GOLD).$.'\'s bed is at ('.@loc[world].', '.integer(@loc[x]).', '.integer(@loc[y]).', '.integer(@loc[z]).')')
+	}
+	,
+		die(color(RED).'CH died on its fat arse.')
+	)
+<<<
