@@ -2,8 +2,8 @@
 *:/bitchslap $ = >>>
 	run_cmd('/ban' $)
 <<<
-
-*:/ban $ = >>>
+/*
+*:/ban $player [$] = >>>
 	_assertperm('mod', 0)
 	if (_contains('nerd.nu/appeal', $)) {
 		runas(player(), /ban $)
@@ -11,7 +11,7 @@
 		runas(player(), /ban $ 'nerd.nu/appeal')
 	}
 <<<
-
+*/
 *:/unban $player = >>>
 	_assertperm('mod', 0)
 	sudo(/unban $player)
@@ -32,7 +32,7 @@
 	_assertperm('mod')
 	@server = import('sharedata.source')
 	@additional = $
-	run('/addnote '.$player.' warned for crop grief on '.@server)
+	run_cmd('/addnote '.$player.' warned for crop grief on '.@server)
 	call_alias('/mail send '.$player.' If you take crops planted by someone else, you must replant them. -- Moderator')
 	call_alias('/mail send '.$player.' That includes: potatoes, carrots, nether warts, sugar cane and cocoa. -- Moderator')
 	msg(color(GOLD).'Warned '.$player.' for crop grief.')
@@ -57,7 +57,7 @@
 	_assertperm('mod')
 	@server = import('sharedata.source')
 	@additional = $
-	run('/addnote '.$player.' warned for general grief on '.@server)
+	run_cmd('/addnote '.$player.' warned for general grief on '.@server)
 	call_alias('/mail send '.$player.' You must not edit other players\' builds without permission. -- Moderator')
 	if (@server == 'survival') {
 		call_alias('/mail send '.$player.' You can break into a base to fight, but you must put back the blocks immediately.')
