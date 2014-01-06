@@ -1,3 +1,7 @@
+*:'/logblock' [$] = >>>
+<<<
+
+
 #trace
 *:'/trace-r' $player $r = >>>
 	_assertperm('mod', 0)
