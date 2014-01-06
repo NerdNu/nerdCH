@@ -144,6 +144,18 @@
 <<<
 
 
+*:/ver [$] = >>>
+    if(not(equals(player(), '~console')),
+        foreach(_get_mods(), @mod,
+            tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))    
+        )
+        console(concat(@player, ' checked the server version'))
+    ,
+        run(/ver)
+    )
+<<<
+
+
 *:/about [$] = >>>
     if(not(equals(player(), '~console')),
         foreach(_get_mods(), @mod,
