@@ -1,14 +1,19 @@
-&c+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
-Welcome to &dc.nerd.nu 
-To fly, &adouble-tap space
-To ascend, &ahold space
-To descend, &ahold shift
-Common commands are:
-  &6/tp <name>
-  &6/tpa <name>
-  &6/tptoggle
-  &6/home <name>
-  &6/sethome <name>
-  &6/modreq <request>
-  &bEnjoy your time here!
-&c+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+&c+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Welcome to &6c.nerd.nu&f! 
+To fly, &2double-tap space&f.
+To ascend, &2hold space&f.
+To descend, &2hold shift&f. 
+The full rules with important details are at &2nerd.nu/rules&f.
+Common commands are: 
+    &6/list&f - displays all users online.
+    &6/msg&f - privately messages another player.
+    &6/tp&f - teleport to another player.
+    &6/tpmode&f - change whether others can teleport to you.
+    &6/sethome&f - sets where your home is.
+    &6/home&f - teleport back to your home.
+    &6/empty&f - clears your inventory.
+    &6/modreq&f - alerts a moderator that you need help
+        Make one /modreq where you need help.
+        Include a detailed message!
+Join us at &2reddit.com/r/mcpublic&f!
+&c+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

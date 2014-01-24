@@ -1,0 +1,29 @@
+# Wear the block in your hand as a mask.
+
+*:/wear [$] = >>>
+	# Get the held item.
+	@held = pinv(player(), null)
+	if (is_null(@held)) {
+		die(color(RED).'You need to be holding something to wear it.')
+	} else {
+		# Clear the currently held item.
+		@info = pinfo()
+		@entityId = @info[13]
+		@heldSlot = @info[15]
+		set_inventory_item(@entityId, @heldSlot, null)
+
+
+		try(
+			# Replace whatever is on the player's head currently with the held item.
+			@dropped = pinv(player(), 103)
+			@change = associative_array()
+			@change[103] = @held
+			set_pinv(@change)
+
+			# Drop the item previously in the helmet slot. Work around NPE.
+			if (! is_null(@dropped)) {
+				drop_item(player(), @dropped)
+			}
+		)
+	}
+<<<

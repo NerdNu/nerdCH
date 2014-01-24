@@ -1,0 +1,28 @@
+*:'/mode-lock' $player [$mode=''] = >>>
+	_assertperm('restricted')
+	assign(@mode, pmode(player($player)))
+	if($mode == ''){
+		if(@mode == 'CREATIVE', assign(@mode, 'SURVIVAL'))
+		if(@mode == 'SURVIVAL', assign(@mode, 'CREATIVE'))
+	} else {
+		assign(@selection, to_upper($mode))
+		ifelse(@selection == 'CREATIVE',
+				assign(@mode, 'CREATIVE')	
+			, @selection == 'SURVIVAL',
+				assign(@mode, 'SURVIVAL')
+			, #else
+				msg('"' .$mode . '" is not a known mode')
+		)
+	}
+	assign(@player, player($player))
+	set_pmode(@player, @mode)
+	store_value('modelock.'.@player, true)
+	tmsg(@player, 'Your mode has been set and locked to '.@mode)
+	msg(color('light_purple').@player.'\'s mode has been locked to '.color('dark_purple').@mode)
+<<<
+
+*:'/mode-unlock' $player = >>>
+	_assertperm('restricted')
+	clear_value('modelock.'.player($player))
+	msg(color('light_purple').player($player).'\'s mode ability has been silently unlocked')
+<<<

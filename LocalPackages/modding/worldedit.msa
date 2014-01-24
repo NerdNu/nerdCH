@@ -6,22 +6,24 @@
 <<<
 
 *://fixwater $radius = >>>
-    if(gt($radius, 25), 
-        die(color(red) 'Whoa, whoa, whoa. Step it down a notch, turbo.'), 
-    #else:
-        run(/fixwater $radius))
+    if($radius > 25){ 
+        die(color(red) . 'Whoa, whoa, whoa. Step it down a notch, turbo.') 
+    } else {
+        run('/fixwater ' . $radius)
+    }
 <<<
 *://fixlava $radius = >>>
-    if(gt($radius, 25), 
-        die(concat(color(red), 'TROGDOR THE BURNINATOR can only do up to //fixlava 25. Sorry.')), 
-    #else:
-        run(/fixlava $radius))
+    if($radius > 25){
+        die(color(red) . 'TROGDOR THE BURNINATOR can only do up to //fixlava 25. Sorry.')
+    } else {
+        run('/fixlava ' . $radius)
+    }
 <<<
 
 *:/fixwater $ = call_alias(concat('//fixwater ', $))
 *:/fixlava $ = call_alias(concat('//fixlava ', $))
 
-*://removenear $ = >>> 
+*://removenear [$] = >>> 
         assign(@match, parse_args($))
         if(equals(array_size(@match), 2),
                 if(lt(@match[1], 25),
@@ -32,7 +34,19 @@
                 msg(concat(color(red), 'Syntax: /removenear block_id radius')))
 <<<
 
-*:/removenear $ = call_alias(concat('//removenear ', $))
+*:/removenear [$] = call_alias(concat('//removenear ', $))
+
+*://drain [$] = >>>
+    if(equals($, ''),
+        msg(concat(color(red), 'Syntax: /drain radius')),
+    #else:
+        if(lte($, 15),
+            run(concat('//drain ', $)),
+        #else:
+            msg(concat(color(red), '/drain radius must be <=15'))))
+<<<
+
+*:/drain [$] = call_alias(concat('//drain ', $))
 
 *:/ri = >>>
     /remove items 9999
@@ -40,3 +54,21 @@
 <<<
 
 *:/deselect = //sel cuboid
+
+#*://ramp [$x] [$dir1] [$dir2] = >>>
+#	_assertperm('admin', 0)
+#        for (assign(@i, 0), lt(@i, $x), inc(@i),
+#		run(concat('//shift 1 ', $dir1))
+#		run(concat('//shift 1 ', $dir2))
+#		run('//set air')
+#	)
+#<<<
+
+*://ramp $x $dir1 $dir2 [$block='rail'] [$dir1_offset=1] [$dir2_offset=1] = >>>
+	_assertperm('admin', 0)
+	for (assign(@i, 0), lt(@i, $x), inc(@i),
+		run(concat('//shift ', $dir1_offset, ' ', $dir1))
+		run(concat('//shift ', $dir2_offset, ' ', $dir2))
+		run(concat('//set ', $block))
+	)
+<<<

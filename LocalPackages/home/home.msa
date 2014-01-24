@@ -1,5 +1,7 @@
 *:/sethome [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
     assign(@modes, array('public','private','unlisted'))
     assign(@m, reg_split(' ', $))
     assign(@p, strip_colors(player()))
@@ -14,16 +16,24 @@
                 @m[1],
                 'unlisted')))
     
-    if(array_contains(@modes, @mode),
-        store_value(concat('homes.', @p, '.', @name, '.loc'), ploc())
-        store_value(concat('homes.', @p, '.', @name, '.mode'), @mode)
-        msg(concat(color(gray), 'Home set.')),
-    #else:
-        msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']')))
+    if(array_contains(@modes, @mode)){
+	try(
+        	store_value(concat('homes.', @p, '.', @name, '.loc'), ploc())
+        	store_value(concat('homes.', @p, '.', @name, '.mode'), @mode)
+		msg(color(gray) . 'Home set.')
+	, @ex,
+		msg(color(red) . 'Home names must not contain special characters')
+		, FormatException
+	)
+    } else {
+        msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']'))
+    }
 <<<
 
 *:/delhome [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
     if(equals($, ''),
         msg(concat(color(red), 'Usage: /delhome <name>'))
         call_alias(/listhomes),
@@ -40,7 +50,10 @@
 <<<
 
 *:/home [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+
     assign(@m, reg_split(' ', $))
     if(equals(array_size(@m), 2),
         assign(@player, @m[0])
@@ -71,7 +84,10 @@
 <<<
 
 *:/listhomes [$] = >>>
-    _assertperm('restricted', 1)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+
     assign(@player,
         if(equals($, ''),
             strip_colors(player()),

@@ -1,0 +1,40 @@
+*:'/rulebook' [$] = >>>
+	@file = import('shared.firstjoin.book')
+	if (@file == null) {
+		console(color(RED).'No first join book text set. Please add export(\'shared.firstjoin.book\', read(\'file.txt\') to main.ms for the server.')
+		msg(color(RED).'No rule book has been configured. Bug an admin.')
+	} else {
+		# Check for an empty inventory slot. pgive_item()'s return value is always 0. (Bug.)
+		@inv = pinv()
+		@space = false
+		for (@i = 0, @i <= 35, inc(@i),
+			if (is_null(@inv[@i])) {
+				@space = true
+				break()
+			}
+		)
+
+		if (@space) {
+			# Minimum time period between giving books.
+			@BOOK_MINUTES = 2880
+
+			# Check the last time the player ran this command.
+			@lastTime = get_value('rulebook.'.player())
+			if (is_null(@lastTime)) {
+				@lastTime = 0
+			}
+
+			# Admins can bypass the rate restriction to work on book text in game.
+			if (has_permission('nerdch.level.admin') || @lastTime + (1000 * 60 * @BOOK_MINUTES) < time()) {
+				store_value('rulebook.'.player(), time())
+				@pages = split('>>>>>>>>>>>>>>>>>>>\n', colorize(@file))
+				@count = pgive_item(player(), 387, 1, array(title: 'The Rules', author: 'nerd.nu', pages: @pages))
+				msg(color(GOLD).'Rule book given.')
+			} else {
+				msg(color(RED).'You need to wait at least '.@BOOK_MINUTES.' minutes before asking for another rule book.')
+			}
+		} else {
+			msg(color(RED).'You need an open inventory slot for the book.')
+		}
+	}
+<<<

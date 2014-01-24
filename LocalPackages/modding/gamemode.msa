@@ -1,11 +1,22 @@
 *:/mode [$] = >>>
-    _assertperm('op', 0)
-    
-    assign(@p, if(equals($, ''), player(), _getonlinename($)))
-    if(equals(pmode(@p), 'SURVIVAL'), 
-        set_pmode(@p, 'CREATIVE')
-        msg(concat(color(gray), @p, ' is now in creative mode')),
-    #else:
-        set_pmode(@p, 'SURVIVAL')
-        msg(concat(color(gray), @p, ' is now in survival mode')))
+	# Only allow defaults to use this on C. On other servers require admin permission.
+	assign(@p, if(equals($, ''), player(), player($)))
+	if (import('sharedata.source') == 'creative') {
+		if (has_value('modelock.'.@p)) {
+			die(color(RED).'That player\'s mode is locked.')
+		}
+		if (!has_permission('commandhelper.alias.mods') && @p != player()) {
+			die(color(RED).'You can only /mode yourself!')
+		}
+	} else {
+		_assertperm('admin', 0)
+	}
+
+	if (equals(pmode(@p), 'SURVIVAL')) {
+		set_pmode(@p, 'CREATIVE')
+		msg(concat(color(GRAY), @p, ' is now in creative mode'))
+	} else {
+		set_pmode(@p, 'SURVIVAL')
+		msg(concat(color(GRAY), @p, ' is now in survival mode'))
+	}
 <<<

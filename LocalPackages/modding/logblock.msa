@@ -1,41 +1,77 @@
-#Easy LB rollbacks
-*:/lbrb $p = /lb rollback player $p since 21 days
-*:/lbrb-r $p $r = /lb rollback player $p area $r since 21 days
-*:/lbredo $player [$since=21] = /lb redo player $player area 10000 since $since days
-*:/lbredo-r $player $radius [$since=21] = /lb redo player $player area $radius since $since days
+*:'/logblock' [$] = >>>
+<<<
+
+
+#trace
+*:'/trace-r' $player $r = >>>
+	_assertperm('mod', 0)
+	@radius = $r
+	if (! is_integral(@radius) || @radius < 1) {
+		# Negative radius rolls back EVERYWHERE.
+		die(color(RED).'The radius must be a positive integer.')
+	}
+	@days = _lb_retention_days()
+	run(concat('/lb player ', $player, ' area ', @radius, ' sum blocks since ', @days, ' days'))
+	
+	# Delay the /lookup so it follows the /lb output.
+	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
+<<<
+
+*:/trace $player = >>>
+	_assertperm('mod', 0)
+	@days = _lb_retention_days()
+	run(concat('/lb player ', $player, ' area 10000 sum blocks since ', @days, ' days'))
+
+	# Delay the /lookup so it follows the /lb output.
+	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
+<<<
+
+#rollback
+*:'/lbrb-r' $p $r = >>>
+	_assertperm('mod', 0)
+	@radius = $r
+	if (! is_integral(@radius) || @radius < 1) {
+		# Negative radius rolls back EVERYWHERE.
+		die(color(RED).'The radius must be a positive integer.')
+	}
+	@days = _lb_retention_days()
+	run(concat('/lb rollback player ', $p, ' area ', @radius, ' since ', @days, ' days'))
+<<<
+*:/lbrb $p = >>>
+	_assertperm('mod', 0)
+	@days = _lb_retention_days()
+	run(concat('/lb rollback player ', $p, ' since ', @days, ' days'))
+<<<
+
+#redo
+*:'/lbredo-r' $player $radius [$since] = >>>
+	_assertperm('mod', 0)
+	@radius = $radius
+	if (! is_integral(@radius) || @radius < 1) {
+		# Negative radius rolls back EVERYWHERE.
+		die(color(RED).'The radius must be a positive integer.')
+	}
+	@days = if (is_integral($since), $since, _lb_retention_days())
+	run(concat('/lb redo player ', $player, ' area ', @radius, ' since ', @days, ' days'))
+<<<
+*:/lbredo $player [$since] = >>>
+	_assertperm('mod', 0)
+	@days = if (is_integral($since), $since, _lb_retention_days())
+	run(concat('/lb redo player ', $player, ' area 10000 since ', @days, ' days'))
+<<<
+#safeguard
 *:/lb redo [$] = >>>
-	if(equals($, 'last'), run(/lb redo last) die())
-	if(lt(reg_count('player', $), 1), die(concat(color(red), 'lol, you forgot the player')), run(/lb redo $))
+	_assertperm('mod', 0)
+	if (equals($, 'last'), run('/lb redo last') die())
+	if (lt(reg_count('player', $), 1), die(concat(color(red), 'lol, you forgot the player')), run(/lb redo $))
 <<<
 
-#Easy LB Lookups
-*:/trace $wtf = /lookup $wtf \ /lb player $wtf area 10000 sum blocks
-*:/trace-r $player $r = /lookup $player \ /lb player $player area $r sum blocks
-
-#/trace $wtf = /lookup $wtf
-
-*:/furnace-top [$] = >>>
-    _assertperm('mod', 0)
-    if(equals($, ''),
-        /lb sum players created block 61 62 since 20m,
-    #else:
-        assign(@time, replace($, '.0', 'd'))
-        if(is_integer(@time),
-            run(/lb sum players created block 61 62 since concat(@time, m)),
-        #else:
-            run(/lb sum players created block 61 62 since @time)
-        )
-    )
+#topminer
+*:/topminer $time = >>>
+	_assertperm('mod', 0)    
+	/lb time $time block diamond_ore destroyed sum players
 <<<
 
-*:/furnace [$time] = call_alias('/furnace-top' $time)
-
-*:/seen [$] = >>>
-    if(equals($, ''),
-        msg(concat(color(gray), 'Shows the last edit of a user.'))
-        msg(concat(color(gray), 'Usage: /seen <player>')),
-    #else:
-        msg(concat(color(gray), 'Showing the last edit by ', $))
-        /lb since 28 days limit 1 player $
-    )
+*:/xraytrace $player = >>>
+	run(concat('/lb player ', $player, ' area 10000 sum blocks time 7 days'))
 <<<

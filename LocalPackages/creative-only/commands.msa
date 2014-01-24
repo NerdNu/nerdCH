@@ -1,0 +1,103 @@
+
+*:/jumpstrike [$player=''] = >>>
+	if(!has_permission('LolNo.admin'), die())
+		
+	proc(_doit, @player,
+		@mode = pmode(@player)
+		set_pmode(@player, SURVIVAL)
+                set_phealth(@player, 20)
+                set_pvelocity(@player, 0, 10, 0)
+                set_timeout(2500, closure(
+			set_pmode(@player, CREATIVE)
+                        lightning(ploc(@player), true)
+                        set_timeout(2500, closure(
+                                set_phealth(@player, 20)
+                        ))
+                ))
+	)
+	
+	if($player == ''){	
+		msg(color(light_purple).'Jumping the whole server!')
+        	foreach(all_players(), @player,
+			_doit(@player)
+        	)
+	} else {
+		msg(color(light_purple).'Jumping '.player($player).'!')
+		_doit($player)
+	}
+<<<
+
+/colornames [$color='white'] = >>>
+	foreach(all_players(), @p,
+		set_display_name(@p, color($color).@p.color(r))
+	)
+<<<
+
+/rainbownames = >>>
+	@colors = array(4, 6, 'e', 2, 9) #Rainbow colors
+	foreach(all_players(), @p,
+		@name = ''
+		for(@i = 0, @i < length(@p), @i++,
+			@letter = @p[@i]
+			@name .= color(@colors[@i % array_size(@colors)]) . @letter
+		)
+		set_display_name(@p, @name.color(r))
+	)
+<<<
+
+/resetnames = >>>
+	foreach(all_players(), @p,
+		reset_display_name(@p)
+	)
+<<<
+
+*:/roll [$]= >>>
+	_assertperm('restricted')
+	broadcast(color(gold).player().' rolled a '.rand(1, 21))
+<<<
+
+/rainbowhat [$player] = >>>
+        @player = player()
+        if($player != '', @player = player($player))
+        if(import('rainbowhat.'.@player) != null){
+                clear_task(import('rainbowhat.'.@player))
+                export('rainbowhat.'.@player, null)
+                die('No more rainbow hat :(')
+        }
+        msg('Rainbow hat!!!')
+        set_pinv(@player, array(103: array(type: 298)))
+        @currentColor = array(0)
+        @colors = array(
+                array(255, 0, 0),   #red
+                array(255, 128, 0), #orange
+                array(255, 255, 0), #yellow
+                array(0, 255, 0),   #green
+                array(0, 0, 255),   #blue
+                array(127, 0, 255), #indigo
+                array(102, 0, 204)  #violet
+        )
+        @interval = set_interval(200, closure(
+		try(
+	                if(!ponline(@player) || (pinv(@player, 103) != null && pinv(@player, 103)['type'] != 298)){
+	                        clear_task()
+	                } else {
+	                        @cindex = @currentColor[0]
+	                        @currentColor[0] = if(@currentColor[0] >= array_size(@colors) - 1, 0, @currentColor[0] + 1)
+	                        @color = @colors[@currentColor[0]]
+	                        set_armor_color(@player, 103, @color)
+	                }
+		, #catch
+			#kill the task if it shits itself, so there aren't stacktraces
+			clear_task()
+		)
+        ))
+        export('rainbowhat.'.@player, @interval)
+<<<
+
+*:/randloc [$] = >>>
+	@MAXDISTANCE = 2000
+	@x = rand(- @MAXDISTANCE, @MAXDISTANCE)
+	@z = rand(- @MAXDISTANCE, @MAXDISTANCE)
+	@y = get_highest_block_at(@x, @z)[1]
+	set_ploc(@x, @y, @z)
+<<<

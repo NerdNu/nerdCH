@@ -1,0 +1,14 @@
+*:/lbchat $p1 $p2 = >>>
+	_assertperm('admin', 0)
+	run(concat('/lb player ', $p1, ' chat search -/ +', $p2))
+<<<
+
+*:/lbchat $ = >>>
+	_assertperm('admin', 0)
+	run(concat('/lb player ', $, ' chat search -/'))
+<<<
+
+*:/lbcmds $ = >>>
+	_assertperm('admin', 0)
+	run(concat('/lb player ', $, ' chat search /'))
+<<<

@@ -4,6 +4,8 @@
 
 mods:/spawnp $player = runas($player, /spawn)
 
+*:/whatever = msg(pinfo(player(), 12))
+
 *:/heal = >>>
     _assertperm('restricted', 0)
     set_pfood(20)
@@ -11,7 +13,7 @@ mods:/spawnp $player = runas($player, /spawn)
 <<<
 
 *:/spawnmob [$] = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
     assign(@m, reg_match('^([a-z:]+) ?([0-9]*)$', $))
     if(array_index_exists(@m,0),
         try(
@@ -25,22 +27,48 @@ mods:/spawnp $player = runas($player, /spawn)
         msg(concat(color(red), 'Usage: /spawnmob <mob>[:<data>] [quantity]')))
 <<<
 
-*:/rain $true_false = >>>
-    _assertperm('restricted', 0)
-    storm($true_false)
+#*:/rain [$status='clear'] = >>>
+#    _assertperm('admin', 0)
+#    sudo(concat('/weather ', $status))
+#    msg(concat(color(red), 'Set weather to ', $status))
+#<<<
+
+*:/rain = >>>
+    _assertperm('admin', 0)
+    msg(concat(color(red), 'Turns weather on or off'))
+    msg(concat(color(red), 'Usage: /rain on/off'))
 <<<
 
+*:/rain $onoff = >>>
+    _assertperm('admin', 0)
+    if(equals($onoff, 'on')){
+        storm(true)
+        msg(concat(color(red), 'Turned rain on'))
+    } else {
+        storm(false)
+        msg(concat(color(red), 'Turned rain off'))
+    }
+<<<
 
 *:/supavanish [$mob='chicken'] = >>>
-    _assertperm('restricted', 0)
+	_assertperm('admin', 0)
 	assign(@pcursor, pcursor(player()))
 	lightning(array(array_get(@pcursor, 0), 0, array_get(@pcursor, 2)))
 	run('/vanish')
 	spawn_mob($mob)
 <<<
 
+*:/kfc $player [$mob='chicken']  = >>>
+    _assertperm('admin', 0)
+    assign(@pl, ploc($player))
+    run('/clearinventory' $player)
+    pkill($player)
+    lightning(array(array_get(@pl, 0), subtract(array_get(@pl, 1), 10), array_get(@pl, 2)))
+    spawn_mob($mob, 1, @pl)
+<<<
+
 *:/hat [$data] = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
     if(equals(pinv(player(), 103), null), 
         set_pinv(array(103: array(type: if(equals($data, ''), 298, $data)))),
     #else:
@@ -48,7 +76,7 @@ mods:/spawnp $player = runas($player, /spawn)
 <<<
 
 *:/speed = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
     set_peffect(player(), 1, 5)
 <<<
 
@@ -57,11 +85,42 @@ mods:/spawnp $player = runas($player, /spawn)
 #TODO: Make this run /setspleef
 
 *:/drunk_spleef $ = >>>
-    _assertperm('restricted', 0)
+    _assertperm('admin', 0)
 	assign(@players, parse_args($))
 	foreach(@players, @p,
 		set_peffect(@p, 9, 1, 100)
 	)
+<<<
+
+*:/fakeop $player = >>>
+	_assertperm('admin', 0)
+	@player = player($player)
+	if(has_permission(@player, 'nerdch.level.admin')){
+		if(!has_permission('nerdch.level.admin')){
+			die(color(red).'lol, can\'t fakeop an admin')
+		}
+	}
+	if(import('fakeop.'.@player)){
+		unbind(import('fakeop.'.@player))
+		msg(color(GOLD).@player.' is no longer fake op\'d')
+	} else {
+		tmsg(@player, concat(color('yellow'), 'You are now op!'))
+		msg(color(GOLD).@player.' is now fake op\'d')
+		@bound = bind(player_command, null, array(player: @player), @event,
+			cancel()
+			@random = array(
+				color(red).'An error occurred while running that command. Have you tried checking your configuration? (Maybe just try running the command again)',
+				'Command run successfully',
+				'Done.',
+			)
+			msg(@random[rand(array_size(@random))])
+			@mods = _get_mods()
+			foreach(@mods, @mod,
+				tmsg(@mod, concat('[', color(red), 'Fake Op - ', player(), color(white), '] ', color(green), 'Tried running command: ', @event['command']))
+    			)
+		)
+		export('fakeop.'.@player, @bound)
+	}
 <<<
 
 #TODO: Probably not needed as we can just use WE's /jumpto
@@ -82,7 +141,7 @@ mods:/spawnp $player = runas($player, /spawn)
 #<<<
 
 *:/rainbow = >>>
-    _assertperm('restricted', 0) #Sorry guys ;)
+    _assertperm('admin', 0) #Sorry guys ;)
     spawn_mob('sheep:black')
     spawn_mob('sheep:red')
     spawn_mob('sheep:green')
@@ -99,4 +158,74 @@ mods:/spawnp $player = runas($player, /spawn)
     spawn_mob('sheep:magenta')
     spawn_mob('sheep:orange')
     spawn_mob('sheep:white')
+<<<
+
+
+*:/stoplag [$] = msg('No!')
+
+*:/sayas $user [$] = >>>
+    _assertperm('admin', 0)
+    broadcast(concat('<', $user, '> ', $))
+<<<
+
+
+# List all players who have the invisibility potion effect within the specified
+# radius (defaulting to 30 blocks).
+
+*:'/list-invisible' [$radius] = >>>
+	_assertperm('restricted')
+	@radius = if (is_numeric($radius), integer($radius), 30)
+	@players = players_in_radius(ploc(), @radius)
+	@invisible = array()
+	foreach (@players, @p,
+		if (ponline(@p) && _has_peffect(@p, 14)) {
+			array_push(@invisible, @p)
+		}
+	)
+	if (array_size(@invisible) == 0) {
+		msg(color(GOLD).'There are no invisible players within '.@radius.' blocks of you.')
+	} else {
+		msg(color(GOLD).'The following invisible players are within '.@radius.
+		    ' blocks of you: '.array_implode(@invisible, ' '))
+	}
+<<<
+
+
+# /count-entities <radius> [<type1> ... ]
+#	Count all entities within the specified radius of the player and show the 
+#	totals by type. An optional list of types may be specified after the radius.
+
+*:'/count-entities' = >>>
+	msg(color(RED).'Usage: /count-entities <radius> [<type1> ...]')
+	msg(color(RED).'List total entities by type within a specified radius (maximum 100).')
+	msg(color(RED).'The second and subsequent arguments are entity types, case-insensitive.')
+	die()
+<<<
+
+*:'/count-entities' $radius [$] = >>>
+	_assertperm('admin')
+	if (! is_numeric($radius)) {
+		die(color(RED).'The first argument must be the radius.')
+	}
+	@maxRadius = 200
+	@radius = if ($radius > @maxRadius, @maxRadius, $radius)
+	@types = array()
+	@counts = associative_array()
+	foreach (parse_args($), @type, 
+		array_push(@types, to_lower(@type))
+	)
+	@entities = entities_in_radius(ploc(), @radius, @types)
+	#msg(array_implode(@entities, ', '))
+	foreach (@entities, @e, 
+		@key = to_lower(entity_type(@e))
+		if (array_index_exists(@counts, @key)) {
+			inc(@counts[@key])
+		} else {
+			@counts[@key] = 1
+		}
+	)
+	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
+	foreach (array_keys(@counts), @type,
+		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
+	)
 <<<

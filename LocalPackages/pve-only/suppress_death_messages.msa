@@ -1,0 +1,10 @@
+
+'/toggle-death-messages' [$] = >>>
+	if(get_value('supress_death_messages')){
+		store_value('supress_death_messages', false)
+		msg(color(LIGHT_PURPLE).'Death messages turned on')
+	} else {
+		store_value('supress_death_messages', true)
+		msg(color(LIGHT_PURPLE).'Death messages turned off')
+	}
+<<<

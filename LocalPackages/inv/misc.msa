@@ -1,5 +1,5 @@
 *:/enchant [$] = >>>
-    _assertperm('restricted', 1)
+    _assertperm('admin', 1)
     assign(@m, reg_match('^(.*) ([0-9]+)$', $))
     if(array_index_exists(@m,0),
         try(

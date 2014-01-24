@@ -1,0 +1,90 @@
+
+
+/marquee init $name $signNumber = >>>
+	_init_marquee($name)
+	if(is_sign_at(pcursor())){
+		store_value('chmarquee.' . $name . '.signloc.' . $signNumber, pcursor())
+		_start_marquee($name)
+	} else {
+		msg(color(red) . 'That is not a sign')
+	}
+<<<
+
+/marquee remove $name = >>>
+	if(_check_marquee($name)){
+		_remove_marquee($name)
+		msg(color(gold) . 'The marquee named' $name 'has been removed')
+	} else {
+		msg(color(red) . 'That marquee does not exist')
+	}
+<<<
+
+/marquee set $name $ = >>>
+	store_value('chmarquee.' . $name . '.text', string($))
+	_start_marquee($name)
+<<<
+
+/marquee stop $name = >>>
+	_stop_marquee($name)
+<<<
+
+/marquee restart $name = >>>
+	_stop_marquee($name)
+	_start_marquee($name)
+<<<
+
+/marquee list [$which] = >>>
+	if($which == ''){
+		msg('All currently functioning marquees:' array_implode(get_value('chmarquee.list'), ', '))
+	} else {
+		msg('Locations of marquee \'' $which '\':' array_implode(get_values('chmarquee.' . $which . '.signloc')))
+	}
+<<<
+
+/marquee move $marquee [$signNumber=1] = >>>
+	if (_check_marquee($marquee)){
+		if (is_sign_at(pcursor())){
+			store_value('chmarquee.' . $marquee . '.signloc.' . $signNumber, pcursor())
+			msg('Moved sign ' . $signNumber . ' for marquee ' . $marquee)
+		} else {
+			msg(color(red) . 'That is not a sign')
+		}
+	} else {
+		msg(color(red). 'That marquee does not exist')
+	}
+<<<
+
+/marquee 911 = >>>
+	msg(color(red).'Halting all marquees!')
+	foreach(get_value('chmarquee.list'), @name,
+		_stop_marquee(@name)
+	)
+<<<
+
+/marquee 911 remove = >>>
+	msg(color(red).'Permanently removing all marquees!')
+	foreach(get_value('chmarquee.list'), @name,
+		_remove_marquee(@name)
+	)
+<<<
+
+/marquee check = >>>
+	if(is_sign_at(pcursor())){
+		assign(@found, false)
+		foreach(get_value('chmarquee.list'), @list,
+			foreach(get_values('chmarquee.'.@list.'.signloc'), @loc,
+				if(@loc == pcursor()){
+					assign(@found, true)
+					msg('That sign is a part of the \''.@list.'\' marquee')
+					break(2)
+				}
+			)
+		)
+		if(!@found){
+			msg('That doesn\'t appear to be a part of any marquee')
+		}
+	} else {
+		msg('Well, that\'s not a sign, so it\'s not in a marquee.')
+	}
+<<<
+

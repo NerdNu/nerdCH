@@ -1,37 +1,44 @@
-#TODO: Do we still need this?
-
-#kicks assholes that use a botnet to spam items
-*:/i glass 15000 = kick(player(), 'oops!')
-
-
 *:/i $ = >>>
-    _assertperm('restricted', 1)
-    assign(@a, _parseiargs($))
-    if(equals(@a, null),
-        msg(concat(color(gray), 'Usage: /i <itemid>[:metadata] [quantity]')),
-    #else:
-        pgive_item(concat(@a[0], ':', @a[1]), @a[2])
-        msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]))))
-
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+	@a = _parseiargs($)
+	if (is_null(@a)) {
+		msg(color(GRAY).'Usage: /i <itemid>[:metadata] [quantity]')
+	} else {
+		pgive_item(@a[0].':'.@a[1], @a[2])
+		msg(color(GRAY).'Giving '.@a[2].' of '.data_name(@a[0]))
+	}
 <<<
 
 *:/give $player $ = >>>
-    _assertperm('restricted', 1)
-    assign(@a, _parseiargs($))
-    if(equals(@a, null),
-        msg(concat(color(gray), 'Usage: /give <player> <itemid>[:metadata] [quantity]')),
-    #else:
-        try(
-            pgive_item(_getonlinename($player), concat(@a[0], ':', @a[1]), @a[2])
-            msg(concat(color(gray), 'Giving ', @a[2], ' of ', data_name(@a[0]), ' to ', $player)),
-        @e,
-            msg(concat(color(red), 'Player not found!'))))
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+	@a = _parseiargs($)
+	if (is_null(@a)) {
+		msg(color(GRAY).'Usage: /give <player> <itemid>[:metadata] [quantity]')
+	} else {
+		try(
+			@recipient = player($player)
+			pgive_item(@recipient, @a[0].':'.@a[1], @a[2])
+			if (@recipient != player()) {
+				tmsg(@recipient,player().' gave you '.@a[2].' '.data_name(@a[0]))
+			}
+			msg(color(GRAY).'Giving '.@a[2].' of '.data_name(@a[0]).' to '.@recipient)
+		@e,
+			msg(color(RED).'Player not found!')
+		)
+	}
 <<<
 
-*:/givethat = >>>
-    _assertperm('restricted', 1)
-	if(equals(get_block_at(pcursor()), '0:0'), 
-	    die('No block in sight!'),
-	#else:
-	    call_alias(concat('/i ', get_block_at(pcursor()))))
+*:'/give-that' = >>>
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('restricted', 1)
+	}
+	if (get_block_at(pcursor()) == '0:0') {
+		die('No block in sight!')
+	} else {
+		call_alias('/i '.get_block_at(pcursor()))
+	}
 <<<

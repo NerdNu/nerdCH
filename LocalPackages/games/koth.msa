@@ -1,0 +1,93 @@
+# /koth start
+#
+# Start the score-keeping task. Note: it starts automatically on server restart.
+
+*:/koth start = >>>
+	_assertperm('admin')
+	_koth_start()
+	msg(color(GOLD).'KOTH score keeping task started.')
+<<<
+
+
+# /koth stop
+#
+# Stop the score-keeping task. Normally it is sufficient to just leave that
+# running, and have the scoring block removed so that no team accumulates time.
+
+*:/koth stop = >>>
+	_assertperm('admin')
+	_koth_stop()	
+	msg(color(GOLD).'KOTH score keeping task stopped.')
+<<<
+
+
+# /koth block
+#
+# Set the location of the KOTH flag block.  Place a block at the desired
+# location, look at it and run this command.  Only coloured wool blocks
+# count towards the score. 
+
+*:/koth block = >>>
+	_assertperm('admin')
+	@location = pcursor()
+	store_value('koth.location', @location)
+	msg(color(GOLD).'The KOTH block location was set to '.@location.'.')
+<<<
+
+
+# /koth teams
+#
+# Set the team numbers (wool data values) for which scores will be reported.
+# e.g. /koth teams 14 11 - for red and dark blue.
+
+*:/koth teams [$] = >>>
+	_assertperm('admin')
+	@args = parse_args($)
+	foreach (@args, @arg,
+		if (! is_integral(@arg) || @arg < 0 || @arg > 15) {
+			die(color(RED).'Team IDs must be integers in the range 0 to 15.')
+		}
+	)
+	store_value('koth.teams', @args)
+	msg(color(GOLD).'Team IDs (wool data) to be scored: '.array_implode(@args, ' '))
+<<<
+
+# /koth reset
+#
+# Reset the KOTH scores to 0. Can be run by any staff member.
+# The final score is reported to whoever runs the command, just in case.
+
+*:/koth reset = >>>
+	_assertperm('mod')
+	_koth_score_show()
+	_koth_reset()
+	msg(color(GOLD).'KOTH scores and block reset.')
+<<<
+
+
+# /koth score
+#
+# Show the current KOTH score.
+
+*:/koth score = >>>
+	_koth_score_show()
+<<<
+
+
+# /koth
+#
+# Show usage help.
+
+*:/koth [$] = >>>
+	msg(color(GOLD).'Admin Commands:')
+	msg(color(YELLOW).'/koth stop'.color(GRAY).' - Stop the score keeping task.')
+	msg(color(YELLOW).'/koth start'.color(GRAY).' - Stop the score keeping task.')
+	msg(color(YELLOW).'/koth block'.color(GRAY).' - Look at a block and set it as the flag location.')
+	msg(color(YELLOW).'/koth teams <t1> <t2> ...'.color(GRAY).' - Set team numbers (wool data) for which scores will be kept.')
+	msg(color(YELLOW).'e.g. /koth teams 14 11'.color(GRAY).' - For red and dark blue, respectively.')
+	msg(color(GOLD).'Moderator Commands:')
+	msg(color(YELLOW).'/koth reset'.color(GRAY).' - Reset the scores and clear the flag block.')
+	msg(color(GOLD).'Player Commands:')
+	msg(color(YELLOW).'/koth score'.color(GRAY).' - Show the current score.')
+	msg(color(GRAY).'Scores increment by one for each second a team has their wool in the flag location.')
+<<<

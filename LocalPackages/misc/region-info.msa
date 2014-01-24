@@ -1,0 +1,8 @@
+
+*:'/regions-here' [$] = >>>
+	msg(color(YELLOW).'Regions located here: '.color(WHITE).array_implode(sk_regions_at(ploc()), ', '))
+<<<
+
+*:'/regions-there' [$] = >>>
+	msg(color(YELLOW).'Regions located there: '.color(WHITE).array_implode(sk_regions_at(pcursor()), ', '))
+<<<

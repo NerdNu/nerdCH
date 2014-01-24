@@ -1,18 +1,127 @@
-*:/ban $ = >>>
-    _assertperm('mod', 0)
-    if(_contains('nerd.nu/appeal', $),
-        runas(~op, /ban $)
-    , #else:
-        runas(~op, /ban $ 'nerd.nu/appeal')
-    )
-<<<
 
+*:/bitchslap $ = >>>
+	run_cmd('/ban' $)
+<<<
+/*
+*:/ban $player [$] = >>>
+	_assertperm('mod', 0)
+	if (_contains('nerd.nu/appeal', $)) {
+		runas(player(), /ban $)
+	} else {
+		runas(player(), /ban $ 'nerd.nu/appeal')
+	}
+<<<
+*/
 *:/unban $player = >>>
-    _assertperm('mod', 0)
-    runas(~op, /unban $player)
+	_assertperm('mod', 0)
+	sudo(/unban $player)
 <<<
 
 *:/rbban $p $ = >>>
-    call_alias(concat('/lbrb ', $p))
-    call_alias(concat('/ban ', $p, ' ', $))
+	call_alias(concat('/lbrb ', $p))
+	call_alias(concat('/ban ', $p, ' ', $))
+<<<
+
+
+# /warncrops player [message]
+#	Warn a player for crop grief by mail and add a note.
+#	The player name must match exactly.
+#	Additional arguments after the player name are an extra mail message.
+
+*:/warncrops $player [$] = >>>
+	_assertperm('mod')
+	@server = import('sharedata.source')
+	@additional = $
+	run_cmd('/addnote '.$player.' warned for crop grief on '.@server)
+	call_alias('/mail send '.$player.' If you take crops planted by someone else, you must replant them. -- Moderator')
+	call_alias('/mail send '.$player.' That includes: potatoes, carrots, nether warts, sugar cane and cocoa. -- Moderator')
+	msg(color(GOLD).'Warned '.$player.' for crop grief.')
+	if (@additional != '') {
+		call_alias('/mail send '.$player.' '.@additional)
+		msg(color(GOLD).'Additional mail message:')
+		msg(color(GOLD).@additional)
+	}
+	if (ponline($player)) {
+		run('/cmsg '.$player.' You have been formally warned by a moderator for not replanting crops.')
+		run('/cmsg '.$player.' Check your mail: /mail inbox, /mail read 1, etc.')
+	}
+<<<
+
+
+# /warngrief player [message]
+# 	Warn a player for general grief by mail and add a note.
+#	The player name must match exactly.
+# 	Additional arguments after the player name are an extra mail message.
+
+*:/warngrief $player [$] = >>>
+	_assertperm('mod')
+	@server = import('sharedata.source')
+	@additional = $
+	run_cmd('/addnote '.$player.' warned for general grief on '.@server)
+	call_alias('/mail send '.$player.' You must not edit other players\' builds without permission. -- Moderator')
+	if (@server == 'survival') {
+		call_alias('/mail send '.$player.' You can break into a base to fight, but you must put back the blocks immediately.')
+	}
+	if (@server == 'creative') {
+		call_alias('/mail send '.$player.' Only staff members are allowed to clear old builds. -- Moderator')
+	} else {
+		call_alias('/mail send '.$player.' Do not steal blocks. There is no such thing as an "abandoned" build. -- Moderator')
+	}
+	if (@additional != '') {
+		call_alias('/mail send '.$player.' '.@additional)
+		msg(color(GOLD).'Additional mail message:')
+		msg(color(GOLD).@additional)
+	}
+	if (ponline($player)) {
+		run('/cmsg '.$player.' You have been formally warned by a moderator for editing builds without permission.')
+		run('/cmsg '.$player.' Check your mail: /mail inbox, /mail read 1, etc.')
+	}
+<<<
+
+
+# /bancrops player [message]
+#	Ban a player for crop grief. Additional aruments are added to the ban message after a semicolon.
+#	The player name must match exactly.
+
+*:/bancrops $player [$] = >>>
+	_assertperm('mod')
+	@server = import('sharedata.source')
+	@message = 'crop grief on '.@server
+	if ($ != '') {
+		@message = @message.'; '.$
+	}
+	call_alias('/ban '.$player.' '.@message)
+<<<
+
+
+# /rbbancrops player [message]
+#	Ban the player for crop grief (as with /bancrops) and do a full global rollback.
+
+*:/rbbancrops $player [$] = >>>
+	call_alias(concat('/bancrops ', $player, ' ', $))
+	call_alias(concat('/lbrb ', $player))
+<<<
+
+
+# /bangrief player [message]
+#	Ban a player for general grief. Additional aruments are added to the ban message after a semicolon.
+#	The player name must match exactly.
+
+*:/bangrief $player [$] = >>>
+	_assertperm('mod')
+	@server = import('sharedata.source')
+	@message = 'grief on '.@server
+	if ($ != '') {
+		@message = @message.'; '.$
+	}
+	call_alias('/ban '.$player.' '.@message)
+<<<
+
+
+# /rbbangrief player [message]
+#	Ban the player for general grief (as with /bangrief) and do a full global rollback.
+
+*:/rbbangrief $player [$] = >>>
+	call_alias(concat('/bangrief ', $player, ' ', $))
+	call_alias(concat('/lbrb ', $player))
 <<<

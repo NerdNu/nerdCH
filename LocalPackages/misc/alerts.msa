@@ -1,0 +1,138 @@
+# Commands to control regularly scheduled broadcast server messages.
+
+# /alert
+#	Overall help for the /alert command.
+
+*:/alert = >>>
+	msg(color(LIGHT_PURPLE).'Usage:')
+	msg(color(LIGHT_PURPLE).'    /alert list')
+	msg(color(WHITE)       .'        List all broadcast messages.')
+	msg(color(LIGHT_PURPLE).'    /alert add <message>')
+	msg(color(WHITE)       .'        Add the message to the broadcast rotation.')
+	msg(color(LIGHT_PURPLE).'    /alert remove <number>')
+	msg(color(WHITE)       .'        Remove a message by number.')
+	msg(color(LIGHT_PURPLE).'    /alert interval [<seconds>]')
+	msg(color(WHITE)       .'        Get or set the interval between broadcasts in seconds.')
+	msg(color(LIGHT_PURPLE).'    /alert load <file>')
+	msg(color(WHITE)       .'        Bulk load alerts from a text file. Use with caution.')
+<<<
+
+# /alert list
+#	List all of the alerts. Anyone can run this.
+
+*:/alert list = >>>
+	@alerts = _get_alerts()
+	msg(color(LIGHT_PURPLE).'There are '.array_size(@alerts).' alerts.')
+	@index = 1
+	foreach (@alerts, @a,
+		msg(color(LIGHT_PURPLE).'('.@index.') '.@a)
+		inc(@index)
+	)
+<<<
+
+
+# /alert add message
+#	An admin command to add a new alert.
+
+*:/alert add $ = >>>
+	_assertperm('admin')
+	@alerts = _get_alerts()
+	array_push(@alerts, $)
+	store_value('server.alerts.messages', @alerts)
+	msg(color(LIGHT_PURPLE).'Alert #'.array_size(@alerts).' added.')
+	
+<<<
+
+
+# /alert remove number
+#	An admin command to remove a specific alert by its 1-based /alert list index.
+
+*:/alert remove $number = >>>
+	_assertperm('admin')
+	@alerts = _get_alerts()
+	@number = $number
+	if (!is_integral(@number) || @number < 1 || @number > array_size(@alerts)) {
+		if (array_size(@alerts) == 0) {		
+			die(color(RED).'There are no alerts to remove.')
+		} else {
+			die(color(RED).'You must specify a number from 1 to '.array_size(@alerts).', inclusive.')
+		}
+	}
+
+	@removed = array_remove(@alerts, @number - 1)
+	msg(color(LIGHT_PURPLE).'Removed alert: '.@removed)
+	store_value('server.alerts.messages', @alerts)
+<<<
+
+
+# /alert interval
+#	An admin command to show the interval between broadcast messages, in seconds.
+
+*:/alert interval = >>>
+	_assertperm('admin')
+        @seconds = get_value('server.alerts.seconds')
+        if (is_null(@seconds)) {
+                @seconds = 200
+                store_value('server.alerts.seconds', @seconds)
+	}
+	msg(color(LIGHT_PURPLE).'Alerts are broadcast every '.@seconds.' seconds.')
+<<<
+
+# /alert interval seconds
+#	An admin command to set the interval between broadcast messages, in seconds.
+
+*:/alert interval $seconds = >>>
+	_assertperm('admin')
+	@minInterval = 30
+	@seconds = $seconds
+	if (! is_numeric(@seconds)) {
+		die(color(RED).'You must specify the interval in seconds as a number.')
+	}
+	if (@seconds < @minInterval) {
+		die(color(RED).'The interval must be at least '.@minInterval.' seconds.')
+	}
+
+	@seconds = integer(@seconds)
+	store_value('server.alerts.seconds', @seconds)
+	try(
+		clear_task(get_value('server.alerts.task'))
+	)
+	_start_alerts()
+	msg(color(LIGHT_PURPLE).'The alert broadcast interval was set to '.@seconds.' seconds.')
+<<<
+
+# /alert load <file>
+#	An admin command to read all the alerts from the specified file.
+#	Each line of the file is added as a new alert, in addition to those already present.
+
+*:/alert load $file = >>>
+	_assertperm('admin')
+	@alerts = _get_alerts()
+
+	# Guard against file disclosure. Disallow '/' in filenames. Require '.alerts' suffix.
+	@file = $file
+	if (string_position(@file, '/') != -1) {
+		die(color(RED).'The file must be in the same directory as this script.')
+	}
+	@suffix = '.alerts'
+	if (string_position(@file, @suffix) + length(@suffix) != length(@file)) {
+		die(color(RED),'The file name must end in ".alerts".')
+	}
+
+	# Read file. Add lines that aren't blank.
+	try(
+		@lines = split('\n', read(@file))
+		@count = 0
+		foreach(@lines, @message,
+			@message = trim(@message)
+			if (@message != '') {
+				inc(@count)
+				array_push(@alerts, @message)
+			}
+		)
+		store_value('server.alerts.messages', @alerts)
+		msg(color(LIGHT_PURPLE).'Added '.@count.' alerts.')
+	,#catch
+		msg(color(RED).'That file could not be read.')
+	)
+<<<

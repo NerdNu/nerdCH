@@ -1,20 +1,30 @@
 #Shortcuts for modtrs
 *:/check [$id] = >>>
-    _assertperm('mod', 0)
-	if(has_permission('modtrs.command.check'),
-	    msg('You have permission!')
-		if(equals($id, '-'),
-		    run(/check get_value(concat(strip_colors(player()), 'modreq'))),
-		#else:
-		    if(equals($id, ''),
-		        run(/check),
-		    #else:
-                store_value(concat(strip_colors(player()), 'modreq'), $id)
-			    run(/check $id))))
+	@id = $id
+	if (has_permission('modtrs.command.check')) {
+		@key = concat(strip_colors(player()),'modreq')
+		if (@id == '-') {
+			@id = get_value(@key)
+			run(/check @id)
+		} else if($id == '') {
+			run(/check)
+		} else {
+			run(/check @id)
+			try(
+				#This can apparently happen sometimes.
+				#We can just supress the error, it
+				#won't cause any harm, but it won't
+				#work for this particular player.
+				store_value(@key, @id)
+			)
+		}
+	} else {
+		run(/check)
+	}
 <<<
 
 *:/claim [$id] = >>>
-    _assertperm('mod', 0)
+    _assertperm('restricted', 0)
 	if(not(equals($id, '')),
 		store_value(concat(strip_colors(player()), 'modreq'), $id)
 		run(/claim $id)
@@ -24,7 +34,7 @@
 <<<
 
 *:/done [$id] [$] = >>>
-    _assertperm('mod', 0)
+    #_assertperm('mod', 0)
 	if(not(equals($id, '')),
 		run(/done $id $)
 	,
@@ -32,20 +42,22 @@
 	)
 <<<
 
-*:/tp-id [$id] = >>>
-    _assertperm('mod', 0)
+*:'/tp-id' [$id] = >>>
+    _assertperm('restricted', 0)
 	if(not(equals($id, '')),
-		run(/tp-id $id)
+		run(concat('/tp-id ', $id))
 	,
-		run(/tp-id get_value(concat(strip_colors(player()), 'modreq')))
+		run(concat('/tp-id ', get_value(concat(strip_colors(player()), 'modreq'))))
 	)
 <<<
 
 *:/tpinfo $num = >>>
+    _assertperm('restricted', 0)
     run(concat('/tp-id ', $num))
     run(concat('/check ', $num))
 <<<
 *:/tpc $num = >>>
+    _assertperm('restricted', 0)
     run(concat('/claim ', $num))
     run(concat('/tp-id ', $num))
     run(concat('/check ', $num))
@@ -57,3 +69,4 @@
 #		run(/done @id)
 #	) 
 #<<<
+

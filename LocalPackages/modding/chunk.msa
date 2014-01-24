@@ -1,0 +1,89 @@
+*:/tpchunk $x $z = >>>
+	_assertperm('restricted', 0)
+	set_ploc(player(), multiply($x, 16), array_get(ploc(player()), 1), multiply($z, 16))
+<<<
+
+*:'/visit-chunks' stop = >>>
+	_assertperm('restricted')
+	@task = get_value('visitchunks.task.'.player())
+	if (is_null(@task)) {
+		die(color(DARK_RED).'You\'re not currently visiting chunks.')
+	}
+
+	msg(color(GOLD).'Visitation stopped.')
+	clear_task(@task)
+<<<
+
+*:'/visit-chunks' next $index = >>>
+	_assertperm('restricted')
+	try(
+		@next = integer(max(1, $index))
+		store_value('visitchunks.index.'.player(), @next - 1)
+		msg(color(GOLD).'The next visited position will be index '.@next.'.')
+	,
+		die(color(DARK_RED).'The index needs to be a number.')
+	)
+<<<
+
+*:'/visit-chunks' $period $step $max [$] = >>>
+	_assertperm('restricted')
+	@period = round(max(10, abs($period)))
+	@step = round(max(10, abs($step)))
+	@max = round(max(0, abs($max)))
+	@command = $
+	msg(color(GOLD).'Every '.@period.' seconds,'.' move '.@step.' blocks, between X/Z -'.@max.' and +'.@max.'.')
+	if (@command != '') {
+		msg(color(GOLD).'At each step, run: '.@command)
+	}
+
+	# Stop any existing task.
+	@task = get_value('visitchunks.task.'.player())
+	if (! is_null(@task)) {
+		clear_task(@task)
+	}
+
+	# Compute the total number of steps from -@max to +@max.
+	@count = 2 * floor(@max / @step) + 1
+
+	@task = set_interval(@period * 1000, 0, closure(
+		@index = get_value('visitchunks.index.'.player())
+		if (is_null(@index)) {
+			@index = 0
+		}
+
+		# The step and max may have changed since the last run.
+		@total = @count * @count
+		@index = @index % @total
+
+		@xIndex = @index % @count
+		@zIndex = floor(@index / @count)
+		@x = @step * @xIndex - @max
+		@z = @step * @zIndex - @max
+
+		set_ploc(@x, ploc()[1], @z)
+		msg(color(GOLD).'Step '.(@index+1).' of '.@total.': '.color(YELLOW).'X: '.(@xIndex+1).'/'.@count.' Z: '.(@zIndex+1).'/'.@count.' ==> '.color(GRAY).'('.@x.', '.@z.')')
+		if (@command != '') {
+			msg(color(GOLD).'Run: '.color(GRAY).@command)
+			try(run_cmd(@command))
+		}
+		
+		@next = (@index + 1) % @total
+		store_value('visitchunks.index.'.player(), @next)
+	))
+	store_value('visitchunks.task.'.player(), @task)
+<<<
+
+*:'/visit-chunks' [$] = >>>
+	_assertperm('restricted')
+	msg(color(GOLD).'Usage: ')
+	msg(color(YELLOW).'/visit-chunks stop'.color(GRAY).' - Stop visiting chunks.')
+	msg(color(YELLOW).'/visit-chunks next <index>'.color(GRAY).' - Set the index of the next visited position.')
+	msg(color(YELLOW).'/visit-chunks <period> <step> <max> [<command...>]')
+	msg(color(YELLOW).'	<period>'.color(GRAY).' - The period in seconds between teleports.')
+	msg(color(YELLOW).'	<step>'.color(GRAY).' - The distance in blocks to travel between teleports.')
+	msg(color(YELLOW).'	<max>'.color(GRAY).' - The maximum coordinate +/- X/Z to visit.')
+	msg(color(YELLOW).'	<command>'.color(GRAY).' - Optional command to run after each teleport.')
+	msg(color(GOLD).'/visit-chunks remembers the current position between runs. You can stop visiting and restart later where you left off.')
+	msg(color(GOLD).'Example: ')
+	msg(color(YELLOW).'/visit-chunks 180 100 2000 /remove items 100')
+<<<
