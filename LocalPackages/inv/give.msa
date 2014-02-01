@@ -15,7 +15,7 @@
 	if (import('sharedata.source') != 'creative') {
 		_assertperm('restricted', 1)
 	}
-	@a = _parseiargs($)
+	@a = _parseargs($)
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /give <player> <itemid>[:metadata] [quantity]')
 	} else {
