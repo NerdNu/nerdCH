@@ -27,6 +27,44 @@ mods:/spawnp $player = runas($player, /spawn)
         msg(concat(color(red), 'Usage: /spawnmob <mob>[:<data>] [quantity]')))
 <<<
 
+*:'/set-mob-effect' [$help] = >>>
+	_assertperm('admin')
+	msg(color(GOLD).'Usage:')
+	msg(color(YELLOW).'	/set-mob-effect <radius> <potionID> <strength> <duration> <ambient>')
+	msg(color(GOLD).'Potion ID is from the list at http://minecraft.gamepedia.com/Status_effect#List_of_effects')
+	msg(color(GOLD).'Duration is in seconds')
+	msg(color(GOLD).'Ambient is true|false and designates if the particle effects should be shown.')
+<<<
+
+*:'/set-mob-effect' $radius $potionid $strength $seconds $ambient = >>>
+	_assertperm('admin')
+	@MAX_RADIUS = 20
+	@radius = $radius
+	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
+		die(color(RED).'The first argument must be a number no more than '.@MAX_RADIUS.'.')
+	}
+	msg(color(GOLD).'Configuring mobs within'$radius'blocks to have ID'$potionid'status effect at strength'$strength'for'$seconds'seconds, ambient (visible effects) is'$ambient'.')
+	foreach (entities_in_radius(ploc(), $radius), @mob,
+		try(
+			set_mob_effect(@mob, $potionid, $strength, $seconds, $ambient,)
+		)
+	)
+<<<
+
+*:'/get-mob-effects' [$] = >>>
+	_assertperm('admin')
+	@range = 3
+	@message = color(GOLD).'Mobs within '.@range.' blocks of that block have effects::'
+	@mobs = entities_in_radius(pcursor(), @range, array(WITHER, WITCH, CREEPER, SKELETON, SPIDER, GIANT, ZOMBIE, SLIME, GHAST, PIG_ZOMBIE, ENDERMAN, CAVE_SPIDER, SILVERFISH, BLAZE, MAGMA_CUBE, ENDER_DRAGON, PIG, SHEEP, COW, CHICKEN, SQUID, WOLF, MUSHROOM_COW, SNOWMAN, OCELOT, IRON_GOLEM, VILLAGER, HORSE, PLAYER,))
+	foreach (@mobs, @mob,
+		try (
+			@effect = get_mob_effects(@mob)
+			@results = @results.' '.@effect.' ('.to_lower(entity_type(@mob)).')'
+		)
+	)
+	msg(@message.@results)
+<<<
+
 #*:/rain [$status='clear'] = >>>
 #    _assertperm('admin', 0)
 #    sudo(concat('/weather ', $status))
