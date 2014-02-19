@@ -43,7 +43,7 @@
 				msg(color(BLUE).'Distance: '.color(WHITE).sprintf('%.3f', sqrt(pow(@z - @ploc['z'], 2) + pow(@x - @ploc['x'], 2))))
 				@yaw = to_degrees(atan2((@ploc['z'] - @z), (@ploc['x'] - @x)))
 				@yaw += 90
-				if(not(pinfo([pName], [14]))){
+				if(!pinfo(pName, 14)){
 				    pfacing(@yaw, pfacing()[1])
 				}
 				break()
