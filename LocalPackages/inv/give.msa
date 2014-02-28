@@ -12,9 +12,10 @@
 <<<
 
 *:/give $player $ = >>>
-	if (import('sharedata.source') != 'creative') {
-		_assertperm('restricted', 1)
-	}
+	#if (import('sharedata.source') != 'creative') {
+	#	_assertperm('restricted', 1)
+	#}
+	_assertperm('restricted')
 	@a = _parseiargs($)
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /give <player> <itemid>[:metadata] [quantity]')
