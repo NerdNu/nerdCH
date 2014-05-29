@@ -7,8 +7,9 @@
 	msg(color(LIGHT_PURPLE).'Usage:')
 	msg(color(LIGHT_PURPLE).'    /alert list')
 	msg(color(WHITE)       .'        List all broadcast messages.')
-	msg(color(LIGHT_PURPLE).'    /alert add <message>')
-	msg(color(WHITE)       .'        Add the message to the broadcast rotation.')
+	msg(color(LIGHT_PURPLE).'    /alert add <color> <message>')
+	msg(color(WHITE)       .'        Add the message to the broadcast rotation. (Colors: purple, red, green)')
+	msg(color(WHITE)       .'        Shortcuts: /alert-p <msg>, /alert-r <msg>, /alert-g <msg>')
 	msg(color(LIGHT_PURPLE).'    /alert remove <number>')
 	msg(color(WHITE)       .'        Remove a message by number.')
 	msg(color(LIGHT_PURPLE).'    /alert interval [<seconds>]')
@@ -25,22 +26,50 @@
 	msg(color(LIGHT_PURPLE).'There are '.array_size(@alerts).' alerts.')
 	@index = 1
 	foreach (@alerts, @a,
-		msg(color(LIGHT_PURPLE).'('.@index.') '.@a)
+		if (is_array(@a)) {
+			msg(color(@a[color]).'('.@index.') '.@a[msg])
+		} else {
+			msg(color(LIGHT_PURPLE).'('.@index.') '.@a)
+		}
 		inc(@index)
 	)
 <<<
 
 
-# /alert add message
+# /alert add color message
 #	An admin command to add a new alert.
 
-*:/alert add $ = >>>
+*:/alert add $color $ = >>>
+
 	_assertperm('admin')
 	@alerts = _get_alerts()
-	array_push(@alerts, $)
+
+	@alertcolor = 'LIGHT_PURPLE'
+	if ($color == 'red') {
+		@alertcolor = 'RED'
+	}
+	else if ($color == 'green') {
+		@alertcolor = 'GREEN'
+	}
+	@new = array('color': @alertcolor, 'msg': $)
+
+	array_push(@alerts, @new)
 	store_value('server.alerts.messages', @alerts)
 	msg(color(LIGHT_PURPLE).'Alert #'.array_size(@alerts).' added.')
 	
+<<<
+
+
+# Short aliases for easier alert-adding
+
+*:'/alert-p' $ = >>>
+	call_alias('/alert add purple ' . $)
+<<<
+*:'/alert-r' $ = >>>
+	call_alias('/alert add red ' . $)
+<<<
+*:'/alert-g' $ = >>>
+	call_alias('/alert add green ' . $)
 <<<
 
 
@@ -60,7 +89,11 @@
 	}
 
 	@removed = array_remove(@alerts, @number - 1)
-	msg(color(LIGHT_PURPLE).'Removed alert: '.@removed)
+	if (is_array(@removed)) {
+		msg(color(LIGHT_PURPLE).'Removed alert: '.@removed[msg])
+	} else {
+		msg(color(LIGHT_PURPLE).'Removed alert: '.@removed)
+	}
 	store_value('server.alerts.messages', @alerts)
 <<<
 

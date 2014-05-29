@@ -28,7 +28,12 @@ proc(_start_alerts,
 			@index = 0
 		}
 		@index = mod(@index, array_size(@alerts))
-		broadcast(color(LIGHT_PURPLE).'[Server] '.@alerts[@index])
+		if (is_array(@alerts[@index])) {
+			@a = @alerts[@index]
+			broadcast(color(@a[color]).'[Server] '.@a[msg])
+		} else {
+			broadcast(color(LIGHT_PURPLE).'[Server] '.@alerts[@index])
+		}
 		store_value('server.alerts.index', @index + 1)
 	))
 
