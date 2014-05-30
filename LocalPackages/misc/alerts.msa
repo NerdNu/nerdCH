@@ -8,7 +8,7 @@
 	msg(color(LIGHT_PURPLE).'    /alert list')
 	msg(color(WHITE)       .'        List all broadcast messages.')
 	msg(color(LIGHT_PURPLE).'    /alert add <color> <message>')
-	msg(color(WHITE)       .'        Add the message to the broadcast rotation.
+	msg(color(WHITE)       .'        Add the message to the broadcast rotation.')
 	msg(color(LIGHT_PURPLE).'    /alert remove <number>')
 	msg(color(WHITE)       .'        Remove a message by number.')
 	msg(color(LIGHT_PURPLE).'    /alert interval [<seconds>]')
