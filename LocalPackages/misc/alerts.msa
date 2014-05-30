@@ -39,37 +39,53 @@
 # /alert add color message
 #	An admin command to add a new alert.
 
-*:/alert add $color $ = >>>
+*:/alert add $alertColor $ = >>>
 
 	_assertperm('admin')
 	@alerts = _get_alerts()
 
-	@alertcolor = 'LIGHT_PURPLE'
-	if ($color == 'red') {
-		@alertcolor = 'RED'
-	}
-	else if ($color == 'green') {
-		@alertcolor = 'GREEN'
-	}
-	@new = array('color': @alertcolor, 'msg': $)
+	# Canonical color names
+	@validColors = array(
+		aqua: AQUA,
+		black: BLACK,
+		blue: BLUE,
+		darkblue: DARK_BLUE,
+		darkgray: DARK_GRAY,
+		darkgrey: DARK_GRAY,
+		darkred: DARK_RED,
+		darkpurple: DARK_PURPLE,
+		gold: GOLD,
+		gray: GRAY,
+		grey: GRAY,
+		green: GREEN,
+		pink: LIGHT_PURPLE,
+		purple: LIGHT_PURPLE,
+		red: RED,
+		yellow: YELLOW,
+		white: WHITE
+	)
 
-	array_push(@alerts, @new)
+	# Canonicalise color parameter
+	@colorName = to_lower(replace($alertColor, '_', ''))
+
+	# Handle command without a specified color
+	if (array_index_exists(@validColors, @colorName)) {
+		@actualColor = @validColors[@colorName]
+		@alertMessage = $
+	} else {
+		msg(color(RED).'"'.$alertColor.'" is not a valid color name. Defaulting to light purple.')
+		@actualColor = LIGHT_PURPLE
+		@alertMessage = $alertColor.' '.$
+	}
+
+	# Add the new alert
+	@newAlert = array(color: @actualColor, msg: colorize(@alertMessage))
+	array_push(@alerts, @newAlert)
+
+	# Save the updated alerts
 	store_value('server.alerts.messages', @alerts)
 	msg(color(LIGHT_PURPLE).'Alert #'.array_size(@alerts).' added.')
 	
-<<<
-
-
-# Short aliases for easier alert-adding
-
-*:'/alert-p' $ = >>>
-	call_alias('/alert add purple ' . $)
-<<<
-*:'/alert-r' $ = >>>
-	call_alias('/alert add red ' . $)
-<<<
-*:'/alert-g' $ = >>>
-	call_alias('/alert add green ' . $)
 <<<
 
 
