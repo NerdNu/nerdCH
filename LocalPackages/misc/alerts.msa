@@ -40,31 +40,25 @@
 
 *:/alert add $alertColor $ = >>>
 
-	_assertperm('admin')
-	@alerts = _get_alerts()
+	_assertperm('admin');
+	@alerts = _get_alerts();
 
 	# Canonical color names
 	@validColors = array(
-		aqua: AQUA,
-		black: BLACK,
-		blue: BLUE,
-		darkaqua: DARK_AQUA,
-		darkblue: DARK_BLUE,
-		darkgray: DARK_GRAY,
 		darkgrey: DARK_GRAY,
-		darkgreen: DARK_GREEN,
-		darkred: DARK_RED,
-		darkpurple: DARK_PURPLE,
-		gold: GOLD,
-		gray: GRAY,
+		orange: GOLD,
 		grey: GRAY,
-		green: GREEN,
 		pink: LIGHT_PURPLE,
-		purple: LIGHT_PURPLE,
-		red: RED,
-		yellow: YELLOW,
-		white: WHITE
-	)
+		purple: LIGHT_PURPLE
+	);
+	@excluded = array(BOLD, ITALIC, PLAIN_WHITE, RANDOM, STRIKETHROUGH, UNDERLINE);
+	foreach (reflect_pull(enum, ChatColor), @color,
+		if (!array_contains(@excluded, @color)) {
+			@key = to_lower(replace(@color, '_', ''));
+            @validColors[@key] = @color;
+            @validColors[replace(@key, 'gray', 'grey')] = @color;
+		}
+	);
 
 	# Canonicalise color parameter
 	@colorName = to_lower(replace($alertColor, '_', ''))
@@ -74,7 +68,9 @@
 		@actualColor = @validColors[@colorName]
 		@alertMessage = $
 	} else {
-		msg(color(RED).'"'.$alertColor.'" is not a valid color name. Defaulting to light purple.')
+		if ($alertColor[0] != '&') {
+			msg(color(RED).'"'.$alertColor.'" is not a valid color name. Defaulting to light purple.')
+		}
 		@actualColor = LIGHT_PURPLE
 		@alertMessage = $alertColor.' '.$
 	}
