@@ -9,16 +9,3 @@
 <<<
 
 *:/maps [$] = call_alias(concat('/map ', $))
-
-#Allows for a player to get mumble connection information without typing !mumble in public chat
-
-*:'/mumble' [$] = >>>
-	msg(color(GOLD).'Download Mumble from http://mumble.sourceforge.net')
-	msg(color(GOLD).'Join mumble.nerd.nu, port 6162 (voice chat).')
-<<<
-
-#Allows for a player to get IRC connection information without typing !irc in public chat
-
-*:'/irc' [$] = >>>
-	msg(color(GOLD).'Join us on IRC! irc.gamesurge.net #RedditMC')
-<<<
