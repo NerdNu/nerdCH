@@ -1,0 +1,7 @@
+*:/s = >>>
+	msg(color(GOLD).'Sends a message to global chat - in italics, to indicate sarcasm.');
+<<<
+
+*:/s $ = >>>
+	msg(color(ITALIC).$);
+<<<
