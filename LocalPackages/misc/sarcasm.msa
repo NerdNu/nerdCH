@@ -3,5 +3,5 @@
 <<<
 
 *:/s $ = >>>
-	msg(color(ITALIC).$);
+	chat(color(ITALIC).$);
 <<<
