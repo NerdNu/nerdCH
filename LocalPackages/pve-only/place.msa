@@ -80,6 +80,7 @@
 	}
 
 	@args = parse_args($)
+	if(equals(array_size(@args),2),array_insert(@args,64,1))
 	if (array_size(@args) == 3){
 		if (or(!is_numeric(@args[0]),!is_numeric(@args[1]),!is_numeric(@args[2]))){
 			die(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>] (coordinates are optional')
