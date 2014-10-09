@@ -73,7 +73,7 @@
 	_assertperm('admin', 1)
 	@item = pinv(player(), null)
 	if (@item != null && array_get(@item, 'type') == 387) {
-		set_pinv(array(null: array(type: 386, meta: @item['meta'])))
+		set_pinv(array("": array(type: 386, meta: @item['meta'])))
 	} else {
 		msg('You must be holding a book.')
 	}
