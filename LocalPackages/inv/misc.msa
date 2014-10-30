@@ -25,7 +25,7 @@
     if (is_null(@meta)) {
         @meta = array();
     }
-    @meta['display'] = $;
+    @meta['display'] = colorize($);
     set_itemmeta(null, @meta);
 <<<
 
@@ -44,7 +44,7 @@
     if (is_null(@meta)) {
         @meta = array();
     }
-    @lines = split('|', $);
+    @lines = split('|', colorize($));
     @meta['lore'] = @lines;
     set_itemmeta(null, @meta);
 <<<
