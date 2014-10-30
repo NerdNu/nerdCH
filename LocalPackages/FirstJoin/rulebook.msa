@@ -1,3 +1,6 @@
+/**
+# Superceded by /book rules, or /rulebook alias in books.msa
+
 *:'/rulebook' [$] = >>>
 	@file = import('shared.firstjoin.book')
 	if (@file == null) {
@@ -38,43 +41,5 @@
 		}
 	}
 <<<
+*/
 
-*:'/paste' [$] = >>>
-	_assertperm('admin', 1)
-	try(@pages = get_itemmeta(null)['pages'],
-		@e,
-		msg('You must be holding a book.')
-		die())
-	@converted = array()
-	foreach(@page in @pages){
-		array_push(@converted, replace(replace(@page, '&', '&&'), '\u00a7', '&'))
-	}
-	@request = array(
-		paste_data: array_implode(@converted, '>>>>>>>>>>>>>>>>>>>\n'),
-		paste_lang: 'text',
-		api_submit: true,
-		mode: xml,
-		paste_password: $,
-		paste_user: player())
-	http_request('http://paste.thezomg.com/', array(
-		params: @request,
-		success:
-			closure(@response) {
-				@id = xml_read(@response['body'], 'result/id')
-				@hash = xml_read(@response['body'], 'result/hash')
-				msg(sprintf('http://paste.thezomg.com/%s/%s', @id, @hash))
-				if ($ != '') {
-					msg('PW: ' . $)
-				}
-			}))
-<<<
-
-*:'/edit' [$] = >>>
-	_assertperm('admin', 1)
-	@item = pinv(player(), null)
-	if (@item != null && array_get(@item, 'type') == 387) {
-		set_pinv(array("": array(type: 386, meta: @item['meta'])))
-	} else {
-		msg('You must be holding a book.')
-	}
-<<<
