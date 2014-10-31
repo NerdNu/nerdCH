@@ -9,6 +9,7 @@
             msg(color(GOLD).'/book-publish <name>'.color(GREEN).' to save and publish a held book to /book-list.')
             msg(color(GOLD).'/book-delete <name>'.color(GREEN).' to delete a saved book.')
             msg(color(GOLD).'/book-download <url>'.color(GREEN).' to download a formatted text file from the internet.')
+            msg(color(GOLD).'/book-cooldown <minutes>'.color(GREEN).'to set the cooldown period for the use of /book.')
             msg(color(GOLD).'/book-legacy'.color(GREEN).' behaves just like the old /rulebook command; gives a copy of file.txt.')
             msg(color(GOLD).'/rulebook'.color(GREEN).' technically is available to users, is an alias for \"/book rules\", and if no such book exists in /book-list, it tries to import the legacy /rulebook file into /book-list.')
         }
@@ -30,7 +31,11 @@
 
         if (@space) {
             # Minimum time period between giving books.
-            @BOOK_MINUTES = 2880
+            @BOOK_MINUTES = get_value('cooldowns.book')
+            if (is_null(@BOOK_MINUTES)) {
+                @BOOK_MINUTES = 2880
+                store_value('cooldowns.book',2880)
+            }
 
             # Check the last time the player ran this command.
             @lastTime = get_value('cooldowns.book.'.player())
@@ -51,6 +56,19 @@
         }
     }
 <<<
+
+*:'/book-cooldown' [$time] = >>>
+    _assertperm('admin', 1)
+    if (is_numeric($time)) {
+        store_value('cooldowns.book',integer($time))
+        msg(color(GOLD).'Book cooldown set to '.integer($time).' minutes.')
+    } else {
+        msg(color(GOLD).'Cooldown currently set to '.get_value('cooldowns.book').' minutes.')
+        msg(color(RED).'Usage: /book-cooldown <minutes>')
+        msg(color(RED).'Use to set cooldown time on the /book command.')
+    }
+<<<
+    
 
 # save held book to database
 *:'/book-publish' [$name] = >>>
