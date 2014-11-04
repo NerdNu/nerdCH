@@ -1,20 +1,24 @@
 # get a free copy of any book in /book-list - with cooldown
-*:'/book' [$name] = >>>
+*:'/book' [$name] [$] = >>>
+    @label = to_lower($name)
     if ($name == '') {
-        msg(color(DARK_GREEN).'Usage: /book <name>')
+        msg(color(DARK_GREEN).'Usage: '.color(GOLD).'/book <name>')
         msg(color(DARK_GREEN).'Gives you a free copy of any available book.')
-        msg(color(DARK_GREEN).'Type /book-list to see a list of all available books.')
+        msg(color(DARK_GREEN).'Type '.color(GOLD).'/book-list'.color(DARK_GREEN).' to see a list of all available books.')
         if (has_permission('nerdch.level.admin')) {
             msg(color(RED).'Admin commands:')
-            msg(color(GOLD).'/book-publish <name>'.color(GREEN).' to save and publish a held book to /book-list.')
-            msg(color(GOLD).'/book-delete <name>'.color(GREEN).' to delete a saved book.')
-            msg(color(GOLD).'/book-download <url>'.color(GREEN).' to download a formatted text file from the internet.')
-            msg(color(GOLD).'/book-cooldown <minutes>'.color(GREEN).'to set the cooldown period for the use of /book.')
-            msg(color(GOLD).'/book-legacy'.color(GREEN).' behaves just like the old /rulebook command; gives a copy of file.txt.')
-            msg(color(GOLD).'/rulebook'.color(GREEN).' technically is available to users, is an alias for \"/book rules\", and if no such book exists in /book-list, it tries to import the legacy /rulebook file into /book-list.')
+            msg(color(GOLD).'/book-cooldown <minutes>'.color(DARK_GREEN).'to set the cooldown period for the use of /book.')
+            msg(color(GOLD).'/book-publish <name>'.color(DARK_GREEN).' to save and publish a held book to /book-list.')
+            msg(color(GOLD).'/book-delete <name>'.color(DARK_GREEN).' to delete a saved book.')
+            msg(color(GOLD).'/edit'.color(DARK_GREEN).' changes a held signed book to an editable version.')
+            msg(color(GOLD).'/change-author <author>'.color(DARK_GREEN).' Changes the displayed Author of a written book.')
+            msg(color(GOLD).'/book-download <url>'.color(DARK_GREEN).' to download a formatted text file from the internet.')
+            msg(color(GOLD).'/paste [password]'.color(DARK_GREEN).' sends contents of held book to paste.thezomg.com, with optional password.')
+            msg(color(GOLD).'/book-legacy'.color(DARK_GREEN).' behaves just like the old /rulebook command; gives a copy of file.txt.')
+            msg(color(GOLD).'/rulebook'.color(DARK_GREEN).' technically is available to users, is an alias for \"/book rules\", and if no such book exists in /book-list, it tries to import the legacy /rulebook file into /book-list.')
         }
         die()
-    } else if (has_value('books.'.$name) == false) {
+    } else if (has_value('books.'.@label) == false) {
         console(color(RED).'book: '.$name.' requested, but it does not exist')
         msg(color(RED).'No book by that name exists. Double-check /book-list.')
         die()
@@ -46,8 +50,8 @@
             # Admins can bypass the rate restriction to work on book text in game.
             if (has_permission('nerdch.level.admin') || @lastTime + (1000 * 60 * @BOOK_MINUTES) < time()) {
                 store_value('cooldowns.book.'.player(), time())
-                @count = pgive_item(player(), 387, 1, get_value('books.'.$name))
-                msg(color(GOLD).'You\'ve been given a copy of '.array_get(get_value('books.'.$name),'title').'.')
+                @count = pgive_item(player(), 387, 1, get_value('books.'.@label))
+                msg(color(GOLD).'You\'ve been given a copy of '.array_get(get_value('books.'.@label),'title').'.')
             } else {
                 msg(color(RED).'You need to wait at least '.@BOOK_MINUTES.' minutes before asking for another book.')
             }
@@ -57,7 +61,8 @@
     }
 <<<
 
-*:'/book-cooldown' [$time] = >>>
+# set the interval between players' ability to receive books with /book
+*:'/book-cooldown' [$time] [$] = >>>
     _assertperm('admin', 1)
     if (is_numeric($time)) {
         store_value('cooldowns.book',integer($time))
@@ -71,11 +76,12 @@
     
 
 # save held book to database
-*:'/book-publish' [$name] = >>>
+*:'/book-publish' [$name] [$] = >>>
     _assertperm('admin', 1)
-    if ($name == false) {
-        msg(color(RED).'Usage: /book-publish [name]')
+    if ($name == '' || $ == true) {
+        msg(color(RED).'Usage: /book-publish <label>')
         msg(color(RED).'Saves a copy of a held book to /book-list, available via /book')
+        msg(color(RED).'<label> must be a single term without spaces')
     } else {
         try(@pages = get_itemmeta(null)['pages'],
             @e,
@@ -86,44 +92,44 @@
         } else {
             @booklist = get_value('books')
         }
-        array_push(@booklist,$name)
-        @booklist = array_unique(@booklist)
-        array_sort(@booklist)
+        @label = to_lower($name)
+        array_set(@booklist,@label,$name)
         store_value('books',@booklist)
-        store_value('books.'.$name,get_itemmeta(null))
-        msg(color(GOLD).'Book saved as '.$name)
+        store_value('books.'.@label,get_itemmeta(null))
+        msg(color(GOLD).'Book saved as '.color(BLUE).$name)
     }
 <<<
 
 *:'/book-list' [$] = >>>
-    if (has_value('books') == false) {
+    if (has_value('books') == false || get_value('books') == '{}') {
         msg(color(DARK_GREEN).'There are no books currently available.')
         die()
     }
     msg(color(DARK_GREEN).'The following books are available:')
-    @books = get_value('books')
-    foreach(@books, @name,
+    @booklist = get_value('books')
+    foreach(@booklist, @name,
         msg(color(BLUE).' • '.@name)
     )
-    msg(color(DARK_GREEN).'Type /book <name> to receive your free book.')
+    msg(color(DARK_GREEN).'Type '.color(GOLD).'/book <name>'.color(DARK_GREEN).' to receive your free book.')
 <<<
 
 # remove book from database
 *:'/book-delete' [$name] [$] = >>>
     _assertperm('admin', 1)
+    @label = to_lower($name)
     if ($name == '') {
         msg(color(RED).'Usage: /book-delete <name>')
         msg(color(RED).'Permanently removes a saved book from /book-list.')
         die()
     }
-    if (not(has_value('books.'.$name))) {
+    if (not(has_value('books.'.@label))) {
         msg(color(RED).$name.' is not a valid book. Use /book-list.')
     } else {
         @booklist = get_value('books')
-        clear_value('books.'.$name)
-        array_remove_values(@booklist,$name)
+        clear_value('books.'.@label)
+        array_remove(@booklist,@label)
         store_value('books',@booklist)
-        msg(color(RED).$name.' removed from books.')
+        msg(color(BLUE).$name.color(RED).' removed from books.')
     }
 <<<
 
@@ -205,9 +211,7 @@
             } else {
                 @booklist = get_value('books')
             }
-            array_push(@booklist,'rules')
-            @booklist = array_unique(@booklist)
-            array_sort(@booklist)
+            array_set(@booklist,'rules','Rules')
             store_value('books',@booklist)
             run_cmd('/book rules')
         }
@@ -215,11 +219,17 @@
 <<<
 
 # Change the displayed Author of a written book
-'/change-author' $ = >>>
+'/change-author' [$] = >>>
     _assertperm('admin')
+    if ($ == '' || get_itemmeta(null)['author'] == false) {
+        msg(color(RED).'Usage: /change-author <Author>')
+        msg(color(RED).'Changes the author of a held written book.')
+        die()
+    }
     @meta = get_itemmeta(null)
     @meta['author'] = $
     set_itemmeta(null, @meta)
+    msg(color(DARK_GREEN).'Book author changed to '.color(GOLD).$)
 <<<
 
 # Send contents of held book to paste.thezomg.com, with optional password
