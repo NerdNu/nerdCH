@@ -106,7 +106,10 @@ mods:/spawnp $player = runas($player, /spawn)
 <<<
 
 *:/hat [$data] = >>>
-    _assertperm('admin', 0)
+	if (import('sharedata.source') != 'creative') {
+		_assertperm('admin', 0)
+	}
+
     if(equals(pinv(player(), 103), null), 
         set_pinv(array(103: array(type: if(equals($data, ''), 298, $data)))),
     #else:
@@ -265,5 +268,44 @@ mods:/spawnp $player = runas($player, /spawn)
 	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
 	foreach (array_keys(@counts), @type,
 		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
+	)
+<<<
+
+*:'/count-entities-player' $player $radius [$] = >>>
+	_assertperm('admin')
+	try (
+		pinfo($player),
+		die(color(RED) . 'The first argument must be an online player')
+	)
+	if (!is_numeric($radius)) {
+		die(color(RED).'The second argument must be the radius.')
+	}
+	@maxRadius = 200
+	@radius = if ($radius > @maxRadius, @maxRadius, $radius)
+	@types = array()
+	@counts = associative_array()
+	foreach (parse_args($), @type,
+		array_push(@types, to_lower(@type))
+	)
+	@entities = entities_in_radius(ploc($player), @radius, @types)
+	#msg(array_implode(@entities, ', '))
+	foreach (@entities, @e,
+		@key = to_lower(entity_type(@e))
+		if (array_index_exists(@counts, @key)) {
+			inc(@counts[@key])
+		} else {
+			@counts[@key] = 1
+		}
+	)
+	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of '.$player.':')
+	foreach (array_keys(@counts), @type,
+		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
+	)
+<<<
+
+*:'/count-entities-all' $radius [$] = >>>
+	_assertperm('admin')
+	foreach(all_players(), @p,
+		call_alias('/count-entities-player' @p $radius $)
 	)
 <<<

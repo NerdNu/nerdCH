@@ -1,0 +1,9 @@
+*:'/can-pickup' = >>>
+        _assertperm('admin')
+        msg(color(GOLD).'Configuring mobs within 5 blocks to pick up items.')
+        foreach (entities_in_radius(ploc(), 5), @mob,
+                try(
+                        set_can_pickup_items(@mob, true)
+                )
+        )
+<<<

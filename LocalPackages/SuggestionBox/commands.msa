@@ -1,0 +1,87 @@
+# Note that starting the command with ! prevents all logging of the command.
+!*:'/suggestion-box' [$] = >>>
+
+	if($ == ''){
+		# Show usage
+		msg(color(light_purple).'Got a suggestion, but want to remain anonymous?')
+		msg(color(light_purple).'Use /suggestion-box! If your post is too long,')
+		msg(color(light_purple).'use a pastebin like'.color(red).' http://paste.thezomg.com')
+		msg(color(light_purple).'and submit the link here.')
+		msg(color(light_purple).'Your suggestion is 100% anonymous, and you can')
+		msg(color(light_purple).'audit this source code by running '.color(dark_purple).'/suggestion-box-code')
+	} else {
+		#Hash the username, so we can anonymously track users, to prevent abuse
+		@hash = md5(player())
+		@abusers = get_value('suggestionbox.abusers')
+		if(!is_array(@abusers)){
+			#first run
+			@abusers = array()
+		}
+		if(array_contains(@abusers, @hash)){
+			die(color(red).'Sorry, you have been banned from using the suggestion box for abuse :(')
+		}
+		
+		@suggestions = get_value('suggestionbox.suggestions')
+		if(!is_array(@suggestions)){
+			@suggestions = associative_array()
+		}
+		if(array_index_exists(@suggestions, @hash)){
+			@userSuggestions = @suggestions[@hash]
+		} else {
+			@userSuggestions = array()
+			@suggestions[@hash] = @userSuggestions
+		}
+
+		array_push(@userSuggestions, $)
+		store_value('suggestionbox.suggestions', @suggestions)
+		msg(color(gold).'Hey, thanks for your input! We appreciate your feedback!')
+	}
+	
+<<<
+
+*:'/suggestion-box-remove' $userHash $id = >>>
+
+	if(!has_permission('nerdch.level.admin'), die())
+	@suggestions = get_value('suggestionbox.suggestions')
+	if(array_index_exists(@suggestions, $userHash)){
+		@userSuggestions = @suggestions[$userHash]
+		if(array_index_exists(@userSuggestions, $id)){
+			array_remove(@userSuggestions, $id)
+			if(array_size(@userSuggestions) == 0){
+				array_remove(@suggestions, $id)
+			}
+			store_value('suggestionbox.suggestions', @suggestions)
+			msg(color(gold).'Suggestion removed')
+		} else {
+			die('Oops, there is no suggestion with that id')
+		}
+	} else {
+		die('Oops, that user hash doesn\'t exist')
+	}
+
+<<<
+
+*:'/suggestion-box-code' = msg(read('./commands.msa'))
+
+
+*:'/suggestion-box-abuser' $addRemove $abuserHash = >>>
+	
+	if($addRemove != 'add' && $addRemove != 'remove' || length($abuserHash) != 32){
+		die(color(light_purple).'Usage: /suggestion-box-abuse <add/remove> <32characterHash>')
+	}
+	if(!has_permission('nerdch.level.admin'), die())
+	@abusers = get_value('suggestionbox.abusers')
+	if(!is_array(@abusers)){
+		@abusers = array()
+	}
+	if($addRemove == 'add'){
+		array_push(@abusers, $abuserHash)
+	} else {
+		array_remove_values(@abusers, $abuserHash)
+	}
+	store_value('suggestionbox.abusers', @abusers)
+	msg(color(gold).'Used added/remove to/from abuser list')
+	
+<<<
+
+

@@ -16,15 +16,15 @@
 
 #TODO: What do we actually need from the below?
 
-*:/warn $player [$] = >>>
-    _assertperm('admin', 0)
-    assign(@ploc, ploc(_getonlinename($player)))
-    array_set(@ploc, 1, 0)
-    lightning(@ploc)
-    if($ != ''){
-	tmsg($player, color(red).$)
-    }
-<<<
+#*:/warn $player [$] = >>>
+#    _assertperm('admin', 0)
+#    assign(@ploc, ploc(_getonlinename($player)))
+#    array_set(@ploc, 1, 0)
+#    lightning(@ploc)
+#    if($ != ''){
+#	tmsg($player, color(red).$)
+#    }
+#<<<
 
 *:/striket = >>>
     _assertperm('admin', 0)

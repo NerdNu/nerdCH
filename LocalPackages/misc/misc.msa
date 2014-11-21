@@ -56,7 +56,7 @@
 *:/modlist = >>>
 	assign(@mods, array())
         foreach(all_players(), @p,
-		if (is_null(get_value('list.hide.'.@p)) && has_permission(@p, 'nerdch.level.mod')) {
+		if (is_null(get_value('list.hide.'.to_lower(@p))) && has_permission(@p, 'nerdch.level.mod')) {
 			array_push(@mods, @p)
 		}
 	)
@@ -88,7 +88,7 @@
 	msg(color(GOLD).@p.' will be shown in the player list.')
 <<<
 
-*:/list = >>>
+*:/list [$] = >>>
 	assign(@all, array())
 	assign(@players, all_players())
 	array_sort(@players)
@@ -294,7 +294,16 @@ mods:/kick $player [$] = >>>
 #        }
 #<<<
 
-/whoami [$] = msg(player())
+/whoami [$] = >>>
+	if(player() == 'WondrLand' && rand(0, 5) == 0){
+		die('an idiot');
+	}
+	msg(player())
+<<<
+
+*:/whereami [$] = >>>
+	msg(import('sharedata.source'));
+<<<
 
 # Used from console only.
 

@@ -71,13 +71,15 @@ bind(player_interact, null, array(block: 68, button: 'right'), @event,
 				_msg2(concat('Enjoy your free ', @givename, '!')),
 			'warp',
 				if(equals(@text[3], color(0)),
-					runas('~op', concat('/ci ', @event['player'])))
+					sudo(concat('/ci ', @event['player'])))
+				msg(get_value('warps.'.@text[2]))
 			    set_ploc(get_value(concat('warps.', @text[2]))),
 				#scriptas('~op', call_alias(concat('/warp ', @text[2]))),
 			'kit',
-				if(equals(@text[3], color(0)),
-					runas('~op', concat('/ci ', @event['player'])))
-				runas('~op', concat('/kit ', @text[2])),
+				#if(equals(@text[3], color(0)),
+				#	runas('~op', concat('/ci ', @event['player'])))
+				#runas('~op', concat('/kit ', @text[2])),
+                                _kit(@text[2]),
 			'announce',
 				assign(@key, 'trade.announces')
 				assign(@announces, if(has_value(@key), get_value(@key), array()))
@@ -99,6 +101,7 @@ bind(player_interact, null, array(block: 68, button: 'right'), @event,
 				_msg2('Unsupported sign!')),
 	#else: (not a functional trade sign)
 		if(and(equals(pinfo(@event['player'], 6), '290:0'),			 #if they're holding a wood hoe
+				msg('OMG WHAT ARE YOU DOING')
 			   has_permission(@event['player'], 'tradesigns.create')),  #and if they have permission
 			assign(@command, reg_match('\\[(.*)\\]', to_lower(@text[0]))) #  regex match the first line
 			if(array_index_exists(@command, 0),						   #  if there's a match...),
@@ -174,6 +177,7 @@ bind(player_interact, null, array(block: 68, button: 'right'), @event,
 						assign(@valid, 0))
 				#end switch
 				if(equals(@valid, 1),
+					
 					set_sign_text(@event['location'], @newsign)
 					_msg2('OK, sign is now active!')),
 			#else:

@@ -8,11 +8,12 @@
 <<<
 
 # padmins did not approve this command
-#*:'/regions-at' $x $y $z [$world] = >>>
-#	msg(color(YELLOW).'Regions located at '.$x.' '.$y.' '.$z.'in '.if(equals($world,''),pworld(),$world).': '.color(WHITE).array_implode(sk_regions_at(array($x,$y,$z,if(equals($world,''),pworld(),$world))), ', '))
-#<<<
+/*
+*:'/regions-at' $x $y $z [$world] = >>>
+	msg(color(YELLOW).'Regions located at '.$x.' '.$y.' '.$z.'in '.if(equals($world,''),pworld(),$world).': '.color(WHITE).array_implode(sk_regions_at(array($x,$y,$z,if(equals($world,''),pworld(),$world))), ', '))
+<<<
 
-# mattman00000 anxiously awaits padmin approval for this part
-#*:'/regions-intersecting' $region [$world] = >>>
-#	msg(color(YELLOW).'Regions located there: '.color(WHITE).array_implode(sk_region_intersect(if(equals($world,''),pworld(),$world), $region), ', '))
-#<<<
+*:'/regions-intersecting' $region [$world] = >>>
+	msg(color(YELLOW).'Regions located there: '.color(WHITE).array_implode(sk_region_intersect(if(equals($world,''),pworld(),$world), $region), ', '))
+*/
+

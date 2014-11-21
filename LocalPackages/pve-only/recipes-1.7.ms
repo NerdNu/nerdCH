@@ -35,6 +35,7 @@ for (@i = 0, @i < 16, inc(@i),
 )
 
 # Red sand.
+/*
 add_recipe(
 	array(
 		type: 'SHAPELESS', 
@@ -42,6 +43,7 @@ add_recipe(
 		ingredients: array('12', '351:1')
 	)
 )
+*/
 
 # Seamless double stone slabs upper
 add_recipe(
@@ -189,3 +191,4 @@ add_recipe(
 		ingredients: array('4', '106')
 	)
 )
+

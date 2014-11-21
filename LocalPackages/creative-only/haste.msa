@@ -1,0 +1,15 @@
+# Allow creative players to mine with Haste II without requiring a beacon.
+
+*:/haste = >>>
+        # Search the player's current potion effects for haste.
+        foreach(get_peffect(player()), @effect,
+                if (@effect[id] == 3) {
+                        # If found, remove it.
+                        set_peffect(player(), 3, 1, 0)
+                        die(color(GOLD).'Haste disabled.')
+                }
+        )
+        set_peffect(player(), 3, 1, 60 * 60, false)
+        msg(color(GOLD).'Haste enabled.')
+<<<
+

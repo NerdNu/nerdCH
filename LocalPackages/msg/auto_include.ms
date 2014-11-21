@@ -1,10 +1,10 @@
 #This set of commands, /msg, /r, and /cmsg replaces the built in message system
 #and allows for colored messages, so they are more prominent
 
-proc(_message, @highlight, @from, @to, @text,
-        assign(@from2, _getonlinename(@from))
+proc(_message, @highlight, @to, @text,
+        assign(@from2, player())
         assign(@to2,   _getonlinename(@to))
-        if(or(equals(@from2, null), equals(@to2, null)),
+        if(is_null(@to2),
             msg(concat(color(red), 'Error: that player is not online!'))
             return())
         #if(equals(@to2, @from2),
@@ -17,5 +17,7 @@ proc(_message, @highlight, @from, @to, @text,
         msg(       concat(color(gray), '[me -> ', strip_colors(@to2),   '] ', @text2))
         tmsg(@to2, concat(color(gray), '[', strip_colors(@from2), ' -> me] ', @text2))
         
-        store_value(concat('last_message_', to_lower(strip_colors(@to2))), to_lower(strip_colors(@from2)))
-        store_value(concat('last_message_', to_lower(strip_colors(@from2))), to_lower(strip_colors(@to2))))
+        console(concat('[msg: ', @from2, ' -> ', @to2, '] ', @text))
+        export(concat('last_message_', to_lower(strip_colors(@to2))), to_lower(strip_colors(@from2)))
+        export(concat('last_message_', to_lower(strip_colors(@from2))), to_lower(strip_colors(@to2)))
+)

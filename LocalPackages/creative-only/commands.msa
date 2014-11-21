@@ -56,6 +56,11 @@
 	broadcast(color(gold).player().' rolled a '.rand(1, 21))
 <<<
 
+*:/flip [$]= >>>
+	_assertperm('restricted')
+	broadcast(color(GOLD).player().' got '.if(rand(0, 2) == 1, 'heads', 'tails'))
+<<<
+
 /rainbowhat [$player] = >>>
         @player = player()
         if($player != '', @player = player($player))
@@ -95,9 +100,25 @@
 <<<
 
 *:/randloc [$] = >>>
-	@MAXDISTANCE = 2000
+	@MAXDISTANCE = 2400
 	@x = rand(- @MAXDISTANCE, @MAXDISTANCE)
 	@z = rand(- @MAXDISTANCE, @MAXDISTANCE)
 	@y = get_highest_block_at(@x, @z)[1]
 	set_ploc(@x, @y, @z)
+<<<
+
+/*
+*:/me $ = >>>
+	run('/bukkit:me ' . $)
+<<<
+*/
+
+*:/slap $player = >>>
+        _assertperm('admin')
+	@vel_x = rand(-10, 10)
+	@vel_y = rand(10)
+        @vel_z = rand(-10, 10)
+	set_pvelocity($player, @vel_x, @vel_y, @vel_z)
+        msg(color('GOLD').$player.' has been slapped!')
+        tmsg($player, color('GOLD').'You have been slapped!')
 <<<

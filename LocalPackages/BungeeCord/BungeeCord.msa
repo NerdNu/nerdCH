@@ -1,0 +1,27 @@
+*:/server $server = >>>
+	_changeserver(player(), $server)
+<<<
+
+*:/server = >>>
+	msg('Usage: /server <creative|lobby|survival|pve|event>')
+<<<
+
+*:'/to-server' $p $s = >>>
+	_assertperm('admin')
+	_changeserver($p, $s)
+<<<
+
+
+*:'/all-to-server' $s = >>>
+	_assertperm('admin')
+	foreach(all_players(), @p, g(
+		_changeserver(@p, $s)
+	))
+<<<
+
+*:/creative = _changeserver(player(), 'creative')
+*:/pve = _changeserver(player(), 'pve')
+*:/survival = _changeserver(player(), 'survival')
+*:/lobby = _changeserver(player(), 'lobby')
+*:/event = _changeserver(player(), 'event')
+

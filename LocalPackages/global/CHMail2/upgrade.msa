@@ -1,0 +1,132 @@
+
+'/do-mail-upgrade' = >>>
+	_assertperm('restricted')
+	proc(_bluh, @name, @callback){
+		http_request('https://api.mojang.com/profiles/page/1', array(
+		        method: 'POST',
+		        headers: array(
+		                'Content-Type': 'application/json'
+		        ),
+		        params: json_encode(array(
+        		        array(
+	                        	name: @name,
+                        		agent: 'minecraft'
+				)
+			)),
+			success: closure(@response){
+				@r = json_decode(@response['body']);
+				foreach(@profile in @r['profiles']){
+					execute(@profile, @callback);
+		                } else {
+                        		execute(null, @callback);         
+                		}
+        		}
+		));
+	}
+	proc(_handle_profile, @user, @profile){
+		console("Handling profile for @user");
+		if(@profile == null){
+			console(color(RED).@user . ' does not exist');
+			return(false);
+		}
+		@uuid = '';
+		foreach(@i: @c in @profile['id']){
+			if(@i == 8 || @i == 12 || @i == 16 || @i == 20){
+				@uuid .= '-';
+			}
+			@uuid .= @c;
+		}
+		@last_username = to_lower(@user);
+		@last_display_name = @profile['name'];
+		if(length(query('mail', 'SELECT uuid FROM user WHERE uuid=?', @uuid)) == 0){
+			query('mail', 'INSERT INTO user (uuid, last_username, last_display_name)'
+				.' VALUES (?, ?, ?)', @uuid, @last_username, @last_display_name);
+                }
+	}
+	@messages = get_values('chmail.inbox');
+	x_new_thread('mail_upgrade', closure(){
+		@server = import('sharedata.source');
+		@users = array();
+		foreach(@user in array_keys(@messages)){
+			@users[] = split('.', @user)[-1];
+		}
+		foreach(@user in @users){
+			_bluh(@user, closure(@profile){
+				_handle_profile(@user, @profile);
+				foreach(@message in @messages['chmail.inbox.'.@user]){
+					console(@message);
+					_bluh(@message[0], closure(@profile){
+						_handle_profile(@message[0], @profile);
+						console('User: '.@user.' '._mail_get_puuid(@user));
+						query('mail', 'INSERT INTO message (`to`, `from`, `body`, `date_sent`,'
+							.' `read`, `notified`, `source_server`) '
+							.' VALUES (?, ?, ?, ?, ?, ?, ?)', 
+							_mail_get_puuid(@user), 
+							_mail_get_puuid(@message[0]), 
+							@message[1], 0, false, true, @server);
+					});
+				}
+			});
+		}
+	});
+
+<<<
+
+'/do-mail-player-data-import' [$] = >>>
+	_assertperm('restricted')
+	proc(_bluh, @name, @callback){
+                http_request('https://api.mojang.com/profiles/page/1', array(
+                        method: 'POST',
+                        headers: array(
+                                'Content-Type': 'application/json'
+                        ),
+                        params: json_encode(array(
+                                array(
+                                        name: @name,
+                                        agent: 'minecraft'
+                                )
+                        )),
+                        success: closure(@response){
+                                @r = json_decode(@response['body']);
+                                foreach(@profile in @r['profiles']){
+                                        execute(@profile, @callback);
+                                } else {
+                                        execute(null, @callback);
+                                }
+                        }
+                ));
+        }
+        proc(_handle_profile, @user, @profile){
+                console("Handling profile for @user");
+                if(@profile == null){
+                        console(color(RED).@user . ' does not exist');
+                        return(false);
+                }
+                @uuid = '';
+                foreach(@i: @c in @profile['id']){
+                        if(@i == 8 || @i == 12 || @i == 16 || @i == 20){
+                                @uuid .= '-';
+                        }
+                        @uuid .= @c;
+                }
+                @last_username = to_lower(@user);
+                @last_display_name = @profile['name'];
+                if(length(query('mail', 'SELECT uuid FROM user WHERE uuid=?', @uuid)) == 0){
+                        query('mail', 'INSERT INTO user (uuid, last_username, last_display_name)'
+                                .' VALUES (?, ?, ?)', @uuid, @last_username, @last_display_name);
+                }
+        }
+	x_new_thread('do-mail-player-data-import', closure(){
+		@plist = shell('ls world/players');
+		@players = split('\n', @plist);
+		for(@i = 0, @i < length(@players), @i++){
+			@players[@i] = reg_replace('\n', '', @players[@i]);
+			@players[@i] = reg_replace('\\.dat', '', @players[@i]);
+		}
+		foreach(@user in @players){
+			_bluh(@user, closure(@profile){
+				_handle_profile(@user, @profile);
+			});
+		}
+	});
+<<<

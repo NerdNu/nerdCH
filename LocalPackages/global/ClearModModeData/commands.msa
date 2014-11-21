@@ -1,0 +1,13 @@
+
+*:'/clear-modmode-data' [$] = call_alias('/clear-mod-mode-data')
+*:'/clear-mod-mode-data' [$] = >>>
+	_assertperm('mod')
+	die(color(RED).'This command has been removed, because it shouldn\'t be needed anymore. If you really do need it, please contact a tech.')
+	/*kick(player(), 'Clearing modmode data... Don\'t log back in for about 10 seconds.')
+	set_timeout(2000, closure(){
+		@p = strip_colors(player())
+		try(shell('rm /home/reddit/creative/world/players/modmode_'.@p.'.dat'))
+		try(shell('rm /home/reddit/survival/world/players/modmode_'.@p.'.dat'))
+		try(shell('rm /home/reddit/pve/world/players/modmode_'.@p.'.dat'))
+	})*/
+<<<

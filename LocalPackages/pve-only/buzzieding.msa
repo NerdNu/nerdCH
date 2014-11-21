@@ -1,0 +1,30 @@
+/buzzieding = >>>
+	_assertperm('admin');
+
+	if(import('buzzieding.interval') != null){
+		clear_task(import('buzzieding.interval'))
+		export('buzzieding.interval', null)
+		die('No more buzzieding '.color(RED).':(')
+	}
+
+	@player = 'buzzie71'
+	@currentPitch = array(0)
+	@interval = set_interval(500, closure(
+		try(
+			if(!ponline(@player)){
+				clear_task()
+			} else {
+				@pitch = 1
+				if(@currentPitch[0] == 0){
+					@pitch = 5
+				}
+				play_sound(ploc(@player), array(sound: ORB_PICKUP, pitch: @pitch, volume: 3))
+				if(@currentPitch[0] == 0, @currentPitch[0] = 1, @currentPitch[0] = 0)
+			}
+		, #catch
+			clear_task()
+		)
+	))
+	export('buzzieding.interval', @interval)
+	die(color(GREEN).'buzzieding started :D')
+<<<

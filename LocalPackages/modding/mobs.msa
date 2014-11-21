@@ -1,0 +1,15 @@
+*:/tpmobshere = >>>
+	_assertperm('admin');
+
+	@mobs = all_entities();	
+
+	foreach (@mob in @mobs) {
+		@loc = entity_loc(@mob);
+		if (@loc['y'] < 0) {
+#			msg(@loc['y']);
+#			msg(ploc());
+			set_entity_loc(@mob, ploc());
+			msg("Teleporting " . @mob . " to you");
+		}
+	}
+<<<

@@ -22,3 +22,17 @@ proc(_lb_retention_days,
 	@days = import('lb.retention.days')
 	return (if(is_null(@days), 21, @days))
 )
+
+proc(
+	_3d_distance, @arr1, @arr2,
+	return(
+		floor(
+			sqrt(
+				  ((@arr2[0] - @arr1[0]) ** 2)
+				+ ((@arr2[1] - @arr1[1]) ** 2)
+				+ ((@arr2[2] - @arr1[2]) ** 2)
+			)
+		)
+	)
+)
+

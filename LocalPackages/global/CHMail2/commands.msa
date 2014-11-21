@@ -1,0 +1,155 @@
+*:/mail = >>>
+	// Usage
+	msg(color(LIGHT_PURPLE).'Sends and recieves messages, even for offline players.');
+	@commands = array(
+		'mail': 'show this message.',
+		'mail send <player> <message>': 'send <message> to <player>.',
+		'mail read <id>': 'read messages by id.',
+		'mail inbox [<page>]': 'read mail index.',
+		'mail clear': 'clear all messages.',
+		'mail delete <id>': 'delete message <id>.',
+	);
+	foreach(@command: @desc in @commands){
+		msg('- '.color(GREEN)."/@command".color(WHITE).": @desc\n");
+	}
+<<<
+
+*:/mail send [$user] = >>>
+	die(color(RED).'Usage: /mail send <user> <message>');
+<<<
+
+*:/mail send $user $ = >>>
+	@user = to_lower($user);
+	x_new_thread('mail_send', closure(){
+		@puuid = _mail_get_puuid(@user);
+		if(@puuid === null){
+			x_run_on_main_thread_now(closure(){
+				msg(color(RED).'The player \''.$user.'\' could not be found.');	
+			});
+		} else {
+			@notified = x_run_on_main_thread_now(closure(){
+				@notified = false;
+				if(ponline(@user)){
+					tmsg(@user, color(GREEN).'You have recieved a new message! Type '
+						.color(LIGHT_PURPLE).'/mail inbox'.color(GREEN)
+						.' to read it.');
+					@notified = true;
+				}
+				return(@notified);
+			});
+			// We found the user, so add the mail to the db
+			@fromuuid = _mail_get_puuid(player());
+			query('mail', 'INSERT INTO message (`to`, `from`, `body`, `date_sent`, `read`, `notified`, `source_server`)'
+				.' VALUES (?, ?, ?, ?, 0, ?, ?)',
+				@puuid, @fromuuid, $, time(), @notified, import('sharedata.source'));
+			x_run_on_main_thread_now(closure(){
+				msg(color(GREEN).'Message sent: '.$);
+			});
+		}
+	});
+<<<
+
+*:/mail inbox [$page=1] = >>>
+	@perPage = 5;
+	if(!is_integral($page)){
+		die(color(RED).'Page must be an integer.');
+	}
+	x_new_thread('mail_read', closure(){
+		@puuid = _mail_get_puuid(player());
+		@messages = query('mail', 'SELECT * FROM message WHERE `to`=?', @puuid);
+		@pages = integer((length(@messages) + @perPage - 1) / @perPage);
+		@o = '';
+		if(length(@messages) == 0){
+			@o .= color(RED).'You have no messages.';
+		} else if(@pages < $page){
+			@o .= color(RED).'Invalid inbox page! (only '
+					.if(@pages == 1, '1 page exists', "@pages pages exist").')';
+		} else {
+			@o .= color(YELLOW).'Inbox for '.player().': [ Page '.$page.' of '.@pages.' ]\n';
+			@starting = ($page - 1) * @perPage;
+			for(@i = @starting, @i < @starting + @perPage && @i < length(@messages), @i++){
+				@m = @messages[@i];
+				@o .= color(WHITE).(@i + 1).') ('
+					.color(YELLOW).@m['source_server'].color(WHITE).') ['
+					.color(RED)._mail_get_display_name_from_uuid(@m['from'])
+					.color(WHITE).'] '.@m['body'].'\n';
+			}
+			@o .= color(LIGHT_PURPLE).'/mail'.color(YELLOW).' to see available options.'
+				.color(LIGHT_PURPLE).' /mail inbox <page>'.color(YELLOW).' for more pages.\n';
+		}
+		x_run_on_main_thread_later(closure(){
+			msg(@o);
+		});
+	});
+<<<
+
+*:/mail read [$id=''] = >>>
+	if($id == ''){
+		die(color(RED).'Usage /mail read <id>');
+	}
+	if(!is_integral($id)){
+		die(color(RED).'ID must be an integer.');
+	}
+	if($id <= 0){
+		die(color(RED).'ID must be greater than zero');
+	}
+	x_new_thread('mail_read', closure(){
+		@puuid = _mail_get_puuid(player());
+		@messages = query('mail', 'SELECT * FROM message WHERE `to`=?', @puuid);
+		@o = '';
+		if(length(@messages) == 0){
+			@o .= color(RED).'You have no messages.';
+		} else if(length(@messages) < $id){
+			@o .= color(RED).'Invalid id!';
+		} else {
+			@m = @messages[$id - 1];
+			@o .= color(YELLOW).'From: '.color(RED)._mail_get_display_name_from_uuid(@m['from']).'\n'
+				.color(YELLOW).'Sent: '
+				.color(WHITE).'('.color(YELLOW).@m['source_server'].color(WHITE).') '
+				.simple_date('EEE, d MMM yyy HH:mm:ss z', @m['date_sent']).'\n'
+				.@m['body'].'\n';
+		}
+		x_run_on_main_thread_later(closure(){
+			msg(@o);
+		});
+	});
+<<<
+
+*:/mail clear [$] = >>>
+	query('mail', 'DELETE FROM message WHERE `to`=?', _mail_get_puuid(player()));
+	msg(color(LIGHT_PURPLE).'All messages have been deleted.');
+<<<
+
+*:/mail delete [$id=''] = >>>
+	if($id == ''){
+		die(color(RED).'Usage: /mail delete <id>');
+	}
+	if(!is_integral($id)){
+		die(color(RED).'ID must be an integer.');
+	}	
+	if($id <= 0){
+		die(color(RED).'ID must be greater than zero');
+	}
+	x_new_thread('mail_delete', closure(){
+		//We need to convert the user's id value into our id value
+		@puuid = _mail_get_puuid(player());
+		@messages = query('mail', 'SELECT * FROM message WHERE `to`=?', @puuid);
+		if(length(@messages) == 0){
+			x_run_on_main_thread_now(closure(){
+				msg(color(RED).'You have no messages to delete');
+			});
+		} else if(length(@messages) < $id){
+			// ID was too high.
+			x_run_on_main_thread_now(closure(){
+				msg(color(RED).'ID must be less than '.(length(@messages) + 1).'.');
+			});
+		} else {
+			// The id is proper, so convert that to our id
+			@id = @messages[$id - 1]['id'];
+			query('mail', 'DELETE FROM message WHERE id=?', @id);
+			x_run_on_main_thread_now(closure(){
+				msg(color(RED).'Message deleted');
+			});
+		}
+	});
+<<<

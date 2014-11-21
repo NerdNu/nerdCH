@@ -1,3 +1,4 @@
+/*
 bind(player_join, null, null, @event,
     set_timeout(1000, closure(
         assign(@mail, _player_mail(@event[player]))
@@ -9,3 +10,5 @@ bind(player_join, null, null, @event,
         )
     ))
 )
+*/
+

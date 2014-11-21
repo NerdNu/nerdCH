@@ -1,0 +1,14 @@
+/*
+!:/msgplayer $player $ = >>>
+	if(ponline($player)){
+		# Check to make sure this isn't a partial
+		if(to_lower($player) == to_lower(player($player))){
+			tmsg(player($player), colorize($))
+		} else {
+			console('(/msgplayer) Attempted to message '.$player.' but this does not match the chosen player exactly.')
+		}
+	} else {
+		console('(/msgplayer) Attempted to send message to '.$player.', but no one online matches that')
+	}
+<<<
+*/
