@@ -46,9 +46,13 @@
 				if(!pinfo(player(), 14)){
 				    pfacing(@yaw, pfacing()[1])
 				}
-				break()
+				die()
+			}
+			else {
 			}
 		)
+		msg(color(LIGHT_PURPLE).'This is not an existing place, use '.color(GRAY).'/place '
+					.color(LIGHT_PURPLE).'to find one with the correct spelling!')
 	}
 <<<
 
