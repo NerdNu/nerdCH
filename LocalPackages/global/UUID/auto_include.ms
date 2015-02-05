@@ -25,7 +25,6 @@ proc(_get_puuid, @playerName){
  * Gets the last known username from the database, or null, if no player is known with that uuid
  */
 proc(_get_username_from_uuid, @uuid){
-	msg(@uuid);
 	@res = query('uuid', 'SELECT last_username FROM user WHERE uuid=?', @uuid);
 	if(length(@res) == 0){
 		return(null);

@@ -1,5 +1,5 @@
 bind(player_join, null, null, @event,
-    @warnings = get_value('warnings', @event['player'])
+    @warnings = get_value('warnings', _get_puuid(@event['player']))
     if(@warnings != null) {
         msg(color(GRAY).'---------------------------------------------')
         msg(color(RED).'You been warned about something by a staff member!')
@@ -12,7 +12,7 @@ set_interval(30 * 1000, closure() {
     @player_warnings = get_values('warnings')
     @players = all_players()
     foreach(@key: @value in @player_warnings) {
-        @player_name = substr(@key, 9)
+        @player_name = _get_username_from_uuid(substr(@key, 9))
         if(array_contains_ic(@players, @player_name)) {
             @player = player(@player_name)
             tmsg(@player, color(GRAY).'---------------------------------------------')
