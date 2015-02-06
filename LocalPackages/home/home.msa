@@ -4,7 +4,7 @@
 	}
     assign(@modes, array('public','private','unlisted'))
     assign(@m, reg_split(' ', $))
-    assign(@p, strip_colors(player()))
+    assign(@uuid, _get_puuid(player()))
     assign(@name,
         if(equals(@m[0], ''),
             'default',
@@ -18,8 +18,8 @@
     
     if(array_contains(@modes, @mode)){
 	try(
-        	store_value(concat('homes.', @p, '.', @name, '.loc'), ploc())
-        	store_value(concat('homes.', @p, '.', @name, '.mode'), @mode)
+        	store_value(concat('homes.', @uuid, '.', @name, '.loc'), ploc())
+        	store_value(concat('homes.', @uuid, '.', @name, '.mode'), @mode)
 		msg(color(gray) . 'Home set.')
 	, @ex,
 		msg(color(red) . 'Home names must not contain special characters')
@@ -38,7 +38,7 @@
         msg(concat(color(red), 'Usage: /delhome <name>'))
         call_alias(/listhomes),
     #else:
-        assign(@str, concat('homes.', pinfo()[0], '.', $, '.loc'))
+        assign(@str, concat('homes.', _get_puuid(player()), '.', $, '.loc'))
         if(has_value(@str),
             clear_value(@str)
             msg('Home' $ 'cleared.'),
@@ -66,7 +66,7 @@
             'default',
             @m[0]))
     
-    assign(@prefix, concat('homes.', @player, '.', @name, '.'))
+    assign(@prefix, concat('homes.', _get_puuid(@player), '.', @name, '.'))
     
     if(has_value(concat(@prefix, 'loc')),
         if(or(
@@ -92,23 +92,23 @@
         if(equals($, ''),
             strip_colors(player()),
             $))
-    
+    assign(@uuid, _get_puuid(@player))
     msg(concat(color(gray), if(equals(@player, strip_colors(player())), 'Your', concat(@player, '\'s')), ' homes:'))
     if(or(
         equals(@player, strip_colors(player())),
         has_permission('homes.override')),
         
         
-        foreach(array_keys(get_values(concat('homes.', @player))), @name,
+        foreach(array_keys(get_values(concat('homes.', @uuid))), @name,
             assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
             if(array_index_exists(@m,0),
-                msg(concat(color(gray), '  ', @m[1], ' [', get_value(concat('homes.', @player, '.', @m[1], '.mode')), ']')))),
+                msg(concat(color(gray), '  ', @m[1], ' [', get_value(concat('homes.', @uuid, '.', @m[1], '.mode')), ']')))),
     #else:
-        foreach(array_keys(get_values(concat('homes.', @player))), @name,
+        foreach(array_keys(get_values(concat('homes.', @uuid))), @name,
             assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
             if(and(
                 array_index_exists(@m,0),
-                equals('public', get_value(concat('homes.', @player, '.', @m[1], '.mode')))),
+                equals('public', get_value(concat('homes.', @uuid, '.', @m[1], '.mode')))),
                 
                 msg(concat(color(gray), '  ', @m[1])))))
    
