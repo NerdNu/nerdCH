@@ -11,7 +11,7 @@ if(has_value('usagestats')){
 	}
 	foreach(@p in @toDelete){
 		array_remove(@data['players'], @p);
-		console('Removing '.string(@p).' from usage stats, as they have less than 10 minutes of play time.');
+		console('Removing '.string(@data['players'][@p]['name']).' from usage stats, as they have less than 10 minutes of play time.');
 	}
 	store_value('usagestats', @data);
 }
@@ -38,12 +38,13 @@ set_interval(1000 * 60, 0, closure(){
 	export('usage.lastRun', time());
 	@today = simple_date('yyMMdd');
 	foreach(@player in all_players()){
-		@player = strip_colors(@player);
-		if(!array_index_exists(@players, @player)){
-			@players[@player] = array(
+		@uuid = _get_puuid(@player);
+		if(!array_index_exists(@players, @uuid)){
+			@players[@uuid] = array(
 				min: 0,
 				last: @today,
 				days: 1,
+				name: strip_colors(@player)
 			);
 		} else {
 			@lastFacing = import(@player.'.lastFacing');
@@ -52,10 +53,10 @@ set_interval(1000 * 60, 0, closure(){
 				continue();
 			}
 			export(@player.'.lastFacing', pfacing(@player));
-			@players[@player]['min'] = @players[@player]['min'] + @incrementTime;
-			if(@players[@player]['last'] != @today){
-				@players[@player]['last'] = @today
-				@players[@player]['days'] = @players[@player]['days'] + 1
+			@players[@uuid]['min'] = @players[@uuid]['min'] + @incrementTime;
+			if(@players[@uuid]['last'] != @today){
+				@players[@uuid]['last'] = @today
+				@players[@uuid]['days'] = @players[@uuid]['days'] + 1
 			}
 		}
 	}
