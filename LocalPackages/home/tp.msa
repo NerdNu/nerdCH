@@ -14,6 +14,7 @@
     )
 <<<
 
+/* Handled by TPControl
 *:/tppos [$] = >>>
     _assertperm('restricted', 1)
     assign(@c, reg_split(' ', $))
@@ -24,3 +25,4 @@
     #else:
         msg(concat(color(red), 'Usage: /tppos <x> [y] <z>')))
 <<<
+*/
