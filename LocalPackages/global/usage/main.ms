@@ -10,8 +10,8 @@ if(has_value('usagestats')){
 		}
 	}
 	foreach(@p in @toDelete){
-		array_remove(@data['players'], @p);
 		console('Removing '.string(@data['players'][@p]['name']).' from usage stats, as they have less than 10 minutes of play time.');
+		array_remove(@data['players'], @p);
 	}
 	store_value('usagestats', @data);
 }
