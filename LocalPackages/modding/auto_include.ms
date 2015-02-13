@@ -36,3 +36,17 @@ proc(
 	)
 )
 
+proc(_add_flags, @region, @timeout, @tries,
+	if(@tries < 1) {
+		msg(color(RED).'Default flags added unsuccessfully.')
+	} else {
+		if(sk_region_exists(@region)) {
+			call_alias('/addflags '.@region)
+		} else {
+			# WorldGuard 6 handles /region define asynchronously.
+			set_timeout(@timeout, closure(){
+				_add_flags(@region, @timeout, @tries - 1)
+			})
+		}
+	}
+)

@@ -6,7 +6,7 @@
 		die(color(RED).'A region by that name already exists.')
 	} else {
 		run('/region define '.$name.' '.$)
-		call_alias('/addflags '.$name)
+		_add_flags($name, 250, 6)
 	}
 <<<
 *:/cregion $name = msg(color(RED).'You must specify an owner as well. /cregion <name> <owner>')
