@@ -22,35 +22,38 @@
     assign(@o, concat('Available warps:', color(gray)))
     
     if(equals($, ''),
-	assign(@count, 0)
-	#The get_value(@name) == null thing here and down there are workarounds for a bug in CH
-	foreach(array_keys(get_values('warps')), @name,
-		if(get_value(@name) == null){
-			continue()
-		}
-		assign(@color, 'white')
-		if(@count % 2 == 0){
-			assign(@color, gray)
-		}
-		@count++
-		assign(@o, @o . ' ' . color(@color) . substr(@name, 6))
-	)
+		assign(@count, 0)
+		#The get_value(@name) == null thing here and down there are workarounds for a bug in CH
+		foreach(array_keys(get_values('warps')), @name,
+			if(get_value(@name) == null){
+				continue()
+			}
+			assign(@color, 'white')
+			if(@count % 2 == 0){
+				assign(@color, gray)
+			}
+			@count++
+			assign(@o, @o . ' ' . color(@color) . substr(@name, 6))
+		)
         msg(@o),
     #else:
         assign(@found, 0)
         foreach(array_keys(get_values('warps')), @name,
-		if(equals_ic($, substr(@name, 6)),
-			assign(@warp, get_value(@name))
-			if(@warp == null){
-				continue()
-			}
-			assign(@found, 1)
-			set_ploc(@warp)
+			if(equals_ic($, substr(@name, 6)),
+				assign(@warp, get_value(@name))
+				if(@warp == null){
+					continue()
+				}
+				assign(@found, 1)
+				set_ploc(@warp)
+				pfacing(@warp['yaw'], @warp['pitch'])
+			)
 		)
-	)
         if(equals(@found, 0),
             msg(concat(color(red), 'Warp not found!'))
-            call_alias('/warp')))
+            call_alias('/warp')
+        )
+    )
 <<<
 
 *:/warpto [$player] [$] = >>>
@@ -64,6 +67,7 @@
                 if(equals_ic($, substr(@name, 6)),
                     assign(@found, 1)
                     set_ploc($player, get_value(@name))
+                    pfacing(@warp['yaw'], @warp['pitch'])
                     msg('Teleported' $player 'to' @name)
                 )
             )

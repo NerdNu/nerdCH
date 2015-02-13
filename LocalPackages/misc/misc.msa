@@ -149,6 +149,19 @@
 
 /tpi [$] = call_alias('/tpinfo' $)
 
+*:/facing [$yaw] [$pitch] = >>>
+	_assertperm('restricted', 1)
+	if(equals($yaw, ''),
+		msg('Usage: /facing <yaw> [pitch]'),
+	#else:
+		if(equals($pitch, ''),
+			pfacing($yaw, pfacing()[1]),
+		#else:
+			pfacing($yaw, $pitch)
+		)
+	)
+<<<
+
 /mobtower $mob [$height=5] = >>>
 	_assertperm('admin')
 	assign(@lastRider, null)
