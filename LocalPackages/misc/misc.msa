@@ -129,6 +129,11 @@
 
 #TODO: Do we want these?
 
+*:/me drinks = >>>
+	set_peffect(player(), 9, 1, 30)
+	run('/me drinks')
+<<<
+
 #*:/drunk = set_peffect(player(), 9, 1, 30) msg(concat(color(gold), 'You been drinkin?'))
 #*:/sniper = set_peffect(player(), 2, 10)
 #*:/sober = set_peffect(player(), 9, 1, 0)
