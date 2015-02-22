@@ -1,6 +1,6 @@
 
 /**
- * Player login event to display bulletins from subscribed channels.
+ * Player login event to log the uuid and latest name
  */
 bind(player_login, null, null, @event,
 	x_new_thread('uuid_player_join', closure(){

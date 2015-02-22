@@ -1,6 +1,7 @@
 
 *:'/easy-sign' [$type=''] [$=''] =  >>>
-	_assertperm('admin')
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign')) { _noperm(); }
+
 	@standardSignUsage = closure(@data,
 		@signdata = get_value('easysign.signs')
 		if(!is_array(@signdata)){
@@ -346,7 +347,8 @@
 <<<
 
 *:'/easy-sign-delete' [$] = >>>
-	_assertperm('admin')
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-delete')) { _noperm(); }
+
 	@signdata = get_value('easysign.signs')
 	if(!is_array(@signdata)){
 		@signdata = array()
@@ -362,7 +364,8 @@
 <<<
 
 *:'/easy-sign-info' [$] = >>>
-	_assertperm('admin')
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-info')) { _noperm(); }
+
 	if(!is_sign_at(pcursor())){
 		die(color(RED).'That isn\'t a sign')
 	}
@@ -397,7 +400,8 @@
 <<<
 
 *:'/easy-sign-remove' [$index] = >>>
-	_assertperm('admin')
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-remove')) { _noperm(); }
+
 	if (! is_sign_at(pcursor())) {
 		die(color(RED).'That isn\'t a sign.')
 	}
@@ -426,7 +430,8 @@
 <<<
 
 *:'/easy-sign-reorder' [$from] [$to] = >>>
-	_assertperm('admin')
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-reorder')) { _noperm(); }
+
 	if (! is_sign_at(pcursor())) {
 		die(color(RED).'That isn\'t a sign.')
 	}
@@ -458,5 +463,3 @@
 		store_value('easysign.signs', @signdata)
 	}
 <<<
-
-

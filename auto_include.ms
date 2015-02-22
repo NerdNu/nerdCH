@@ -6,13 +6,43 @@ proc(_assertperm, @name, @cmodetrumps,
     if(has_permission('nerdch.level.' . @name), return())
     
     if(@cmodetrumps == 1 && pmode() == 'CREATIVE', return())
-    
-    
-    
+
     msg(concat(color(red), 'You do not have permission to do this! [ap]'))
-    die())
-        
-        
+    die()
+)
+
+# mode = AND or OR, invalid modes become AND
+proc(_assertperms, @perms, @mode, @cmodetrumps,
+	@mode = to_upper(@mode) != 'OR';
+	msg(@mode);
+
+	foreach (@perms, @perm,
+		msg(has_permission('nerdch.level.' . @perm));
+		if (has_permission('nerdch.level.' . @perm) == @mode) {
+			return();
+		}
+	)
+
+	if (@cmodetrumps == true && pmode() == 'CREATIVE') {
+		return();
+	}
+
+	msg(color(red) . 'You do not have permission to do this! [ap]');
+	die();
+)
+
+proc(_assertbool, @bool,
+	if (@bool) {
+		msg(color(red) . 'You do not have permission to do this! [ap]');
+		die();
+	}
+)
+
+proc(_noperm,
+	msg(color(red) . 'You do not have permission to do this! [ap]');
+	die();
+)
+
 #Gets the mods and admins on right now
 proc(_get_mods,
         assign(@mods, array())
