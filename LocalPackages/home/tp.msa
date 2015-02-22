@@ -1,3 +1,4 @@
+/* Handled by TPControl
 *:/tp $player = >>>
     _assertperm('restricted', 1)
     assign(@pl, _getonlinename($player))
@@ -14,7 +15,6 @@
     )
 <<<
 
-/* Handled by TPControl
 *:/tppos [$] = >>>
     _assertperm('restricted', 1)
     assign(@c, reg_split(' ', $))
