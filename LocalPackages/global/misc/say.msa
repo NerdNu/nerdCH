@@ -1,7 +1,7 @@
 *:/say $ = >>>
 	if (player() == '~console') {
 		broadcast('§D[Server] ' . $);
-		cancel();
+		die();
 	}
 
 	run('/say ' . $);
