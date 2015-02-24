@@ -1,0 +1,5 @@
+*:/setblock [$] = >>>
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.setblock')) { _noperm(); }
+
+	runas(~op, '/setblock ' . $)
+<<<
