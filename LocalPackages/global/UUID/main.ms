@@ -1,4 +1,7 @@
 
+export('uuidCache', array());
+export('nameCache', array())
+
 /**
  * Player login event to log the uuid and latest name
  */
