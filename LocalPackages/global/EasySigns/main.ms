@@ -31,6 +31,8 @@ bind(player_interact, null, null, @e,
 							@array[@i] = null
 							set_pinv(@array)
 						)
+					,'cmd',
+						run(@data['cmd'])
 					,'give',
 						@item = @data['item']
 						@qty = @data['qty']
@@ -43,11 +45,11 @@ bind(player_interact, null, null, @e,
 						} else {
 							pgive_item(@item, @qty)
 						}
-                                        ,'givemax',
+					,'givemax',
 						@id = @data['id']
-                                                @item = @data['item']
-                                                @qty = @data['qty']
-                                                @slot = @data['slot']
+						@item = @data['item']
+						@qty = @data['qty']
+						@slot = @data['slot']
 						@max = @data['max']
 
 						@value = get_value('easysign.give')
@@ -111,14 +113,27 @@ bind(player_interact, null, null, @e,
 					,'max',
 						@id = @data['id']
 						@uses = @data['uses']
+						@global = @data['global']
+						@used = 0
 
 						@value = get_value('easysign.max')
 						if (!is_array(@value)) { @value = associative_array() }
-						if (!array_index_exists(@value, @id)) { @value[@id] = associative_array() }
-						if (!array_index_exists(@value[@id], player())) { @value[@id][player()] = 0 }
-						if (@value[@id][player()] >= @uses) { die(color(GREEN) . 'You can only use this ' . @uses . ' times!') }
+						if (@global) {
+							if (!array_index_exists(@value, @id)) { @value[@id] = 0 }
+							@user = @value[@id]
+						} else {
+							if (!array_index_exists(@value, @id)) { @value[@id] = associative_array() }
+							if (!array_index_exists(@value[@id], player())) { @value[@id][player()] = 0 }
+							@user = @value[@id][player()]
+						}
 
-						@value[@id][player()] = @value[@id][player()] + 1
+						if (@used >= @uses) { die(color(GREEN) . 'Maximum uses reached! (' . @uses . ')') }
+
+						if (@global) {
+							@value[@id][player()] = @value[@id] + 1
+						} else {
+							@value[@id][player()] = @value[@id][player()] + 1
+						}
 						store_value('easysign.max', @value)
 					,'msg',
 						msg(colorize(@data))
@@ -227,11 +242,11 @@ set_interval(1 * 60 * 1000, closure(
 				die()
 			}
 			, @ex,
-        	                array_remove(@signdata, @key)
-                	        store_value('easysign.signs', @signdata)
-                        	export('easysign.signs', @signdata)
-	                        console(color(RED).'The sign at '.@key.' is no longer a sign, so it has been deleted from easy signs')
-        	                die()
+				array_remove(@signdata, @key)
+				store_value('easysign.signs', @signdata)
+				export('easysign.signs', @signdata)
+				console(color(RED).'The sign at '.@key.' is no longer a sign, so it has been deleted from easy signs')
+				die()
 		)
 	)
 ))

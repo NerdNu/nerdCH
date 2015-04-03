@@ -62,7 +62,7 @@ set_interval(1000 * 60, 0, closure(){
 	}
 	@data['online'] = all_players()
 	store_value('usagestats', @data)
-	console('Usage stats updated, took '.(time() - @startTime).'ms');
+//	console('Usage stats updated, took '.(time() - @startTime).'ms');
 	if(time() > @startTime + 50){
 		# Uh oh, it took longer than 50 ms, so lets report this to the console.
 		console('Updating usage log took longer than 50ms! ('.(time() - @startTime).'ms)')

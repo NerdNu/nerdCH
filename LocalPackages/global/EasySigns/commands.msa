@@ -54,6 +54,14 @@
 		)
 	),
 	array(
+		name: 'cmd',
+		params: '',
+		docs: 'Runs the command as the user',
+		code: closure(@args,
+			execute(array(cmd: array_implode(@args)), @standardSignUsage)
+		)
+	),
+	array(
 		name: 'give',
 		params: '<item> <qty> [<slot>]',
 		docs: 'Gives the player an item',
@@ -71,27 +79,27 @@
 			execute(array(item: @args[0], qty: @args[1], slot: @slot), @standardSignUsage)
 		)
 	),
-        array(
-                name: 'givemax',
-                params: '<id> <item> <qty> <max gives> [<slot>]',
-                docs: 'Gives the player an item',
-                code: closure(@args,
-                        if(array_size(@args) != 3 && array_size(@args) != 4 && array_size(@args) != 5){
-                                die(color(RED).'Usage: /easy-sign givemax <id> <item> <qty> <max gives> [<slot>]')
-                        }
-                        if(!is_integral(@args[2])){
-                                die(color(RED).'Qty must be an integer')
-                        }
+	array(
+		name: 'givemax',
+		params: '<id> <item> <qty> <max gives> [<slot>]',
+		docs: 'Gives the player an item',
+		code: closure(@args,
+			if(array_size(@args) != 3 && array_size(@args) != 4 && array_size(@args) != 5){
+					die(color(RED).'Usage: /easy-sign givemax <id> <item> <qty> <max gives> [<slot>]')
+			}
+			if(!is_integral(@args[2])){
+					die(color(RED).'Qty must be an integer')
+			}
 			if(!is_integral(@args[3])){
 				die(color(RED).'Max must be an integer')
 			}
-                        @slot = null
-                        if(array_size(@args) == 5){
-                                @slot = @args[4]
-                        }
-                        execute(array(id: @args[0], item: @args[1], qty: @args[2], max: @args[3], slot: @slot), @standardSignUsage)
-                )
-        ),
+			@slot = null
+			if(array_size(@args) == 5){
+					@slot = @args[4]
+			}
+			execute(array(id: @args[0], item: @args[1], qty: @args[2], max: @args[3], slot: @slot), @standardSignUsage)
+		)
+	),
 	array(
 		name: 'hunger',
 		params: '',
