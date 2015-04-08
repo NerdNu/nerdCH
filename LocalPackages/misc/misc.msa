@@ -104,7 +104,7 @@
 			array_push(@all[@group], @p)
 		}
 	)
-	foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'moderators', 'modmode'), @key,
+	foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'eadmins', 'moderators', 'modmode'), @key,
 		if(array_index_exists(@all, @key)){
 			assign(@coloredArray, array())
 			assign(@count, 0)
