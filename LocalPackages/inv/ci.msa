@@ -1,5 +1,5 @@
 *:/ci [$] = >>>
-    _assertperm('restricted', 1)
+    if (!has_permission('nerdch.level.restricted') && !has_permission('nerdch.commands.ci')) { _noperm(); }
     assign(@player, if(equals($, ''), player(), _getonlinename($)))
     if(is_null(@player), die('Player not found'))
     assign(@a, array())
@@ -13,7 +13,7 @@
         set_pinv(@player, @a)
         msg(concat(color(gray), 'Your inventory has been cleared.')),
     #else:
-        if(has_permission('nerdch.level.restricted'),
+        if(has_permission('nerdch.level.restricted') || has_permission('nerdch.commands.ci.others'),
             try(
                 set_pinv(@player, @a)
                 call_alias(concat('/mb Inventory of ', @player, ' cleared.')),
