@@ -1,3 +1,8 @@
+*:/warn = >>>
+    _assertperm('mod', 0)
+    msg(color(DARK_RED).'Usage: /warn <player> <message>')
+<<<
+
 *:/warn $player [$] = >>>
     _assertperm('mod', 0)
     if($ == '') {
