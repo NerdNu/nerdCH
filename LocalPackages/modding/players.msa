@@ -42,13 +42,16 @@
 <<<
 
 
-# Retrieve name history
+# Retrieve name history for the UUID that currently holds a name
 *:/namehistory [$player] = >>>
 	_assertperm('admin')
 	if ($player == '') {
 		die(color(RED).'Usage: /namehistory <player>')
 	}
 	@uuid = _get_puuid($player)
+	if (!@uuid) {
+		die(color(RED).'Error: could not obtain UUID for supplied username.')
+	}
 	http_request('https://api.mojang.com/user/profiles/'.@uuid.'/names', array(
 		timeout: 5000,
 		success: closure(@response){
