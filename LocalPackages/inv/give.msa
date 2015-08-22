@@ -1,7 +1,5 @@
-*:/i $ = >>>
-	if (import('sharedata.source') != 'creative') {
-		_assertperm('restricted', 1)
-	}
+# commandhelper.alias.give
+give:/i $ = >>>
 	@a = _parseiargs($)
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /i <itemid>[:metadata] [quantity]')
@@ -15,9 +13,6 @@
 <<<
 
 *:/give $player $ = >>>
-	#if (import('sharedata.source') != 'creative') {
-	#	_assertperm('restricted', 1)
-	#}
 	_assertperm('restricted', 0)
 	@a = _parseiargs($)
 	if (is_null(@a)) {
@@ -39,11 +34,8 @@
 	}
 <<<
 
-*:'/give-that' = >>>
-	if (import('sharedata.source') != 'creative') {
-		#_assertperm('restricted', 1)
-		_assertperm('restricted', 0)
-	}
+# commandhelper.alias.give
+give:'/give-that' = >>>
 	if (get_block_at(pcursor()) == '0:0') {
 		die('No block in sight!')
 	} else {
