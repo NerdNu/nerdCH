@@ -44,7 +44,11 @@
 
 # Retrieve name history for the UUID that currently holds a name
 *:/namehistory [$player] = >>>
+<<<<<<< HEAD
 	_assertperm('admin') #admin or restricted level, depending on rate limit concerns
+=======
+	_assertperm('admin')
+>>>>>>> db5e0bb79e5defdc41e6a3d612b661effad9130d
 	if ($player == '') {
 		die(color(RED).'Usage: /namehistory <player>')
 	}
@@ -67,4 +71,8 @@
 			die(color(RED).'Error: the request could not be completed.')
 		}
 	));
+<<<<<<< HEAD
 <<<
+=======
+<<<
+>>>>>>> db5e0bb79e5defdc41e6a3d612b661effad9130d
