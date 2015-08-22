@@ -53,7 +53,9 @@ if (_config_get('features.warp.enabled', true)) {
 		usage: colorize('&4/warps'),
 		aliases: array(),
 		executor: closure(@al, @p, @args, @cmd,
-			_assertperm('restricted', 0);
+			if (import('sharedata.source') != 'creative') {
+				_assertperm('restricted', 1)
+			}
 
 			@o = 'Available warps:' . color(gray);
 
@@ -85,9 +87,13 @@ if (_config_get('features.warp.enabled', true)) {
 		usage: colorize('&4/warp <name>'),
 		aliases: array(),
 		executor: closure(@al, @p, @args, @cmd,
-			_assertperm('restricted', 1);
+			if (import('sharedata.source') != 'creative') {
+				_assertperm('restricted', 1)
+			}
 
-			if (array_size(@args) == 1) {
+			if (array_size(@args) == 0) {
+				run('/warps')
+			} else if (array_size(@args) == 1) {
 				@warp = @args[0];
 				@found = 0;
 
@@ -107,7 +113,7 @@ if (_config_get('features.warp.enabled', true)) {
 
 				if (@found == 0) {
 					msg(color(red) . 'Warp not found!')
-					call_alias('/warps')
+					run('/warps')
 				}
 			}
 		)

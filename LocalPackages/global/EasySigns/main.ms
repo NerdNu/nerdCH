@@ -32,7 +32,7 @@ bind(player_interact, null, null, @e,
 							set_pinv(@array)
 						)
 					,'cmd',
-						run(@data['cmd'])
+						run_cmd(@data['cmd'])
 					,'give',
 						@item = @data['item']
 						@qty = @data['qty']
@@ -75,6 +75,25 @@ bind(player_interact, null, null, @e,
 							} else {
 								pgive_item(@item, @qty)
 							}
+						}
+					,'giveheld',
+						@item = @data['item']
+						@slot = @data['slot']
+						if(@slot != null){
+							@array = associative_array()
+							@array[@slot] = @item
+							set_pinv(@array)
+						} else {
+							#find empty slot
+							foreach(0..31, @i,
+								if(pinv(player(), @i) == null){
+									# found it
+									@array = associative_array()
+									@array[@i] = @item
+									set_pinv(player(), @array)
+									break()
+								}
+							)
 						}
 					,'hunger',
 						set_phunger(20)
@@ -216,6 +235,9 @@ bind(player_interact, null, null, @e,
 						} else {
 							msg('You don\'t have a bed set!')
 						}
+					,'setbed',
+						set_pbed_location(@data['location'])
+						msg(color(LIGHT_PURPLE).'Your bed has now been set!')
 				)
 			)
 			@cmdtypes = array()

@@ -1,5 +1,7 @@
 *:/mode [$] = >>>
-	# Only allow defaults to use this on C. On other servers require admin permission.
+	if (!has_permission('nerdch.level.mode')) {
+		_assertperm('admin', 0)
+	}
 	assign(@p, if(equals($, ''), player(), player($)))
 	if (import('sharedata.source') == 'creative') {
 		if (has_value('modelock.'.@p)) {
@@ -8,8 +10,6 @@
 		if (!has_permission('commandhelper.alias.mods') && @p != player()) {
 			die(color(RED).'You can only /mode yourself!')
 		}
-	} else {
-		_assertperm('admin', 0)
 	}
 
 	if (equals(pmode(@p), 'SURVIVAL')) {

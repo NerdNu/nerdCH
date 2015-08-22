@@ -1,5 +1,4 @@
 *:'/bed-clear' [$p] = >>>
-	_assertperm('mod')
 	assign(@player, if(equals($p, ''), player(), _getonlinename($p)))
 	if(is_null(@player), die('Player not found'))
 	if(!equals(@player, player()), _assertperm('mod',0))
