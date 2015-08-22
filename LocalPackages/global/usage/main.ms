@@ -58,6 +58,9 @@ set_interval(1000 * 60, 0, closure(){
 				@players[@uuid]['last'] = @today
 				@players[@uuid]['days'] = @players[@uuid]['days'] + 1
 			}
+			# If the player changed their name, we need to update
+			# this value to reflect that.
+			@players[@uuid]['name'] = strip_colors(@player);
 		}
 	}
 	@data['online'] = all_players()

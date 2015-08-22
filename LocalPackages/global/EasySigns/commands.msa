@@ -101,6 +101,24 @@
 		)
 	),
 	array(
+		name: 'giveheld',
+		params: '[<slot>]',
+		docs: 'Gives the player a duplicate of your currently held item',
+		code: closure(@args,
+			if(array_size(@args) > 1){
+				die(color(RED).'Usage: /easy-sign giveheld [slot]')
+			}
+			@slot = null
+			if(array_size(@args) == 1){
+				if(!is_integral(@args[0])){
+					die(color(RED).'Slot must be an integer')
+				}
+				@slot = @args[0]
+			}
+			execute(array(item: pinv(player(), null), slot: @slot), @standardSignUsage)
+		)
+	),
+	array(
 		name: 'hunger',
 		params: '',
 		docs: 'Refills a player\'s hunger bar',
@@ -316,6 +334,18 @@
 		code: closure(@args){
 			execute(array(), @standardSignUsage)
 		}
+	),
+	array(
+		name: 'setbed',
+		params: '[<world>] <x> <y> <z>',
+		docs: 'Sets the player\'s bed location at the specified position',
+		code: closure(@args,
+			@location = _parse_location(@args)
+			if (! is_array(@location)) {
+				die(color(RED).@location)
+			}
+			execute(array(location: @location), @standardSignUsage)
+		)
 	)
 	) #End array definitions
 	if($type == ''){

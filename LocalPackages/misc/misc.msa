@@ -15,7 +15,7 @@
 	))
 <<<
 
-/kickforrestart = call_alias('/kickall Server restarting.')
+/kickforrestart = die('no.'); #call_alias('/kickall Server restarting.')
 
 #/runas $player $ = runas($player, $)
 
@@ -50,7 +50,7 @@
 *:/yp = msg('Yaw:' pfacing()[0] '-' 'Pitch:' pfacing()[1])
 
 *:/helpreq $ = /modreq $
-*:/rules = msg('Rules can be found at nerd.nu/rules and on the noticeboards at spawn')
+*:/rules = msg('Rules can be found at nerd.nu/rules and on the noticeboards at spawn. Use /rulebook for a hand held guide.')
 *:/ping = msg(concat(color(gray), 'Pong!'))
 
 *:/modlist = >>>
@@ -74,6 +74,8 @@
 <<<
 
 
+// This has been replaced with NerdList.
+/*
 *:'/list-hide' [$player] = >>>
 	@p = if($player == '', player(), $player)
 	_assertperm('admin')
@@ -117,6 +119,9 @@
 	)
 	msg(concat(color(gray), 'Total: ', color(white), array_size(@players), ' players'))
 <<<
+*/
+
+*:'/list-all' = /list all
 
 
 #TODO: Do we need these?

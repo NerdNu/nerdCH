@@ -94,21 +94,31 @@
 <<<
 
 *:/spline [$] = >>>
-	_assertperm('admin',0)
+	_assertperm('mod',0)
 	run(/cs spline $)
 <<<
 
 *:/hspline [$] = >>>
-	_assertperm('admin',0)
-	run(/cs spline $)
+	_assertperm('mod',0)
+	run(/cs spline h $)
 <<<
 
 *:/rspline [$] = >>>
-	_assertperm('admin',0)
-	run(/cs spline $)
+	_assertperm('mod',0)
+	run(/cs rspline $)
 <<<
 
 *:/hrspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs rspline h $)
+<<<
+
+*:/gravity [$] = >>>
 	_assertperm('admin',0)
-	run(/cs spline $)
+	run(/cs gravity)
+<<<
+
+*:'/overlay-on' [$] = >>>
+	_assertperm('mod',0)
+	run('/cs overlay-on '.$)
 <<<

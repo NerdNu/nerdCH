@@ -63,7 +63,7 @@
 
 # set the interval between players' ability to receive books with /book
 *:'/book-cooldown' [$time] [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     if (is_numeric($time)) {
         store_value('cooldowns.book',integer($time))
         msg(color(GOLD).'Book cooldown set to '.integer($time).' minutes.')
@@ -77,7 +77,7 @@
 
 # save held book to database
 *:'/book-publish' [$name] [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     if ($name == '' || $ == true) {
         msg(color(RED).'Usage: /book-publish <label>')
         msg(color(RED).'Saves a copy of a held book to /book-list, available via /book')
@@ -115,7 +115,7 @@
 
 # remove book from database
 *:'/book-delete' [$name] [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     @label = to_lower($name)
     if ($name == '') {
         msg(color(RED).'Usage: /book-delete <name>')
@@ -135,7 +135,7 @@
 
 # download raw text into a book
 *:'/book-download' [$url] [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     if ($url == '') {
         msg(color(RED).'Usage: /book-download <url>')
         msg(color(RED).'Download web-hosted text into a book. Pages separated with this: >>>>>>>>>>>>>>>>>>>')
@@ -164,7 +164,7 @@
 
 #Retrieve old /rulebook file
 *:'/book-legacy' [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     # Check for an empty inventory slot. pgive_item()'s return value is always 0. (Bug.)
     @inv = pinv()
     @space = false
@@ -220,7 +220,7 @@
 
 # Change the displayed Author of a written book
 '/change-author' [$] = >>>
-    _assertperm('admin')
+    _assertperm('admin', 0)
     if ($ == '' || get_itemmeta(null)['author'] == false) {
         msg(color(RED).'Usage: /change-author <Author>')
         msg(color(RED).'Changes the author of a held written book.')
@@ -234,7 +234,7 @@
 
 # Send contents of held book to paste.thezomg.com, with optional password
 *:'/paste' [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     try(@pages = get_itemmeta(null)['pages'],
         @e,
         msg('You must be holding a book.')
@@ -265,7 +265,7 @@
 
 # Edit any signed book
 *:'/edit' [$] = >>>
-    _assertperm('admin', 1)
+    _assertperm('admin', 0)
     @item = pinv(player(), null)
     if (@item != null && array_get(@item, 'type') == 387) {
         set_pinv(array("": array(type: 386, meta: @item['meta'])))
