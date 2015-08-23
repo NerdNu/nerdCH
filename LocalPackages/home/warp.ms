@@ -12,7 +12,7 @@ if (_config_get('features.warp.enabled', true)) {
 	console('NerdCH: Loading feature "warp"');
 	register_command('setwarp', array(
 		description: 'Sets a warp',
-		permission: '',
+		permission: 'commandhelper.warps.setwarp',
 		noPermMsg: colorize(''),
 		usage: colorize('&4/setwarp <name>'),
 		aliases: array(),
@@ -29,7 +29,7 @@ if (_config_get('features.warp.enabled', true)) {
 
 	register_command('delwarp', array(
 		description: 'Deletes a warp',
-		permission: '',
+		permission: 'commandhelper.warps.delwarp',
 		noPermMsg: colorize(''),
 		usage: colorize('&4/delwarp <name>'),
 		aliases: array(),
@@ -48,14 +48,11 @@ if (_config_get('features.warp.enabled', true)) {
 
 	register_command('warps', array(
 		description: 'Lists warps',
-		permission: '',
+		permission: 'commandhelper.warps.warps',
 		noPermMsg: colorize(''),
 		usage: colorize('&4/warps'),
 		aliases: array(),
 		executor: closure(@al, @p, @args, @cmd,
-			if (import('sharedata.source') != 'creative') {
-				_assertperm('restricted', 1)
-			}
 
 			@o = 'Available warps:' . color(gray);
 
@@ -82,14 +79,11 @@ if (_config_get('features.warp.enabled', true)) {
 
 	register_command('warp', array(
 		description: 'Warp',
-		permission: '',
+		permission: 'commandhelper.warps.warp',
 		noPermMsg: colorize(''),
 		usage: colorize('&4/warp <name>'),
 		aliases: array(),
 		executor: closure(@al, @p, @args, @cmd,
-			if (import('sharedata.source') != 'creative') {
-				_assertperm('restricted', 1)
-			}
 
 			if (array_size(@args) == 0) {
 				run('/warps')
@@ -121,7 +115,7 @@ if (_config_get('features.warp.enabled', true)) {
 
 	register_command('warpp', array(
 		description: 'Warps a player',
-		permission: '',
+		permission: 'commandhelper.warps.warpp',
 		noPermMsg: colorize(''),
 		usage: colorize('&4/warpp <player> <warp>'),
 		aliases: array(),
