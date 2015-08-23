@@ -19,8 +19,6 @@
 
 #/runas $player $ = runas($player, $)
 
-/reloadit = runas(~op, /reload)
-
 /ra = /reloadaliases
 
 #
@@ -73,81 +71,6 @@
 	))
 <<<
 
-
-// This has been replaced with NerdList.
-/*
-*:'/list-hide' [$player] = >>>
-	@p = if($player == '', player(), $player)
-	_assertperm('admin')
-	store_value('list.hide.'.to_lower(@p), set)
-	msg(color(GOLD).@p.' will be hidden from the player list. Remember to vanish.')
-<<<
-
-*:'/list-show' [$player] = >>>
-	@p = if($player == '', player(), $player)
-	_assertperm('admin')
-	clear_value('list.hide.'.to_lower(@p))
-	msg(color(GOLD).@p.' will be shown in the player list.')
-<<<
-
-*:/list [$] = >>>
-	assign(@all, array())
-	assign(@players, all_players())
-	array_sort(@players)
-	foreach(@players, @p,
-		@isShown = is_null(get_value('list.hide.'.to_lower(@p)))
-		@bypass = has_permission('nerdch.level.admin')
-		# I don't know why || doesn't work >.>
-		#console('????@iS: '.@isShown.' @b: '.@bypass.' ??? '.or(@isShown, @bypass))	
-		if (@isShown){
-			assign(@group, pgroup(@p))
-			assign(@group, if(array_index_exists(@group, 0), @group[0], 'default'))
-			if(not(array_index_exists(@all, @group)), array_set(@all, @group, array()))
-			array_push(@all[@group], @p)
-		}
-	)
-	foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'eadmins', 'moderators', 'modmode'), @key,
-		if(array_index_exists(@all, @key)){
-			assign(@coloredArray, array())
-			assign(@count, 0)
-			foreach(@all[@key], @p,
-				@count++
-				array_push(@coloredArray, if(@count % 2 == 0, color(gray), color(white)) . @p)
-			)
-			msg(color(gold) . @key . ': ' . array_implode(@coloredArray, ' '))
-		}
-	)
-	msg(concat(color(gray), 'Total: ', color(white), array_size(@players), ' players'))
-<<<
-*/
-
-*:'/list-all' = /list all
-
-
-#TODO: Do we need these?
-
-#/lup $player = pfacing($player, pfacing($player)[0], -90)
-#/ldown $player = pfacing($player, pfacing($player)[0], 90)
-#/lrev $player = pfacing($player, subtract(pfacing($player)[0], 180), pfacing($player)[1])
-#/lleft $player = pfacing($player, subtract(pfacing($player)[0], 90), pfacing($player)[1])
-#/lright $player = pfacing($player, add(pfacing($player)[0], 90), pfacing($player)[1])
-
-#TODO: Do we want these?
-
-*:/me drinks = >>>
-	set_peffect(player(), 9, 1, 30)
-	run('/me drinks')
-<<<
-
-#*:/drunk = set_peffect(player(), 9, 1, 30) msg(concat(color(gold), 'You been drinkin?'))
-#*:/sniper = set_peffect(player(), 2, 10)
-#*:/sober = set_peffect(player(), 9, 1, 0)
-
-*:/cinfo [$] = >>>
-    _assertperm('cinfo', 0)
-    run('/cinfo')
-<<<
-
 *:/lwc info = call_alias('/cinfo')
 *:/lwc -info = call_alias('/cinfo')
 *:/lwc owners = call_alias('/cinfo')
@@ -158,19 +81,6 @@
 *:/lwc o = call_alias('/cinfo')
 
 /tpi [$] = call_alias('/tpinfo' $)
-
-*:/facing [$yaw] [$pitch] = >>>
-	_assertperm('restricted', 1)
-	if(equals($yaw, ''),
-		msg('Usage: /facing <yaw> [pitch]'),
-	#else:
-		if(equals($pitch, ''),
-			pfacing($yaw, pfacing()[1]),
-		#else:
-			pfacing($yaw, $pitch)
-		)
-	)
-<<<
 
 /mobtower $mob [$height=5] = >>>
 	_assertperm('admin')
@@ -197,20 +107,6 @@
 			set_entity_rider(spawn_mob($mob)[0], @playerId)
 		}
 	)
-<<<
-
-mods:/kick $player [$] = >>>
-	# We can add people who shouldn't be kickable here.
-	assign(@unkickable, array('LadyCailin'))
-	if(array_contains(@unkickable, player($player))){
-		pkick(player(), 'NOPE, BITCH')
-	} else {
-		run('/kick' $player $)
-	}
-<<<
-
-*:/drama [$] = >>>
-	msg(color(red).'L'.color(gold).'l'.color(yellow).'a'.color(green).'m'.color(blue).'a')
 <<<
 
 *:/signtext [$line] [$] = >>>
@@ -259,11 +155,6 @@ mods:/kick $player [$] = >>>
 
 /lolno = /lolno help
 
-/randomthor = >>>
-	_assertperm('admin')
-	execute(closure(lightning(ploc(array_get(array_rand(all_players(),1,false),0))))),false
-<<<
-
 /fortunecookie [$=''] = >>>
 	_assertperm('admin')
 	if(pinv(player(), null) != null){
@@ -304,24 +195,6 @@ mods:/kick $player [$] = >>>
 	set_pinv(array(null: array(type: 357)))
 	set_itemmeta(null, array(lore: array(if($ == '', array_rand(@fortunes, 1, false), $))))
 	enchant_inv_unsafe(null, 'LOOT_BONUS_BLOCKS', 1)
-<<<
-
-#*:/nextrestart = >>>
-#        assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
-#        assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
-#        if (@remainingSecs < 120) {
-#                msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
-#        } else {
-#                assign(@remainingMins, round(expr(@remainingSecs / 60)))
-#                msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
-#        }
-#<<<
-
-/whoami [$] = >>>
-	if(player() == 'WondrLand' && rand(0, 5) == 0){
-		die('an idiot');
-	}
-	msg(player())
 <<<
 
 *:/whereami [$] = >>>
