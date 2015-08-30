@@ -17,7 +17,7 @@
 	_global_do_modchat(@source, player(), $)
 <<<
 
-'/global-broadcast' [$=''] = >>>
+nerdch.level.admin:'/global-broadcast' [$=''] = >>>
 	if($ == ''){
 		die('TODO')
 	}
@@ -30,7 +30,7 @@
 	_global_do_broadcast($)
 <<<
 
-/abg [$=''] = >>>
+nerdch.level.admin:/abg [$=''] = >>>
 	if($ == '', die('TODO'))
 	@source = import('sharedata.source')
 	_store_shared_value(array(
