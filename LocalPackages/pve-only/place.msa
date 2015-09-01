@@ -107,7 +107,7 @@
 	msg(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>](coordinates are optional) ')
 <<<
 
-/warpplace [$] = >>>
+nerdch.level.admin:/warpplace [$] = >>>
 	if($ == ''){
 		call_alias('/place')
 	} else {
@@ -122,7 +122,7 @@
 		)
 	}
 <<<
-/addplace $place = >>>
+nerdch.level.admin:/addplace $place = >>>
 	@places = get_value('places')
 	if(@places == null){
 		@places = array()
@@ -133,7 +133,7 @@
 	call_alias('/place '.$place)
 <<<
 
-/delplace $place = >>>
+nerdch.level.admin:/delplace $place = >>>
 	@places = get_value('places')
 	if(@places == null){
 		@places = array()
