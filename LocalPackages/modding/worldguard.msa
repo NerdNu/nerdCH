@@ -67,15 +67,13 @@
 
 # Show help for no-args invocation.
 
-'/region-rename' = >>>
-	_assertperm('restricted')
+nerdch.level.admin:'/region-rename' = >>>
 	msg(color(RED).'/region-rename oldName newName')
 	msg(color(RED).'    Rename a region. The new region name must not be in use.')
 	die()
 <<<
 
-'/region-rename' $oldName $newName = >>>
-	_assertperm('restricted')
+nerdch.level.admin:'/region-rename' $oldName $newName = >>>
 	if (!sk_region_exists($oldName)) {
 		die(color(RED).'Region \''.$oldName.'\' does not exist in this world.')
 	}
