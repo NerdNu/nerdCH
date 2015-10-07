@@ -89,8 +89,7 @@
 
 /tpi [$] = call_alias('/tpinfo' $)
 
-/mobtower $mob [$height=5] = >>>
-	_assertperm('admin')
+nerdch.level.admin:/mobtower $mob [$height=5] = >>>
 	assign(@lastRider, null)
 	foreach(range($height), @i,
 		assign(@lastSpawned, spawn_mob($mob, 1, pcursor())[0])
@@ -101,14 +100,12 @@
 	)
 <<<
 
-/mobride $mob $player = >>>
-	_assertperm('admin')
+nerdch.level.admin:/mobride $mob $player = >>>
 	set_ploc($player, ploc())
 	set_entity_rider(spawn_mob($mob)[0], pinfo($player, 13))
 <<<
 
-'/mobride-r' $mob $radius = >>>
-	_assertperm('admin')
+nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 	foreach(entities_in_radius(ploc(), $radius, PLAYER), @playerId,
 		if (pinfo(player(), 13) != @playerId) {
 			set_entity_rider(spawn_mob($mob)[0], @playerId)
