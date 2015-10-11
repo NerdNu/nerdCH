@@ -17,7 +17,7 @@
 	_global_do_modchat(@source, player(), $)
 <<<
 
-nerdch.level.admin:'/global-broadcast' [$=''] = >>>
+nerdch.level.adminchat:'/global-broadcast' [$=''] = >>>
 	if($ == ''){
 		die('TODO')
 	}
