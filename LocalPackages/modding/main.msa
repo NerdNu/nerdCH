@@ -309,3 +309,8 @@ mods:/spawnp $player = runas($player, /spawn)
 		call_alias('/count-entities-player' @p $radius $)
 	)
 <<<
+
+*:/pcheck $player $perm = >>>
+	_assertperm('admin')
+	msg(has_permission($player, $perm))
+<<<
