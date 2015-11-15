@@ -3,11 +3,54 @@
     assign(@m, reg_match('^(.*) ([0-9]+)$', $))
     if(array_index_exists(@m,0),
         try(
-            enchant_inv(null, @m[1], integer(@m[2])),
+            if(has_permission('nerdch.level.admin'),
+                enchant_inv_unsafe(null, @m[1], integer(@m[2])),
+            #else:
+                enchant_inv(null, @m[1], integer(@m[2])),
+            ),
         @e,
             msg(concat(color(red), 'Error\'d! Check the enchantment name and level'))),
     #else:
         msg(concat(color(red), 'Usage: /enchant <enchantment name> <level>')))
+<<<
+
+*:/itemname [$] = >>>
+    _assertperm('admin');
+    @held = pinv(player(), null);
+    @meta = get_itemmeta(null);
+    if($ == '') {
+        msg(color(red).'Usage: /itemname Awesome Item');
+        die();
+    }
+    if (is_null(@held)) {
+        msg(color(red).'You need to be holding something to rename.');
+        die();
+    }
+    if (is_null(@meta)) {
+        @meta = array();
+    }
+    @meta['display'] = colorize($);
+    set_itemmeta(null, @meta);
+<<<
+
+*:/itemlore [$] = >>>
+    _assertperm('admin');
+    @held = pinv(player(), null);
+    @meta = get_itemmeta(null);
+    if($ == '') {
+        msg(color(red).'Usage: /itemlore line1|line2|line3|etc');
+        die();
+    }
+    if (is_null(@held)) {
+        msg(color(red).'You need to be holding something to add lore.');
+        die();
+    }
+    if (is_null(@meta)) {
+        @meta = array();
+    }
+    @lines = split('|', colorize($));
+    @meta['lore'] = @lines;
+    set_itemmeta(null, @meta);
 <<<
 
 *:/armor up = >>>

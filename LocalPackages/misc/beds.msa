@@ -1,0 +1,7 @@
+*:'/bed-clear' [$p] = >>>
+	assign(@player, if(equals($p, ''), player(), _getonlinename($p)))
+	if(is_null(@player), die('Player not found'))
+	if(!equals(@player, player()), _assertperm('mod',0))
+	set_pbed_location(@player, get_spawn(world))
+	tmsg(@player, color(LIGHT_PURPLE).'Bed reset, you will now respawn at spawn.')
+<<<

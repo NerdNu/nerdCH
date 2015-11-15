@@ -1,0 +1,45 @@
+
+
+*:/mbg [$=''] = >>>
+	_assertperm('mod')
+	if($ == ''){
+		die('TODO')	
+	}
+	@source = import('sharedata.source')
+	_store_shared_value(array(
+		filter: 'globalmodchat',
+		data: array(
+			message: $,
+			source: @source,
+			player: player(),
+		)
+	))
+	_global_do_modchat(@source, player(), $)
+<<<
+
+nerdch.level.adminchat:'/global-broadcast' [$=''] = >>>
+	if($ == ''){
+		die('TODO')
+	}
+	_store_shared_value(array(
+		filter: 'globalbroadcast',
+		data: array(
+			message: $
+		)
+	))
+	_global_do_broadcast($)
+<<<
+
+nerdch.level.admin:/abg [$=''] = >>>
+	if($ == '', die('TODO'))
+	@source = import('sharedata.source')
+	_store_shared_value(array(
+		filter: 'globaladminchat',
+		data: array(
+			message: $,
+			source: @source,
+			player: player(),
+		)
+	))
+	_global_do_adminchat(@source, player(), $)
+<<<

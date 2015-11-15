@@ -1,7 +1,275 @@
+# get a free copy of any book in /book-list - with cooldown
+*:'/book' [$name] [$] = >>>
+    @label = to_lower($name)
+    if ($name == '') {
+        msg(color(DARK_GREEN).'Usage: '.color(GOLD).'/book <name>')
+        msg(color(DARK_GREEN).'Gives you a free copy of any available book.')
+        msg(color(DARK_GREEN).'Type '.color(GOLD).'/book-list'.color(DARK_GREEN).' to see a list of all available books.')
+        if (has_permission('nerdch.level.admin')) {
+            msg(color(RED).'Admin commands:')
+            msg(color(GOLD).'/book-cooldown <minutes>'.color(DARK_GREEN).'to set the cooldown period for the use of /book.')
+            msg(color(GOLD).'/book-publish <name>'.color(DARK_GREEN).' to save and publish a held book to /book-list.')
+            msg(color(GOLD).'/book-delete <name>'.color(DARK_GREEN).' to delete a saved book.')
+            msg(color(GOLD).'/edit'.color(DARK_GREEN).' changes a held signed book to an editable version.')
+            msg(color(GOLD).'/change-author <author>'.color(DARK_GREEN).' Changes the displayed Author of a written book.')
+            msg(color(GOLD).'/book-download <url>'.color(DARK_GREEN).' to download a formatted text file from the internet.')
+            msg(color(GOLD).'/paste [password]'.color(DARK_GREEN).' sends contents of held book to paste.thezomg.com, with optional password.')
+            msg(color(GOLD).'/book-legacy'.color(DARK_GREEN).' behaves just like the old /rulebook command; gives a copy of file.txt.')
+            msg(color(GOLD).'/rulebook'.color(DARK_GREEN).' technically is available to users, is an alias for \"/book rules\", and if no such book exists in /book-list, it tries to import the legacy /rulebook file into /book-list.')
+        }
+        die()
+    } else if (has_value('books.'.@label) == false) {
+        console(color(RED).'book: '.$name.' requested, but it does not exist')
+        msg(color(RED).'No book by that name exists. Double-check /book-list.')
+        die()
+    } else {
+        # Check for an empty inventory slot. pgive_item()'s return value is always 0. (Bug.)
+        @inv = pinv()
+        @space = false
+        for (@i = 0, @i <= 35, inc(@i),
+            if (is_null(@inv[@i])) {
+                @space = true
+                break()
+            }
+        )
 
-'/change-author' $ = >>>
-	_assertperm('admin')
-	@meta = get_itemmeta(null)
-	@meta['author'] = $
-	set_itemmeta(null, @meta)
+        if (@space) {
+            # Minimum time period between giving books.
+            @BOOK_MINUTES = get_value('cooldowns.book')
+            if (is_null(@BOOK_MINUTES)) {
+                @BOOK_MINUTES = 2880
+                store_value('cooldowns.book',2880)
+            }
+
+            # Check the last time the player ran this command.
+            @lastTime = get_value('cooldowns.book.'.player())
+            if (is_null(@lastTime)) {
+                @lastTime = 0
+            }
+
+            # Admins can bypass the rate restriction to work on book text in game.
+            if (has_permission('nerdch.level.admin') || @lastTime + (1000 * 60 * @BOOK_MINUTES) < time()) {
+                store_value('cooldowns.book.'.player(), time())
+                @count = pgive_item(player(), 387, 1, get_value('books.'.@label))
+                msg(color(GOLD).'You\'ve been given a copy of '.array_get(get_value('books.'.@label),'title').'.')
+            } else {
+                msg(color(RED).'You need to wait at least '.@BOOK_MINUTES.' minutes before asking for another book.')
+            }
+        } else {
+            msg(color(RED).'You need an open inventory slot for the book.')
+        }
+    }
+<<<
+
+# set the interval between players' ability to receive books with /book
+*:'/book-cooldown' [$time] [$] = >>>
+    _assertperm('admin', 0)
+    if (is_numeric($time)) {
+        store_value('cooldowns.book',integer($time))
+        msg(color(GOLD).'Book cooldown set to '.integer($time).' minutes.')
+    } else {
+        msg(color(GOLD).'Cooldown currently set to '.get_value('cooldowns.book').' minutes.')
+        msg(color(RED).'Usage: /book-cooldown <minutes>')
+        msg(color(RED).'Use to set cooldown time on the /book command.')
+    }
+<<<
+    
+
+# save held book to database
+*:'/book-publish' [$name] [$] = >>>
+    _assertperm('admin', 0)
+    if ($name == '' || $ == true) {
+        msg(color(RED).'Usage: /book-publish <label>')
+        msg(color(RED).'Saves a copy of a held book to /book-list, available via /book')
+        msg(color(RED).'<label> must be a single term without spaces')
+    } else {
+        try(@pages = get_itemmeta(null)['pages'],
+            @e,
+            msg('You must be holding a book.')
+            die())
+        if (not(has_value('books'))) {
+            @booklist = array()
+        } else {
+            @booklist = get_value('books')
+        }
+        @label = to_lower($name)
+        array_set(@booklist,@label,$name)
+        store_value('books',@booklist)
+        store_value('books.'.@label,get_itemmeta(null))
+        msg(color(GOLD).'Book saved as '.color(BLUE).$name)
+    }
+<<<
+
+*:'/book-list' [$] = >>>
+    if (has_value('books') == false || get_value('books') == '{}') {
+        msg(color(DARK_GREEN).'There are no books currently available.')
+        die()
+    }
+    msg(color(DARK_GREEN).'The following books are available:')
+    @booklist = get_value('books')
+    foreach(@booklist, @name,
+        msg(color(BLUE).' • '.@name)
+    )
+    msg(color(DARK_GREEN).'Type '.color(GOLD).'/book <name>'.color(DARK_GREEN).' to receive your free book.')
+<<<
+
+# remove book from database
+*:'/book-delete' [$name] [$] = >>>
+    _assertperm('admin', 0)
+    @label = to_lower($name)
+    if ($name == '') {
+        msg(color(RED).'Usage: /book-delete <name>')
+        msg(color(RED).'Permanently removes a saved book from /book-list.')
+        die()
+    }
+    if (not(has_value('books.'.@label))) {
+        msg(color(RED).$name.' is not a valid book. Use /book-list.')
+    } else {
+        @booklist = get_value('books')
+        clear_value('books.'.@label)
+        array_remove(@booklist,@label)
+        store_value('books',@booklist)
+        msg(color(BLUE).$name.color(RED).' removed from books.')
+    }
+<<<
+
+# download raw text into a book
+*:'/book-download' [$url] [$] = >>>
+    _assertperm('admin', 0)
+    if ($url == '') {
+        msg(color(RED).'Usage: /book-download <url>')
+        msg(color(RED).'Download web-hosted text into a book. Pages separated with this: >>>>>>>>>>>>>>>>>>>')
+        die()
+    }
+    # Check for an empty inventory slot. pgive_item()'s return value is always 0. (Bug.)
+    @inv = pinv()
+    @space = false
+    for (@i = 0, @i <= 35, inc(@i),
+        if (is_null(@inv[@i])) {
+            @space = true
+            break()
+        }
+    )
+    if (@space) {
+        http_request($url, closure(@response){
+            #msg(@response['body'])
+            @pages = split('>>>>>>>>>>>>>>>>>>>\n', colorize(@response['body']))
+            @count = pgive_item(player(), 387, 1, array(title: 'Downloaded Book', author: '', pages: @pages))
+        })
+        msg(color(GOLD).'Downloaded book given. Consider using /edit or /change-author, and /book-publish')
+    } else {
+        msg(color(RED).'You need an open inventory slot for the book.')
+    }
+<<<
+
+#Retrieve old /rulebook file
+*:'/book-legacy' [$] = >>>
+    _assertperm('admin', 0)
+    # Check for an empty inventory slot. pgive_item()'s return value is always 0. (Bug.)
+    @inv = pinv()
+    @space = false
+    for (@i = 0, @i <= 35, inc(@i),
+        if (is_null(@inv[@i])) {
+            @space = true
+            break()
+        }
+    )
+    if (@space) {
+        @file = import('shared.firstjoin.book')
+        if (@file == null) {
+            console(color(RED).'Attempt to load shared.firstjoin.book (default main.ms refers to file.txt), no file found')
+            msg(color(RED).'File not found - check with a techadmin, or consider /book-download.')
+        } else {
+            @pages = split('>>>>>>>>>>>>>>>>>>>\n', colorize(@file))
+            @count = pgive_item(player(), 387, 1, array(title: 'The Rules', author: 'nerd.nu', pages: @pages))
+            msg(color(GOLD).'Rule book given. Remember to /book-publish rules')
+        }
+    } else {
+        msg(color(RED).'You need an open inventory slot for the book.')
+    }
+<<<
+
+# receive firstjoin book, searches for legacy version and imports into database if not already set.
+*:'/rulebook' [$] = >>>
+    if (has_value('books.rules')) {
+        run_cmd('/book rules')
+        die()
+    }
+    #otherwise we need to check and see if the old legacy rulebook txt file is present as a backup
+    else {
+        @file = import('shared.firstjoin.book')
+        if (@file == null) {
+            console(color(RED).'No first join book text set. Please add export(\'shared.firstjoin.book\', read(\'file.txt\') to main.ms for the server, or tell a server admin to save a held book with /book-publish rules')
+            msg(color(RED).'No rule book has been configured. Bug an admin.')
+            die()
+        } else {
+            #legacy file detected, migrating to new database as "rules" book
+            @pages = split('>>>>>>>>>>>>>>>>>>>\n', colorize(@file))
+            store_value('books.rules', array(title: 'The Rules', author: 'nerd.nu', pages: @pages))
+            if (not(has_value('books'))) {
+                @booklist = array()
+            } else {
+                @booklist = get_value('books')
+            }
+            array_set(@booklist,'rules','Rules')
+            store_value('books',@booklist)
+            run_cmd('/book rules')
+        }
+    }
+<<<
+
+# Change the displayed Author of a written book
+'/change-author' [$] = >>>
+    _assertperm('admin', 0)
+    if ($ == '' || get_itemmeta(null)['author'] == false) {
+        msg(color(RED).'Usage: /change-author <Author>')
+        msg(color(RED).'Changes the author of a held written book.')
+        die()
+    }
+    @meta = get_itemmeta(null)
+    @meta['author'] = $
+    set_itemmeta(null, @meta)
+    msg(color(DARK_GREEN).'Book author changed to '.color(GOLD).$)
+<<<
+
+# Send contents of held book to paste.thezomg.com, with optional password
+*:'/paste' [$] = >>>
+    _assertperm('admin', 0)
+    try(@pages = get_itemmeta(null)['pages'],
+        @e,
+        msg('You must be holding a book.')
+        die())
+    @converted = array()
+    foreach(@page in @pages){
+        array_push(@converted, replace(replace(@page, '&', '&&'), '\u00a7', '&'))
+    }
+    @request = array(
+        paste_data: array_implode(@converted, '>>>>>>>>>>>>>>>>>>>\n'),
+        paste_lang: 'text',
+        api_submit: true,
+        mode: xml,
+        paste_password: $,
+        paste_user: player())
+    http_request('http://paste.thezomg.com/', array(
+        params: @request,
+        success:
+            closure(@response) {
+                @id = xml_read(@response['body'], 'result/id')
+                @hash = xml_read(@response['body'], 'result/hash')
+                msg(sprintf('http://paste.thezomg.com/%s/%s', @id, @hash))
+                if ($ != '') {
+                    msg('PW: ' . $)
+                }
+            }))
+<<<
+
+# Edit any signed book
+*:'/edit' [$] = >>>
+    _assertperm('admin', 0)
+    @item = pinv(player(), null)
+    if (@item != null && array_get(@item, 'type') == 387) {
+        set_pinv(array("": array(type: 386, meta: @item['meta'])))
+    } else {
+        msg('You must be holding a book.')
+    }
 <<<

@@ -1,0 +1,27 @@
+#8-28-2014 Ban use of /hunlock for CobraCorral
+*:/uncorral = >>>
+	if(import('sharedata.source') != 'pve') {
+		_assertperm('restricted', 0)
+	} else {
+		_assertperm('admin', 0)
+		run('/uncorral')
+	}
+<<<
+
+*:'/horse-unlock' = >>>
+	if(import('sharedata.source') != 'pve') {
+		_assertperm('restricted', 0)
+	} else {
+		_assertperm('admin', 0)
+		run('/horse-unlock')
+	}
+<<<
+
+*:/hunlock = >>>
+	if(import('sharedata.source') != 'pve') {
+		_assertperm('restricted', 0)
+	} else {
+		_assertperm('admin', 0)
+		run('/hunlock')
+	}
+<<<

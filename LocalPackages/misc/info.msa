@@ -1,3 +1,20 @@
+# Allows for a player to get map information
+
+*:'/map' [$] = >>>
+	@servername = import('sharedata.source')
+	if (@servername == 'survival') {
+		msg(color(RED).'This command is not available on the survival server.')
+	} else {
+		msg(color(GOLD).'Access various maps of our current revision here:')
+		msg(color(YELLOW).'        carto: http://nerd.nu/maps/'.@servername.'/')
+		msg(color(YELLOW).'        live map: http://nerd.nu/maps/'.@servername.'/live/')
+		msg(color(YELLOW).'        daily snapshots (flat): http://nerd.nu/maps/'.@servername.'/snapshots/flat/')
+		msg(color(YELLOW).'        daily snapshots (isometric): http://nerd.nu/maps/'.@servername.'/snapshots/isometric/')
+	}
+<<<
+
+*:/maps [$] = call_alias(concat('/map ', $))
+
 #Allows for a player to get mumble connection information without typing !mumble in public chat
 
 *:'/mumble' [$] = >>>

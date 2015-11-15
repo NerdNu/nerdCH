@@ -5,14 +5,14 @@
         run(/removenear $item $radius))
 <<<
 
-*://fixwater $radius = >>>
+*:'//fixwater' $radius = >>>
     if($radius > 25){ 
         die(color(red) . 'Whoa, whoa, whoa. Step it down a notch, turbo.') 
     } else {
         run('/fixwater ' . $radius)
     }
 <<<
-*://fixlava $radius = >>>
+*:'//fixlava' $radius = >>>
     if($radius > 25){
         die(color(red) . 'TROGDOR THE BURNINATOR can only do up to //fixlava 25. Sorry.')
     } else {
@@ -23,7 +23,7 @@
 *:/fixwater $ = call_alias(concat('//fixwater ', $))
 *:/fixlava $ = call_alias(concat('//fixlava ', $))
 
-*://removenear [$] = >>> 
+*:'//removenear' [$] = >>> 
         assign(@match, parse_args($))
         if(equals(array_size(@match), 2),
                 if(lt(@match[1], 25),
@@ -36,7 +36,27 @@
 
 *:/removenear [$] = call_alias(concat('//removenear ', $))
 
-*://drain [$] = >>>
+*:'//butcher' [$] = >>>
+	@args = parse_args( $ )
+	@hasRadius = null
+	foreach(@args, @value){
+		if(is_integral(@value)){
+			@hasRadius = @value
+			break()
+		}
+	}
+	if(@hasRadius === null){
+		die(color(RED).'Holy radius, batman, you were about to kill everything in the world! Specify a radius.')
+	}
+	if(@hasRadius > 100){
+		die(color(RED).'Holy radius, batman, that\'s a large radius! Tone it down some.')
+	}
+	run('/butcher '.$)
+<<<
+
+*:/butcher [$] = call_alias('//butcher ' . $ )
+
+*:'//drain' [$] = >>>
     if(equals($, ''),
         msg(concat(color(red), 'Syntax: /drain radius')),
     #else:
@@ -53,7 +73,7 @@
     /remove arrows 9999
 <<<
 
-*:/deselect = //sel cuboid
+*:/deselect = run('//sel cuboid')
 
 #*://ramp [$x] [$dir1] [$dir2] = >>>
 #	_assertperm('admin', 0)
@@ -64,11 +84,41 @@
 #	)
 #<<<
 
-*://ramp $x $dir1 $dir2 [$block='rail'] [$dir1_offset=1] [$dir2_offset=1] = >>>
+*:'//ramp' $x $dir1 $dir2 [$block='rail'] [$dir1_offset=1] [$dir2_offset=1] = >>>
 	_assertperm('admin', 0)
 	for (assign(@i, 0), lt(@i, $x), inc(@i),
 		run(concat('//shift ', $dir1_offset, ' ', $dir1))
 		run(concat('//shift ', $dir2_offset, ' ', $dir2))
 		run(concat('//set ', $block))
 	)
+<<<
+
+*:/spline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs spline $)
+<<<
+
+*:/hspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs spline h $)
+<<<
+
+*:/rspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs rspline $)
+<<<
+
+*:/hrspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs rspline h $)
+<<<
+
+*:/gravity [$] = >>>
+	_assertperm('admin',0)
+	run(/cs gravity)
+<<<
+
+*:'/overlay-on' [$] = >>>
+	_assertperm('mod',0)
+	run('/cs overlay-on '.$)
 <<<

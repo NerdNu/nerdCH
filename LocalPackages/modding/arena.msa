@@ -13,6 +13,7 @@
             #sudo('//sel')
             
             store_value('arena_mode', '0')
+            sudo(/setwarp arena public false)
             broadcast(concat(color(green), 'The arena is now closed! Get out!')),
         
         
@@ -26,6 +27,7 @@
             #sudo('//sel')
             
             store_value('arena_mode', '1')
+            sudo(/setwarp arena public true)
             broadcast(concat(color(green), 'The arena is now open! Type /spawnme to be warped to the arena!')),
         
         
@@ -35,8 +37,8 @@
 
 *:/spawnme = >>>
     if(equals(get_value('arena_mode'), '1'),
-        #sudo(/warp arena),
-        set_ploc(get_value('warps.arena')),
+        sudo(/warp arena),
+        #set_ploc(get_value('warps.arena')),
     #else:
         msg(concat(color(red), 'The arena is currently closed!')))
 <<<

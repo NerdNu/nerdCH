@@ -1,27 +1,28 @@
-*:/i $ = >>>
-	if (import('sharedata.source') != 'creative') {
-		_assertperm('restricted', 1)
-	}
+# commandhelper.alias.give
+give:/i $ = >>>
 	@a = _parseiargs($)
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /i <itemid>[:metadata] [quantity]')
 	} else {
+		if ((@a[0] == 175 && @a[1] >= 6) || (@a[0] == 161 && @a[1] >= 2)) {
+			die('I\'m sorry, I can\'t let you do that Dave.')
+		}
 		pgive_item(@a[0].':'.@a[1], @a[2])
 		msg(color(GRAY).'Giving '.@a[2].' of '.data_name(@a[0]))
 	}
 <<<
 
 *:/give $player $ = >>>
-	#if (import('sharedata.source') != 'creative') {
-	#	_assertperm('restricted', 1)
-	#}
-	_assertperm('restricted')
+	_assertperm('restricted', 0)
 	@a = _parseiargs($)
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /give <player> <itemid>[:metadata] [quantity]')
 	} else {
 		try(
 			@recipient = player($player)
+			if ((@a[0] == 175 && @a[1] >= 6) || (@a[0] == 161 && a[1] >= 2)) {
+				die('I\'m sorry, I can\'t let you do that Dave')
+			}
 			pgive_item(@recipient, @a[0].':'.@a[1], @a[2])
 			if (@recipient != player()) {
 				tmsg(@recipient,player().' gave you '.@a[2].' '.data_name(@a[0]))
@@ -33,10 +34,8 @@
 	}
 <<<
 
-*:'/give-that' = >>>
-	if (import('sharedata.source') != 'creative') {
-		_assertperm('restricted', 1)
-	}
+# commandhelper.alias.give
+give:'/give-that' = >>>
 	if (get_block_at(pcursor()) == '0:0') {
 		die('No block in sight!')
 	} else {

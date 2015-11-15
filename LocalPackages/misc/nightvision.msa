@@ -1,0 +1,15 @@
+nightvision:/nightvision = >>>
+
+	# Search the player's current potion effects for night vision.
+	foreach(get_peffect(player()), @effect,
+		if (@effect[id] == 16) {
+			# If found, remove it.
+			set_peffect(player(), 16, 0, 0)
+			die(color(GOLD).'Night vision disabled.')
+		}
+	)
+	set_peffect(player(), 16, 10, 60 * 60, false)
+	msg(color(GOLD).'Night vision enabled.')
+<<<
+
+nightvision:/nv = call_alias('/nightvision')

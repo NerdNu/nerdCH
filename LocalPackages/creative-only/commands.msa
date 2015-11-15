@@ -51,9 +51,34 @@
 	)
 <<<
 
-*:/roll [$]= >>>
+*:/roll [$faces] = >>>
 	_assertperm('restricted')
-	broadcast(color(gold).player().' rolled a '.rand(1, 21))
+	@faces = 6
+	if($faces != '' && is_integral($faces), @faces = integer($faces))
+	broadcast(color(gold).player().' rolled a '.rand(1, @faces + 1))
+<<<
+
+*:/flip [$] = >>>
+	_assertperm('restricted')
+	broadcast(color(GOLD).player().' got '.if(rand(0, 2) == 1, 'heads', 'tails'))
+<<<
+
+*:/draw [$] = >>>
+	_assertperm('restricted')
+	@values = array('Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King')
+	@vowels = array(0, 7)
+	@suits = array('Spades', 'Clubs', 'Hearts', 'Diamonds')
+	@value = rand(0, 13)
+	broadcast(color(GOLD).player().' drew '.if(array_contains(@vowels, @value), 'an ', 'a ').@values[@value].' of '.@suits[rand(0, 4)])
+<<<
+
+*:/pull [$] = >>>
+	_assertperm('restricted')
+	@symbols = array('7', '\u3374', '\u26c0', '\u2618', '\u260a', '\u265a')
+	msg(color(GOLD).color(RANDOM).'000')
+	set_timeout(3000, closure() {
+		broadcast(color(GOLD).player().' got '.array_implode(array_rand(@symbols, 3, false), ''))
+	})
 <<<
 
 /rainbowhat [$player] = >>>
@@ -95,9 +120,41 @@
 <<<
 
 *:/randloc [$] = >>>
-	@MAXDISTANCE = 2000
+	@MAXDISTANCE = 3000
 	@x = rand(- @MAXDISTANCE, @MAXDISTANCE)
 	@z = rand(- @MAXDISTANCE, @MAXDISTANCE)
 	@y = get_highest_block_at(@x, @z)[1]
 	set_ploc(@x, @y, @z)
+<<<
+
+/*
+*:/me $ = >>>
+	run('/bukkit:me ' . $)
+<<<
+*/
+
+*:/slap $player = >>>
+        _assertperm('admin')
+	@vel_x = rand(-10, 10)
+	@vel_y = rand(10)
+        @vel_z = rand(-10, 10)
+	set_pvelocity($player, @vel_x, @vel_y, @vel_z)
+        msg(color('GOLD').$player.' has been slapped!')
+        tmsg($player, color('GOLD').'You have been slapped!')
+<<<
+
+*:/poke $playerName = >>>
+        @lastTime = import('lastpoke.'.player())
+        @time = time()
+        if(!is_null(@lastTime) && (@time - (1000 * 60 * 5)) < @lastTime) {
+            msg(color('RED').'You can poke someone again 5 minutes after poking someone.')
+            die()
+        }
+
+        @player = null
+
+        try(@player = player($playerName), msg(color('RED').'Player is not online.')die())
+        tmsg(@player, color('GOLD').'You have been poked!')
+        msg(color('GOLD').@player.' has been poked!')
+        export('lastpoke.'.player(), @time)
 <<<

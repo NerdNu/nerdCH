@@ -1,0 +1,23 @@
+# Commands to nudge people in the right direction if it doesn't look like they
+# know what they're doing.
+
+*:/p [$] = call_alias('/plotme '.$)
+*:/plot [$] = call_alias('/plotme '.$)
+
+*:/plotme [$] = >>>
+	if (pworld() == 'world') {
+		msg(color(GOLD).'This isn\'t a PlotMe world. Here, you can build on any open space. To find some land, you can fly around and explore, type '.color(GREEN).'/randloc'.color(GOLD).' to teleport to a random location, or type '.color(GREEN).'/maps'.color(GOLD).' to see a map of our world!')
+	} else {
+		run(get_cmd())
+	}
+<<<
+
+*:/tpa [$] = >>>
+	msg(color(GOLD).'To teleport to any player, simply type '.color(GREEN).'/tp <PLAYER>'.color(GOLD).'. You can use '.color(GREEN).'/tpmode'.color(GOLD).' to change whether other people can teleport to you.')
+<<<
+
+*:/gm [$] = call_alias('/gamemode '.$)
+
+*:/gamemode [$] = >>>
+	msg(color(GOLD).'Type '.color(GREEN).'/mode'.color(GOLD).' to toggle between creative and survival mode.')
+<<<

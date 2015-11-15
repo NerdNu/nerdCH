@@ -1,0 +1,25 @@
+*:/dynmap = >>>
+	if (player() != '~console' && array_contains(pgroup(), 'default')) {
+		msg('/dynmap show/hide')
+	} else {
+		run('/dynmap '.$)
+	}
+<<<
+
+*:/dynmap $ = >>>
+	if (player() != '~console' && and(array_contains(pgroup(), 'default'), not(array_contains(array('show', 'hide'), $)))) {
+		die('Unknown command. Type "/help" for help')
+	} else {
+		run('/dynmap '.$)
+	}
+<<<
+
+*:/dmarker [$] = if(array_contains(pgroup(), 'default'), die('Unknown command. Type "/help" for help'), run('/dmarker '.$))
+
+/*
+*:/map update = >>>
+	_cooldown2(120, 'MAPUPDATE' . player())
+	sudo('/dynmap radiusrender 32')
+<<<
+*/
+

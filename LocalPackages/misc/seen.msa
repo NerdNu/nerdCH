@@ -7,20 +7,21 @@
 		msg(color(red).'Tells you when the last time that player logged on')
 		die()
 	}
+
 	assign(@playerName, strip_colors($player))
 	assign(@lowerName, to_lower(@playerName))
+	assign(@uuid, _get_puuid(@lowerName))
+	assign(@key, 'lastseen.' . @uuid)
 
 	if (has_value('correctPlayerName.' . @lowerName)) {
-		assign(@key, 'lastseen.' . @lowerName)
 		assign(@displayName, get_value('correctPlayerName.' . @lowerName))
 	} else {
-		assign(@key, 'lastseen.' . @playerName)
 		# Preserve colors in the player name when displaying.
 		assign(@displayName, $player)
 	}
 
 	if (has_value(@key)) {
-		@format = 'EEEE, MMMM d, kk:mm' 
+		@format = 'EEEE, MMMM d, HH:mm' 
 		msg(color(gold).@displayName.' was last seen on '.simple_date(@format, get_value(@key)).'\n(The current time is: '.simple_date(@format).')')
 		if (ponline($player)) {
 			msg(color(gold).'Also, they are currently online.')
@@ -37,13 +38,22 @@
 		msg(color(GOLD).'Shows the last IP used by a player.')
 		die()
 	}
+
 	assign(@playerName, strip_colors($player))
 	assign(@lowerName, to_lower(@playerName))
+	assign(@uuid, _get_puuid(@lowerName))
 
-	@ip = get_value('lastip.' . @lowerName)	
-	if (is_null(@ip)) {
-		msg(color(GOLD).@playerName.' has no recorded IP address.')
+	if (has_value('correctPlayerName.' . @lowerName)) {
+		assign(@displayName, get_value('correctPlayerName.' . @lowerName))
 	} else {
-		msg(color(GOLD).@playerName.': '.color(YELLOW).@ip)
+		# Preserve colors in the player name when displaying.
+		assign(@displayName, $player)
+	}
+
+	@ip = get_value('lastip.' . @uuid)
+	if (is_null(@ip)) {
+		msg(color(GOLD).@displayName.' has no recorded IP address.')
+	} else {
+		msg(color(GOLD).@displayName.': '.color(YELLOW).@ip)
 	}
 <<<

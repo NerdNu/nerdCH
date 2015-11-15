@@ -1,3 +1,6 @@
+/**
+# Superceded by /book rules, or /rulebook alias in books.msa
+
 *:'/rulebook' [$] = >>>
 	@file = import('shared.firstjoin.book')
 	if (@file == null) {
@@ -38,3 +41,5 @@
 		}
 	}
 <<<
+*/
+

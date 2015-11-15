@@ -1,0 +1,164 @@
+
+
+*:/wp = >>>
+    msg(color(gold).'Help: /wp')
+    msg('  /wp [playername] <waypoint>: '.color(gray).'Gives the coordinates of, and points you towards, the given waypoint.')
+    msg('  /listwps [playername]: '.color(gray).'List your, or another player\'s waypoints.')
+    msg('  /setwp <name> [unlisted|public|private]: '.color(gray).'Creates a new waypoint at your location, with the given mode.')
+    msg('  /delwp <name>: '.color(gray).'Deletes the waypoint with the given name.')
+<<<
+
+*:/wp $name [$extra] = >>>
+    @player_name = null
+    @wp_name = null
+    @allow_private = false
+    
+    if ($extra == '') {
+        @player_name = player()
+	@wp_name = $name
+	@allow_private = true
+    } else {
+        @player_name = $name
+	@wp_name = $extra
+    }
+
+    @uuid = _get_puuid(@player_name)
+    @waypoints = get_value('waypoints', @uuid)
+    if(@waypoints == null) {
+        die(color(red).'No waypoint named ' . $name)
+    }
+
+    @waypoint = null
+    
+    foreach(@test_name: @value in @waypoints) {
+        if(equals_ic(@test_name, @wp_name)) {
+            if(@player_name != player() && @value['mode'] == 'private') {
+	        continue()
+	    }
+            @waypoint = @value
+	    break()
+	}
+    }
+
+    if(@waypoint == null) {
+        die(color(red)'No waypoint named ' $name '.');
+    }
+
+    @loc = @waypoint['loc']
+    @x = @loc['x']
+    @y = @loc['y']
+    @z = @loc['z']
+
+    @p_loc = ploc()
+    @dx = @p_loc['x'] - @x
+    @dy = @p_loc['y'] - @y
+    @dz = @p_loc['z'] - @z
+ 
+    @yaw = to_degrees(atan2(@dz, @dx))
+    @yaw += 90
+
+    pfacing(@yaw, ploc()['pitch'])
+
+    msg(color(gold). @wp_name . ':')
+    msg(color(red).'X: ' .color(reset).  round(@x))
+    msg(color(yellow).'Y: '.color(reset) . round(@y))
+    msg(color(green).'Z: '.color(reset) . round(@z))
+    msg(color(blue).'Distance: ' . color(reset). round(sqrt(pow(@dx, 2) + pow(@dy, 2) + pow(@dz, 2))).'m')
+<<<
+
+
+
+*:/listwps [$player] = >>>
+    @player = $player
+    @is_own_list = false
+    if(@player == '') {
+        @player = player()
+        @is_own_list = true
+    } 
+
+    @uuid = _get_puuid(@player)
+    @waypoints = get_value('waypoints', @uuid)  
+
+    if(@waypoints == null || length(@waypoints) == 0) {
+        die(color(red).'No waypoints found; type `/wp` for help.')
+    }
+
+    # Filter waypoints.
+    if(!@is_own_list) {
+        @temp = array()
+	foreach(@name: @waypoint in @waypoints) {
+            if(@waypoint['mode'] == 'public') {
+                array_set(@temp, @name, @waypoint)
+	    }
+	}
+	@waypoints = @temp
+    }
+    
+    if(@is_own_list) {
+        msg(color(gold).'Your waypoints:')
+    } else {
+        msg(color(gold).$player.'\'s public waypoints:')
+    }
+    foreach(@name: @waypoint in @waypoints) {
+        @loc = @waypoint['loc']
+	@x = round(@loc['x'])
+	@y = round(@loc['y'])
+	@z = round(@loc['z'])
+	if(@is_own_list) {
+	    msg('  '.@name.':'.color(gray).' X: '.@x.', Y: '.@y.', Z: '.@z. ' ('.@waypoint['mode'].')')
+	} else {
+            msg('  '.@name.':'.color(gray).' X: '.@x. ', Y: '.@y. ', Z: '.@z)
+	}
+    }
+    msg('Type `/wp [playername] <name>` to be pointed towards the given waypoint')
+<<<
+
+*:/setwp $name [$mode] = >>>
+    @uuid = _get_puuid(player())
+    @waypoints = get_value('waypoints', @uuid)
+    if(@waypoints == null) {
+        @waypoints = array()
+    } else if(array_contains_ic(array_keys(@waypoints), $name)) {
+        die(color(red).'You already have a waypoint named '.$name.'.')
+    }
+
+    @modes = array('public', 'private', 'unlisted')
+    @mode = null
+    if($mode == '') {
+        @mode = 'unlisted'
+    } else if(array_contains_ic(@modes, $mode)) {
+        @mode = to_lower($mode)
+    } else {
+        die(color(red). 'Usage: /wp add <name> [public|private|unlisted]')
+    }
+    array_set(@waypoints, $name, array('loc': ploc(), 'mode': @mode))
+    msg(color(gray).'Waypoint added successfully.')
+    store_value('waypoints', @uuid, @waypoints)
+<<<
+
+*:/delwp $name = >>>
+    @uuid = _get_puuid(player())
+    @waypoints = get_value('waypoints', @uuid)
+    if(@waypoints == null) {
+        die(color(red).'You have no waypoints.')
+    }
+    
+    @match = null
+
+    foreach(@name: @ignored in @waypoints) {
+        if(equals_ic(@name, $name)) {
+	    @match = @name
+	}
+    } 
+
+    array_remove(@waypoints, @match)
+
+    if(length(@waypoints) == 0) {
+        clear_value('waypoints', @uuid)
+    } else {
+        store_value('waypoints', @uuid, @waypoints)
+    }
+    msg(color(gray).'Waypoint removed successfully.')
+<<<
+
+

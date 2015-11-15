@@ -19,7 +19,8 @@
 #/broadcast $ = msg('You can also use /b') /broadcast $
 
 *:/o [$] = >>>
-    _assertperm('mod', 0)
+    if (!has_permission('nerdch.level.mod') && !has_permission('nerdch.commands.o')) { _noperm(); }
+
     broadcast(concat(color('white'), '<', color('red'), player(), color('white'), '>', color('white'), ' ', color('green'), $))
 <<<
 

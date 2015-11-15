@@ -15,11 +15,9 @@
 	))
 <<<
 
-/kickforrestart = call_alias('/kickall Server restarting.')
+/kickforrestart = die('no.'); #call_alias('/kickall Server restarting.')
 
 #/runas $player $ = runas($player, $)
-
-/reloadit = runas(~op, /reload)
 
 /ra = /reloadaliases
 
@@ -50,13 +48,13 @@
 *:/yp = msg('Yaw:' pfacing()[0] '-' 'Pitch:' pfacing()[1])
 
 *:/helpreq $ = /modreq $
-*:/rules = msg('Rules can be found at nerd.nu/rules and on the noticeboards at spawn')
+*:/rules = msg('Rules can be found at nerd.nu/rules and on the noticeboards at spawn. Use /rulebook for a hand held guide.')
 *:/ping = msg(concat(color(gray), 'Pong!'))
 
 *:/modlist = >>>
 	assign(@mods, array())
         foreach(all_players(), @p,
-		if (is_null(get_value('list.hide.'.@p)) && has_permission(@p, 'nerdch.level.mod')) {
+		if (is_null(get_value('list.hide.'.to_lower(@p))) && has_permission(@p, 'nerdch.level.mod')) {
 			array_push(@mods, @p)
 		}
 	)
@@ -73,69 +71,11 @@
 	))
 <<<
 
+*:'/list-all' = /list all
 
-*:'/list-hide' [$player] = >>>
-	@p = if($player == '', player(), $player)
-	_assertperm('admin')
-	store_value('list.hide.'.to_lower(@p), set)
-	msg(color(GOLD).@p.' will be hidden from the player list. Remember to vanish.')
-<<<
-
-*:'/list-show' [$player] = >>>
-	@p = if($player == '', player(), $player)
-	_assertperm('admin')
-	clear_value('list.hide.'.to_lower(@p))
-	msg(color(GOLD).@p.' will be shown in the player list.')
-<<<
-
-*:/list = >>>
-	assign(@all, array())
-	assign(@players, all_players())
-	array_sort(@players)
-	foreach(@players, @p,
-		@isShown = is_null(get_value('list.hide.'.to_lower(@p)))
-		@bypass = has_permission('nerdch.level.admin')
-		# I don't know why || doesn't work >.>
-		#console('????@iS: '.@isShown.' @b: '.@bypass.' ??? '.or(@isShown, @bypass))	
-		if (@isShown){
-			assign(@group, pgroup(@p))
-			assign(@group, if(array_index_exists(@group, 0), @group[0], 'default'))
-			if(not(array_index_exists(@all, @group)), array_set(@all, @group, array()))
-			array_push(@all[@group], @p)
-		}
-	)
-	foreach(array('default', 'headadmins', 'techadmins', 'cadmins', 'sadmins', 'padmins', 'moderators', 'modmode'), @key,
-		if(array_index_exists(@all, @key)){
-			assign(@coloredArray, array())
-			assign(@count, 0)
-			foreach(@all[@key], @p,
-				@count++
-				array_push(@coloredArray, if(@count % 2 == 0, color(gray), color(white)) . @p)
-			)
-			msg(color(gold) . @key . ': ' . array_implode(@coloredArray, ' '))
-		}
-	)
-	msg(concat(color(gray), 'Total: ', color(white), array_size(@players), ' players'))
-<<<
-
-
-#TODO: Do we need these?
-
-#/lup $player = pfacing($player, pfacing($player)[0], -90)
-#/ldown $player = pfacing($player, pfacing($player)[0], 90)
-#/lrev $player = pfacing($player, subtract(pfacing($player)[0], 180), pfacing($player)[1])
-#/lleft $player = pfacing($player, subtract(pfacing($player)[0], 90), pfacing($player)[1])
-#/lright $player = pfacing($player, add(pfacing($player)[0], 90), pfacing($player)[1])
-
-#TODO: Do we want these?
-
-#*:/drunk = set_peffect(player(), 9, 1, 30) msg(concat(color(gold), 'You been drinkin?'))
-#*:/sniper = set_peffect(player(), 2, 10)
-#*:/sober = set_peffect(player(), 9, 1, 0)
-
-*:/cinfo [$] = >>>
-    _assertperm('cinfo', 0)
-    run('/cinfo')
+*:/me drinks = >>>
+	set_peffect(player(), 9, 1, 30)
+	run('/me drinks')
 <<<
 
 *:/lwc info = call_alias('/cinfo')
@@ -147,8 +87,7 @@
 *:/lwc -o = call_alias('/cinfo')
 *:/lwc o = call_alias('/cinfo')
 
-/mobtower $mob [$height=5] = >>>
-	_assertperm('admin')
+nerdch.level.admin:/mobtower $mob [$height=5] = >>>
 	assign(@lastRider, null)
 	foreach(range($height), @i,
 		assign(@lastSpawned, spawn_mob($mob, 1, pcursor())[0])
@@ -159,33 +98,17 @@
 	)
 <<<
 
-/mobride $mob $player = >>>
-	_assertperm('admin')
+nerdch.level.admin:/mobride $mob $player = >>>
 	set_ploc($player, ploc())
 	set_entity_rider(spawn_mob($mob)[0], pinfo($player, 13))
 <<<
 
-'/mobride-r' $mob $radius = >>>
-	_assertperm('admin')
+nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 	foreach(entities_in_radius(ploc(), $radius, PLAYER), @playerId,
 		if (pinfo(player(), 13) != @playerId) {
 			set_entity_rider(spawn_mob($mob)[0], @playerId)
 		}
 	)
-<<<
-
-mods:/kick $player [$] = >>>
-	# We can add people who shouldn't be kickable here.
-	assign(@unkickable, array('LadyCailin'))
-	if(array_contains(@unkickable, player($player))){
-		pkick(player(), 'NOPE, BITCH')
-	} else {
-		run('/kick' $player $)
-	}
-<<<
-
-*:/drama [$] = >>>
-	msg(color(red).'L'.color(gold).'l'.color(yellow).'a'.color(green).'m'.color(blue).'a')
 <<<
 
 *:/signtext [$line] [$] = >>>
@@ -234,11 +157,6 @@ mods:/kick $player [$] = >>>
 
 /lolno = /lolno help
 
-/randomthor = >>>
-	_assertperm('admin')
-	execute(closure(lightning(ploc(array_get(array_rand(all_players(),1,false),0))))),false
-<<<
-
 /fortunecookie [$=''] = >>>
 	_assertperm('admin')
 	if(pinv(player(), null) != null){
@@ -281,18 +199,9 @@ mods:/kick $player [$] = >>>
 	enchant_inv_unsafe(null, 'LOOT_BONUS_BLOCKS', 1)
 <<<
 
-#*:/nextrestart = >>>
-#        assign(@nextRestartMillis, expr(get_value('nextrestart.startMillis') + 2*60*60*1000))
-#        assign(@remainingSecs, round(expr((@nextRestartMillis - time()) / 1000)))
-#        if (@remainingSecs < 120) {
-#                msg(color(gold).sprintf('The server will restart in about %d seconds.', @remainingSecs))
-#        } else {
-#                assign(@remainingMins, round(expr(@remainingSecs / 60)))
-#                msg(color(gold).sprintf('The server will restart in about %d minutes.', @remainingMins))
-#        }
-#<<<
-
-/whoami [$] = msg(player())
+*:/whereami [$] = >>>
+	msg(import('sharedata.source'));
+<<<
 
 # Used from console only.
 

@@ -5,6 +5,7 @@
 	@range = 3
 	@message = color(GOLD).'Pets within '.@range.' blocks of that block are owned by:'
 	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE))
+	@results = '';
 	foreach (@pets, @pet,
 		if (is_tameable(@pet)) {
 			@owner = get_mob_owner(@pet)
@@ -63,7 +64,9 @@
 		@mob = 'horse:'.@mob
 	}
 
-	tame_mob($player, spawn_mob(@mob, 1, @loc)[0])
+	@id = spawn_mob(@mob, 1, @loc)[0]
+	set_entity_persistence(@id, true)
+	tame_mob($player, @id)
 	msg(color(GOLD).'Spawned '.@mob.' owned by '.$player.'.')
 <<<
 

@@ -9,6 +9,8 @@
 	msg(color(WHITE)       .'        List all broadcast messages.');
 	msg(color(LIGHT_PURPLE).'    /alert add <color> <message>');
 	msg(color(WHITE)       .'        Add the message to the broadcast rotation.');
+	msg(color(LIGHT_PURPLE).'    /alert insert <index> <color> <message>');
+	msg(color(WHITE)       .'        Insert the message into the broadcast rotation.');
 	msg(color(LIGHT_PURPLE).'    /alert remove <number>');
 	msg(color(WHITE)       .'        Remove a message by number.');
 	msg(color(LIGHT_PURPLE).'    /alert interval [<seconds>]');
@@ -85,6 +87,61 @@
 	
 <<<
 
+
+# /alert insert index color message
+#	An admin command to insert a new alert at a specified position in the list.
+
+*:/alert insert $index $alertColor $ = >>>
+
+	_assertperm('admin');
+	@alerts = _get_alerts();
+
+        # Check that the position is valid
+	if (!is_integral($index) || $index < 1 || $index > array_size(@alerts) + 1) {
+		die(color(RED).'The index must be a number between 1 and '.(array_size(@alerts) + 1).', inclusive.');
+	}
+
+	# Canonical color names
+	@validColors = array(
+		darkgrey: DARK_GRAY,
+		orange: GOLD,
+		grey: GRAY,
+		pink: LIGHT_PURPLE,
+		purple: LIGHT_PURPLE
+	);
+	@excluded = array(BOLD, ITALIC, PLAIN_WHITE, RANDOM, STRIKETHROUGH, UNDERLINE);
+	foreach (reflect_pull(enum, ChatColor), @color,
+		if (!array_contains(@excluded, @color)) {
+			@key = to_lower(replace(@color, '_', ''));
+            @validColors[@key] = @color;
+            @validColors[replace(@key, 'gray', 'grey')] = @color;
+		}
+	);
+
+	# Canonicalise color parameter
+	@colorName = to_lower(replace($alertColor, '_', ''));
+
+	# Handle command without a specified color
+	if (array_index_exists(@validColors, @colorName)) {
+		@actualColor = @validColors[@colorName];
+		@alertMessage = $;
+	} else {
+		if ($alertColor[0] != '&') {
+			msg(color(RED).'"'.$alertColor.'" is not a valid color name. Defaulting to light purple.');
+		}
+		@actualColor = LIGHT_PURPLE;
+		@alertMessage = $alertColor.' '.$;
+	}
+
+	# Add the new alert
+	@newAlert = array(color: @actualColor, msg: colorize(@alertMessage));
+	array_insert(@alerts, @newAlert, $index - 1);
+
+	# Save the updated alerts
+	store_value('server.alerts.messages', @alerts);
+	msg(color(LIGHT_PURPLE).'Alert #'.$index.' added.');
+	
+<<<
 
 # /alert remove number
 #	An admin command to remove a specific alert by its 1-based /alert list index.

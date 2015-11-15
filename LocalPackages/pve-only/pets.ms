@@ -37,7 +37,7 @@ proc(_spawn_horse, @loc, @variant, @color, @pattern,
 	}
 	@id = spawn_mob(@type, 1, @loc)[0]
 	# Sets the max health to a reasonable default
-        set_max_health(@id, 20)
-        return (@id);
+	set_max_health(@id, 20)
+	return (@id);
 )
 

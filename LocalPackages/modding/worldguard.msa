@@ -6,7 +6,7 @@
 		die(color(RED).'A region by that name already exists.')
 	} else {
 		run('/region define '.$name.' '.$)
-		call_alias('/addflags '.$name)
+		_add_flags($name, 250, 6)
 	}
 <<<
 *:/cregion $name = msg(color(RED).'You must specify an owner as well. /cregion <name> <owner>')
@@ -16,9 +16,20 @@
 		die(color(RED).'There is no region by that name.')
 	} else {
 		run(concat('/region flag ', $name, ' use allow'))
+		run(concat('/region flag ', $name, ' interact allow'))
 		run(concat('/region flag ', $name, ' chest-access allow'))
 		run(concat('/region flag ', $name, ' vehicle-place allow'))
 		run(concat('/region flag ', $name, ' vehicle-destroy allow'))
+		run(concat('/region flag ', $name, ' ride allow'))
+                if (import('sharedata.source') == 'creative') {
+			run(concat('/region flag ', $name, ' date ', simple_date('yyyy/MM/dd HH:mm:ss z')))
+			run(concat('/region flag ', $name, ' created-by ', player()))
+		}
+		if (import('sharedata.source') == 'pve') {
+			run(concat('/region flag ', $name, ' date ', simple_date('yyyy/MM/dd HH:mm:ss z')))
+			run(concat('/region flag ', $name, ' created-by ', player()))
+			run(concat('/region flag ', $name, ' damage-animals allow'))
+		}
 	}
 <<<
 
@@ -61,15 +72,13 @@
 
 # Show help for no-args invocation.
 
-'/region-rename' = >>>
-	_assertperm('restricted')
+nerdch.level.admin:'/region-rename' = >>>
 	msg(color(RED).'/region-rename oldName newName')
 	msg(color(RED).'    Rename a region. The new region name must not be in use.')
 	die()
 <<<
 
-'/region-rename' $oldName $newName = >>>
-	_assertperm('restricted')
+nerdch.level.admin:'/region-rename' $oldName $newName = >>>
 	if (!sk_region_exists($oldName)) {
 		die(color(RED).'Region \''.$oldName.'\' does not exist in this world.')
 	}

@@ -1,0 +1,39 @@
+*:/kick $player [$] = >>>
+	_assertperm('mod')
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'kick', $player, $))
+<<<
+
+*:/ban $player [$] = >>>
+	_assertperm('mod', 0)
+	if (_contains('nerd.nu/appeal', $)) {
+		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $))
+	} else {
+		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' nerd.nu/appeal'))
+	}
+<<<
+
+*:/unban $player = >>>
+	_assertperm('mod', 0)
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'unban', $player))
+<<<
+
+*:/lookup $player = >>>
+	_assertperm('mod')
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'lookup', $player))
+<<<
+
+*:/addnote $player $ = >>>
+	_assertperm('mod')
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'addnote', $player, $))
+<<<
+
+*:/delnote $id = >>>
+	_assertperm('mod')
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'delnote', $id))
+<<<
+
+*:/removenote $id = >>>
+	_assertperm('mod')
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'delnote', $id))
+<<<
+

@@ -1,0 +1,8 @@
+*:/say $ = >>>
+	if (player() == '~console') {
+		broadcast('§D[Server] ' . $);
+		die();
+	}
+
+	run('/say ' . $);
+<<<

@@ -1,0 +1,503 @@
+
+*:'/easy-sign' [$type=''] [$=''] =  >>>
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign')) { _noperm(); }
+
+	@standardSignUsage = closure(@data,
+		@signdata = get_value('easysign.signs')
+		if(!is_array(@signdata)){
+			@signdata = array()
+		}
+		@key = json_encode(_easy_sign_loc_conv(pcursor()))
+		if(!array_index_exists(@signdata, @key)){
+			@signdata[@key] = array()
+		}
+		array_push(@signdata[@key], array(
+			type: to_lower($type),
+			data: @data,
+		))
+		export('easysign.signs', @signdata)
+		store_value('easysign.signs', @signdata)
+		msg(color(LIGHT_PURPLE).'Easy sign action added!')
+	)
+	@commands = array(
+	# To add a new sign type, add a new array, with name, docs, and code set.
+	# The code should be a closure that accepts an array, the args.
+	# You must also add the handler in main.ms
+	array(
+		name: 'sleep',
+		params: '',
+		docs: 'Makes this a sleep sign. Anyone that activates'
+			.' the sign will have bed respawn point set',
+		code: closure(@args,
+			execute(null, @standardSignUsage)
+		)
+	),
+	array(
+		name: 'warp',
+		params: '[<world>] <x> <y> <z>',
+		docs: 'Makes a warp sign. Send the x, y, and z coords, and optionally the world name.'
+			.' The user will warp there when they activate the sign.',
+		code: closure(@args,
+			@location = _parse_location(@args)
+			if (! is_array(@location)) {
+				die(color(RED).@location)
+			}
+			execute(array(location: @location), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'ci',
+		params: '',
+		docs: 'Clears the player\'s inventory',
+		code: closure(@args,
+			execute(null, @standardSignUsage)
+		)
+	),
+	array(
+		name: 'cmd',
+		params: '',
+		docs: 'Runs the command as the user',
+		code: closure(@args,
+			execute(array(cmd: array_implode(@args)), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'give',
+		params: '<item> <qty> [<slot>]',
+		docs: 'Gives the player an item',
+		code: closure(@args,
+			if(array_size(@args) != 2 && array_size(@args) != 3){
+				die(color(RED).'Usage: /easy-sign give item qty [slot]')
+			}
+			if(!is_integral(@args[1])){
+				die(color(RED).'Qty must be an integer')
+			}
+			@slot = null
+			if(array_size(@args) == 3){
+				@slot = @args[2]
+			}
+			execute(array(item: @args[0], qty: @args[1], slot: @slot), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'givemax',
+		params: '<id> <item> <qty> <max gives> [<slot>]',
+		docs: 'Gives the player an item',
+		code: closure(@args,
+			if(array_size(@args) != 3 && array_size(@args) != 4 && array_size(@args) != 5){
+					die(color(RED).'Usage: /easy-sign givemax <id> <item> <qty> <max gives> [<slot>]')
+			}
+			if(!is_integral(@args[2])){
+					die(color(RED).'Qty must be an integer')
+			}
+			if(!is_integral(@args[3])){
+				die(color(RED).'Max must be an integer')
+			}
+			@slot = null
+			if(array_size(@args) == 5){
+					@slot = @args[4]
+			}
+			execute(array(id: @args[0], item: @args[1], qty: @args[2], max: @args[3], slot: @slot), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'giveheld',
+		params: '[<slot>]',
+		docs: 'Gives the player a duplicate of your currently held item',
+		code: closure(@args,
+			if(array_size(@args) > 1){
+				die(color(RED).'Usage: /easy-sign giveheld [slot]')
+			}
+			@slot = null
+			if(array_size(@args) == 1){
+				if(!is_integral(@args[0])){
+					die(color(RED).'Slot must be an integer')
+				}
+				@slot = @args[0]
+			}
+			execute(array(item: pinv(player(), null), slot: @slot), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'hunger',
+		params: '',
+		docs: 'Refills a player\'s hunger bar',
+		code: closure(@args,
+			execute(null, @standardSignUsage)
+		)
+	),
+	array(
+		name: 'announce',
+		params: '<id> <messsage...>',
+		docs: 'Sets up an announcement sign. The message is broadcast (only once) when a player'
+			.' clicks the sign. The message supports colors with the same notation as /signtext,'
+			.' and %s is replaced with the player\'s name. The id sets the "key" for the sign group,'
+			.' players can only announce once per group.',
+		code: closure(@args,
+			execute(array(id: @args[0], message: array_implode(@args[1..-1])), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'heal',
+		params: '[<gap>]',
+		docs: 'Refills a player\'s health. If gap is provided (it defaults to 0) then the player gets a half a heart every gap seconds.'
+			.' 0 means fill it up instantly.',
+		code: closure(@args,
+			if(array_size(@args) > 1){
+				die(color(RED).'Usage: /easy-sign heal [gap]')
+			}
+			if(array_size(@args) == 1){
+				if(!is_integral(@args[0]) || @args[0] < 0){
+					die(color(RED).'<gap> must be >= 0')
+				} else {
+					@gap = @args[0]
+				}
+			} else {
+				@gap = 0
+			}
+			execute(@gap, @standardSignUsage)
+		)
+	),
+	array(
+		name: 'max',
+		params: '<id> <uses>',
+		docs: 'Allows the sign to be used <uses> times and no more. No other commands will be run once limit is reached.',
+		code: closure(@args,
+			if(array_size(@args) != 2){
+				die(color(RED).'Usage: /easy-sign max <id> <uses>')
+			}
+			if(!is_integral(@args[1])){
+				die(color(RED).'Uses must be an integer')
+			}
+			execute(array(id: @args[0], uses: @args[1]), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'msg',
+		params: '<message...>',
+		docs: 'Sends the player a message. Color codes with & are supported.',
+		code: closure(@args,
+			execute(array_implode(@args), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'take',
+		params: '<item> <qty> <failmsg>',
+		docs: 'Takes an item from a player. If they don\'t have enough, the failmsg is shown, and no other commands will be run.',
+		code: closure(@args,
+			@failmsg = array()
+			for(@i = 2, @i < length(@args), @i++){
+				array_push(@failmsg, @args[@i])
+			}
+			@failmsg = array_implode(@failmsg, ' ')
+			execute(array(item: @args[0], qty: @args[1], failmsg: @failmsg), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'lore',
+		params: '<item> <qty> <lore>||<itemmsg>||<qtymsg>',
+		docs: 'Takes a specified quantity of an item from a player if it has the required lore. Colors in the lore are ignored and multiple lines are concatenated without spaces. The item must be in the player\'s hand. If the wrong item is held, <itemmsg> is shown. If it is the right item but insufficient in quantity, <qtymsg> is shown. The <itemmsg> and <qtymsg> can be multiple words and color codes are allowed.  The double-bar sequence, \'||\', is used to separate those arguments.  If the item is not taken for whatever reason, subsequent sign actions are not processed. Caution: multiple consecutive spaces in any of these strings will be replaced with single spaces.',
+		code: closure(@args,
+			@item = @args[0]
+			@qty = @args[1]
+			@strings = split('||', array_implode(@args[cslice(2, array_size(@args) - 1)], ' '))
+			if (array_size(@strings) != 3) {
+				die(color(RED).'Usage: /easy-sign lore <item> <qty> <lore>||<itemmsg>||<qtymsg>')
+			}
+			@data = array(item: @item, qty: @qty, lore: @strings[0], itemmsg: @strings[1], qtymsg: @strings[2])
+			execute(@data, @standardSignUsage)
+		)
+	),
+	array(
+		name: 'potion',
+		params: '<id> <strength> <seconds>',
+		docs: 'Applies a potion effect to the player. <id> must be in the range 1 - 23. <strength> has a minimum of level 1.',
+		code: closure(@args,
+			if (array_size(@args) != 3) {
+				die(color(RED).'Usage: /easy-sign potion <id> <strength> <seconds>')
+			}
+			@id = @args[0]
+			@strength = @args[1]
+			@seconds = @args[2]
+			if (! is_integral(@id) || ! is_integral(@strength) || ! is_integral(@seconds)) {
+				die(color(RED).'<id>, <strength> and <seconds> must all be integers.')
+			}
+			if (@id < 1 || @id > 23) {
+				die(color(RED).'<id> must be in the range 1 - 23.')
+			}
+			if (@strength < 1) {
+				die(color(RED).'<strength> must be at least 1.')
+			}
+			if (@seconds < 1) {
+				die(color(RED).'<seconds> must be at least 1.')
+			}
+			execute(array(id: @id, strength: (@strength - 1), seconds: @seconds), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'leather',
+		params: '<red> <green> <blue> <item1> .. <itemN>',
+		docs: 'Gives the player leather armor with the specified red, green and blue color components (0 - 255).' .
+			'  <item1> to <itemN> are a list of items to give and can only be: helmet, chestplate, leggings or boots.',
+		code: closure(@args,
+			if (array_size(@args) < 4 || array_size(@args) > 7) {
+				die(color(RED).'Usage: /easy-sign leather <red> <green> <blue> <item1> ...')
+			}
+			for (@i = 0, @i < 3, inc(@i),
+				if (! is_integral(@args[@i]) || @args[@i] < 0 || @args[@i] > 255) {
+					die(color(RED).'Red, green and blue components must be integers in the range 0 to 255.')
+				}
+			)
+			# Map from item name to slot number.
+			@ITEM_SLOTS = array(helmet: 103, chestplate: 102, leggings: 101, boots: 100)
+			@slots = array()
+			for (@i = 3, @i < array_size(@args), inc(@i),
+				if (array_index_exists(@ITEM_SLOTS, @args[@i])) {
+					array_push(@slots, @ITEM_SLOTS[@args[@i]])
+				} else {
+					die(color(RED).'Each item type must be one of: '.array_implode(array_keys(@ITEM_SLOTS), ', '))
+				}
+			)
+			@rgb = array(red: @args[0], green: @args[1], blue: @args[2])
+			execute(array(rgb: @rgb, slots: @slots), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'inventory',
+		params: '',
+		docs: 'Clears the player\'s inventory and gives them an exact copy of your current inventory.',
+		code: closure(@args,
+			execute(pinv(), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'dropinventory',
+		params: '[scatter] [<world>] <x> <y> <z>',
+		docs: 'Drops a copy of your current inventory at the specified coordinates. Specify \'scatter\' as the first argument to give the dropped items random velocities.',
+		code: closure(@args,
+			@scatter = (array_size(@args) > 0 && @args[0] == 'scatter')
+			@location = _parse_location(@args[cslice(if(@scatter, 1, 0), array_size(@args) - 1)])
+			if (! is_array(@location)) {
+				die(color(RED).@location)
+			}
+			execute(array(inventory: pinv(), location: @location, scatter: @scatter), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'giveinventory',
+		params: '',
+		docs: 'Gives the player the items in your inventory, filling the empty space',
+		code: closure(@args,
+			execute(pinv(), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'cart',
+		params: '[<world>] <x> <y> <z>',
+		docs: 'Spawns a minecart at the specified location.',
+		code: closure(@args,
+			@location = _parse_location(@args)
+			if (! is_array(@location)) {
+				die(color(RED).@location)
+			}
+			execute(array(location: @location), @standardSignUsage)
+		)
+	),
+	array(
+		name: 'launch',
+		params: '<x> <y> <z>',
+		docs: 'Launches a player with the specified velocity vector. The magnitude of the vector cannot exceed 10 (that is,'
+			.' sqrt(@x ** 2 + @y ** 2 + @z ** 2) must be < 10)',
+		code: closure(@args){
+			@x = @args[0]
+			@y = @args[1]
+			@z = @args[2]
+			if(sqrt(@x ** 2 + @y ** 2 + @z ** 2) >= 10){
+				die(color(RED).'The magnitude of the launch vector has to be < 10')
+			}
+			execute(array(x: @x, y: @y, z: @z), @standardSignUsage)
+		}
+	),
+	array(
+		name: 'randloc',
+		params: '<max_distance>',
+		docs: 'Randomly spawns the player max_distance away from 0,0',
+		code: closure(@args){
+			@max_distance = parse_int(@args[0], 10)
+			execute(array(max_distance: @max_distance), @standardSignUsage)
+		}
+	),
+	array(
+		name: 'tpbed',
+		params: '',
+		docs: 'Teleports the player back to their bed',
+		code: closure(@args){
+			execute(array(), @standardSignUsage)
+		}
+	),
+	array(
+		name: 'setbed',
+		params: '[<world>] <x> <y> <z>',
+		docs: 'Sets the player\'s bed location at the specified position',
+		code: closure(@args,
+			@location = _parse_location(@args)
+			if (! is_array(@location)) {
+				die(color(RED).@location)
+			}
+			execute(array(location: @location), @standardSignUsage)
+		)
+	)
+	) #End array definitions
+	if($type == ''){
+		msg(color(RED).'Usage: /easy-sign <type> [<args>]')
+		foreach(@commands, @value,
+			msg(color(BLUE).@value['name'].' '.@value['params'].color(WHITE).' - '.@value['docs'])
+		)
+		msg(color(GOLD).'Multiple tasks can be added to each sign, and are run in order.')
+		msg(color(GOLD).'Related commands:')
+		msg(color(YELLOW).'/easy-sign-info '.color(GRAY).'- List all actions on a sign.')
+		msg(color(YELLOW).'/easy-sign-remove <action> '.color(GRAY).'- Remove a single action from a sign.')
+		msg(color(YELLOW).'/easy-sign-reorder <from> <to> '.color(GRAY).'- Move an action from one position to another.')
+		@colors = array()
+		foreach(array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F'), @i,
+			array_push(@colors, color(@i).@i)
+		)
+		@colors = array_implode(@colors, '')
+		msg(color(GOLD).'Color reference: '.@colors)
+		msg(color(GOLD).'Remember, you also have access to \'/signtext\'')
+		msg(color(BLUE).color(UNDERLINE).'http://redditpublic.com/wiki/EasySign')
+	} else {
+		if(!is_sign_at(pcursor())){
+			die(color(RED).'That\'s not a sign. Look at a sign to run this command.')
+		}
+		@found = false
+		foreach(@commands, @value,
+			if(equals_ic(@value['name'], $type)){
+				execute(parse_args($), @value['code'])
+				@found = true
+				break()
+			}
+		)
+		if(!@found){
+			msg(color(RED).'Invalid type: "'.$type.'". Run \'/easy-sign\' for usage')
+		}
+	}
+<<<
+
+*:'/easy-sign-delete' [$] = >>>
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-delete')) { _noperm(); }
+
+	@signdata = get_value('easysign.signs')
+	if(!is_array(@signdata)){
+		@signdata = array()
+	}
+	@key = json_encode(_easy_sign_loc_conv(pcursor()))
+	if(array_index_exists(@signdata, @key)){
+		array_remove(@signdata, @key)
+		store_value('easysign.signs', @signdata)
+		export('easysign.signs', @signdata)
+		die(color(RED).'Sign removed')
+	}
+	die(color(RED).'That doesn\'t appear to be an easy sign')
+<<<
+
+*:'/easy-sign-info' [$] = >>>
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-info')) { _noperm(); }
+
+	if(!is_sign_at(pcursor())){
+		die(color(RED).'That isn\'t a sign')
+	}
+	@signdata = get_value('easysign.signs')
+	if(!is_array(@signdata)){
+		@signdata = array()
+	}
+	@key = json_encode(_easy_sign_loc_conv(pcursor()))
+	if(!array_index_exists(@signdata, @key)){
+		die(color(RED).'No easy sign actions are assigned to that sign')
+	}
+	@i = 1
+	foreach(@signdata[@key], @cmd,
+		@data = @cmd['data']
+		if (is_array(@data)) {
+			@fields = ''
+			@first = true
+			foreach (array_keys(@data), @field,
+				if (@first) {
+					@first = false
+				} else {
+					@fields = @fields.color(GRAY).', '
+				}
+				@fields = @fields.color(YELLOW).@field.color(WHITE).': '.color(LIGHT_PURPLE).@data[@field]
+			)
+		} else {
+			@fields = ''.@data
+		}
+		msg(color(YELLOW).'('.@i.') '.color(GOLD).@cmd['type'].' '.@fields)
+		inc(@i)
+	)
+<<<
+
+*:'/easy-sign-remove' [$index] = >>>
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-remove')) { _noperm(); }
+
+	if (! is_sign_at(pcursor())) {
+		die(color(RED).'That isn\'t a sign.')
+	}
+	@signdata = get_value('easysign.signs')
+	if (! is_array(@signdata)) {
+		@signdata = array()
+	}
+	@key = json_encode(_easy_sign_loc_conv(pcursor()))
+	if (! array_index_exists(@signdata, @key)) {
+		die(color(RED).'No easy sign actions are assigned to that sign.')
+	}
+	
+	@index = $index
+	if (! is_integral(@index) || @index < 1 || @index > array_size(@signdata[@key])) {
+		die(color(RED).'The index must be an integer between 1 and the number of actions on the sign.')
+	}
+	
+	msg(color(LIGHT_PURPLE).'Easy sign action removed.')
+	array_remove(@signdata[@key], @index - 1)
+	if (array_size(@signdata[@key]) == 0) {
+		array_remove(@signdata, @key)
+		msg(color(LIGHT_PURPLE).'Empty sign deleted.')
+	}
+	export('easysign.signs', @signdata)
+	store_value('easysign.signs', @signdata)
+<<<
+
+*:'/easy-sign-reorder' [$from] [$to] = >>>
+	if (!has_permission('nerdch.level.admin') && !has_permission('nerdch.commands.easy-sign-reorder')) { _noperm(); }
+
+	if (! is_sign_at(pcursor())) {
+		die(color(RED).'That isn\'t a sign.')
+	}
+	@signdata = get_value('easysign.signs')
+	if (! is_array(@signdata)) {
+		@signdata = array()
+	}
+	@key = json_encode(_easy_sign_loc_conv(pcursor()))
+	if (! array_index_exists(@signdata, @key)) {
+		die(color(RED).'No easy sign actions are assigned to that sign.')
+	}
+	
+	@from = $from
+	@to = $to
+	if (! is_integral(@from) || @from < 1 || @from > array_size(@signdata[@key])) {
+		die(color(RED).'The \'from\' index must be an integer between 1 and the number of actions on the sign.')
+	}
+	if (! is_integral(@to) || @to < 1 || @to > array_size(@signdata[@key])) {
+		die(color(RED).'The \'to\' index must be an integer between 1 and the number of actions on the sign.')
+	}
+
+	if (@from == @to) {
+		msg(color(LIGHT_PURPLE).'Nothing to do; the \'from\' and \'to\' indices are the same.')
+	} else {
+		msg(color(LIGHT_PURPLE).'Easy sign action '.@from.' moved to position '.@to.'.')
+		@action = array_remove(@signdata[@key], @from - 1)
+		array_insert(@signdata[@key], @action, @to - 1)
+		export('easysign.signs', @signdata)
+		store_value('easysign.signs', @signdata)
+	}
+<<<

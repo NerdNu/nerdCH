@@ -46,9 +46,13 @@
 				if(!pinfo(player(), 14)){
 				    pfacing(@yaw, pfacing()[1])
 				}
-				break()
+				die()
+			}
+			else {
 			}
 		)
+		msg(color(LIGHT_PURPLE).'This is not an existing place, use '.color(GRAY).'/place '
+					.color(LIGHT_PURPLE).'to find one with the correct spelling!')
 	}
 <<<
 
@@ -80,6 +84,7 @@
 	}
 
 	@args = parse_args($)
+	if(equals(array_size(@args),2),array_insert(@args,64,1))
 	if (array_size(@args) == 3){
 		if (or(!is_numeric(@args[0]),!is_numeric(@args[1]),!is_numeric(@args[2]))){
 			die(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>] (coordinates are optional')
@@ -102,7 +107,7 @@
 	msg(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>](coordinates are optional) ')
 <<<
 
-/warpplace [$] = >>>
+nerdch.level.admin:/warpplace [$] = >>>
 	if($ == ''){
 		call_alias('/place')
 	} else {
@@ -117,7 +122,7 @@
 		)
 	}
 <<<
-/addplace $place = >>>
+nerdch.level.admin:/addplace $place = >>>
 	@places = get_value('places')
 	if(@places == null){
 		@places = array()
@@ -128,7 +133,7 @@
 	call_alias('/place '.$place)
 <<<
 
-/delplace $place = >>>
+nerdch.level.admin:/delplace $place = >>>
 	@places = get_value('places')
 	if(@places == null){
 		@places = array()

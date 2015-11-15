@@ -1,0 +1,11 @@
+*:'/count-blocks' $block [$radius=50] = >>>
+	_assertperm('admin');
+
+	msg('Counting all ' . $block . ' in ' . $radius . ' blocks');
+
+	run_cmd('//pos1');
+	run_cmd('//pos2');
+	run_cmd('//outset -h ' . $radius)
+	run_cmd('//outset -v 200')
+	run_cmd('//count ' . $block)
+<<<

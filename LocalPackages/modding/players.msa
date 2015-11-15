@@ -40,3 +40,31 @@
 		msg(color(GOLD).$.'\'s bed is at ('.@loc[world].', '.integer(@loc[x]).', '.integer(@loc[y]).', '.integer(@loc[z]).')')
 	}
 <<<
+
+
+# Retrieve name history for the UUID that currently holds a name
+*:/namehistory [$player] = >>>
+	_assertperm('admin') #admin or restricted level, depending on rate limit concerns
+	if ($player == '') {
+		die(color(RED).'Usage: /namehistory <player>')
+	}
+	@uuid = _get_puuid($player)
+	if (!@uuid) {
+		die(color(RED).'Error: could not obtain UUID for supplied username.')
+	}
+	http_request('https://api.mojang.com/user/profiles/'.@uuid.'/names', array(
+		timeout: 5000,
+		success: closure(@response){
+			@names = array()
+			@data = json_decode(@response['body'])
+			foreach(@val in @data){
+				@names[] = @val['name']
+			}
+			msg(color(GOLD).'Name change history for '.$player.': ')
+			msg(color(GRAY).array_implode(@names, ', '))
+		},
+		error: closure(@response){
+			die(color(RED).'Error: the request could not be completed.')
+		}
+	));
+<<<

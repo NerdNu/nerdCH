@@ -1,7 +1,5 @@
 *:/ci [$] = >>>
-    _assertperm('restricted', 1)
-    assign(@player, if(equals($, ''), player(), _getonlinename($)))
-    if(is_null(@player), die('Player not found'))
+    if (!has_permission('nerdch.level.restricted') && !has_permission('nerdch.commands.ci')) { _noperm(); }
     assign(@a, array())
     foreach(range(36), @i,
         array_set(@a, string(@i), null))
@@ -9,16 +7,16 @@
     foreach(range(100,104), @i,
         array_set(@a, string(@i), null))
     
-    if(equals(@player, player()),
-        set_pinv(@player, @a)
-        msg(concat(color(gray), 'Your inventory has been cleared.')),
+    if(equals($, ''),
+        set_pinv(@a)
+        msg(color(gray) . 'Your inventory has been cleared.'),
     #else:
-        if(has_permission('nerdch.level.restricted'),
-            try(
-                set_pinv(@player, @a)
-                call_alias(concat('/mb Inventory of ', @player, ' cleared.')),
-            @e,
-                msg(concat(color(red), 'Player not online!'))),
+        if(has_permission('nerdch.level.restricted') || has_permission('nerdch.commands.ci.others'),
+            if(ponline($),
+                set_pinv($, @a)
+                call_alias('/mb Inventory of ' . $ . ' cleared.'),
+            #else:
+                msg(concat(color(red), 'Player ' . $ . ' is not online!'))),
         #else:
              msg(concat(color(red), 'You do not have permission to do that!'))))
 <<<
