@@ -87,8 +87,6 @@
 *:/lwc -o = call_alias('/cinfo')
 *:/lwc o = call_alias('/cinfo')
 
-/tpi [$] = call_alias('/tpinfo' $)
-
 nerdch.level.admin:/mobtower $mob [$height=5] = >>>
 	assign(@lastRider, null)
 	foreach(range($height), @i,
