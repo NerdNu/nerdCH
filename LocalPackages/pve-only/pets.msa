@@ -71,6 +71,12 @@
 <<<
 
 
+*:'/spawn-super-horse' [$] = >>>
+	_assertperm('admin');
+	run('/summon EntityHorse ~0 ~1 ~0 {Attributes:[{Name:generic.maxHealth,Base:35},{Name:generic.movementSpeed,Base:0.4},{Name:horse.jumpStrength,Base:1.05}]}');
+<<<
+
+
 *:'/send-pet-home' [$] = >>>
 	_assertperm('restricted')
 	@range = 3
