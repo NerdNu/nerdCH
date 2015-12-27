@@ -117,7 +117,9 @@ mods:/spawnp $player = runas($player, /spawn)
 <<<
 
 *:/speed = >>>
-    _assertperm('admin', 0)
+    if (import('sharedata.source') != 'creative') {
+        _assertperm('admin', 0)
+    }
     set_peffect(player(), 1, 5)
 <<<
 
