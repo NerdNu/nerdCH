@@ -78,6 +78,10 @@
 	run('/me drinks')
 <<<
 
+*:/cs [$] = >>>
+    run('/NerdClanChat:cs ' . $);
+<<<
+
 *:/lwc info = call_alias('/cinfo')
 *:/lwc -info = call_alias('/cinfo')
 *:/lwc owners = call_alias('/cinfo')
