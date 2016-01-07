@@ -6,32 +6,125 @@
 
 *:/place [$] = >>>
 	@places = get_value('places')
+	@netherportals = get_value('netherportals')
+	@endportals = get_value('endportals')
 	if(@places == null){
 		@places = array()
 	}
+	if(@netherportals == null){
+		@netherportals = array()
+	}
+	if(@endportals == null){
+		@endportals = array()
+	}
 	if($ == ''){
-		@names = array()
-		@count = 0
+		@placenames = array()
+		@placecount = 0
+		@nethernames = array()
+		@nethercount = 0
+		@endnames = array()
+		@endcount = 0
 		# List all the places
-		@temp = array()
+		@temp1 = array()
 		foreach(@places, @place,
-			array_push(@temp, @place['name'])
+			array_push(@temp1, @place['name'])
 		)
-		@places = @temp
+		@places = @temp1
 		array_sort(@places, STRING_IC)
 		foreach(@places, @place,
 			@color = GRAY
-			if(@count % 2 == 1){
+			if(@placecount % 2 == 1){
 				@color = WHITE
 			}
-			(@count++)
-			array_push(@names, color(@color).@place)
+			(@placecount++)
+			array_push(@placenames, color(@color).@place)
 		)
-		msg('Places: '.array_implode(@names, ', '))
-		msg(color(LIGHT_PURPLE).'Run '.color(GRAY).'/place <place name>'color(LIGHT_PURPLE).' to get pointed at that place, or '
-			.color(GRAY).'/nearest-place'.color(LIGHT_PURPLE).' to get pointed at the nearest place')
+		# List all the nether portals
+		@temp2 = array()
+		foreach(@netherportals, @netherportal,
+			array_push(@temp2, @netherportal['name'])
+		)
+		@netherportals = @temp2
+		array_sort(@netherportals, STRING_IC)
+		foreach(@netherportals, @netherportal,
+			@color = GRAY
+			if(@nethercount % 2 == 1){
+				@color = WHITE
+			}
+			(@nethercount++)
+			array_push(@nethernames, color(@color).@netherportal)
+		)
+		# List all the end portals
+		@temp3 = array()
+		foreach(@endportals, @endportal,
+			array_push(@temp3, @endportal['name'])
+		)
+		@endportals = @temp3
+		array_sort(@endportals, STRING_IC)
+		foreach(@endportals, @endportal,
+			@color = GRAY
+			if(@endcount % 2 == 1){
+				@color = WHITE
+			}
+			(@endcount++)
+			array_push(@endnames, color(@color).@endportal)
+		)
+		msg('Places: '.array_implode(@placenames, ', '))
+		msg('Nether Portals: '.array_implode(@nethernames, ', '))
+		msg('End Portals: '.array_implode(@endnames, ', '))
+		msg(color(LIGHT_PURPLE).'Run '.color(GRAY).'/place <place name>'color(LIGHT_PURPLE).' to get pointed at that place, '
+			.color(GRAY).'/place netherportal'.color(LIGHT_PURPLE).' to get pointed at the nearest Nether Portal, '
+			.color(GRAY).'/place endportal'.color(LIGHT_PURPLE).' to get pointed at the nearest End Portal, or'
+			.color(GRAY).'/nearest-place'.color(LIGHT_PURPLE).' to get pointed at the nearest place (non-portal)')
+	} else if(equals_ic('netherportal', $)) {
+		@netherportals = get_value('netherportals')
+		if(@netherportals == null){
+			@netherportals = array()
+		}
+		proc(_distance, @loc1, @loc2,
+			return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
+		)
+		@closest = 10000
+		@closestNP = null
+		foreach(@netherportals, @netherportal,
+			@dist = _distance(ploc(), @netherportal['coord'])
+			if(@dist < @closest){
+				@closestNP = @netherportal
+				@closest = @dist
+			}
+		)
+		if(@closestNP != null){
+			call_alias('/place '.@closestNP['name'])
+		} else {
+			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any nether portals yet')
+		}
+		die();
+	} else if(equals_ic('endportal', $)) {
+		@endportals = get_value('endportals')
+		if(@endportals == null){
+			@endportals = array()
+		}
+		proc(_distance, @loc1, @loc2,
+			return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
+		)
+		@closest = 10000
+		@closestEP = null
+		foreach(@endportals, @endportal,
+			@dist = _distance(ploc(), @endportal['coord'])
+			if(@dist < @closest){
+				@closestEP = @endportal
+				@closest = @dist
+			}
+		)
+		if(@closestEP != null){
+			call_alias('/place '.@closestEP['name'])
+		} else {
+			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any end portals yet')
+		}
+		die();
 	} else {
-		foreach(@places, @place,
+		@allLocs = array_merge(@places,@netherportals,@endportals)
+		foreach(@allLocs, @place,
 			if(equals_ic(@place['name'], $)){
 				@loc = @place['coord']
 				@x = @loc[0]
@@ -151,5 +244,69 @@ nerdch.level.admin:/delplace $place = >>>
 		msg(color(LIGHT_PURPLE).$place . ' removed')
 	} else {
 		msg(color(LIGHT_PURPLE).$place . ' not found!')
+	}
+<<<
+
+nerdch.level.admin:/addendportal $endportal = >>>
+	@endportals = get_value('endportals')
+	if(@endportals == null){
+		@endportals = array()
+	}
+	array_push(@endportals, array(name: $endportal, coord: ploc()))
+	store_value('endportals', @endportals)
+	msg(color(LIGHT_PURPLE).$endportal . ' added.')
+	call_alias('/place '.$endportal)
+<<<
+
+nerdch.level.admin:/delendportal $endportal = >>>
+	@endportals = get_value('endportals')
+	if(@endportals == null){
+		@endportals = array()
+	}
+	@found = false
+	foreach(@endportals, @key, @value,
+		if(equals_ic(@value['name'], $endportal)){
+			array_remove(@endportals, @key)
+			@found = true
+			break()
+		}
+	)
+	store_value('endportals', @endportals)
+	if(@found){
+		msg(color(LIGHT_PURPLE).$endportal . ' removed')
+	} else {
+		msg(color(LIGHT_PURPLE).$endportal . ' not found!')
+	}
+<<<
+
+nerdch.level.admin:/addnetherportal $netherportal = >>>
+	@netherportals = get_value('netherportals')
+	if(@netherportals == null){
+		@netherportals = array()
+	}
+	array_push(@netherportals, array(name: $netherportal, coord: ploc()))
+	store_value('netherportals', @netherportals)
+	msg(color(LIGHT_PURPLE).$netherportal . ' added.')
+	call_alias('/place '.$netherportal)
+<<<
+
+nerdch.level.admin:/delnetherportal $netherportal = >>>
+	@netherportals = get_value('netherportals')
+	if(@netherportals == null){
+		@netherportals = array()
+	}
+	@found = false
+	foreach(@netherportals, @key, @value,
+		if(equals_ic(@value['name'], $netherportal)){
+			array_remove(@netherportals, @key)
+			@found = true
+			break()
+		}
+	)
+	store_value('netherportals', @netherportals)
+	if(@found){
+		msg(color(LIGHT_PURPLE).$netherportal . ' removed')
+	} else {
+		msg(color(LIGHT_PURPLE).$netherportal . ' not found!')
 	}
 <<<
