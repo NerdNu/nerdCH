@@ -199,8 +199,10 @@
     else {
         @file = import('shared.firstjoin.book')
         if (@file == null) {
+/*
             console(color(RED).'No first join book text set. Please add export(\'shared.firstjoin.book\', read(\'file.txt\') to main.ms for the server, or tell a server admin to save a held book with /book-publish rules')
             msg(color(RED).'No rule book has been configured. Bug an admin.')
+*/
             die()
         } else {
             #legacy file detected, migrating to new database as "rules" book

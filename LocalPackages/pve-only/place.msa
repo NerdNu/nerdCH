@@ -107,7 +107,8 @@
 	msg(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>](coordinates are optional) ')
 <<<
 
-nerdch.level.admin:/warpplace [$] = >>>
+# If you can /tppos to the coordinates of a place then you ought to be able to warp there.
+tpcontrol.tppos:/warpplace [$] = >>>
 	if($ == ''){
 		call_alias('/place')
 	} else {

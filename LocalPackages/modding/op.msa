@@ -1,6 +1,6 @@
 *:/blockdata [$] = >>>
 	if (!has_permission('minecraft.command.setblock')) { _noperm(); }
-	sudo('/setblock ' . $)
+	sudo('/blockdata ' . $)
 <<<
 
 *:/entitydata [$] = >>>

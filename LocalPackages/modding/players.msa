@@ -68,3 +68,7 @@
 		}
 	));
 <<<
+
+# Temp fix for Zomise's cam mod stuff.
+*:/tp $player $x $y $z = /tppos $x $y $z
+
