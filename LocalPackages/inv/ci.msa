@@ -25,7 +25,7 @@
 
 ###TODO: Base this off blacklist
 
-*:/cb $player = >>>
+*:/clearbanned $player = >>>
     _assertperm('restricted', 0)
     assign(@banned, array(7,'8:0','9:0','10:0','11:0','23:0','46:0',51,52,79,325,326,327,259, 90))
     assign(@inv, pinv($player))
