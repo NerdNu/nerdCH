@@ -186,6 +186,10 @@ bind(player_interact, null, null, @e,
 						set_inventory_item(@entityId, @heldSlot, @held)
 					,'potion',
 						set_peffect(player(), @data['id'], @data['strength'], @data['seconds'])
+					,'clearpotions',
+						foreach(@effect in get_peffect(player())) {
+							set_peffect(player(), @effect['id'], @effect['strength'], 0); 
+						}
 					,'leather',
 						# Map from inventory slot to leather item that must go there.
 						@SLOT_ITEMS = array(103: 298, 102: 299, 101: 300, 100: 301)
