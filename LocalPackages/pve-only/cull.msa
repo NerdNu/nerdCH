@@ -1,0 +1,51 @@
+nerdch.level.admin:/cull [$] = >>>
+	@mobtype = ''
+	@numberofmobs = 0
+	@radius = 5
+	@usage = color(LIGHT_PURPLE).'Usage: "/cull <mobtype> <numberofmobs> [r:<radius>]". Default radius is 5 blocks.'
+	if($ == ''){
+		die(@usage)
+	} else {
+		@args = parse_args($)
+		if(length(@args)>3 || length(@args)<2){
+			die(@usage)
+		}
+		foreach(@arg in @args){
+			if(is_integer(@arg)){
+				@numberofmobs = @arg
+			} else {
+				if(length(@arg)<3){
+					die(@usage)
+				} else if(string_position(@arg,'r:')==0) {
+					@radius = substr(@arg,2)
+				} else {
+					@mobtype = @arg
+				}
+			}
+		}
+		if(length(@mobtype)<3){
+			msg(color(LIGHT_PURPLE).'You have submitted an invalid mob type. Please try again.')
+			die(@usage)
+		} else if(@numberofmobs<1) {
+			msg(color(LIGHT_PURPLE).'You must specify a number of mobs to kill. Please try again.')
+			die(@usage)
+		} else if(@radius>100) {
+			msg(color(LIGHT_PURPLE).'The max radius is 100 blocks. Continuing using radius of 100.')
+			@radius = 100
+		}
+		try(
+			@entities = entities_in_radius(ploc(),@radius,@mobtype),
+			@ex,
+			msg(color(LIGHT_PURPLE).'An error has occurred. Check your syntax and try again.')
+			die(@usage)
+		)
+		if(length(@entities)==0){
+			die(color(LIGHT_PURPLE).'There are no entities of that type within @radius blocks')
+		} else {
+			@i = 1
+			for(@i, (@i<=@numberofmobs)&&(@i<=length(@entities)), @i++,
+				entity_remove(@entities[@i-1])
+			)
+			msg(color(LIGHT_PURPLE).'Removed @i selected entities within @radius blocks!')
+		}
+	}
