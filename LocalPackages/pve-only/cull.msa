@@ -1,4 +1,4 @@
-*:/cull [$] = >>>
+nerdch.level.admin:/cull [$] = >>>
 	@mobtype = ''
 	@numberofmobs = 0
 	@radius = 5
