@@ -1,4 +1,4 @@
-nerdch.level.admin:/cull [$] = >>>
+*:/cull [$] = >>>
 	@mobtype = ''
 	@numberofmobs = 0
 	@radius = 5
@@ -11,12 +11,12 @@ nerdch.level.admin:/cull [$] = >>>
 			die(@usage)
 		}
 		foreach(@arg in @args){
-			if(is_integer(@arg)){
-				@numberofmobs = @arg
+			if(is_numeric(@arg)){
+				@numberofmobs = integer(@arg)
 			} else {
 				if(length(@arg)<3){
 					die(@usage)
-				} else if(string_position(@arg,'r:')==0) {
+				} else if((string_position(@arg,'r:')==0)&&(is_numeric(substr(@arg,2)))) {
 					@radius = substr(@arg,2)
 				} else {
 					@mobtype = @arg
@@ -40,12 +40,14 @@ nerdch.level.admin:/cull [$] = >>>
 			die(@usage)
 		)
 		if(length(@entities)==0){
-			die(color(LIGHT_PURPLE).'There are no entities of that type within @radius blocks')
+			die(color(LIGHT_PURPLE)."There are no entities of that type within @radius blocks")
 		} else {
 			@i = 1
 			for(@i, (@i<=@numberofmobs)&&(@i<=length(@entities)), @i++,
 				entity_remove(@entities[@i-1])
 			)
-			msg(color(LIGHT_PURPLE).'Removed @i selected entities within @radius blocks!')
+			@culled = @i-1
+			msg(color(LIGHT_PURPLE)."Removed @culled selected entities within @radius blocks!")
 		}
 	}
+<<<
