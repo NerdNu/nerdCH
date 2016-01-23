@@ -1,0 +1,9 @@
+
+*:/spectator = >>>
+	_assertperm('admin', 0)
+	assign(@p, player())
+	set_pmode(@p, 'SPECTATOR')
+	msg(concat(color(GRAY), @p, ' is now in spectator mode'))
+<<<
+
+

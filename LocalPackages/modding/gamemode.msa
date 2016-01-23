@@ -12,11 +12,11 @@
 		}
 	}
 
-	if (equals(pmode(@p), 'SURVIVAL')) {
-		set_pmode(@p, 'CREATIVE')
-		msg(concat(color(GRAY), @p, ' is now in creative mode'))
-	} else {
+	if (equals(pmode(@p), 'CREATIVE')) {
 		set_pmode(@p, 'SURVIVAL')
 		msg(concat(color(GRAY), @p, ' is now in survival mode'))
+	} else {
+		set_pmode(@p, 'CREATIVE')
+		msg(concat(color(GRAY), @p, ' is now in creative mode'))
 	}
 <<<
