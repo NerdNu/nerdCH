@@ -2,8 +2,14 @@
 *:/spectator = >>>
 	_assertperm('admin', 0)
 	assign(@p, player())
-	set_pmode(@p, 'SPECTATOR')
-	msg(concat(color(GRAY), @p, ' is now in spectator mode'))
+
+	if (equals(pmode(@p), 'SPECTATOR')) {
+		set_pmode(@p, 'CREATIVE')
+		msg(concat(color(GRAY), @p, ' is now in creative mode'))
+	} else {
+		set_pmode(@p, 'SPECTATOR')
+		msg(concat(color(GRAY), @p, ' is now in spectator mode'))
+	}
 <<<
 
 
