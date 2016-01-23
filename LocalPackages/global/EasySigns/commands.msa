@@ -235,6 +235,14 @@
 		)
 	),
 	array(
+		name: 'clearpotions',
+		params: '',
+		docs: 'Clears all potion effects.',
+		code: closure(@args,
+			execute(null, @standardSignUsage)
+		)
+	),
+	array(
 		name: 'leather',
 		params: '<red> <green> <blue> <item1> .. <itemN>',
 		docs: 'Gives the player leather armor with the specified red, green and blue color components (0 - 255).' .
