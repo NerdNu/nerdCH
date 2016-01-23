@@ -4,7 +4,7 @@ proc(_config_get, @name, @default,
 	@path = split('.', @name)
 
 	@value = @config;
-	foreach (@path as @id: @key) {
+	foreach (@id: @key in @path) {
 		if (!is_array(@value) || !array_contains_ic(array_keys(@value), @key)) {
 			break();
 		}
