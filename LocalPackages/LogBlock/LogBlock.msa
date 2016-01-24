@@ -7,6 +7,7 @@
 	if (!array_contains(@args, 'page') && !array_contains(@args, 'tp') && 
 	    !array_contains(@args, 'prev') && !array_contains(@args, 'next') &&
 	    !array_contains(@args, 'sum')  && !array_contains(@args, 'sel') &&
+            !array_contains(@args, 'selection') &&
 	    !array_contains(@args, 'area')) {
 	        if (!array_contains(@args, 'player')) {
 			die(color(RED).'You must specify a player.');
