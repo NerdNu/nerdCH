@@ -70,5 +70,19 @@
 <<<
 
 # Temp fix for Zomise's cam mod stuff.
-*:/tp $player $x $y $z = /tppos $x $y $z
+#*:/tp $player $x $y $z = /tppos $x $y $z
 
+*:'/lift' [$] = >>>
+	_assertperm('restricted');
+	if ($ == '' || $ == 'help') {
+		die(color(GOLD).'/lift <player> - Lift the specified player up 1/2 a block.');
+	}
+	try(
+		@player = player($);
+		@loc = ploc(@player);
+		@loc['y'] += 0.5;
+		set_ploc(@player, @loc);
+	,@ex,
+		die(color(RED).$.' is not online.');
+	);
+<<<
