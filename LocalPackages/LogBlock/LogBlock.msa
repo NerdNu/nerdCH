@@ -1,20 +1,29 @@
 *:'/logblock' [$] = >>>
 <<<
 
+# Queries Using LogBlock Syntax
+# =============================
+# To prevent huge results sets from crashing a server, require that queries ask for a player name.
+
 *:'/lb' [$] = >>>
 	_assertperm('mod', 0);
 	@args = split(' ',$);
-	if (!array_contains(@args, 'page') && !array_contains(@args, 'tp') && 
-	    !array_contains(@args, 'prev') && !array_contains(@args, 'next') &&
-	    !array_contains(@args, 'sum')  && !array_contains(@args, 'sel') &&
-            !array_contains(@args, 'selection') &&
-	    !array_contains(@args, 'area')) {
-	        if (!array_contains(@args, 'player')) {
-			die(color(RED).'You must specify a player.');
+
+	# If the args contain a whitelisted command/param, run and exit.
+	@whitelist = array(help,commands,params,permissions,next,prev,page,tp,me,tool,toolblock,hide,sum,sel,selection,area);
+	foreach (@allowed in @whitelist) {
+		if (array_contains(@args, @allowed)) {
+			run(/lb $);
+			die();
 		}
 	}
 
-	run(/lb $);
+	# No whitelist entries, therefore require 'player'.
+        if (array_contains(@args, 'player')) {
+		run(/lb $);
+	} else {
+		die(color(RED).'You must specify a player.');
+	}
 <<<
 
 
