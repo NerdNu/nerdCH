@@ -106,7 +106,9 @@ mods:/spawnp $player = runas($player, /spawn)
 <<<
 
 *:/hat [$data] = >>>
-	if (import('sharedata.source') != 'creative') {
+	if (import('sharedata.source') == 'creative') {
+		die(color(red).'/hat is deprecated. Please use /wear instead.')
+	} else {
 		_assertperm('admin', 0)
 	}
 
