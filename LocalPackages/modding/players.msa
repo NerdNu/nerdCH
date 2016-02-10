@@ -44,7 +44,7 @@
 
 # Retrieve name history for the UUID that currently holds a name
 *:/namehistory [$player] = >>>
-	_assertperm('admin') #admin or restricted level, depending on rate limit concerns
+	_assertperm('mod')
 	if ($player == '') {
 		die(color(RED).'Usage: /namehistory <player>')
 	}
@@ -69,11 +69,30 @@
 	));
 <<<
 
-# Temp fix for Zomise's cam mod stuff.
-#*:/tp $player $x $y $z = /tppos $x $y $z
+# Retrieve the UUID of a player and link to the name change history.
+*:/uuid [$] = >>>
+	_assertperm('mod');
+	if ($ == '') {
+		die(color(GOLD).'/uuid <player> - Look up UUID of player.');
+	} else {
+		@uuid = _get_puuid($);
+		if (@uuid != null) {
+			msg(color(GOLD).'https://namemc.com/s?'.@uuid);
+		} else {
+			die(color(RED).'Unable to retrieve UUID for '.$.'.');
+		}
+	}
+<<<
+
+
+# Temp fix for using PixelCam.
+*:/tp $player $x $y $z = >>>
+	_assertperm('mod');
+	run(/tppos $x $y $z);
+<<<
 
 *:'/lift' [$] = >>>
-	_assertperm('restricted');
+	_assertperm('mod');
 	if ($ == '' || $ == 'help') {
 		die(color(GOLD).'/lift <player> - Lift the specified player up 1/2 a block.');
 	}
