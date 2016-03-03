@@ -21,7 +21,7 @@
 
 *:/creative = _changeserver(player(), 'creative')
 *:/pve = _changeserver(player(), 'pve')
-*:/survival = _changeserver(player(), 'survival')
+*:/pvp = _changeserver(player(), 'pvp')
 *:/lobby = _changeserver(player(), 'lobby')
 *:/event = _changeserver(player(), 'event')
 

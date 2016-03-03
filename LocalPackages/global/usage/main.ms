@@ -20,7 +20,7 @@ if(has_value('usagestats')){
 #Also, write out the number of days played, and the current date. If the current date
 #is today, don't increment the days, but if it isn't, increment the days.
 
-if(array_contains(array('creative', 'pve', 'survival'), import('sharedata.source'))){
+if(array_contains(array('creative', 'pve', 'pvp'), import('sharedata.source'))){
 
 export('usage.lastRun', time());
 set_interval(1000 * 60, 0, closure(){

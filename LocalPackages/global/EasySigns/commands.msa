@@ -222,8 +222,8 @@
 			if (! is_integral(@id) || ! is_integral(@strength) || ! is_integral(@seconds)) {
 				die(color(RED).'<id>, <strength> and <seconds> must all be integers.')
 			}
-			if (@id < 1 || @id > 23) {
-				die(color(RED).'<id> must be in the range 1 - 23.')
+			if (@id < 1 || @id > 27) {
+				die(color(RED).'<id> must be in the range 1 - 27.')
 			}
 			if (@strength < 1) {
 				die(color(RED).'<strength> must be at least 1.')
