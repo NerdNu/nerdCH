@@ -4,7 +4,9 @@ give:/i $ = >>>
 	if (is_null(@a)) {
 		msg(color(GRAY).'Usage: /i <itemid>[:metadata] [quantity]')
 	} else {
-		if ((@a[0] == 175 && @a[1] >= 6) || (@a[0] == 161 && @a[1] >= 2)) {
+		if ((@a[0] == 175 && @a[1] >= 6) ||
+		    (@a[0] == 161 && @a[1] >= 2) ||
+		    (@a[0] == 162 && @a[1] >= 2)) {
 			die('I\'m sorry, I can\'t let you do that Dave.')
 		}
 		pgive_item(@a[0].':'.@a[1], @a[2])
