@@ -8,7 +8,7 @@ nightvision:/nightvision = >>>
 			die(color(GOLD).'Night vision disabled.')
 		}
 	)
-	set_peffect(player(), 16, 10, 60 * 60, false)
+	set_peffect(player(), 16, 10, 60 * 60 * 4, false)
 	msg(color(GOLD).'Night vision enabled.')
 <<<
 
