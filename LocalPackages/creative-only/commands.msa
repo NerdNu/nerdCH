@@ -135,9 +135,13 @@
 
 *:/slap $player = >>>
         _assertperm('admin')
-	@vel_x = rand(-10, 10)
-	@vel_y = rand(10)
-        @vel_z = rand(-10, 10)
+	@pi   = 3.14159265359
+	@v    = 9.0
+	@theta = rand()*@pi/2.0
+	@phi   = rand()*@pi*2.0
+	@vel_x = @v*sin(@theta)*cos(@phi)
+	@vel_z = @v*sin(@theta)*sin(@phi)
+        @vel_y = @v*cos(@theta)
 	set_pvelocity($player, @vel_x, @vel_y, @vel_z)
         msg(color('GOLD').$player.' has been slapped!')
         tmsg($player, color('GOLD').'You have been slapped!')
