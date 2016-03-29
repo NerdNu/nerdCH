@@ -46,6 +46,15 @@
 		)
 	),
 	array(
+		name: 'check-empty-inventory',
+		params: '[<message>]',
+		docs: 'If the player\'s inventory is not empty, do not execute any subsequent sign actions and show <message>, if specified, or a default message.',
+		code: closure(@args,
+			@message = if (array_size(@args) > 0, array_implode(@args, ' '), 'Your inventory must be completely empty to use this.');
+			execute(array(message: @message), @standardSignUsage)
+		)
+	),
+	array(
 		name: 'ci',
 		params: '',
 		docs: 'Clears the player\'s inventory',

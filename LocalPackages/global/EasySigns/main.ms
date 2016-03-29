@@ -25,6 +25,12 @@ bind(player_interact, null, null, @e,
 							# Retain compatibility with old storage format.
 							set_ploc(@data)
 						}
+					,'check-empty-inventory',
+						foreach (@item in pinv()) {
+							if (@item != null) {
+								die(color(RED) . @data['message']);
+							}
+						}
 					,'ci',
 						foreach(0..104,@i,
 							@array = associative_array()
