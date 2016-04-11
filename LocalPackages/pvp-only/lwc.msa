@@ -1,0 +1,26 @@
+*:/cmodify clan = >>>
+	foreach (@group in pgroup()) {
+		// For some reason the group is missing 'clan.' prefix.
+		@clan = @group;
+		//if (has_permission(player(), @clan)) {
+			msg(color(GOLD) . 'Granting permission to clan ' . @clan);
+			run('/cmodify g:clan.' . @clan);
+			die();			
+		//}
+	}
+<<<
+
+
+*:/cmodify -clan = >>>
+	foreach (@group in pgroup()) {
+		// For some reason the group is missing 'clan.' prefix.
+		@clan = @group;
+		//if (has_permission(player(), @clan)) {
+			msg(color(GOLD) . 'Removing permission for clan ' . @clan);
+			run('/cmodify -g:clan.' . @clan);
+			die();
+		//}
+	}
+<<<
+
+
