@@ -1,24 +1,28 @@
 *:/ci [$] = >>>
-    if (!has_permission('nerdch.level.restricted') && !has_permission('nerdch.commands.ci')) { _noperm(); }
-    assign(@a, array())
-    foreach(range(36), @i,
-        array_set(@a, string(@i), null))
-    #armour
-    foreach(range(100,104), @i,
-        array_set(@a, string(@i), null))
-    
-    if(equals($, ''),
-        set_pinv(@a)
-        msg(color(gray) . 'Your inventory has been cleared.'),
-    #else:
-        if(has_permission('nerdch.level.restricted') || has_permission('nerdch.commands.ci.others'),
-            if(ponline($),
-                set_pinv($, @a)
-                call_alias('/mb Inventory of ' . $ . ' cleared.'),
-            #else:
-                msg(concat(color(red), 'Player ' . $ . ' is not online!'))),
-        #else:
-             msg(concat(color(red), 'You do not have permission to do that!'))))
+	@ci = closure(@player) {
+		@inv = pinv(@player);
+		array_iterate(@inv, closure(@key, @value) { @inv[@key] = null; });
+		set_pinv(@player, @inv);
+	};
+
+	if ($ == '') {
+		# Staff and defaults with nerdch.commands.ci on Creative can clear their own inv.
+		if (!has_permission('nerdch.level.restricted') && !has_permission('nerdch.commands.ci')) {
+			_noperm();
+		}
+		execute(player(), @ci);
+		msg(color(GRAY) . 'Your inventory has been cleared.');
+	} else {
+		if (!has_permission('nerdch.level.restricted')) {
+			_noperm();
+		}
+		if (ponline($)) {
+			execute(player($), @ci);
+			run_cmd('/mb Inventory of ' . $ . ' cleared.');
+		} else {
+			msg(color(RED) . 'Player ' . $ . ' is not online!');
+		}
+	}
 <<<
 
 *:/empty [$] = call_alias(/ci $)
