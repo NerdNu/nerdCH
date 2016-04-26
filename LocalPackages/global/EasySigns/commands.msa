@@ -178,7 +178,7 @@
 			if(!is_integral(@args[1])){
 				die(color(RED).'Uses must be an integer')
 			}
-			execute(array(id: @args[0], uses: @args[1]), @standardSignUsage)
+			execute(array(id: @args[0], global: false, uses: @args[1]), @standardSignUsage)
 		)
 	),
 	array(

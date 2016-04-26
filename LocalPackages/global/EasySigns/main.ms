@@ -145,11 +145,11 @@ bind(player_interact, null, null, @e,
 						if (!is_array(@value)) { @value = associative_array() }
 						if (@global) {
 							if (!array_index_exists(@value, @id)) { @value[@id] = 0 }
-							@user = @value[@id]
+							@used = @value[@id]
 						} else {
 							if (!array_index_exists(@value, @id)) { @value[@id] = associative_array() }
 							if (!array_index_exists(@value[@id], player())) { @value[@id][player()] = 0 }
-							@user = @value[@id][player()]
+							@used = @value[@id][player()]
 						}
 
 						if (@used >= @uses) { die(color(GREEN) . 'Maximum uses reached! (' . @uses . ')') }
