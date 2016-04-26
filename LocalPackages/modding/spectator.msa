@@ -1,6 +1,5 @@
 
-*:/spectator = >>>
-	_assertperm('admin', 0)
+nerdch.spectator:/spectator = >>>
 	assign(@p, player())
 
 	if (equals(pmode(@p), 'SPECTATOR')) {
