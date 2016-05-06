@@ -1,24 +1,24 @@
+nerdch.level.admin:/pvevillager = >>>
+	run('/summon Villager ~1 ~ ~ {Profession:3,CustomName:"Villager McVillagerface",CustomNameVisible:1,Career:3,CareerLevel:42,CanPickUpLoot:0,PersistenceRequired:1,Invulnerable:1,Offers:{Recipes:[{buy:{id:"diamond",Count:4},maxUses:9999999,sell:{id:"beetroot_seeds",Count:16},rewardExp:false},{buy:{id:"diamond",Count:16},maxUses:9999999,sell:{id:skull,Damage:5,Count:1},rewardExp:false},{buy:{id:"diamond",Count:16},maxUses:9999999,sell:{id:"elytra",Count:1},rewardExp:false}]}}');
+<<<
+
+
 nerdch.level.admin:/golem1 = >>>
-    run('/setblock ~0 ~2 ~0 mob_spawner 0 replace {SpawnCount:1,SpawnRange:4,MaxNearbyEntities:25,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,RequiredPlayerRange:25,EntityId:VillagerGolem,SpawnData:{CustomName:Tier1,CustomNameVisible:1}}');
+	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier1",CustomNameVisible:1,PlayerCreated:0},SpawnCount:1,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
 
 nerdch.level.admin:/golem2 = >>>
-    run('/setblock ~0 ~2 ~0 mob_spawner 0 replace {SpawnCount:2,SpawnRange:4,MaxNearbyEntities:25,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,RequiredPlayerRange:25,EntityId:VillagerGolem,SpawnData:{CustomName:Tier2,CustomNameVisible:1}}');
+	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier2",CustomNameVisible:1,PlayerCreated:0},SpawnCount:2,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
 
 nerdch.level.admin:/golem3 = >>>
-    run('/setblock ~0 ~2 ~0 mob_spawner 0 replace {SpawnCount:3,SpawnRange:4,MaxNearbyEntities:25,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,RequiredPlayerRange:25,EntityId:VillagerGolem,SpawnData:{CustomName:Tier3,CustomNameVisible:1}}');
+	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier3",CustomNameVisible:1,PlayerCreated:0},SpawnCount:3,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
 
 nerdch.level.admin:/golem4 = >>>
-    run('/setblock ~0 ~2 ~0 mob_spawner 0 replace {SpawnCount:4,SpawnRange:4,MaxNearbyEntities:25,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,RequiredPlayerRange:25,EntityId:VillagerGolem,SpawnData:{CustomName:Tier4,CustomNameVisible:1}}');
-<<<
-
-
-nerdch.level.admin:/bunneh = >>>
-    run('/setblock ~0 ~-1 ~0 mob_spawner 0 replace {SpawnCount:1,SpawnRange:4,MaxNearbyEntities:25,Delay:20,MinSpawnDelay:200,MaxSpawnDelay:600,RequiredPlayerRange:25,EntityId:Rabbit,SpawnData:{RabbitType:99,CustomName:"Killer Rabbit",CustomNameVisible:1}}');
+	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier4",CustomNameVisible:1,PlayerCreated:0},SpawnCount:4,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
