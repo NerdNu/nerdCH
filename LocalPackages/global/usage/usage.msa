@@ -1,0 +1,4 @@
+nerdch.level.admin:'/reset-usage-stats' = >>>
+	clear_value('usagestats')
+	msg('Usage stats reset')
+<<<
