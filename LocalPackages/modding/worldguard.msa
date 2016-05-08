@@ -35,38 +35,31 @@
 
 
 *:/members $region = >>>
-        assign(@ro, array_get(sk_region_info($region, pworld()), 1))
-        assign(@rm, array_get(sk_region_info($region, pworld()), 2))
-        assign(@first, true)
-        foreach(@ro, @player,
-                if(equals(@first, true),
-                        assign(@first, false)
-                        assign(@final, concat(@final, @player)),
-                        assign(@final, concat(@final, ', ', @player))
-                )
-        )
-        foreach(@rm, @player,
-                if(equals(@first, true),
-                        assign(@first, false)
-                        assign(@final, concat(@final, @player)),
-                        assign(@final, concat(@final, ', ', @player))
-                )
-        )
-
-        msg(concat(color(gray), 'Members of ', $region, ': ', color(white), @final))
+	@info = sk_region_info($region, pworld());
+	@members = array_merge(@info[1]['players'], @info[2]['players']);
+	@sep = '';
+	@list = '';
+	foreach (@player in @members) {
+		try(
+			@list = @list . @sep . _get_username_from_uuid(@player);
+			@sep = ', ';
+		);
+	}
+	msg(color(GRAY) . 'Members of ' . $region . ': ' . color(WHITE) . @list);
 <<<
 
+
 *:/owners $region = >>>
-        assign(@ro, array_get(sk_region_info($region, pworld()), 1))
-        assign(@first, true)
-        foreach(@ro, @player,
-                if(equals(@first, true),
-                        assign(@first, false)
-                        assign(@final, concat(@final, @player)),
-                        assign(@final, concat(@final, ', ', @player))
-                )
-        )
-        msg(concat(color(gray), 'Owners of ', $region, ': ', color(white), @final))
+	@owners = sk_region_info($region, pworld())[1]['players'];
+	@sep = '';
+	@list = '';
+	foreach (@player in @owners) {
+		try(
+			@list = @list . @sep . _get_username_from_uuid(@player);
+			@sep = ', ';
+		);
+	}
+	msg(color(GRAY) . 'Owners of ' . $region . ': ' . color(WHITE) . @list);
 <<<
 
 
@@ -118,22 +111,29 @@ nerdch.level.admin:'/region-rename' $oldName $newName = >>>
 			@regions = sk_region_intersect(pworld(), @tempRegionName, @testedRegions)
 			@message = color(GOLD).'Intersecting regions: '
 			@first = true
-			foreach (@regions, @region, 
+			foreach (@region in @regions) {
 				if (@region != @tempRegionName) {
 					if (@first) {
-						@first = false
+						@first = false;
 					} else {
-						@message = @message.color(WHITE).', '
+						@message = @message.color(WHITE) . ', ';
 					}
-					@owners = array_get(sk_region_info(@region, pworld()), 1)
-					@formattedOwners = array_implode(@owners, ', ')
-					@message = @message.color(YELLOW).@region.color(GRAY).' ('.@formattedOwners.')'
+					@owners = sk_region_info(@region, pworld())[1]['players'];
+					@sep = '';
+					@formattedOwners = '';
+					foreach (@player in @owners) {
+						try(
+							@formattedOwners = @formattedOwners . @sep . _get_username_from_uuid(@player);
+							@sep = ', ';
+						);
+					}
+					@message = @message . color(YELLOW) . @region. color(GRAY) . ' (' . @formattedOwners . ')';
 				}
-			)
-			msg(@message)
+			}
+			msg(@message);
 		,@e,
-			msg(color(RED).'Error: '.e)
-		)
-		sk_region_remove(@tempRegionName)
+			msg(color(RED).'Error: '.e);
+		);
+		sk_region_remove(@tempRegionName);
 	}
 <<<

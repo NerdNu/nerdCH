@@ -31,10 +31,12 @@ proc(_get_puuid, @playerName) {
 }
 
 /**
- * Gets the last known username from the database, or null, if no player is known with that uuid
+ * Gets the last known username from the database, or null, if no player is known with that UUID.
+ * Hyphens are automatically stripped from the UUID to match the database contents.
  */
 proc(_get_username_from_uuid, @uuid) {
 	@nameCache = import('nameCache');
+	@uuid = replace(@uuid, '-', '');
 
 	if (array_index_exists(@nameCache, @uuid)) {
 		return(@nameCache[@uuid]);
