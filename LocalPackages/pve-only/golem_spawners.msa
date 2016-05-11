@@ -4,21 +4,21 @@ nerdch.level.admin:/pvevillager = >>>
 
 
 nerdch.level.admin:/golem1 = >>>
-	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier1",CustomNameVisible:1,PlayerCreated:0},SpawnCount:1,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
+	run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier1",CustomNameVisible:1,PlayerCreated:0},SpawnCount:1,SpawnRange:4,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
 
 nerdch.level.admin:/golem2 = >>>
-	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier2",CustomNameVisible:1,PlayerCreated:0},SpawnCount:2,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
+	run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier2",CustomNameVisible:1,PlayerCreated:0},SpawnCount:2,SpawnRange:4,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
 
 nerdch.level.admin:/golem3 = >>>
-	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier3",CustomNameVisible:1,PlayerCreated:0},SpawnCount:3,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
+	run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier3",CustomNameVisible:1,PlayerCreated:0},SpawnCount:3,SpawnRange:4,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
 
 nerdch.level.admin:/golem4 = >>>
-	run('/setblock ~ ~1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier4",CustomNameVisible:1,PlayerCreated:0},SpawnCount:4,SpawnRange:25,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
+	run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier4",CustomNameVisible:1,PlayerCreated:0},SpawnCount:4,SpawnRange:4,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:7200,MaxSpawnDelay:7200,MaxNearbyEntities:25}');
 <<<
 
