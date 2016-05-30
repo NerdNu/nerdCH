@@ -15,7 +15,7 @@
 	))
 <<<
 
-/kickforrestart = call_alias('/kickall Server restarting.')
+/kickforrestart = die('no.'); #call_alias('/kickall Server restarting.')
 
 #/runas $player $ = runas($player, $)
 
