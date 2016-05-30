@@ -30,7 +30,7 @@ nerdch.level.admin:/golemspawner [$] = >>>
     );
     if ($ == "" || !array_index_exists(@dict, $)) {
         msg(color(RED) . "That is not a valid golem spawner tier." );
-        msg(color(GRAY) . "Tiers: " . array_implode(array_keys(@dict), ", "));
+        msg(color(GRAY) . "Tiers: " . array_implode(array_sort(array_keys(@dict)), ", "));
         die();
     }
     @count = array_get(@dict, $, 1);
