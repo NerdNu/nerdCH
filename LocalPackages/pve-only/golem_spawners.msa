@@ -3,6 +3,11 @@ nerdch.level.admin:/pvevillager = >>>
 <<<
 
 
+nerdch.level.admin:/quadblaze = >>>
+    run('/setblock ~ ~-1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"Blaze"},RequiredPlayerRange:38,MaxNearbyEntities:15}');
+<<<
+
+
 nerdch.level.admin:/golemspawner [$] = >>>
     # key: "tier" accepted via command
     # value: SpawnCount field
@@ -34,5 +39,5 @@ nerdch.level.admin:/golemspawner [$] = >>>
         die();
     }
     @count = array_get(@dict, $, 1);
-    run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier '.$.'",CustomNameVisible:1,PlayerCreated:0},SpawnCount:'.@count.',SpawnRange:4,RequiredPlayerRange:16,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
+    run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier '.$.'",CustomNameVisible:1,PlayerCreated:0},SpawnCount:'.@count.',SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
 <<<
