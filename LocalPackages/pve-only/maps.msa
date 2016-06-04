@@ -1,0 +1,10 @@
+*:'/getmap' [$id] = >>>
+	_assertperm('restricted');
+	if ($id == '') {
+		msg(color(GOLD) . 'Usage: /getmap <map-number>');
+		msg(color(GOLD) . 'Get the map with the specified map number.');
+		die();
+	} else {
+		sudo('/minecraft:give ' . player() . ' minecraft:filled_map 1 ' . $id);
+	}
+<<<
