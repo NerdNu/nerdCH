@@ -162,3 +162,6 @@
         msg(color('GOLD').@player.' has been poked!')
         export('lastpoke.'.player(), @time)
 <<<
+
+/euthanize [$] = /butcher $
+
