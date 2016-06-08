@@ -127,57 +127,25 @@
 		)	
 		@plugins = array_merge(@plugins, @includes)
 	}
-	
+
 	array_sort(@plugins, 'STRING_IC')
 	msg('Plugins ('.array_size(@plugins).'): '.color(green).array_implode(@plugins, color(white).', '.color(green)))
 <<<
 
 
 *:/version [$] = >>>
-    @player = player()
-    if(not(equals(@player, '~console')),
-        foreach(_get_mods(), @mod,
-            tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))    
-        )
-        console(concat(@player, ' checked the server version'))
-    ,
-        run(/version)
-    )
+	@player = player()
+	if (has_permission('nerdch.level.admin')) {
+		run(/version);
+	} else {
+		foreach (@mod in _get_mods()) {
+			tmsg(@mod, color(GRAY) . @player . ' checked the server version');
+		}
+		console(@player . ' checked the server version');
+	}
 <<<
 
 
-*:/ver [$] = >>>
-    call_alias('/version')
-#    if(not(equals(player(), '~console')),
-#        foreach(_get_mods(), @mod,
-#            tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))    
-#        )
-#        console(concat(@player, ' checked the server version'))
-#    ,
-#        run(/ver)
-#    )
-<<<
-
-
-*:/about [$] = >>>
-    if(not(equals(player(), '~console')),
-        foreach(_get_mods(), @mod,
-            tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))    
-        )
-        console(concat(@player, ' checked the server version'))
-    ,
-        run(/about)
-    )
-<<<
-
-*:/icanhasbukkit [$] = >>>
-    if(not(equals(player(), '~console')),
-        foreach(_get_mods(), @mod,
-            tmsg(@mod, concat(color('gray'), @player, ' checked the server version'))
-        )
-        console(concat(@player, ' checked the server version'))
-    ,
-        run(/version)
-    )
-<<<
-
+*:/about [$]         = call_alias('/version');
+*:/ver [$]           = call_alias('/version');
+*:/icanhasbukkit [$] = call_alias('/version');
