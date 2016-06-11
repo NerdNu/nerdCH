@@ -162,3 +162,22 @@
 <<<
 
 
+# Dump all of a player's waypoints, for debugging. Admin only.
+
+*:/dumpwps $player = >>>
+	_assertperm('admin');
+	@uuid = _get_puuid($player);
+	@waypoints = get_value('waypoints', @uuid);
+	if (@waypoints == null || length(@waypoints) == 0) {
+		die(color(RED). $player . ' has no waypoints.');
+	}
+
+	foreach (@name: @waypoint in @waypoints) {
+		@loc = @waypoint['loc']
+		@x = round(@loc['x'])
+		@y = round(@loc['y'])
+		@z = round(@loc['z'])
+		msg('  '.@name.':'.color(GRAY).' X: '.@x.', Y: '.@y.', Z: '.@z. ' ('.@waypoint['mode'].')');
+	}
+<<<
+
