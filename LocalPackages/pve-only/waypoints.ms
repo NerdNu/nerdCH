@@ -9,5 +9,6 @@ bind(player_death, null, null, @e,
 		array_set(@waypoints, 'death', array('loc': @e[location], 'mode': private));
 		store_value('waypoints', @uuid, @waypoints);
 	, @ex,
+		console('Error adding death waypoint: ' . @ex);
 	);
 );
