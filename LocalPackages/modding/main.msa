@@ -261,14 +261,18 @@ mods:/spawnp $player = runas($player, /spawn)
 	)
 	@entities = entities_in_radius(ploc(), @radius, @types)
 	#msg(array_implode(@entities, ', '))
-	foreach (@entities, @e, 
-		@key = to_lower(entity_type(@e))
-		if (array_index_exists(@counts, @key)) {
-			inc(@counts[@key])
-		} else {
-			@counts[@key] = 1
+	foreach (@e in @entities) {
+		@type = entity_type(@e);
+		if (@type == null) {
+			@type = 'unknown';
 		}
-	)
+		@key = to_lower(@type);
+		if (array_index_exists(@counts, @key)) {
+			inc(@counts[@key]);
+		} else {
+			@counts[@key] = 1;
+		}
+	}
 	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
 	foreach (array_keys(@counts), @type,
 		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
