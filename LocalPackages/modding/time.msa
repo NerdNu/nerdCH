@@ -8,5 +8,5 @@
 <<<
 
 #Time shortcuts
-*:/d = call_alias(/time day)
-*:/n = call_alias(/time night)
+#*:/d = call_alias(/time day)
+#*:/n = call_alias(/time night)
