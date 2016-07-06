@@ -7,6 +7,19 @@
 	msg(color(YELLOW).'Regions located there: '.color(WHITE).array_implode(sk_regions_at(pcursor()), ', '))
 <<<
 
+*:'/myregions' [$] = >>>
+        @page = 0;
+        @name = player()
+        if ($ != "" && is_integral($)) {
+                @page = $;
+        }
+        if (@page == 0) {
+                run('/region list -p ' . @name);
+        } else {
+                run('/region list ' . @page . ' -p ' . @name);
+        }
+<<<
+
 # padmins did not approve this command
 /*
 *:'/regions-at' $x $y $z [$world] = >>>
