@@ -8,15 +8,16 @@
 <<<
 
 *:'/myregions' [$] = >>>
+        # Possibly rewrite to use sk_current_regions('player')?
         @page = 0;
         @name = player()
         if ($ != "" && is_integral($)) {
                 @page = $;
         }
         if (@page == 0) {
-                run('/region list -p ' . @name);
+                sudo('/region list -p ' . @name);
         } else {
-                run('/region list ' . @page . ' -p ' . @name);
+                sudo('/region list ' . @page . ' -p ' . @name);
         }
 <<<
 
