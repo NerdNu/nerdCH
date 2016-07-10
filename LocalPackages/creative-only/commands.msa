@@ -166,7 +166,10 @@
 /euthanize [$] = /butcher $
 
 # Magic 8 Ball
-nerdch.magic8ball:/Magic8Ball [$] = >>>
+*:/Magic8Ball [$] = >>>
+        if(!has_permission("nerdch.magic8ball")) {
+                die("You do not have permission to use the Magic 8-Ball")
+        }
         @i = rand(20)
         @array = array(
                 "It is certain",
