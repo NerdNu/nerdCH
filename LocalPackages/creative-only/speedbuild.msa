@@ -1,0 +1,98 @@
+
+#
+# Run the speed build event
+#
+# Broadcast all the global messages and adjust permissions for a 10 minute round
+#
+*:/speedbuild_start [$] = >>>
+	@qname = 'speedbuild';
+
+	if(!has_permission('nerdch.speedbuild')) {
+		die(color(RED) . 'Permission Denied');
+	}
+
+	proc(_BC, @m,
+		broadcast( '[' . color(RED) . 'Speedbuild' . color(WHITE) . '] ' . color(GREEN) . @m);
+	);
+
+	queue_clear(@qname);
+
+	queue_push(closure(_BC('Starting in 5')));
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('4')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('3')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('2')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('1')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(
+		_BC('BEGIN!');
+		sudo('/rg flag sbaparent build allow');
+		), @qname);
+
+	queue_delay(5*60*1000, @qname);
+	queue_push(closure(_BC('5 Minutes Remaining')), @qname);
+
+	queue_delay(3*60*1000, @qname);
+	queue_push(closure(_BC('2 Minute Remaining')), @qname);
+
+	queue_delay(90*1000, @qname);
+	queue_push(closure(_BC('30 Seconds Remaining')), @qname);
+
+	queue_delay(25*1000, @qname);
+	queue_push(closure(_BC('Time\'s up in 5')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('4')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('3')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('2')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(_BC('1')), @qname);
+
+	queue_delay(1000, @qname);
+	queue_push(closure(
+		_BC('TIME\'S UP!');
+		sudo('/rg flag sbaparent build');
+		), @qname);
+
+<<<
+
+#
+# Cancel the speedbuild script.
+#
+#
+*:/speedbuild_cancel [$] = >>>
+	@qname = 'speedbuild';
+
+	if(!has_permission('nerdch.speedbuild')) {
+		die(color(RED) . 'Permission Denied');
+	}
+	queue_clear(@qname);
+	sudo('/rg flag sbaparent build');
+	msg(color(GREEN) . 'Canceled');
+<<<
+
+#
+# Check to see if the speedbuild script is running
+#
+*:/speedbuild_is_running [$] = >>>
+	@qname = 'speedbuild';
+
+	if(!has_permission('nerdch.speedbuild')) {
+		die(color(RED) . 'Permission Denied');
+	}
+	msg(color(GREEN) . queue_running(@qname))
+<<<
+
