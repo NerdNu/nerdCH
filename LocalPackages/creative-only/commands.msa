@@ -120,11 +120,21 @@
 <<<
 
 *:/randloc [$] = >>>
-	@MAXDISTANCE = 3000
-	@x = rand(- @MAXDISTANCE, @MAXDISTANCE)
-	@z = rand(- @MAXDISTANCE, @MAXDISTANCE)
-	@y = get_highest_block_at(@x, @z)[1]
-	set_ploc(@x, @y, @z)
+	@MAXDISTANCE = 4950
+	while(true){
+		@x = rand(- @MAXDISTANCE, @MAXDISTANCE)
+		@z = rand(- @MAXDISTANCE, @MAXDISTANCE)
+		if( @x*@x + @z*@z > @MAXDISTANCE*@MAXDISTANCE ) {
+			continue();
+		}
+		@y = get_highest_block_at(@x, @z)[1] + 0.5;
+		@regions = sk_regions_at(array(@x, @y, @z));
+		if (length(@regions) != 0) {
+			continue();
+		}
+		set_ploc(@x, @y, @z);
+		break();
+	}
 <<<
 
 /*
