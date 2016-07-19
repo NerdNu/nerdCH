@@ -41,7 +41,7 @@
 	queue_push(closure(_BC('5 Minutes Remaining')), @qname);
 
 	queue_delay(3*60*1000, @qname);
-	queue_push(closure(_BC('2 Minute Remaining')), @qname);
+	queue_push(closure(_BC('2 Minutes Remaining')), @qname);
 
 	queue_delay(90*1000, @qname);
 	queue_push(closure(_BC('30 Seconds Remaining')), @qname);
