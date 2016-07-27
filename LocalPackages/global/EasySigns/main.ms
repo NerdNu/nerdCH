@@ -32,11 +32,11 @@ bind(player_interact, null, null, @e,
 							}
 						}
 					,'ci',
-						foreach(0..104,@i,
-							@array = associative_array()
-							@array[@i] = null
-							set_pinv(@array)
-						)
+						@array = associative_array()
+						foreach(@k : @v in pinv()) {
+							@array[@k] = null;
+						}
+						set_pinv(@array);
 					,'cmd',
 						run_cmd(@data['cmd'])
 					,'give',
