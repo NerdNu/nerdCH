@@ -120,10 +120,11 @@
 <<<
 
 *:/randloc [$] = >>>
-	@MAXDISTANCE = 4950
+	@MAXDISTANCE = 2990
 	while(true){
 		@x = rand(- @MAXDISTANCE, @MAXDISTANCE)
 		@z = rand(- @MAXDISTANCE, @MAXDISTANCE)
+		# Use this if its a circle map
 		if( @x*@x + @z*@z > @MAXDISTANCE*@MAXDISTANCE ) {
 			continue();
 		}
