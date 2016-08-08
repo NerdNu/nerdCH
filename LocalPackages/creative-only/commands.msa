@@ -179,7 +179,7 @@
 # Magic 8 Ball
 *:/Magic8Ball [$] = >>>
         if(!has_permission("nerdch.magic8ball")) {
-                die("You do not have permission to use the Magic 8-Ball")
+                die("You do not have permission to use the Magic 8-Ball.")
         }
         @i = rand(20)
         @array = array(
@@ -205,4 +205,19 @@
                 "Very doubtful");
         broadcast(concat(color(GOLD), "[", trim(player()), "'s Magic 8-Ball]: ", color(green), @array[@i]));
 <<<
+
+
+# Fly, even in survival mode
+*:/fly [$] = >>>
+        if(!has_permission("nerdch.fly")){
+                die(color(RED) . "You do not have permission to use /fly.");
+        }
+	if($ != ''){
+		die(color(RED) . "USAGE: /fly");
+	}
+        set_pflight(true);
+        set_pflying(true);
+        msg(color(GREEN) . "You are now high as a kite.")
+<<<
+
 
