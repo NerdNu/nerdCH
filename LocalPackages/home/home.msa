@@ -21,24 +21,47 @@
 	}
 <<<
 
-*:/delhome [$] = >>>
-	if (import('sharedata.source') != 'creative') {
-		_assertperm('restricted', 1)
-	}
-    if(equals($, ''),
-        msg(concat(color(red), 'Usage: /delhome <name>'))
-        call_alias(/listhomes),
-    #else:
-        assign(@str, concat('homes.', _get_puuid(player()), '.', $, '.loc'))
-        if(has_value(@str),
-            clear_value(@str)
-            msg('Home' $ 'cleared.'),
-        #else:
-            msg(concat(color(red), 'Home ' , $, ' not found.'))
-            call_alias(/listhomes)
-        )
-    )
+
+*:/delhome = >>>
+        if (import('sharedata.source') != 'creative') {
+                _assertperm('restricted', 1);
+        }
+        if(has_permission('nerdch.level.restricted')) {
+                msg(concat(color(red), 'Usage: /delhome [player] <name>'));
+        } else {
+                msg(concat(color(red), 'Usage: /delhome <name>'));
+        }
+        call_alias(/listhomes);
 <<<
+
+*:/delhome $home = >>>
+        if (import('sharedata.source') != 'creative') {
+                _assertperm('restricted', 1);
+        }
+        @str = concat('homes.', _get_puuid(player()), '.', $home, '.loc');;
+
+        if(has_value(@str)) {
+            clear_value(@str);
+            msg('Home' $home 'cleared.');
+        } else {
+            msg(concat(color(red), 'Home ' , $home, ' not found.'));
+            call_alias(/listhomes);
+        }
+<<<
+
+*:/delhome $player $home = >>>
+        _assertperm('restricted', 1)
+        @str = concat('homes.', _get_puuid($player), '.', $home, '.loc');
+
+        if(has_value(@str)) {
+            clear_value(@str);
+            msg('Home' $home 'cleared.');
+        } else {
+            msg(concat(color(red), 'Home ' , $home, ' not found.'));
+            call_alias(/listhomes $player);
+        }
+<<<
+
 
 *:/home [$] = >>>
 	if (import('sharedata.source') != 'creative') {
