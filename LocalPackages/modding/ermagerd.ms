@@ -15,11 +15,18 @@ proc(_is_ermagerd,
 
 # Ermagerd!
 proc(_ermagerd2, @string,
+	# Note. (?i) will ignore case
+	#       (?<!X) negative lookbehind
+	#       (?!X) negative lookahead
         # Begin the transformations
-        @string = reg_replace('(?i)oo?r?', 'er', @string);
+        @string = reg_replace('oo?[rh]?', 'er', @string);
+        @string = reg_replace('(?i)oo?[rh]?', 'ER', @string);
         @string = reg_replace('a', 'er', @string);
-        @string = reg_replace('([^a-zA-Z])*?ermg([^a-zA-Z])', '$1ermagerd$2', @string);
-        @string = reg_replace('([^a-zA-Z])*?my', '$1ma', @string);
+        @string = reg_replace('A', 'ER', @string);
+        @string = reg_replace('(?<![a-zA-Z])ermg(?![a-zA-Z])', 'ermagerd', @string);
+        @string = reg_replace('(?i)(?<![a-zA-Z])ermg(?![a-zA-Z])', 'ERMAGERD', @string);
+        @string = reg_replace('my', 'ma', @string);
+        @string = reg_replace('(?i)my', 'MA', @string);
         @string = reg_replace('[\\.,;]', '', @string); #Pfft, who needs punctuation
         return(@string);
 )
