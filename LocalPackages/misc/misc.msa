@@ -161,7 +161,7 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 
 /lolno = /lolno help
 
-/fortunecookie [$=''] = >>>
+*:/fortunecookie [$=''] = >>>
 	_assertperm('admin')
 	if(pinv(player(), null) != null){
 		die(color(RED).'Clear the current slot in your inventory to use this command')
