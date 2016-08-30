@@ -13,7 +13,7 @@ proc(_changeserver, @player, @server,
 	_writeUTF(@ba, 'Connect')
 	_writeUTF(@ba, @server)
 
-	@servers = array('creative', 'pve', 'pvp', 'lobby')
+	@servers = array('creative', 'pve', 'minigames', 'lobby')
 	if (array_contains(@servers, to_lower(@server)) && to_lower(@server) != import('sharedata.source'), 
 		unbind('bc-'.@player)
 		bind(player_quit, array(priority: normal, id: 'bc-'.@player), array(player: @player), @event, @server,
