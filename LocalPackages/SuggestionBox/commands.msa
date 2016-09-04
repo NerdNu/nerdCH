@@ -90,8 +90,8 @@
     array_iterate(@allsuggestions, closure(@userhash, @messages){
         msg(color(DARK_GREEN).'===========================')
         msg(color(gold).'Userhash: '.@userhash)
-        foreach(@key: @message in @messages,
+        foreach(@key: @message in @messages){
             msg(color(green).@key.'. '@message)
-        )
+        }
     })
 <<<
