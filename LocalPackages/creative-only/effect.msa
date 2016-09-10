@@ -1,0 +1,49 @@
+# Temporary implementation of a work-alike of the Minecraft /effect command.
+# Unlike the Minecraft command, the recipient of the effect is implicitly
+# the player who runs the command. This makes it usable with the NerdFlags
+# entry-commands flag.
+#
+# Longer time, a single plugin should handle actions triggered by entering
+# or leaving a region, and EasySigns-like sign clicks.
+
+*:/effect help = _effecthelp();
+
+*:/effect clear = >>>
+	_assertperm('effect');
+	foreach (@e in get_peffect()) {
+		set_peffect(player(), @e[id], @e[strength], 0);
+	}
+<<<
+
+*:/effect $id [$seconds] [$amplifier] [$hide_particles] = >>>
+	_assertperm('effect');
+
+	if (is_integral($id)) {
+		@id = $id;
+	} else {
+		@NAME_TO_ID = associative_array(
+			speed: 1, slowness: 2, haste: 3, mining_fatique: 4, strength: 5,
+			instant_health: 6, instant_damage: 7, jump_boost: 8, nausea: 9, regeneration: 10,
+			resistance: 11, fire_resistance: 12, water_breathing: 13, invisibility: 14, blindness: 15,
+			night_vision: 16, hunger: 17, weakness: 18, poison: 19, wither: 20,
+			health_boost: 21, absorption: 22, saturation: 23, glowing: 24, levitation: 25,
+			luck: 26, unluck: 27
+		);
+		@id = array_get(@NAME_TO_ID, to_lower($id), null);
+		if (@id == null) {
+			die(color(RED) . 'That\'s not a potion name!');
+		}
+	}
+
+	if (@id == 14) {
+		die(color(RED) . 'Sorry, no invisibility. :(');
+	}
+
+	@strength = min(20, if ($amplifier != '', $amplifier - 1, 0));
+	@seconds = if ($seconds != '', $seconds, 30);
+	@particles = ($hide_particles != true);
+	set_peffect(player(), @id, @strength, @seconds, false, @particles);
+<<<
+
+*:/effect = _effecthelp();
+ 
