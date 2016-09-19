@@ -153,3 +153,71 @@
 		}
 	});
 <<<
+
+
+*:/mail sent [$page=1] = >>>
+	@perPage = 5;
+	if(!is_integral($page)){
+		die(color(RED).'Page must be an integer.');
+	}
+	x_new_thread('mail_sent', closure(){
+		@puuid = _mail_get_puuid(player());
+		@messages = query('mail', 'SELECT * FROM message WHERE `from`=?', @puuid);
+		@pages = integer((length(@messages) + @perPage - 1) / @perPage);
+		@o = '';
+		if(length(@messages) == 0){
+			@o .= color(RED).'You have sent no messages.';
+		} else if(@pages < $page){
+			@o .= color(RED).'Invalid sent listing page! (only '
+					.if(@pages == 1, '1 page exists', "@pages pages exist").')';
+		} else {
+			@o .= color(YELLOW).'Sent mail for '.player().': [ Page '.$page.' of '.@pages.' ]\n';
+			@starting = ($page - 1) * @perPage;
+			for(@i = @starting, @i < @starting + @perPage && @i < length(@messages), @i++){
+				@m = @messages[@i];
+				@o .= color(WHITE).(@i + 1).') ('
+					.color(YELLOW).@m['source_server'].color(WHITE).') ['
+					.color(RED)._mail_get_display_name_from_uuid(@m['to'])
+					.color(WHITE).'] '.@m['body'].'\n';
+			}
+			@o .= color(LIGHT_PURPLE).'/mail'.color(YELLOW).' to see available options.'
+				.color(LIGHT_PURPLE).' /mail sent <page>'.color(YELLOW).' for more pages.\n';
+		}
+		x_run_on_main_thread_later(closure(){
+			msg(@o);
+		});
+	});
+<<<
+
+
+*:/mail readsent [$id=''] = >>>
+	if($id == ''){
+		die(color(RED).'Usage /mail readsent <id>');
+	}
+	if(!is_integral($id)){
+		die(color(RED).'ID must be an integer.');
+	}
+	if($id <= 0){
+		die(color(RED).'ID must be greater than zero');
+	}
+	x_new_thread('mail_readsent', closure(){
+		@puuid = _mail_get_puuid(player());
+		@messages = query('mail', 'SELECT * FROM message WHERE `from`=?', @puuid);
+		@o = '';
+		if(length(@messages) == 0){
+			@o .= color(RED).'You have sent no messages.';
+		} else if(length(@messages) < $id){
+			@o .= color(RED).'Invalid id!';
+		} else {
+			@m = @messages[$id - 1];
+			@o .= color(YELLOW).'To: '.color(RED)._mail_get_display_name_from_uuid(@m['to']).'\n'
+				.color(YELLOW).'Sent: '
+				.color(WHITE).'('.color(YELLOW).@m['source_server'].color(WHITE).') '
+				.simple_date('EEE, d MMM yyy HH:mm:ss z', @m['date_sent']).'\n'
+				.@m['body'].'\n';
+		}
+		x_run_on_main_thread_later(closure(){
+			msg(@o);
+		});
+	});
+<<<
