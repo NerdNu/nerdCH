@@ -1,0 +1,11 @@
+*:/who [$] = >>>
+	if ($ == 'let the dogs out?'){
+		msg('Woof; woof, woof, woof, woof')
+		play_sound(ploc(player()), array(sound: WOLF_BARK, pitch: 1, volume: 3), player())
+	} else {
+		sudo('/mv who world');
+		sudo('/mv who world_the_end');
+		sudo('/mv who world_nether');
+		sudo('/mv who mapworld');
+	}
+<<<
