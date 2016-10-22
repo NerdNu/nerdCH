@@ -41,6 +41,9 @@
 	}
 <<<
 
+# Name History Alias
+*:/nh   = call_alias('/namehistory');
+*:/nh $ = call_alias('/namehistory ' . $);
 
 # Retrieve name history for the UUID that currently holds a name
 *:/namehistory [$player] = >>>
