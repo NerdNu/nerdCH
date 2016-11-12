@@ -7,6 +7,9 @@ nerdch.level.admin:/quadblaze = >>>
     run('/setblock ~ ~-1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"Blaze"},RequiredPlayerRange:38,MaxNearbyEntities:15}');
 <<<
 
+nerdch.level.admin:/defaultgolemspawner [$] = >>>
+    run('/setblock ~ ~-1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",PlayerCreated:0},SpawnCount:3,SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
+<<<
 
 nerdch.level.admin:/golemspawner [$] = >>>
     # key: "tier" accepted via command
