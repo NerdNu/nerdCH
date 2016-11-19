@@ -43,23 +43,41 @@
 *:'/suggestion-box-remove' $userHash $id = >>>
     _assertperm('admin', 0)
     @suggestions = get_value('suggestionbox.suggestions')
-    if(array_index_exists(@suggestions, $userHash)){
-        @userSuggestions = @suggestions[$userHash]
-        if(array_index_exists(@userSuggestions, $id)){
-            array_remove(@userSuggestions, $id)
-            if(array_size(@userSuggestions) == 0){
-                array_remove(@suggestions, $id)
-            }
-            store_value('suggestionbox.suggestions', @suggestions)
-            msg(color(gold).'Suggestion removed')
-        } else {
-            die('Oops, there is no suggestion with that id')
+
+    # Make a list of all users that start with "$userHash"
+    @len = length($userHash)
+    if(@len > 32) {
+        die(color(red).'Invalid user hash')
+    }
+    @found = array()
+    foreach(string @key in array_keys(@suggestions)) {
+    if(string_starts_with(@key, $userHash)) {
+            array_push(@found, @key)
         }
-    } else {
+    }
+    if(length(@found) == 0) {
         die('Oops, that user hash doesn\'t exist')
+    }
+    if(length(@found) > 1) {
+        die('Oops, more than one hash has that prefix')
+    }
+    @hash = @found[0]
+
+    # Remove the comment
+    @userSuggestions = @suggestions[@hash]
+    if(array_index_exists(@userSuggestions, $id)){
+        array_remove(@userSuggestions, $id)
+        if(array_size(@userSuggestions) == 0){
+            array_remove(@suggestions, @hash)
+        }
+        store_value('suggestionbox.suggestions', @suggestions)
+        msg(color(gold).'Suggestion removed')
+    } else {
+        die('Oops, there is no suggestion with that id')
     }
 
 <<<
+
 
 *:'/suggestion-box-code' = msg(read('./commands.msa'))
 
