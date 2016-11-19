@@ -106,10 +106,12 @@
     _assertperm('admin', 0)
     @allsuggestions = get_value('suggestionbox.suggestions')
     array_iterate(@allsuggestions, closure(@userhash, @messages){
-        msg(color(DARK_GREEN).'===========================')
-        msg(color(gold).'Userhash: '.@userhash)
-        foreach(@key: @message in @messages){
-            msg(color(green).@key.'. '@message)
+        if(length(@messages) > 0) {
+            msg(color(DARK_GREEN).'===========================')
+            msg(color(gold).'Userhash: '.@userhash)
+            foreach(@key: @message in @messages){
+                msg(color(green).@key.'. '@message)
+            }
         }
     })
 <<<
