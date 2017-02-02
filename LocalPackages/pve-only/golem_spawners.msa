@@ -8,7 +8,7 @@ nerdch.level.admin:/quadblaze = >>>
 <<<
 
 nerdch.level.admin:/defaultgolemspawner [$] = >>>
-    run('/setblock ~ ~-1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",PlayerCreated:0},SpawnCount:3,SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
+    run('/setblock ~ ~-1 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"minecraft:villager_golem",PlayerCreated:0},SpawnCount:3,SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
 <<<
 
 nerdch.level.admin:/golemspawner [$] = >>>
@@ -42,5 +42,5 @@ nerdch.level.admin:/golemspawner [$] = >>>
         die();
     }
     @count = array_get(@dict, $, 1);
-    run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"VillagerGolem",CustomName:"Tier '.$.'",CustomNameVisible:1,PlayerCreated:0},SpawnCount:'.@count.',SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
+    run('/setblock ~ ~2 ~ minecraft:mob_spawner 0 replace {SpawnData:{id:"minecraft:villager_golem",CustomName:"Tier '.$.'",CustomNameVisible:1,PlayerCreated:0},SpawnCount:'.@count.',SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25}');
 <<<
