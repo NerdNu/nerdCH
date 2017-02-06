@@ -78,6 +78,15 @@
 	run('/me drinks')
 <<<
 
+# By popular request . . .
+'//stacc' [$] = >>>
+        if ($ == '') {
+                run('//stack');
+        } else {
+                run('//stack ' . $);
+        }
+<<<
+
 *:/cs [$] = >>>
     run('/NerdClanChat:cs ' . $);
 <<<
