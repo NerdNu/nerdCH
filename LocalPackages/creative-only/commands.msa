@@ -201,4 +201,9 @@
         msg(color(GREEN) . "You are now high as a kite.")
 <<<
 
+# Explode one's self
+*:/explode = >>>
+    run_cmd("/me explodes");
+    run_cmd("/pet explode self");
+<<<
 
