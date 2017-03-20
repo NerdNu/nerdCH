@@ -137,6 +137,11 @@ mods:/spawnp $player = runas($player, /spawn)
 	)
 <<<
 
+*:/fakeadminhunt $player = >>>
+	_assertperm('admin', 0);
+	broadcast(color(green).'[AdminHunt] An admin hunt has begun! Find (and kill) '.$player.' as quickly as you can!');
+<<<
+
 *:/fakeop $player = >>>
 	_assertperm('admin', 0)
 	@player = player($player)
