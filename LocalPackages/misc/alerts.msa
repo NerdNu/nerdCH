@@ -220,7 +220,7 @@
 	@seconds = integer(@seconds);
 	store_value('server.alerts.seconds', @seconds);
 	try(
-		clear_task(get_value('server.alerts.task'));
+		clear_task(import('server.alerts.task'));
 	)
 	_start_alerts();
 	msg(color(LIGHT_PURPLE).'The alert broadcast interval was set to '.@seconds.' seconds.');

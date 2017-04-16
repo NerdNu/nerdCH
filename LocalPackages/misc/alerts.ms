@@ -50,6 +50,6 @@ proc(_start_alerts,
 	))
 
 	console('Starting alerts with task ID '.@task);
-	store_value('server.alerts.task', @task);
+	export('server.alerts.task', @task);
 )
 
