@@ -7,6 +7,10 @@
 	msg(color(LIGHT_PURPLE).'Usage:');
 	msg(color(LIGHT_PURPLE).'    /alert list');
 	msg(color(WHITE)       .'        List all broadcast messages.');
+	msg(color(LIGHT_PURPLE).'    /alert on');
+	msg(color(WHITE)       .'        Start receiving alert messages.');
+	msg(color(LIGHT_PURPLE).'    /alert off');
+	msg(color(WHITE)       .'        Stop receiving alert messages.');
 	msg(color(LIGHT_PURPLE).'    /alert add <color> <message>');
 	msg(color(WHITE)       .'        Add the message to the broadcast rotation.');
 	msg(color(LIGHT_PURPLE).'    /alert insert <index> <color> <message>');
@@ -35,6 +39,24 @@
 		inc(@index);
 	)
 <<<
+
+
+# /alert off
+#	Stop receiving alerts / opt-out
+*:/alert off = >>>
+	@uuid = replace(puuid(player()), '-', '');
+	store_value('server.alerts.optout.' . @uuid, true);
+	msg(color(GREEN) . 'Alerts disabled.');
+<<<
+
+# /alert on
+#	Start receiving alerts / opt-in
+*:/alert on = >>>
+	@uuid = replace(puuid(player()), '-', '');
+	clear_value('server.alerts.optout.' . @uuid);
+	msg(color(GREEN) . 'Alerts enabled.');
+<<<
+
 
 
 # /alert add color message

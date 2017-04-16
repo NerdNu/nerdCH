@@ -6,6 +6,18 @@ proc(_get_alerts,
         return (if (is_null(@alerts), array(), @alerts));
 )
 
+# _broadcast_alert()
+#	Broadcast alerts to all players unless they opt-out
+proc(_broadcast_alert, @msg,
+	foreach (@player in all_players()) {
+		@uuid = replace(puuid(@player), '-', '');
+		@opt_out = get_value('server.alerts.optout.' . @uuid);
+		if (is_null(@opt_out)) {
+			tmsg(@player, @msg);
+		}
+	}
+)
+
 
 # _start_alerts()
 #	Start the timer callback that broadcasts alerts.
@@ -30,9 +42,9 @@ proc(_start_alerts,
 		@index = mod(@index, array_size(@alerts));
 		if (is_array(@alerts[@index])) {
 			@a = @alerts[@index];
-			broadcast(color(@a[color]).'[Server] '.@a[msg]);
+			_broadcast_alert(color(@a[color]).'[Server] '.@a[msg]);
 		} else {
-			broadcast(color(LIGHT_PURPLE).'[Server] '.@alerts[@index]);
+			_broadcast_alert(color(LIGHT_PURPLE).'[Server] '.@alerts[@index]);
 		}
 		store_value('server.alerts.index', @index + 1);
 	))
