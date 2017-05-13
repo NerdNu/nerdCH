@@ -7,6 +7,12 @@ nerdch.spectator:/spectator = >>>
 		msg(concat(color(GRAY), @p, ' is now in creative mode'))
 	} else {
 		set_pmode(@p, 'SPECTATOR')
+
+		# Turn on flight or you will fall to your death!
+		set_timeout(200, closure() {
+			set_pflight(true);
+			set_pflying(true);
+		});
 		msg(concat(color(GRAY), @p, ' is now in spectator mode'))
 	}
 <<<
