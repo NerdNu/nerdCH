@@ -1,0 +1,167 @@
+################################################################################
+#
+# Drunk Tank
+#
+# This msa exports commands to turn regular regions into drunk tanks!
+#
+################################################################################
+
+
+#
+# /drunktank
+#
+# Show drunktank usage
+#
+*:/drunktank = >>>
+  if(!has_permission("nerdch.drunktank")) {
+    die(color(RED) . "No.");
+  }
+
+  msg(color(GREEN) . "USAGE:");
+  msg(color(GREEN) . "  /drunktank add REGION [WORLD]");
+  msg(color(GREEN) . "    Make all players in a region drunk. Optionally supply the");
+  msg(color(GREEN) . "    world name, otherwise the current world is assumed.");
+  msg(color(GREEN) . "");
+  msg(color(GREEN) . "  /drunktank remove REGION [WORLD]");
+  msg(color(GREEN) . "    Remove a drunk tank from a region. Optionally supply the");
+  msg(color(GREEN) . "    world name, otherwise the current world is assumed.");
+  msg(color(GREEN) . "");
+  msg(color(GREEN) . "  /drunktank list");
+  msg(color(GREEN) . "    List all drunk tanks, in world.region format.");
+<<<
+
+#
+# /drunktank add REGION [WORLD]
+#
+# Add a region to the list of drunk tanks.
+# This also spawns off the drunk tank task if there isn't one already.
+#
+*:/drunktank add $rgName [$worldName]= >>>
+  if(!has_permission("nerdch.drunktank")) {
+    die(color(RED) . "No.");
+  }
+
+  # Get drunk tank data array
+  @tank_list = import("drunktank.tanks");
+  if(is_null(@tank_list)) {
+    @tank_list = associative_array();
+    export("drunktank.tanks", @tank_list);
+  }
+
+  if($worldName == "") {
+    @worldName2 = pworld();
+  } else {
+    @worldName2 = $worldName;
+  }
+  
+  # See if the $rgName exists
+  if(!sk_region_exists(@worldName2, $rgName)) {
+    die(color(RED) . "Region " . $rgName . " does not exist.");
+  }
+
+  # Everything must be OK at this point. Put the region into the task list.
+  # Note that . can NEVER be in a region name, so it is a
+  # safe delimiter.
+  @tank_list[@worldName2 . "." . $rgName] = 1;
+  export("trunktank.tanks", @tank_list);
+
+  # Inline an entire closure here to deal with the drunkinness!
+  @task_id = import("drunktank.taskid");
+  if(is_null(@task_id)) {
+    @task_id = set_interval(3000, closure(
+      # broadcast(color(GOLD) . "=== Calling drunk tank closure ===");
+
+      # Loop over all regions all players are in.
+      # Make any players inside a drunktank drunk!
+
+      foreach(@playerName in all_players()){
+        @playerWorld = pworld(@playerName);
+        foreach(@rgName in sk_current_regions(@playerName)) {
+          if(array_index_exists(@tank_list, @playerWorld . "." . @rgName)) {
+            # Make the player drunk!
+            # Unfortunately, if a player is already drunk the effect will stop
+            # and reset if we make a player drunk that is already drunk. SOoo,
+            # we must only make players drunk that are not drunk already.
+            @playerDrunk = false; # not drunk by default.
+            foreach(@effect in get_peffect(@playerName)) {
+              if(@effect["id"] == 9) {
+                @playerDrunk = true;
+                break;
+              }
+            }
+            # The player is not drunk. We ca fix that!
+            if(@playerDrunk == false) {
+              # broadcast(color(GOLD) . "@playerName is now drunk!");
+              set_peffect(@playerName, 9, 1, 3600); # drunk for 1 hour.
+            }
+          }
+        }
+      }
+    ));
+    export("drunktank.taskid", @task_id);
+  }
+  msg(color(GREEN) . "Successfully added " . @worldName2 . "." . $rgName . " to the drunk tank.");
+<<<
+
+#
+# /drunktank remove REGION [WORLD]
+#
+# Remove a region from the drunk tank list
+#
+# Also clears out the drunk tank closure if the last tank is removed.
+#
+*:/drunktank remove $rgName [$worldName] = >>>
+  if(!has_permission("nerdch.drunktank")) {
+    die(color(RED) . "No.");
+  }
+
+  # Get drunk tank data array
+  @tank_list = import("drunktank.tanks");
+  if(is_null(@tank_list)) {
+    die(color(RED) . "There are not any drunk takes active right now.");
+  }
+
+  if($worldName == "") {
+    @worldName2 = pworld();
+  } else {
+    @worldName2 = $worldName;
+  }
+
+  if(array_index_exists(@tank_list, @worldName2 . "." . $rgName)) {
+    array_remove(@tank_list, @worldName2 . "." . $rgName);
+    msg(color(GREEN) . "Region '" . $rgName . "' has been removed from world '" . @worldName2 . "'.");
+  } else {
+    die(color(RED) . "That drunk tank does not exist. Did you forget to specify a world?");
+  }
+
+  # If the array is empty, clean up the drunk task.
+  if(array_size(@tank_list) == 0) {
+    @task_id = import("drunktank.taskid");
+    clear_task(@task_id);
+    export("drunktank.taskid", null);
+    export("drunktank.tanks", null);
+  }
+  
+<<<
+
+#
+# /drunktank list
+#
+# List all the drunk tanks in world.region format
+#
+*:/drunktank list = >>>
+  if(!has_permission("nerdch.drunktank")) {
+    die(color(RED) . "No.");
+  }
+
+  @tank_list = import("drunktank.tanks");
+  if(is_null(@tank_list)) {
+    msg(color(GREEN) . "There are not any drunk tanks =(");
+  } else {
+    foreach(@key in array_keys(@tank_list)) {
+      msg(color(GREEN) . "@key");
+    }
+  }
+<<<
+
+
