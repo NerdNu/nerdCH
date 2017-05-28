@@ -8,7 +8,7 @@
         die()
     )
     lightning(ploc($player))
-    msg(color('light_purple'), 'Thou hast smote the evil player ', pinfo($player,0), ' with thy mighty hand')
+    msg(color('light_purple'), 'Thou hast smote the evil player ', pinfo($player,0), ' with thy mighty hammer')
     tmsg($player, color('red'), if(equals($, ''), 'You have been smote by Thor\'s Hammer!', $))
     pkill($player)
     call_alias(concat('/mb ', pinfo($player, 0), ' has been smote.'))
@@ -30,3 +30,39 @@
     _assertperm('admin', 0)
     lightning(pcursor(player()))
 <<<
+
+# Thor everyone in region with optional message
+#
+
+*:/thorrg = >>>
+    _assertperm('admin', 0);
+    msg(color(GREEN) . 'USAGE: /thorrg REGION_NAME [MESSAGE]')
+<<<
+
+*:/thorregion = >>>
+    _assertperm('admin', 0);
+    msg(color(GREEN) . 'USAGE: /thorregion REGION_NAME [MESSAGE]')
+<<<
+
+*:/thorrg $rgname [$] = call_alias("/thorregion " . $rgname . " " . $)
+
+
+*:/thorregion $rgName [$] = >>>
+    _assertperm('admin', 0);
+
+    if(!sk_region_exists($rgName)) {
+        die(color(RED) . 'Region "' . $rgName . '" does not exist.');
+    }
+
+    foreach(@playerName in all_players()) {
+        if(@playerName == player()) {
+          continue();
+        }
+        foreach(@rgName2 in sk_current_regions(@playerName)) {
+            if(@rgName2 == $rgName) {
+                call_alias("/thor " . @playerName . " " . $);
+            }
+        }
+    }
+<<<
+
