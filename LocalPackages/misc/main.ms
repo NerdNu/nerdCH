@@ -1,2 +1,1 @@
-_start_alerts()
 
