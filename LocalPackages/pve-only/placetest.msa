@@ -4,7 +4,7 @@
  * A place is an associative array with 'name' and 'coord' fields.
  */
 
-*:/place [$] = >>>
+*:/placetest [$] = >>>
 	@places = get_value('places')
 	@netherportals = get_value('netherportals')
 	@endportals = get_value('endportals')
@@ -87,13 +87,13 @@
 		@closest = 10000
 		@closestNP = null
 		foreach(@netherportals, @netherportal,
-		if(pworld() == "world_nether"){
-			@ploc=ploc()
-			@ploc[0]=@ploc[0]*8
-			@ploc[2]=@ploc[2]*8
-		} else {
-			@ploc=ploc()
-		}
+			if (pworld() == "world_nether"){
+				@ploc=ploc()
+				@ploc[0]=@ploc[0]*8
+				@ploc[2]=@ploc[2]*8
+			} else {
+				@ploc=ploc()
+			}
 			@dist = _distance(@ploc, @netherportal['coord'])
 			if(@dist < @closest){
 				@closestNP = @netherportal
@@ -158,167 +158,5 @@
 		)
 		msg(color(LIGHT_PURPLE).'This is not an existing place, use '.color(GRAY).'/place '
 					.color(LIGHT_PURPLE).'to find one with the correct spelling!')
-	}
-<<<
-
-*:'/nearest-place' [$] = >>>
-	@places = get_value('places')
-	if(@places == null){
-		@places = array()
-	}
-	proc(_distance, @loc1, @loc2,
-		return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
-	)
-	@closest = 10000
-	@closestPlace = null
-	if ($ == ''){
-		foreach(@places, @place,
-			@dist = _distance(ploc(), @place['coord'])
-			if(@dist < @closest){
-				@closestPlace = @place
-				@closest = @dist
-			}
-		
-		)
-		if(@closestPlace != null){
-			call_alias('/place '.@closestPlace['name'])
-		} else {
-			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
-		}
-		die();
-	}
-
-	@args = parse_args($)
-	if(equals(array_size(@args),2),array_insert(@args,64,1))
-	if (array_size(@args) == 3){
-		if (or(!is_numeric(@args[0]),!is_numeric(@args[1]),!is_numeric(@args[2]))){
-			die(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>] (coordinates are optional')
-		}
-		foreach(@places, @place,
-			@dist = _distance(@args, @place['coord'])
-			if (@dist < @closest){
-				@closestPlace = @place
-				@closest = @dist
-			}
-		)
-		if(@closestPlace != null){
-			call_alias('/place '.@closestPlace['name'])
-		} else {
-			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
-		}
-		die()
-	}
-
-	msg(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>](coordinates are optional) ')
-<<<
-
-nerdch.level.admin:/warpplace [$] = >>>
-	if($ == ''){
-		call_alias('/place')
-	} else {
-		@places = get_value('places')
-		if(@places == null){
-			@places = array()
-		}
-		foreach(@places, @place,
-			if(equals_ic(@place['name'], $)){
-				set_ploc(@place['coord'])
-			}
-		)
-	}
-<<<
-nerdch.level.admin:/addplace $place = >>>
-	@places = get_value('places')
-	if(@places == null){
-		@places = array()
-	}
-	array_push(@places, array(name: $place, coord: ploc()))
-	store_value('places', @places)
-	msg(color(LIGHT_PURPLE).$place . ' added.')
-	call_alias('/place '.$place)
-<<<
-
-nerdch.level.admin:/delplace $place = >>>
-	@places = get_value('places')
-	if(@places == null){
-		@places = array()
-	}
-	@found = false
-	foreach(@places, @key, @value,
-		if(equals_ic(@value['name'], $place)){
-			array_remove(@places, @key)
-			@found = true
-			break()
-		}
-	)
-	store_value('places', @places)
-	if(@found){
-		msg(color(LIGHT_PURPLE).$place . ' removed')
-	} else {
-		msg(color(LIGHT_PURPLE).$place . ' not found!')
-	}
-<<<
-
-nerdch.level.admin:/addendportal $endportal = >>>
-	@endportals = get_value('endportals')
-	if(@endportals == null){
-		@endportals = array()
-	}
-	array_push(@endportals, array(name: $endportal, coord: ploc()))
-	store_value('endportals', @endportals)
-	msg(color(LIGHT_PURPLE).$endportal . ' added.')
-	call_alias('/place '.$endportal)
-<<<
-
-nerdch.level.admin:/delendportal $endportal = >>>
-	@endportals = get_value('endportals')
-	if(@endportals == null){
-		@endportals = array()
-	}
-	@found = false
-	foreach(@endportals, @key, @value,
-		if(equals_ic(@value['name'], $endportal)){
-			array_remove(@endportals, @key)
-			@found = true
-			break()
-		}
-	)
-	store_value('endportals', @endportals)
-	if(@found){
-		msg(color(LIGHT_PURPLE).$endportal . ' removed')
-	} else {
-		msg(color(LIGHT_PURPLE).$endportal . ' not found!')
-	}
-<<<
-
-nerdch.level.admin:/addnetherportal $netherportal = >>>
-	@netherportals = get_value('netherportals')
-	if(@netherportals == null){
-		@netherportals = array()
-	}
-	array_push(@netherportals, array(name: $netherportal, coord: ploc()))
-	store_value('netherportals', @netherportals)
-	msg(color(LIGHT_PURPLE).$netherportal . ' added.')
-	call_alias('/place '.$netherportal)
-<<<
-
-nerdch.level.admin:/delnetherportal $netherportal = >>>
-	@netherportals = get_value('netherportals')
-	if(@netherportals == null){
-		@netherportals = array()
-	}
-	@found = false
-	foreach(@netherportals, @key, @value,
-		if(equals_ic(@value['name'], $netherportal)){
-			array_remove(@netherportals, @key)
-			@found = true
-			break()
-		}
-	)
-	store_value('netherportals', @netherportals)
-	if(@found){
-		msg(color(LIGHT_PURPLE).$netherportal . ' removed')
-	} else {
-		msg(color(LIGHT_PURPLE).$netherportal . ' not found!')
 	}
 <<<

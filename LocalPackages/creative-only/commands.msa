@@ -202,8 +202,9 @@
 <<<
 
 # Explode one's self
-*:/explode = >>>
-    run_cmd("/me explodes");
-    run_cmd("/pet explode self");
-<<<
+# Moved to Mjolnir
+#*:/explode = >>>
+#    run_cmd("/me explodes");
+#    run_cmd("/pet explode self");
+#<<<
 
