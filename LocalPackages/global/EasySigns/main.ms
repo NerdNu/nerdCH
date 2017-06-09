@@ -49,7 +49,10 @@ bind(player_interact, null, null, @e,
 							console(@array)
 							set_pinv(@array)
 						} else {
-							pgive_item(@item, @qty)
+							@notgiven=pgive_item(@item, @qty)
+							if(@notgiven>0){
+								console("Easysign action 'give' failed for player ".player().". ".@notgiven." out of ".@qty." item ".@item." not given.")
+							}
 						}
 					,'givemax',
 						@id = @data['id']
@@ -91,15 +94,20 @@ bind(player_interact, null, null, @e,
 							set_pinv(@array)
 						} else {
 							#find empty slot
+							@spacefound=0
 							foreach(0..31, @i,
 								if(pinv(player(), @i) == null){
 									# found it
 									@array = associative_array()
 									@array[@i] = @item
 									set_pinv(player(), @array)
+									@spacefound=1
 									break()
 								}
 							)
+							if(@spacefound==0){
+								console("Easysign action 'giveheld' failed for player ".player().". No free inventory slot for ".@item)
+							}
 						}
 					,'hunger',
 						set_phunger(20)

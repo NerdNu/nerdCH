@@ -71,6 +71,13 @@
 	))
 <<<
 
+*:/fun off = >>>
+	msg(color(gray).'Fun disabled.')
+<<<
+*:/fun on = >>>
+	msg(color(red).'ERROR: '.color(gray).'Failed to enable fun. Fun not found.')
+<<<
+
 *:'/list-all' = /list all
 
 *:/me drinks = >>>

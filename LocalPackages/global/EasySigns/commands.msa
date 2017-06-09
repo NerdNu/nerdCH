@@ -169,16 +169,20 @@
 	),
 	array(
 		name: 'max',
-		params: '<id> <uses>',
+		params: '[<id>] <uses>',
 		docs: 'Allows the sign to be used <uses> times and no more. No other commands will be run once limit is reached.',
 		code: closure(@args,
-			if(array_size(@args) != 2){
-				die(color(RED).'Usage: /easy-sign max <id> <uses>')
+			if(array_size(@args) < 1 || array_size(@args) > 2){
+				die(color(RED).'Usage: /easy-sign max [<id>] <uses>')
 			}
-			if(!is_integral(@args[1])){
+			if(!is_integral(@args[array_size(@args)-1])){
 				die(color(RED).'Uses must be an integer')
 			}
-			execute(array(id: @args[0], global: false, uses: @args[1]), @standardSignUsage)
+			if(array_size(@args) == 1){
+				execute(array(id: nano_time(), global: false, uses: @args[0]), @standardSignUsage)
+			} else {
+				execute(array(id: @args[0], global: false, uses: @args[1]), @standardSignUsage)
+			}
 		)
 	),
 	array(

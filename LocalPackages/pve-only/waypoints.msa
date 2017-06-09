@@ -64,6 +64,7 @@
     msg(color(yellow).'Y: '.color(reset) . round(@y))
     msg(color(green).'Z: '.color(reset) . round(@z))
     msg(color(blue).'Distance: ' . color(reset). round(sqrt(pow(@dx, 2) + pow(@dy, 2) + pow(@dz, 2))).'m')
+    msg(color(black).'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
 <<<
 
 
