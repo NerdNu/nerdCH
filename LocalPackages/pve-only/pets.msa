@@ -57,7 +57,7 @@
 		}
 		@mob = @mob.':'.@color
 	} else if (@mob == 'horse') {
-		@horse = _spawn_horse(@loc, 'horse', @color, @pattern)
+		@horse = _spawn_horse(@loc, @color, @pattern)
 		tame_mob($player, @horse)
 		die(color(GOLD).'Spawned a horse owned by '.$player.'.')		
 	} else if (@mob == 'donkey' || @mob == 'mule') {
