@@ -221,7 +221,7 @@
 <<<
 
 # Change the displayed Author of a written book
-'/change-author' [$] = >>>
+*:'/change-author' [$] = >>>
     _assertperm('admin', 0)
     if ($ == '' || get_itemmeta(null)['author'] == false) {
         msg(color(RED).'Usage: /change-author <Author>')
