@@ -10,7 +10,7 @@
 	@args = split(' ',$);
 
 	# If the args contain a whitelisted command/param, run and exit.
-	@whitelist = array(help,commands,params,permissions,next,prev,page,tp,me,tool,toolblock,hide,sum,sel,selection,area);
+	@whitelist = array(help,commands,params,permissions,next,prev,page,tp,me,tool,toolblock,hide,sum,sel,selection,area,chestaccess);
 	foreach (@allowed in @whitelist) {
 		if (array_contains(@args, @allowed)) {
 			run(/lb $);
