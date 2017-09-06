@@ -193,7 +193,8 @@ bind(player_interact, null, null, @e,
 							die(colorize(@data['qtymsg']))
 						}
 						
-						@held['qty'] = if (@held['qty'] == 0, null, @held['qty'] - 1)
+						#@held['qty'] = if (@held['qty'] == 0, null, @held['qty'] - 1)
+						@held['qty'] = if (@held['qty'] == @data['qty'], null, @held['qty'] - @data['qty'])
 						@info = pinfo()
 						@entityId = @info[13]
 						@heldSlot = @info[15]

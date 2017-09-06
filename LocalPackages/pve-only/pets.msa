@@ -19,6 +19,8 @@
 
 /pinfo = call_alias('/petowner')
 
+/petinfo = call_alias('/petowner')
+
 
 # Spawn a dog, cat or horse tamed to the specified player where you are standing.
 
