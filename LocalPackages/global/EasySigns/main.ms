@@ -234,7 +234,22 @@ bind(player_interact, null, null, @e,
 						foreach (@data, @item,
 							if (!is_null(@item)) {
 #								set_inventory_item(pinfo(player(), 13), null, @item)
-								pgive_item(player(), @item['type'], @item['qty'], @item['meta'])
+#pgive_item doesn't seem to support data values on items?								pgive_item(player(), @item['type'], @item['qty'], @item['meta'])
+								#find empty slot
+								@spacefound=0
+								foreach(0..31, @i,
+									if(pinv(player(), @i) == null){
+										# found it
+										@array = associative_array()
+										@array[@i] = @item
+										set_pinv(player(), @array)
+										@spacefound=1
+										break()
+									}
+								)
+								if(@spacefound==0){
+									console("Easysign action 'giveinventory' failed for player ".player().". No free inventory slot for ".@item)
+								}
 							}
 						)
 					,'cart',
