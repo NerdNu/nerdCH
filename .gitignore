@@ -1,4 +1,5 @@
 *.bak
 *.bak*
+*~
 LocalPackages/private/
 LocalPackages/misc/*.alerts
