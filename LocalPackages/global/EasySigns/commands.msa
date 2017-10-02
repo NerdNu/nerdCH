@@ -73,7 +73,7 @@
 	array(
 		name: 'give',
 		params: '<item> <qty> [<slot>]',
-		docs: 'Gives the player an item',
+		docs: 'Gives the player an item. Place it in the specified slot number, or a free slot if not specified.',
 		code: closure(@args,
 			if(array_size(@args) != 2 && array_size(@args) != 3){
 				die(color(RED).'Usage: /easy-sign give item qty [slot]')
@@ -91,7 +91,7 @@
 	array(
 		name: 'givemax',
 		params: '<id> <item> <qty> <max gives> [<slot>]',
-		docs: 'Gives the player an item',
+		docs: 'Gives the player an item. Place it in the specified slot number, or a free slot if not specified.',
 		code: closure(@args,
 			if(array_size(@args) != 3 && array_size(@args) != 4 && array_size(@args) != 5){
 					die(color(RED).'Usage: /easy-sign givemax <id> <item> <qty> <max gives> [<slot>]')
@@ -112,7 +112,7 @@
 	array(
 		name: 'giveheld',
 		params: '[<slot>]',
-		docs: 'Gives the player a duplicate of your currently held item',
+		docs: 'Gives the player a duplicate of your currently held item. Place it in the specified slot number, or a free slot if not specified.',
 		code: closure(@args,
 			if(array_size(@args) > 1){
 				die(color(RED).'Usage: /easy-sign giveheld [slot]')
