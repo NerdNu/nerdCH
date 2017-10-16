@@ -1,324 +1,364 @@
 /*
  * Database layout:
- * places - contains all the places. Holds an array of places.
- * A place is an associative array with 'name' and 'coord' fields.
+ * placedb is a multidimensional associative array
+ * placedb['world']['set']['place']= {location}
+ * place names must be unique per world
  */
 
-*:/place [$] = >>>
+#TODO
+# Rewrite the whole thing as a standalone plugin
+
+
+*:/placeraw [$] = >>>
 	@places = get_value('places')
-	@netherportals = get_value('netherportals')
-	@endportals = get_value('endportals')
-	if(@places == null){
-		@places = array()
+	foreach(@places, @place,
+		if(equals_ic(@place['name'], $)){
+			msg(@place)
+		}
+	)
+<<<
+
+*:/placedbraw = >>>
+	msg(get_value('placedb'))
+<<<
+
+*:/place [$name] = >>>
+	@placedb = get_value('placedb')
+	@ploc=ploc()
+	if(@placedb == null){
+		msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet.')
+		die()
 	}
-	if(@netherportals == null){
-		@netherportals = array()
+	@matchSet = closure(@world, @name){
+		try{
+			foreach(@set in array_keys(@placedb[@world])){
+				if(equals_ic(@set, @name) || equals_ic(substr(@set,0,length(@set)-1), @name)){
+					return(@set)
+				}
+			}
+		} catch(IndexOverflowException @e){
+			#Do nothing.
+		}
 	}
-	if(@endportals == null){
-		@endportals = array()
+	@matchPlace = closure(@world, @name){
+		try{
+			foreach(@set in array_keys(@placedb[@world])){
+				foreach(@place in array_keys(@placedb[@world][@set])){
+					if(equals_ic(@place, @name)){
+						return(array(@set, @place))
+					}
+				}
+			}
+		} catch(IndexOverflowException @e){
+		#	msg('No places exist in your world. Here is a list of all that exist.')
+		#	call_alias('/place')
+		#	die()
+		}
 	}
-	if($ == ''){
-		@placenames = array()
-		@placecount = 0
-		@nethernames = array()
-		@nethercount = 0
-		@endnames = array()
-		@endcount = 0
+	@distance = closure(@loc1, @loc2){
+		return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[1] - @loc2[1]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
+	}
+	@findClosestPlace = closure(@loc, @places){
+		#This may not be the closest place when you consider the option to go through the nether. Fix that in the java rewrite.
+		@closestDistance=100000
+		@currentClosest=''
+		foreach(@place in array_keys(@places)){
+			@thisDistance=execute(@places[@place],@loc, @distance)
+			if(@thisDistance < @closestDistance){
+				@closestDistance=@thisDistance
+				@currentClosest=@place
+			}
+		}
+		return(@currentClosest)
+	}
+	@printPlace = closure(@placeName, @place){
+		if(!(@ploc['world']==@place['world'])){
+			@dimdis=color(BLACK)
+			switch(@place['world']){
+				case 'world':
+					@dimdis.=', dim=0]'
+					break;
+				case 'world_nether':
+					@dimdis.=', dim=-1]'
+					break;
+				case 'world_the_end':
+					@dimdis.=', dim=1]'
+					break;
+				default:
+					@dimdis.=']'
+					break;
+			}
+		} else {
+			@dimdis=color(BLACK).'] '.color(BLUE).' Distance'.color(WHITE).': '.round(execute(@place, @ploc, @distance), 2)
+		}
+		msg(color(BLACK).'['.
+		color(LIGHT_PURPLE).'Name'.color(WHITE).': '.@placeName.color(WHITE).', '.
+		color(RED).'X'.color(WHITE).': '.floor(round(@place['x'])).color(WHITE).', '.
+		color(YELLOW).'Y'.color(WHITE).': '.floor(round(@place['y'])).color(WHITE).', '.
+		color(GREEN).'Z'.color(WHITE).': '.floor(round(@place['z'])).
+		@dimdis)
+	}
+	@lookAt = closure(@loc){
+		@yaw = to_degrees(atan2((@ploc['z'] - @loc['z']), (@ploc['x'] - @loc['x'])))
+		if (@ploc['y']==@loc['y']) {
+			@pitch = 0
+		} else {
+			@pitch = to_degrees(asin((@ploc['y'] - @loc['y'])/(execute(@ploc, @loc, @distance))))
+		}
+		@yaw += 90
+		if(!pinfo(player(), 14)){
+			pfacing(@yaw, @pitch)
+		}
+	}
+	@routeTo = closure(@loc){
+		switch(@ploc['world']){
+			case 'world':
+				switch(@loc['world']){
+					case 'world':
+						#Get the distance from the destination to its closest nether portal
+						@set=execute('Overworld', 'netherportals', @matchSet)
+						@closestD=execute(@loc, @placedb['Overworld'][@set], @findClosestPlace)
+						@distN=execute(@placedb['Overworld'][@set][@closestD], @loc, @distance)
+
+						#Add the distance from the player to the closest nether portal
+						@closestP=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
+						@distN+=execute(@ploc, @placedb['Overworld'][@set][@closestP], @distance)
+
+						#Add the distance between portals (cheat using the known overworld places and dividing by 8
+						@distN+=(execute(@placedb['Overworld'][@set][@closestP], @placedb['Overworld'][@set][@closestD], @distance)/8)
+
+						#Get the distance in the overworld
+						@distO=execute(@ploc, @loc, @distance)
+
+						if(@distN<@distO){
+							msg(color(LIGHT_PURPLE).'You could save '.round((@distO-@distN)).' blocks by going through the '.color(WHITE).@closestP.color(LIGHT_PURPLE)' then '.color(WHITE).@closestD.color(LIGHT_PURPLE)' nether portals.')
+						}
+						execute(@loc, @lookAt)
+						break;
+					case 'world_nether':
+						@set=execute('Overworld', 'netherportals', @matchSet)
+						@closest=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
+						msg(color(LIGHT_PURPLE).'That place is in the Nether. Try going to the '.color(WHITE).@closest.color(LIGHT_PURPLE).' nether portal.')
+						execute(@closest, @placedb['Overworld'][@set][@closest], @printPlace)
+						execute(@placedb['Overworld'][@set][@closest], @lookAt)
+						break;
+					case 'world_the_end':
+						@set=execute('Overworld', 'endportals', @matchSet)
+						@closest=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
+						msg(color(LIGHT_PURPLE).'That place is in the End. Try going to the '.color(WHITE).@closest.color(LIGHT_PURPLE).' end portal.')
+						execute(@closest, @placedb['Overworld'][@set][@closest], @printPlace)
+						execute(@placedb['Overworld'][@set][@closest], @lookAt)
+						break;
+				}
+				break;
+			case 'world_nether':
+				switch(@loc['world']){
+					case 'world':
+						#Get the correct name of the netherportals set
+						@set=execute('Overworld', 'netherportals', @matchSet)
+						#Find the closest one to the place the player is going
+						@closest=execute(@loc, @placedb['Overworld'][@set], @findClosestPlace)
+						#Tell the player what's going on and point them to the portal
+						msg(color(LIGHT_PURPLE).'You need to go through a nether portal to get to that place. Pointing you to the portal closest to your destination!')
+						execute(@closest, @placedb['Nether'][@set][@closest], @printPlace)
+						execute(@placedb['Nether'][@set][@closest], @lookAt)
+						break;
+					case 'world_the_end':
+						#find the closest nether portal to an end portal
+						@closestEndportal
+						@closestD
+						@dist=100000
+						@setE=execute('Overworld', 'endportals', @matchSet)
+						@setN=execute('Overworld', 'netherportals', @matchSet)
+						foreach(@endportal in array_keys(@placedb['Overworld'][@setE])){
+							@currentClosestD=execute(@placedb['Overworld'][@setE][@endportal], @placedb['Overworld'][@setN], @findClosestPlace)
+							@thisDistance=execute(@placedb['Overworld'][@setE][@endportal],@placedb['Overworld'][@setN][@currentClosestD], @distance)
+							if(@thisDistance<@dist){
+								@dist=@thisDistance
+								@closestD=@currentClosestD
+								@closestEndportal=@endportal
+							}
+						}
+
+						msg(color(LIGHT_PURPLE).'You need to go through '.color(WHITE).@closestD.color(LIGHT_PURPLE).' nether portal then '.color(WHITE).@closestEndportal.color(LIGHT_PURPLE).' end portal to get to your destination. Here are their coordinates.')
+						execute(@closestD, @placedb['Nether'][@setN][@closestD], @printPlace)
+						execute(@closestEndportal, @placedb['Overworld'][@setE][@closestEndportal], @printPlace)
+						execute(@placedb['Nether'][@setN][@closestD], @lookAt)
+
+						break;
+					case 'world_nether':
+						#Nothing spectial to do. Just point them to the place.
+						execute(@loc, @lookAt)
+					default:
+						msg(color(LIGHT_PURPLE).'You will need to change worlds to get to that place!')
+						break;
+				}
+				break;
+			case 'world_the_end':
+					if(@loc['world']=='world_the_end'){
+						execute(@loc, @lookAt)
+					} else {
+						msg(color(LIGHT_PURPLE).'You will need to change worlds to get to that place!')
+					}
+				break;
+			default:
+				msg(color(LIGHT_PURPLE).'You will need to change worlds to get to that place!')
+		}
+
+
+#		} else if (ploc['world']
+#		if((!pinfo(player(), 14)) && (@ploc['world']==@loc['world'])){
+#		    pfacing(@yaw, @pitch)
+#		} else {
+#			
+#		}
+	}
+	@printPlaces = closure(@world, @set){
+		@placenames = array_sort(array_keys(@placedb[@world][@set]), STRING_IC)
+		for(@i=0, @i<length(@placenames), @i++){
+			if(@i % 2 == 0){
+				@placenames[@i]=color(GRAY).@placenames[@i]
+			} else {
+				@placenames[@i]=color(WHITE).@placenames[@i]
+			}
+		}
+		msg(color(YELLOW).@set.' in '.@world.': '.array_implode(@placenames, ', '))
+	}
+	#Search the given world for a set or place matching the given name.
+	@searchWorld = closure(@world, @name){
+		if (@set=execute(@world, @name, @matchSet)) {
+			#Found a matching set. List places.
+			execute(@world, @set, @printPlaces)
+			#Get the closest one.
+			@closestPlace=execute(@ploc, @placedb[@world][@set], @findClosestPlace)
+			#Print it.
+			execute(@closestPlace, @placedb[@world][@set][@closestPlace], @printPlace)
+			#Look at it.
+			execute(@placedb[@world][@set][@closestPlace],@routeTo)
+			return(1)
+		} else if(@matchedPlace=execute(@world, @name, @matchPlace)){
+			#Found a matching place. Print it.
+			execute(@matchedPlace[1], @placedb[@world][@matchedPlace[0]][@matchedPlace[1]], @printPlace)
+			#Look at it.
+			execute(@placedb[@world][@matchedPlace[0]][@matchedPlace[1]],@routeTo)
+			return(1)
+		} else {
+			return(0)
+		}
+	}
+	#Translate to the friendlier world name for known worlds.
+	switch(pworld()){
+		case 'world':
+			@pworld='Overworld'
+			break();
+		case 'world_nether':
+			@pworld='Nether'
+			break();
+		case 'world_the_end':
+			@pworld='End'
+			break();
+		case 'mapworld':
+			@pworld='Mapworld';
+			break();
+		default:
+			@pworld=pworld();
+			break();
+	}
+	if($name == ''){
 		# List all the places
-		@temp1 = array()
-		foreach(@places, @place,
-			array_push(@temp1, @place['name'])
-		)
-		@places = @temp1
-		array_sort(@places, STRING_IC)
-		foreach(@places, @place,
-			@color = GRAY
-			if(@placecount % 2 == 1){
-				@color = WHITE
+		msg('All places:')
+		foreach(@world in array_keys(@placedb)){
+			foreach(@set in array_keys(@placedb[@world])){
+				execute(@world, @set, @printPlaces)
 			}
-			(@placecount++)
-			array_push(@placenames, color(@color).@place)
-		)
-		# List all the nether portals
-		@temp2 = array()
-		foreach(@netherportals, @netherportal,
-			array_push(@temp2, @netherportal['name'])
-		)
-		@netherportals = @temp2
-		array_sort(@netherportals, STRING_IC)
-		foreach(@netherportals, @netherportal,
-			@color = GRAY
-			if(@nethercount % 2 == 1){
-				@color = WHITE
+		}
+		# Find closestPlace
+		try{
+			@places=array()
+			foreach(@set in array_keys(@placedb[@pworld])){
+				foreach(@place in array_keys(@placedb[@pworld][@set])){
+					@places[@place]=@placedb[@pworld][@set][@place]
+				}
 			}
-			(@nethercount++)
-			array_push(@nethernames, color(@color).@netherportal)
-		)
-		# List all the end portals
-		@temp3 = array()
-		foreach(@endportals, @endportal,
-			array_push(@temp3, @endportal['name'])
-		)
-		@endportals = @temp3
-		array_sort(@endportals, STRING_IC)
-		foreach(@endportals, @endportal,
-			@color = GRAY
-			if(@endcount % 2 == 1){
-				@color = WHITE
-			}
-			(@endcount++)
-			array_push(@endnames, color(@color).@endportal)
-		)
-		msg('Places: '.array_implode(@placenames, ', '))
-		msg('Nether Portals: '.array_implode(@nethernames, ', '))
-		msg('End Portals: '.array_implode(@endnames, ', '))
-		msg(color(LIGHT_PURPLE).'Run '.color(GRAY).'/place <place name>'color(LIGHT_PURPLE).' to get pointed at that place, '
-			.color(GRAY).'/place netherportal'.color(LIGHT_PURPLE).' to get pointed at the nearest Nether Portal, '
-			.color(GRAY).'/place endportal'.color(LIGHT_PURPLE).' to get pointed at the nearest End Portal, or'
-			.color(GRAY).'/nearest-place'.color(LIGHT_PURPLE).' to get pointed at the nearest place (non-portal)')
-	} else if(equals_ic('netherportal', $)) {
-		@netherportals = get_value('netherportals')
-		if(@netherportals == null){
-			@netherportals = array()
+			@closestPlace = execute(@ploc, @places, @findClosestPlace)
+			msg('Closest place')
+			execute(@closestPlace,@places[@closestPlace],@printPlace)
+		} catch(IndexOverflowException @e){
+			#No places in this world, already listed all places. Do nothing.
 		}
-		proc(_distance, @loc1, @loc2,
-			return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
-		)
-		@closest = 10000
-		@closestNP = null
-		foreach(@netherportals, @netherportal,
-		if(pworld() == "world_nether"){
-			@ploc=ploc()
-			@ploc[0]=@ploc[0]*8
-			@ploc[2]=@ploc[2]*8
-		} else {
-			@ploc=ploc()
-		}
-			@dist = _distance(@ploc, @netherportal['coord'])
-			if(@dist < @closest){
-				@closestNP = @netherportal
-				@closest = @dist
-			}
-		)
-		if(@closestNP != null){
-			call_alias('/place '.@closestNP['name'])
-		} else {
-			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any nether portals yet')
-		}
-		die();
-	} else if(equals_ic('endportal', $)) {
-		@endportals = get_value('endportals')
-		if(@endportals == null){
-			@endportals = array()
-		}
-		proc(_distance, @loc1, @loc2,
-			return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
-		)
-		@closest = 10000
-		@closestEP = null
-		foreach(@endportals, @endportal,
-			@dist = _distance(ploc(), @endportal['coord'])
-			if(@dist < @closest){
-				@closestEP = @endportal
-				@closest = @dist
-			}
-		)
-		if(@closestEP != null){
-			call_alias('/place '.@closestEP['name'])
-		} else {
-			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any end portals yet')
-		}
-		die();
 	} else {
-		@allLocs = array_merge(@places,@netherportals,@endportals)
-		foreach(@allLocs, @place,
-			if(equals_ic(@place['name'], $)){
-				@loc = @place['coord']
-				@x = @loc[0]
-				@z = @loc[2]
-				if(pworld()=="world_nether"){
-					@x=@x/8
-					@z=@z/8
-				}
-				@ploc = array(x: ploc()[0], z: ploc()[2])
-				msg(color(LIGHT_PURPLE).@place['name'].color(WHITE).':')
-				msg(color(RED).'X: '.color(WHITE).sprintf('%.3f', @x))
-				msg(color(GREEN).'Z: '.color(WHITE).sprintf('%.3f', @z))
-				msg(color(BLUE).'Distance: '.color(WHITE).sprintf('%.3f', sqrt(pow(@z - @ploc['z'], 2) + pow(@x - @ploc['x'], 2))))
-				msg(color(BLACK).'[name:'.@place['name'].', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
-				@yaw = to_degrees(atan2((@ploc['z'] - @z), (@ploc['x'] - @x)))
-				@yaw += 90
-				if(!pinfo(player(), 14)){
-				    pfacing(@yaw, pfacing()[1])
-				}
+		# We have a set name or place name.
+		#Check the player's current world for a matching set or place
+		if (execute(@pworld, $name, @searchWorld)){
+			#Found
+			die()
+		}
+		#Check the rest of the worlds for matching sets	
+		@worlds=array_keys(@placedb)
+		array_remove_values(@worlds, @pworld)
+		foreach(@world in @worlds){
+			if(execute(@world, $name, @searchWorld)){
+				#Found
 				die()
 			}
-			else {
-			}
-		)
-		msg(color(LIGHT_PURPLE).'This is not an existing place, use '.color(GRAY).'/place '
-					.color(LIGHT_PURPLE).'to find one with the correct spelling!')
+		}
+		msg('No places found matching "'.$name.'". Here are all the places.')
+		call_alias('/place')
 	}
 <<<
 
 *:'/nearest-place' [$] = >>>
-	@places = get_value('places')
-	if(@places == null){
-		@places = array()
-	}
-	proc(_distance, @loc1, @loc2,
-		return(sqrt(((@loc1[0] - @loc2[0]) ** 2) + ((@loc1[2] - @loc2[2]) ** 2)))
-	)
-	@closest = 10000
-	@closestPlace = null
-	if ($ == ''){
-		foreach(@places, @place,
-			@dist = _distance(ploc(), @place['coord'])
-			if(@dist < @closest){
-				@closestPlace = @place
-				@closest = @dist
-			}
-		
-		)
-		if(@closestPlace != null){
-			call_alias('/place '.@closestPlace['name'])
-		} else {
-			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
-		}
-		die();
-	}
-
-	@args = parse_args($)
-	if(equals(array_size(@args),2),array_insert(@args,64,1))
-	if (array_size(@args) == 3){
-		if (or(!is_numeric(@args[0]),!is_numeric(@args[1]),!is_numeric(@args[2]))){
-			die(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>] (coordinates are optional')
-		}
-		foreach(@places, @place,
-			@dist = _distance(@args, @place['coord'])
-			if (@dist < @closest){
-				@closestPlace = @place
-				@closest = @dist
-			}
-		)
-		if(@closestPlace != null){
-			call_alias('/place '.@closestPlace['name'])
-		} else {
-			msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet')
-		}
-		die()
-	}
-
-	msg(color(LIGHT_PURPLE).'Usage: /nearest-place [<x> <y> <z>](coordinates are optional) ')
+	call_alias('/place')
 <<<
-
-nerdch.level.admin:/warpplace [$] = >>>
-	if($ == ''){
-		call_alias('/place')
-	} else {
-		@places = get_value('places')
-		if(@places == null){
-			@places = array()
-		}
-		foreach(@places, @place,
-			if(equals_ic(@place['name'], $)){
-				set_ploc(@place['coord'])
-			}
-		)
+nerdch.level.admin:/addplace $place [$set] = >>>
+	@setname=$set
+	if(@setname==''){
+		@setname='Other'
 	}
-<<<
-nerdch.level.admin:/addplace $place = >>>
-	@places = get_value('places')
-	if(@places == null){
-		@places = array()
+	# Make some of the known world names friendlier 
+	switch(pworld()){
+		case 'world':
+			@world='Overworld'
+			break();
+		case 'world_nether':
+			@world='Nether'
+			break();
+		case 'world_the_end':
+			@world='End'
+			break();
+		case 'mapworld':
+			@world='Mapworld';
+			break();
+		default:
+			@world=pworld();
+			break()
 	}
-	array_push(@places, array(name: $place, coord: ploc()))
-	store_value('places', @places)
+	@placedb = get_value('placedb')
+	if(@placedb==null){
+		@placedb=array()
+	}
+	@placedb[@world][@setname][$place]=ploc()
+	store_value('placedb', @placedb)
 	msg(color(LIGHT_PURPLE).$place . ' added.')
-	call_alias('/place '.$place)
+#	call_alias('/place '.$place)
 <<<
 
-nerdch.level.admin:/delplace $place = >>>
-	@places = get_value('places')
-	if(@places == null){
+nerdch.level.admin:/delplace $world $set $name = >>>
+	@placedb = get_value('placedb')
+	if(@placedb == null){
 		@places = array()
 	}
-	@found = false
-	foreach(@places, @key, @value,
-		if(equals_ic(@value['name'], $place)){
-			array_remove(@places, @key)
-			@found = true
-			break()
+	if(!(@placedb[$world][$set][$name]==null)){
+		array_remove(@placedb[$world][$set], $name)
+		msg(color(LIGHT_PURPLE).'Removed '.$name.' in '.$set.' in '.$world)
+		if(array_size(@placedb[$world][$set])==0){
+			array_remove(@placedb[$world], $set)
+			msg(color(LIGHT_PURPLE).'Removed '.$set.' in '.$world)
+			if(array_size(@placedb[$world])==0){
+				array_remove(@placedb, $world)
+				msg(color(LIGHT_PURPLE).'Removed '.$world)
+			}
 		}
-	)
-	store_value('places', @places)
-	if(@found){
-		msg(color(LIGHT_PURPLE).$place . ' removed')
-	} else {
-		msg(color(LIGHT_PURPLE).$place . ' not found!')
 	}
-<<<
-
-nerdch.level.admin:/addendportal $endportal = >>>
-	@endportals = get_value('endportals')
-	if(@endportals == null){
-		@endportals = array()
-	}
-	array_push(@endportals, array(name: $endportal, coord: ploc()))
-	store_value('endportals', @endportals)
-	msg(color(LIGHT_PURPLE).$endportal . ' added.')
-	call_alias('/place '.$endportal)
-<<<
-
-nerdch.level.admin:/delendportal $endportal = >>>
-	@endportals = get_value('endportals')
-	if(@endportals == null){
-		@endportals = array()
-	}
-	@found = false
-	foreach(@endportals, @key, @value,
-		if(equals_ic(@value['name'], $endportal)){
-			array_remove(@endportals, @key)
-			@found = true
-			break()
-		}
-	)
-	store_value('endportals', @endportals)
-	if(@found){
-		msg(color(LIGHT_PURPLE).$endportal . ' removed')
-	} else {
-		msg(color(LIGHT_PURPLE).$endportal . ' not found!')
-	}
-<<<
-
-nerdch.level.admin:/addnetherportal $netherportal = >>>
-	@netherportals = get_value('netherportals')
-	if(@netherportals == null){
-		@netherportals = array()
-	}
-	array_push(@netherportals, array(name: $netherportal, coord: ploc()))
-	store_value('netherportals', @netherportals)
-	msg(color(LIGHT_PURPLE).$netherportal . ' added.')
-	call_alias('/place '.$netherportal)
-<<<
-
-nerdch.level.admin:/delnetherportal $netherportal = >>>
-	@netherportals = get_value('netherportals')
-	if(@netherportals == null){
-		@netherportals = array()
-	}
-	@found = false
-	foreach(@netherportals, @key, @value,
-		if(equals_ic(@value['name'], $netherportal)){
-			array_remove(@netherportals, @key)
-			@found = true
-			break()
-		}
-	)
-	store_value('netherportals', @netherportals)
-	if(@found){
-		msg(color(LIGHT_PURPLE).$netherportal . ' removed')
-	} else {
-		msg(color(LIGHT_PURPLE).$netherportal . ' not found!')
-	}
+	store_value('placedb', @placedb)
 <<<
