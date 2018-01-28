@@ -95,7 +95,7 @@ bind(player_interact, null, null, @e,
 						} else {
 							#find empty slot
 							@spacefound=0
-							foreach(0..31, @i,
+							foreach(0..35, @i,
 								if(pinv(player(), @i) == null){
 									# found it
 									@array = associative_array()
@@ -237,7 +237,7 @@ bind(player_interact, null, null, @e,
 #pgive_item doesn't seem to support data values on items?								pgive_item(player(), @item['type'], @item['qty'], @item['meta'])
 								#find empty slot
 								@spacefound=0
-								foreach(0..31, @i,
+								foreach(0..35, @i,
 									if(pinv(player(), @i) == null){
 										# found it
 										@array = associative_array()
