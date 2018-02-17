@@ -137,6 +137,36 @@
     store_value('waypoints', @uuid, @waypoints)
 <<<
 
+*:/setwp $name $x $y $z [$mode] = >>>
+    @uuid = _get_puuid(player())
+    @waypoints = get_value('waypoints', @uuid)
+    if(@waypoints == null) {
+        @waypoints = array()
+    } else if(array_contains_ic(array_keys(@waypoints), $name)) {
+        die(color(red).'You already have a waypoint named '.$name.'.')
+    }
+
+    @modes = array('public', 'private', 'unlisted')
+    @mode = null
+    try{
+        @xint=integer($x)
+        @yint=integer($y)
+        @zint=integer($z)
+    } catch(CastException @e){
+        die(color(red). 'Usage: /wp add x y z <name> [public|private|unlisted]')
+    }
+    if($mode == '') {
+        @mode = 'unlisted'
+    } else if(array_contains_ic(@modes, $mode)) {
+        @mode = to_lower($mode)
+    } else {
+        die(color(red). 'Usage: /wp add x y z <name> [public|private|unlisted]')
+    }
+    array_set(@waypoints, $name, array('loc': array('x': @xint, 'y': @yint, 'z': @zint), 'mode': @mode))
+    msg(color(gray).'Waypoint added successfully.')
+    store_value('waypoints', @uuid, @waypoints)
+<<<
+
 *:/delwp $name = >>>
     @uuid = _get_puuid(player())
     @waypoints = get_value('waypoints', @uuid)
