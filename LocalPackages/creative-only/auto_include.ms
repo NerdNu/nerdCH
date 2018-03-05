@@ -22,3 +22,24 @@ proc(_effecthelp,
 	msg(color(GOLD) . '    <hide-particles> - if true, hide particles');
 	return (null);
 )
+
+// Check the cooldown time of a command.
+//
+// params:
+// @commandName - The name of the command to check. Each player will
+//                automatically get a unique cooldown per command.
+// @delay       - The cool down delay, in milliseconds.
+//
+// returns: true if the cooldown is okay, or false if the timer is still
+//          running.
+proc(_checkCooldown, @commandName, @delay,
+	@varName = "cooldown." . @commandName . "." . player();
+	@cooldownTime = import(@varName);
+	@currentTime = time();
+	if(!is_null(@cooldownTime) && @currentTime < @cooldownTime) {
+		return (false);
+	}
+	export(@varName, @currentTime + @delay);
+	return(true);
+)
+

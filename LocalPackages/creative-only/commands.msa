@@ -51,35 +51,105 @@
 	)
 <<<
 
-*:/roll [$faces] = >>>
-	_assertperm('restricted')
+*:/roll [$faces] [$] = >>>
+	if(!has_permission("nerdch.roll")) {
+		die(color(red)."No dice");
+	}
+	if(has_permission("nerdch.roll.nocooldown")) {
+		@prefix = color(GOLD);
+	} else {
+		@prefix = color(GRAY);
+		_checkCooldown("nerdch.roll", 300000) || die(color(red)."You have to wait your turn");
+	}
 	@faces = 6
 	if($faces != '' && is_integral($faces), @faces = integer($faces))
-	broadcast(color(gold).player().' rolled a '.rand(1, @faces + 1))
+	broadcast(@prefix.player().' rolled a '.rand(1, @faces + 1))
 <<<
 
 *:/flip [$] = >>>
-	_assertperm('restricted')
-	broadcast(color(GOLD).player().' got '.if(rand(0, 2) == 1, 'heads', 'tails'))
+	if(!has_permission("nerdch.flip")) {
+		die(color(red)."Flipping is not allowed.");
+	}
+	if(has_permission("nerdch.flip.nocooldown")) {
+		@prefix = color(GOLD);
+	} else {
+		@prefix = color(GRAY);
+		_checkCooldown("nerdch.flip", 300000) || die(color(red)."You have to wait your turn");
+	}
+	broadcast(@prefix.player().' got '.if(rand(0, 2) == 1, 'heads', 'tails'))
 <<<
 
 *:/draw [$] = >>>
-	_assertperm('restricted')
+	if(!has_permission("nerdch.draw")) {
+		die(color(red)."You left your playing cards at home.");
+	}
+	if(has_permission("nerdch.draw.nocooldown")) {
+		@prefix = color(GOLD);
+	} else {
+		@prefix = color(GRAY);
+		_checkCooldown("nerdch.draw", 300000) || die(color(red)."You have to wait your turn");
+	}
 	@values = array('Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King')
 	@vowels = array(0, 7)
 	@suits = array('Spades', 'Clubs', 'Hearts', 'Diamonds')
 	@value = rand(0, 13)
-	broadcast(color(GOLD).player().' drew '.if(array_contains(@vowels, @value), 'an ', 'a ').@values[@value].' of '.@suits[rand(0, 4)])
+	broadcast(@prefix.player().' drew '.if(array_contains(@vowels, @value), 'an ', 'a ').@values[@value].' of '.@suits[rand(0, 4)])
 <<<
 
 *:/pull [$] = >>>
-	_assertperm('restricted')
+	if(!has_permission("nerdch.pull")) {
+		die(color(red)."You ran out of coin tokens.");
+	}
+	if(has_permission("nerdch.pull.nocooldown")) {
+		@prefix = color(GOLD);
+	} else {
+		@prefix = color(GRAY);
+		_checkCooldown("nerdch.pull", 300000) || die(color(red)."You have to wait your turn");
+	}
 	@symbols = array('7', '\u3374', '\u26c0', '\u2618', '\u260a', '\u265a')
-	msg(color(GOLD).color(RANDOM).'000')
+	msg(@prefix.color(RANDOM).'000')
 	set_timeout(3000, closure() {
-		broadcast(color(GOLD).player().' got '.array_implode(array_rand(@symbols, 3, false), ''))
+		broadcast(@prefix.player().' got '.array_implode(array_rand(@symbols, 3, false), ''))
 	})
 <<<
+
+# Magic 8 Ball
+*:/Magic8Ball [$] = >>>
+        if(!has_permission("nerdch.magic8ball")) {
+                die(color(red)."You forgot your Magic 8-Ball. Oh noes!")
+        }
+	if(has_permission("nerdch.magic8ball.nocooldown")) {
+		@prefix = color(GOLD);
+	} else {
+		@prefix = color(GRAY);
+		_checkCooldown("nerdch.magic8ball", 300000) || die(color(red)."Generating entropy . . . Try again later.");
+	}
+
+        @i = rand(20)
+        @array = array(
+                "It is certain",
+                "It is decidedly so",
+                "Without a doubt",
+                "Yes, definitely",
+                "You may rely on it",
+                "As I see it, yes",
+                "Most likely",
+                "Outlook good",
+                "Yes",
+                "Signs point to yes",
+                "Reply hazy try again",
+                "Ask again later",
+                "Better not tell you now",
+                "Cannot predict now",
+                "Concentrate and ask again",
+                "Don't count on it",
+                "My reply is no",
+                "My sources say no",
+                "Outlook not so good",
+                "Very doubtful");
+        broadcast(concat(@prefix, "[", trim(player()), "'s Magic 8-Ball]: ", color(green), @array[@i]));
+<<<
+
 
 /rainbowhat [$player] = >>>
         @player = player()
@@ -156,37 +226,6 @@
 <<<
 
 /euthanize [$] = /butcher $
-
-# Magic 8 Ball
-*:/Magic8Ball [$] = >>>
-        if(!has_permission("nerdch.magic8ball")) {
-                die("You do not have permission to use the Magic 8-Ball.")
-        }
-        @i = rand(20)
-        @array = array(
-                "It is certain",
-                "It is decidedly so",
-                "Without a doubt",
-                "Yes, definitely",
-                "You may rely on it",
-                "As I see it, yes",
-                "Most likely",
-                "Outlook good",
-                "Yes",
-                "Signs point to yes",
-                "Reply hazy try again",
-                "Ask again later",
-                "Better not tell you now",
-                "Cannot predict now",
-                "Concentrate and ask again",
-                "Don't count on it",
-                "My reply is no",
-                "My sources say no",
-                "Outlook not so good",
-                "Very doubtful");
-        broadcast(concat(color(GOLD), "[", trim(player()), "'s Magic 8-Ball]: ", color(green), @array[@i]));
-<<<
-
 
 # Fly, even in survival mode
 *:/fly [$] = >>>
