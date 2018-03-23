@@ -106,9 +106,7 @@
 			@pitch = to_degrees(asin((@ploc['y'] - @loc['y'])/(execute(@ploc, @loc, @distance))))
 		}
 		@yaw += 90
-		if(!pinfo(player(), 14)){
-			pfacing(@yaw, @pitch)
-		}
+		pfacing(@yaw, @pitch)
 	}
 	@routeTo = closure(@loc){
 		switch(@ploc['world']){
