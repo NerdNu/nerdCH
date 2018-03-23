@@ -115,23 +115,27 @@
 			case 'world':
 				switch(@loc['world']){
 					case 'world':
-						#Get the distance from the destination to its closest nether portal
-						@set=execute('Overworld', 'netherportals', @matchSet)
-						@closestD=execute(@loc, @placedb['Overworld'][@set], @findClosestPlace)
-						@distN=execute(@placedb['Overworld'][@set][@closestD], @loc, @distance)
+						try {
+							#Get the distance from the destination to its closest nether portal
+							@set=execute('Overworld', 'netherportals', @matchSet)
+							@closestD=execute(@loc, @placedb['Overworld'][@set], @findClosestPlace)
+							@distN=execute(@placedb['Overworld'][@set][@closestD], @loc, @distance)
 
-						#Add the distance from the player to the closest nether portal
-						@closestP=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
-						@distN+=execute(@ploc, @placedb['Overworld'][@set][@closestP], @distance)
+							#Add the distance from the player to the closest nether portal
+							@closestP=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
+							@distN+=execute(@ploc, @placedb['Overworld'][@set][@closestP], @distance)
 
-						#Add the distance between portals (cheat using the known overworld places and dividing by 8
-						@distN+=(execute(@placedb['Overworld'][@set][@closestP], @placedb['Overworld'][@set][@closestD], @distance)/8)
+							#Add the distance between portals (cheat using the known overworld places and dividing by 8
+							@distN+=(execute(@placedb['Overworld'][@set][@closestP], @placedb['Overworld'][@set][@closestD], @distance)/8)
 
-						#Get the distance in the overworld
-						@distO=execute(@ploc, @loc, @distance)
+							#Get the distance in the overworld
+							@distO=execute(@ploc, @loc, @distance)
 
-						if(@distN<@distO){
-							msg(color(LIGHT_PURPLE).'You could save '.round((@distO-@distN)).' blocks by going through the '.color(WHITE).@closestP.color(LIGHT_PURPLE)' then '.color(WHITE).@closestD.color(LIGHT_PURPLE)' nether portals.')
+							if(@distN<@distO){
+								msg(color(LIGHT_PURPLE).'You could save '.round((@distO-@distN)).' blocks by going through the '.color(WHITE).@closestP.color(LIGHT_PURPLE)' then '.color(WHITE).@closestD.color(LIGHT_PURPLE)' nether portals.')
+							}
+						} catch(IndexOverflowException @e){
+							#nothing
 						}
 						execute(@loc, @lookAt)
 						break;

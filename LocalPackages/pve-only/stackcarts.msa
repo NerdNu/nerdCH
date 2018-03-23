@@ -1,0 +1,20 @@
+# Allow cart stacking
+
+*:/stackcarts [$] = >>>
+	@qty=ptake_item(player(),328,3000)
+	foreach (@i in 0..35){
+		@item = pinv(player(), @i)
+		if(@item==null,
+			@newitem = associative_array()
+			if(@qty>64){
+				@newitem[@i] = array(type: 328, data: 0, qty: 64)
+				set_pinv(player(), @newitem)
+				@qty=@qty-64
+			} else {
+				@newitem[@i] = array(type: 328, data: 0, qty: @qty)
+				set_pinv(player(), @newitem)
+				break()
+			}
+		)
+	}
+<<<
