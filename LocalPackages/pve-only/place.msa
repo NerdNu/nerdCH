@@ -22,7 +22,7 @@
 	msg(get_value('placedb'))
 <<<
 
-*:/place [$name] = >>>
+*:/place [$] = >>>
 	@placedb = get_value('placedb')
 	@ploc=ploc()
 	if(@placedb == null){
@@ -248,6 +248,10 @@
 			return(0)
 		}
 	}
+	#parse the arguments passed.
+	@args = parse_args($)
+	
+	
 	#Translate to the friendlier world name for known worlds.
 	switch(pworld()){
 		case 'world':
@@ -266,7 +270,7 @@
 			@pworld=pworld();
 			break();
 	}
-	if($name == ''){
+	if(length(@args) == 0){
 		# List all the places
 		msg('All places:')
 		foreach(@world in array_keys(@placedb)){
@@ -290,8 +294,13 @@
 		}
 	} else {
 		# We have a set name or place name.
+		#Check the world specified first if provided
+		if(length(@args) == 2){
+			#The player gave us a world. Make sure the capitalization is right and assume the rest is right.
+			@pworld=to_upper(substr(@args[1],0,0)).to_lower(substr(@args[1],1))
+		}
 		#Check the player's current world for a matching set or place
-		if (execute(@pworld, $name, @searchWorld)){
+		if (execute(@pworld, @args[0], @searchWorld)){
 			#Found
 			die()
 		}
@@ -299,12 +308,12 @@
 		@worlds=array_keys(@placedb)
 		array_remove_values(@worlds, @pworld)
 		foreach(@world in @worlds){
-			if(execute(@world, $name, @searchWorld)){
+			if(execute(@world, @args[0], @searchWorld)){
 				#Found
 				die()
 			}
 		}
-		msg('No places found matching "'.$name.'". Here are all the places.')
+		msg('No places found matching "'.@args[0].'". Here are all the places.')
 		call_alias('/place')
 	}
 <<<
