@@ -168,6 +168,7 @@ bind(player_interact, null, null, @e,
 							@value[@id][player()] = @value[@id][player()] + 1
 						}
 						store_value('easysign.max', @value)
+						console("EasySign: player=".player()." cmd=max id=".@id)
 					,'msg',
 						msg(colorize(@data))
 					,'take',
