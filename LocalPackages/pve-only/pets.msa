@@ -31,9 +31,11 @@
 	msg(color(YELLOW).'	/spawn-tame-mob cat|ocelot <player> [black_cat|red_cat|siamese_cat]')
 	msg(color(YELLOW).'	/spawn-tame-mob donkey|mule <player>')
 	msg(color(YELLOW).'	/spawn-tame-mob horse player [<color>] [<pattern>]')
+	msg(color(YELLOW).'	/spawn-tame-mob parrot player [<variant>]')
 	msg(color(GOLD).'For horses and cats, if extra arguments after the player are omitted, values will be chosen at random.')
 	msg(color(GOLD).'Horse colors: black, brown, chestnut, creamy, dark_brown, gray, white')
 	msg(color(GOLD).'Horse patterns: none, socks, whitefield, white_dots, black_dots')
+	msg(color(GOLD).'Parrot variants: 0=red, 1=blue, 2=green, 3=cyan, 4=silver')
 <<<
 
 *:'/spawn-tame-mob' $type $player [$color] [$pattern] = >>>
@@ -44,7 +46,7 @@
 	
 	if (@mob == 'dog', @mob = 'wolf')
 	if (@mob == 'cat', @mob = 'ocelot')
-	if (! array_contains(array(wolf,ocelot,horse,donkey,mule), @mob)) {
+	if (! array_contains(array(wolf,ocelot,horse,donkey,mule,parrot), @mob)) {
 		die(color(RED).'We can\'t spawn a tame '.@mob.'!')
 	}
 
@@ -66,6 +68,14 @@
 		die(color(GOLD).'Spawned a horse owned by '.$player.'.')		
 	} else if (@mob == 'donkey' || @mob == 'mule') {
 		@mob = 'horse:'.@mob
+	} else if (@mob == 'parrot') {
+		@PARROT_TYPES = array(0,1,2,3,4)
+		# parrot colors don't actually work yet....
+		# If a valid parrot color is specified, use it, otherwise select at random.
+		if (! array_contains(@PARROT_TYPES, @color)) {
+			@color = @PARROT_TYPES[rand(array_size(@PARROT_TYPES))]
+		}
+		@mob = @mob.':'.@color
 	}
 
 	@id = spawn_mob(@mob, 1, @loc)[0]
@@ -84,7 +94,7 @@
 *:'/send-pet-home' [$] = >>>
 	_assertperm('restricted')
 	@range = 3
-	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE))
+	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE,PARROT))
 	if (array_size(@pets) == 0) {
 		die(color(RED).'There are no pets within '.@range.' blocks of that block.')
 	} else if (array_size(@pets) == 1) {
@@ -104,6 +114,34 @@
 	}
 <<<
 
+*:'/tppet' [$help] [$help1] = >>>
+	_assertperm('restricted')
+	msg(color(GOLD).'Usage:')
+	msg(color(YELLOW).'	/tppet x y z [<world.]')
+	msg(color(GOLD).'First pet within 3 blocks of the current cursor location will be selected for teleporting.')
+	msg(color(GOLD).'World name if provided must be exact (eg. world, world_nether, world_the_end). If not provided current world is used')
+<<<
+
+*:'/tppet' $x $y $z [$world] = >>>
+ 	_assertperm('restricted')
+	@range = 3
+	@world=to_lower($world)
+	if (! array_contains(get_worlds(), @world)) {
+		@world = pworld()
+	}
+	@loc = array('x': $x, 'y': $y, 'z': $z, 'world': @world)
+	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE,PARROT))
+	if (array_size(@pets) == 0) {
+		die(color(RED).'There are no pets within '.@range.' blocks of that block.')
+	} else if (array_size(@pets) == 1) {
+		set_ploc(@loc)
+		set_entity_loc(@pets[0], @loc)
+		set_timeout(3000, closure(set_entity_loc(@pets[0], @loc)))
+	} else {
+		msg(color(RED).'There are multiple pets at that location.')
+		call_alias('/petowner')
+	}
+<<<
 
 # /omg-ponies [$count] [$radius]
 #
