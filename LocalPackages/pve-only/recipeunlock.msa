@@ -1,0 +1,3 @@
+*:/recipeunlock [$] = >>>
+	sudo('/minecraft:recipe give '.player().' *');
+<<<
