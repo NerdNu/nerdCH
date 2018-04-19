@@ -132,21 +132,32 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 <<<
 
 *:/signtext [$line] [$] = >>>
-	_assertperm('mod')
 	if($line == ''){
 		msg(color(red).'Usage: /signtext $line $text')
-		msg('Supported color codes:')
-		msg(colorize('&0&&0 &1&&1 &2&&2 &3&&3 &4&&4 &5&&5 &6&&6 &7&&7'))
-		msg(colorize('&8&&8 &9&&9 &a&&a &b&&b &c&&c &d&&d &e&&e &f&&f'))
-		msg('Typing && twice gives a single, literal &')
+		if (has_permission('nerdch.level.mod')) {
+			msg('Supported color codes:')
+			msg(colorize('&0&&0 &1&&1 &2&&2 &3&&3 &4&&4 &5&&5 &6&&6 &7&&7'))
+			msg(colorize('&8&&8 &9&&9 &a&&a &b&&b &c&&c &d&&d &e&&e &f&&f'))
+			msg('Typing && twice gives a single, literal &')
+		}
 		die()
 	}
 	if($line < 1 || $line > 4){
 		die(color(red).'The line number must be between 1 and 4!')
 	}
 	if(is_sign_at(pcursor())){
+		if (!has_permission('nerdch.level.mod')) {
+			@regions=sk_regions_at(pcursor())
+			if (length(@regions) > 0) {
+				#Not mod, and sign is in at least one region. Check if they are an owner of all regions the sign is in.
+				foreach(@regions, @val,
+					if (!array_contains(sk_region_owners(@val, pworld())['players'],puuid())) { die(color(RED).'You are not an owner of ' . @val) }
+				)
+			}
+		}
 		@array = get_sign_text(pcursor())
-		@array[$line - 1] = colorize($)
+		console(player() . ' changed sign text FROM: ' . color(WHITE) . @array . ' TO: ' .  $)
+		if(has_permission('nerdch.level.mod')) { @array[$line - 1] = colorize($) } else { @array[$line - 1] = strip_colors($) }
 		set_sign_text(pcursor(), @array)
 	} else {
 		die('You aren\'t looking at a sign!')
