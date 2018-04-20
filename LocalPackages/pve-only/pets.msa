@@ -126,18 +126,24 @@
  	_assertperm('restricted')
 	@range = 3
 	@world=to_lower($world)
+	# If a world was not provided, use the world the player is in
 	if (! array_contains(get_worlds(), @world)) {
 		@world = pworld()
 	}
+	# Make a location array using the provided coords and world
 	@loc = array('x': $x, 'y': $y, 'z': $z, 'world': @world)
+	# Get all the pets within @range of the location the player is looking
 	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE,PARROT))
 	if (array_size(@pets) == 0) {
+		# Error out if there are no pets
 		die(color(RED).'There are no pets within '.@range.' blocks of that block.')
 	} else if (array_size(@pets) == 1) {
+		# Teleport the player and the pet to the location
 		set_ploc(@loc)
 		set_entity_loc(@pets[0], @loc)
 		set_timeout(3000, closure(set_entity_loc(@pets[0], @loc)))
 	} else {
+		# Error out if there are too many pets
 		msg(color(RED).'There are multiple pets at that location.')
 		call_alias('/petowner')
 	}

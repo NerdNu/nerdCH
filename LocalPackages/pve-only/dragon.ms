@@ -3,12 +3,14 @@
 bind(creature_spawn, null, null, @event,
 	if(equals(@event['type'],"ENDER_DRAGON"),
 		set_timeout(1000, closure(
+			# Double the max health of the dragon when it spawns without setting its health.
 			sudo('/minecraft:entitydata '.@event['id'].' {HealF:400,Attributes:[{Name:"generic.maxHealth",Base:400}]}')
 		))
 	)
 )
 
 bind(entity_damage_player, null, null, @event,
+	# Make the dragon breath have special effects
 	if(equals(@event['damager'],"AREA_EFFECT_CLOUD"),
 		if(equals(@event['location']['world'],"world_the_end"),
 			if(equals(entity_spec(@event['id'])['particle'],"DRAGON_BREATH"),
