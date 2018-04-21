@@ -11,11 +11,14 @@ bind(player_interact_entity, null, null, @event,
 			if(@item['type'] == 395){
 				# with a name that can be converted to an integer
 				if(is_numeric(@item['meta']['display'])){
-					# Make a new item stack with a completed map. Set the correct map ID and quantity based on the blank map stack.
-					@newitem = associative_array()
-					@newitem[pheld_slot(@event['player'])] = array(type: 358, data: integer(@item['meta']['display']), qty: @item['qty'])
-					# Replace the blank maps with the competed maps.
-					set_pinv(@event['player'],@newitem)
+					@blacklist=array()
+					if(!array_contains(@blacklist,integer(@item['meta']['display']))) {
+						# Make a new item stack with a completed map. Set the correct map ID and quantity based on the blank map stack.
+						@newitem = associative_array()
+						@newitem[pheld_slot(@event['player'])] = array(type: 358, data: integer(@item['meta']['display']), qty: @item['qty'])
+						# Replace the blank maps with the competed maps.
+						set_pinv(@event['player'],@newitem)
+					}
 				}
 			}
 		}
