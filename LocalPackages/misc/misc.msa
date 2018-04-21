@@ -153,10 +153,13 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 				foreach(@regions, @val,
 					if (!array_contains(sk_region_owners(@val, pworld())['players'],puuid())) { die(color(RED).'You are not an owner of ' . @val) }
 				)
+			} else {
+				#No regions. Make sure the player can build at the location.
+				if (!sk_can_build(player(),pcursor())) { die(color(RED).'You need to be able to build to use /signtext') }
 			}
 		}
 		@array = get_sign_text(pcursor())
-		console(player() . ' changed sign text FROM: ' . color(WHITE) . @array . ' TO: ' .  $)
+		console(player() . ' changed sign text AT: '.pcursor().' FROM: ' . color(WHITE) . @array . ' TO: ' .  $)
 		if(has_permission('nerdch.level.mod')) { @array[$line - 1] = colorize($) } else { @array[$line - 1] = strip_colors($) }
 		set_sign_text(pcursor(), @array)
 	} else {
