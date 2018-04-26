@@ -134,7 +134,7 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 *:/signtext [$line] [$] = >>>
 	if($line == ''){
 		msg(color(red).'Usage: /signtext $line $text')
-		if (has_permission('nerdch.level.mod')) {
+		if (has_permission('nerdch.level.restricted')) {
 			msg('Supported color codes:')
 			msg(colorize('&0&&0 &1&&1 &2&&2 &3&&3 &4&&4 &5&&5 &6&&6 &7&&7'))
 			msg(colorize('&8&&8 &9&&9 &a&&a &b&&b &c&&c &d&&d &e&&e &f&&f'))
@@ -146,26 +146,30 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 		die(color(red).'The line number must be between 1 and 4!')
 	}
 	if(is_sign_at(pcursor())){
-		if (!has_permission('nerdch.level.mod')) {
-			@regions=sk_regions_at(pcursor())
+		if (!has_permission('nerdch.level.restricted')) {
+			@regions = sk_regions_at(pcursor());
 			if (length(@regions) > 0) {
-				#Not mod, and sign is in at least one region. Check if they are an owner of all regions the sign is in.
-				foreach(@regions, @val,
-					if (!array_contains(sk_region_owners(@val, pworld())['players'],puuid())) { die(color(RED).'You are not an owner of ' . @val) }
-				)
+				# Not modmode, and sign is in at least one region. Check if they are an owner of all regions the sign is in.
+				foreach (@reg in @regions) {
+					@owners = sk_region_owners(@reg, pworld());
+					if (!array_contains(@owners['players'], puuid())) {
+						die(color(RED).'You are not an owner of ' . @reg);
+					}
+				}
 			} else {
-				#No regions. Make sure the player can build at the location.
-				if (!sk_can_build(player(),pcursor())) { die(color(RED).'You need to be able to build to use /signtext') }
+				# No regions. Make sure the player can build at the location.
+				if (!sk_can_build(player(), pcursor())) { 
+					die(color(RED).'You need to be able to build to use /signtext');
+				}
 			}
 		}
 		@array = get_sign_text(pcursor())
 		console(player() . ' changed sign text AT: '.pcursor().' FROM: ' . color(WHITE) . @array . ' TO: ' .  $)
-		if(has_permission('nerdch.level.mod')) { @array[$line - 1] = colorize($) } else { @array[$line - 1] = strip_colors($) }
+		@array[$line - 1] = if(has_permission('nerdch.level.restricted'), colorize($), strip_colors($));
 		set_sign_text(pcursor(), @array)
 	} else {
 		die('You aren\'t looking at a sign!')
 	}
-
 <<<
 
 
