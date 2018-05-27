@@ -1,0 +1,19 @@
+*:/runas $player $ = >>>
+	_assertperm('admin')
+	if(or(
+		equals('~console',to_lower($player)),
+		equals('~op',to_lower($player))
+	)) {
+		# Prevent running as op or console
+		msg('No')
+	} else {
+		# Prevent running as a player with bPermissions.admin unless the player running also has that permission.
+		if(has_permission($player,'bPermissions.admin')) {
+			if(not(has_permission(player(),'bPermissions.admin'))) {
+				msg('No')
+				die()
+			}
+		}
+		runas($player,'/'.$)
+	}
+<<<
