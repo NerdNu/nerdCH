@@ -14,7 +14,7 @@
 	@days = _lb_retention_days()
 	@delay = 45
 	set_timeout(@delay * 1000, closure(
-		run('/lb redo destroyed block 14 15 16 21 56 73 74 129 153 player '.$player.' since '.@days.' days')
+		run('/lb redo destroyed block gold_ore iron_ore coal_ore lapis_ore diamond_ore redstone_ore emerald_ore quartz_ore mob_spawner player '.$player.' since '.@days.' days')
 	))
 	set_timeout(2 * 1000, closure(
 		msg(color(GOLD).'Ore destructions by '.$player.' will be redone in '.@delay.' seconds.')
