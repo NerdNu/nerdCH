@@ -53,20 +53,20 @@ ln -fs ~/shared/NerdCH/global .
    Historically, we also used to set `script-name=config.txt`, but that is 
    silly and confusing. We now keep the default setting, `script-name=aliases.msa`.
  * `auto_include.ms` - This is shared between all servers:
-    ```
+```
 cd plugins/CommandHelper
 rm auto_include.ms
 ln -fs ~/shared/NerdCH/auto_include.ms .    
-    ```
+```
  * `aliases.msa` and `main.ms` - These are symlinked into the CommandHelper
    directory, e.g. for PvE:
-   ```
+```
 cd /ssd/pve/plugins/CommandHelper
 rm aliases.msa
 rm main.ms
 ln -fs ~/shared/NerdCH/pve/aliases.msa .
 ln -fs ~/shared/NerdCH/pve/main.ms .
-   ```
+```
 
 
 ### Guidance on the Contents of aliases.msa, main.ms, auto_include.ms
@@ -82,4 +82,3 @@ The only reasons to put things in these files are:
  * A CH alias or function access a configuration file in `plugins/CommandHelper/`.
    The CH `read()` function always reads files relative to the currently
    executing code. An example would be the `_kit()` function in [auto_include.ms](https://github.com/NerdNu/nerdCH/blob/master/auto_include.ms).
-
