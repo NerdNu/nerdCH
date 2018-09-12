@@ -77,8 +77,8 @@ version of each command or function, shared between multiple servers.
 
 The only reasons to put things in these files are:
 
- * The contains a global configuratiojn variable, consulted in various CH
+ * The code defines a global configuratiojn variable, consulted in various CH
    aliases and functions, e.g. `export('sharedata.source', 'pve')` in `pve/main.ms`, or
- * A CH alias or function access a configuration file in `plugins/CommandHelper/`.
+ * A CH alias or function accesses a configuration file in `plugins/CommandHelper/`.
    The CH `read()` function always reads files relative to the currently
    executing code. An example would be the `_kit()` function in [auto_include.ms](https://github.com/NerdNu/nerdCH/blob/master/auto_include.ms).
