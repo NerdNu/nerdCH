@@ -1,0 +1,6 @@
+*:'/rulebook-reload' = >>>
+	if (has_permission('nerdch.level.admin')) {
+		export('shared.firstjoin.book', read('firstjoinbook.txt'))
+		msg(color(GOLD).'Rule book reloaded.')
+	}
+<<<

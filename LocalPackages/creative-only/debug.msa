@@ -1,0 +1,3 @@
+/runas $player $ = runas($player, $)
+
+/dump = console(array_implode(dump_threads(), ' -- '))

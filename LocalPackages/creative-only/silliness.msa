@@ -1,0 +1,9 @@
+/chickenhead = >>>
+	foreach(all_players(), @p, 
+		set_entity_rider(pinfo(@p, 13), spawn_mob('chicken')[0])
+	)
+<<<
+
+*:/uwot = msg(color(red).'==='.color(white).'M8'.color(red).'===')
+
+*:/spoon = msg('Forks are better')
