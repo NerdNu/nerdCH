@@ -32,7 +32,6 @@ The nerdCH repository is cloned to `~/shared/NerdCH` (it seems we can't resist
 fiddling with things even when it's pointless):
 ```
 git clone https://github.com/NerdNu/nerdCH NerdCH
-
 ```
 
 
