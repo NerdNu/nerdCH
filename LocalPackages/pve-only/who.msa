@@ -3,9 +3,9 @@
 		msg('Woof; woof, woof, woof, woof')
 		play_sound(ploc(player()), array(sound: WOLF_BARK, pitch: 1, volume: 3), player())
 	} else {
-		runas('~console', '/mv who world');
-		runas('~console', '/mv who world_the_end');
-		runas('~console', '/mv who world_nether');
-		runas('~console', '/mv who mapworld');
+		runas(~console, '/mv who world');
+		runas(~console, '/mv who world_the_end');
+		runas(~console, '/mv who world_nether');
+		runas(~console, '/mv who mapworld');
 	}
 <<<

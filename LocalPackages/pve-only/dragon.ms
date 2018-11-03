@@ -4,7 +4,7 @@ bind(creature_spawn, null, null, @event,
 	if(equals(@event['type'],"ENDER_DRAGON"),
 		set_timeout(1000, closure(
 			# Double the max health of the dragon when it spawns without setting its health.
-			runas('~console', '/minecraft:entitydata '.@event['id'].' {HealF:400,Attributes:[{Name:"generic.maxHealth",Base:400}]}')
+			runas(~console, '/minecraft:entitydata '.@event['id'].' {HealF:400,Attributes:[{Name:"generic.maxHealth",Base:400}]}')
 		))
 	)
 )

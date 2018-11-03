@@ -15,9 +15,9 @@
                 @page = $;
         }
         if (@page == 0) {
-                runas('~console', '/region list -p ' . @name);
+                runas(~console, '/region list -p ' . @name);
         } else {
-                runas('~console', '/region list ' . @page . ' -p ' . @name);
+                runas(~console, '/region list ' . @page . ' -p ' . @name);
         }
 <<<
 

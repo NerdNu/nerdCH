@@ -5,6 +5,6 @@
 		msg(color(GOLD) . 'Get the map with the specified map number.');
 		die();
 	} else {
-		runas('~console', '/minecraft:give ' . player() . ' minecraft:filled_map 1 ' . $id);
+		runas(~console, '/minecraft:give ' . player() . ' minecraft:filled_map 1 ' . $id);
 	}
 <<<
