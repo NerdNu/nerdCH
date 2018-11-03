@@ -19,7 +19,7 @@
 /*
 *:/map update = >>>
 	_cooldown2(120, 'MAPUPDATE' . player())
-	sudo('/dynmap radiusrender 32')
+	runas('~console', '/dynmap radiusrender 32')
 <<<
 */
 

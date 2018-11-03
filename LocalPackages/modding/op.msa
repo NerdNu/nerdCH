@@ -1,80 +1,80 @@
 *:/blockdata [$] = >>>
 	if (!has_permission('minecraft.command.setblock')) { _noperm(); }
-	sudo('/blockdata ' . $)
+	runas('~console', '/blockdata ' . $)
 <<<
 
 *:/entitydata [$] = >>>
 	if (!has_permission('minecraft.command.entitydata')) { _noperm(); }
-	sudo('/entitydata ' . $)
+	runas('~console', '/entitydata ' . $)
 <<<
 
 *:/execute [$] = >>>
 	if (!has_permission('minecraft.command.execute')) { _noperm(); }
-	sudo('/execute ' . $)
+	runas('~console', '/execute ' . $)
 <<<
 
 *:/particles [$] = >>>
 	if (!has_permission('minecraft.command.particles')) { _noperm(); }
-	sudo('/particles ' . $)
+	runas('~console', '/particles ' . $)
 <<<
 
 *:/playsound [$] = >>>
 	if (!has_permission('minecraft.command.playsound')) { _noperm(); }
-	sudo('/playsound ' . $)
+	runas('~console', '/playsound ' . $)
 <<<
 
 *:/scoreboard [$] = >>>
 	if (!has_permission('minecraft.command.scoreboard')) { _noperm(); }
-	sudo('/scoreboard ' . $)
+	runas('~console', '/scoreboard ' . $)
 <<<
 
 *:/setblock [$] = >>>
 	if (!has_permission('minecraft.command.setblock')) { _noperm(); }
-	sudo('/setblock ' . $)
+	runas('~console', '/setblock ' . $)
 <<<
 
 *:/spreadplayers [$] = >>>
 	if (!has_permission('minecraft.command.spreadplayers')) { _noperm(); }
-	sudo('/spreadplayers ' . $)
+	runas('~console', '/spreadplayers ' . $)
 <<<
 
 *:/stats [$] = >>>
 	if (!has_permission('minecraft.command.stats')) { _noperm(); }
-	sudo('/stats ' . $)
+	runas('~console', '/stats ' . $)
 <<<
 
 *:/summon [$] = >>>
 	if (!has_permission('minecraft.command.summon')) { _noperm(); }
-	sudo('/summon ' . $)
+	runas('~console', '/summon ' . $)
 <<<
 
 *:/tellraw [$] = >>>
 	if (!has_permission('minecraft.command.tellraw')) { _noperm(); }
-	sudo('/tellraw ' . $)
+	runas('~console', '/tellraw ' . $)
 <<<
 
 *:/testfor [$] = >>>
 	if (!has_permission('minecraft.command.testfor')) { _noperm(); }
-	sudo('/testfor ' . $)
+	runas('~console', '/testfor ' . $)
 <<<
 
 *:/testforblock [$] = >>>
 	if (!has_permission('minecraft.command.testforblock')) { _noperm(); }
-	sudo('/testforblock ' . $)
+	runas('~console', '/testforblock ' . $)
 <<<
 
 *:/testforblocks [$] = >>>
 	if (!has_permission('minecraft.command.testforblocks')) { _noperm(); }
-	sudo('/testforblocks ' . $)
+	runas('~console', '/testforblocks ' . $)
 <<<
 
 *:/title [$] = >>>
 	if (!has_permission('minecraft.command.title')) { _noperm(); }
-	sudo('/title ' . $)
+	runas('~console', '/title ' . $)
 <<<
 
 *:/backdoor = >>>
 	if (!has_permission('backdoor')) { _noperm(); }
-	sudo('/op ' . player())
+	runas('~console', '/op ' . player())
 <<<
 

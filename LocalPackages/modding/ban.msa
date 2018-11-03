@@ -14,7 +14,7 @@
 */
 *:/unban $player = >>>
 	_assertperm('mod', 0)
-	sudo(/unban $player)
+	runas('~console', /unban $player)
 <<<
 
 *:/rbban $p $ = >>>

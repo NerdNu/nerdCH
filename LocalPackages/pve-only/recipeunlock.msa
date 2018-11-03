@@ -2,5 +2,5 @@
 # Note: Recipes unlocked in the client are based on the first server the client connects to. If they connect to the lobby before PvE after having run this, they will not have unlocked recipes. Connecting again directly to PvE resolves it as do a couple other actions in game.
 
 *:/recipeunlock [$] = >>>
-	sudo('/minecraft:recipe give '.player().' *');
+	runas('~console', '/minecraft:recipe give '.player().' *');
 <<<

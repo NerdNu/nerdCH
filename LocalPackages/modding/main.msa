@@ -67,7 +67,7 @@ mods:/spawnp $player = runas($player, /spawn)
 
 #*:/rain [$status='clear'] = >>>
 #    _assertperm('admin', 0)
-#    sudo(concat('/weather ', $status))
+#    runas('~console', concat('/weather ', $status))
 #    msg(concat(color(red), 'Set weather to ', $status))
 #<<<
 

@@ -71,7 +71,7 @@ bind(player_interact, null, array(block: 68, button: 'right'), @event,
 				_msg2(concat('Enjoy your free ', @givename, '!')),
 			'warp',
 				if(equals(@text[3], color(0)),
-					sudo(concat('/ci ', @event['player'])))
+					runas('~console', concat('/ci ', @event['player'])))
 				msg(get_value('warps.'.@text[2]))
 			    set_ploc(get_value(concat('warps.', @text[2]))),
 				#scriptas('~op', call_alias(concat('/warp ', @text[2]))),
