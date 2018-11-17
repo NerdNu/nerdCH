@@ -1,0 +1,15 @@
+*:/enchant [$] = >>>
+    _assertperm('admin', 1)
+    assign(@m, reg_match('^(.*) ([0-9]+)$', $))
+    if(array_index_exists(@m,0),
+        try(
+            if(has_permission('nerdch.level.admin'),
+                enchant_inv_unsafe(null, @m[1], integer(@m[2])),
+            #else:
+                enchant_inv(null, @m[1], integer(@m[2])),
+            ),
+        @e,
+            msg(concat(color(red), 'Error\'d! Check the enchantment name and level'))),
+    #else:
+        msg(concat(color(red), 'Usage: /enchant <enchantment name> <level>')))
+<<<

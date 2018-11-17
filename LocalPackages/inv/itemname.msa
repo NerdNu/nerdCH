@@ -1,0 +1,18 @@
+*:/itemname [$] = >>>
+    _assertperm('admin');
+    @held = pinv(player(), null);
+    @meta = get_itemmeta(null);
+    if($ == '') {
+        msg(color(red).'Usage: /itemname Awesome Item');
+        die();
+    }
+    if (is_null(@held)) {
+        msg(color(red).'You need to be holding something to rename.');
+        die();
+    }
+    if (is_null(@meta)) {
+        @meta = array();
+    }
+    @meta['display'] = colorize($);
+    set_itemmeta(null, @meta);
+<<<
