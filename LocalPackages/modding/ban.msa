@@ -12,10 +12,6 @@
 	}
 <<<
 */
-*:/unban $player = >>>
-	_assertperm('mod', 0)
-	runas(~console, /unban $player)
-<<<
 
 *:/rbban $p $ = >>>
 	call_alias(concat('/lbrb ', $p))

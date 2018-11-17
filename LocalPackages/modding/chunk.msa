@@ -73,7 +73,7 @@
 	store_value('visitchunks.task.'.player(), @task);
 <<<
 
-*:'/visit-chunks' [$] = >>>
+*:'/visit-chunks' = >>>
 	_assertperm('restricted');
 	msg(color(GOLD).'Usage: ');
 	msg(color(YELLOW).'/visit-chunks stop'.color(GRAY).' - Stop visiting chunks.');

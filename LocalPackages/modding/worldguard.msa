@@ -1,7 +1,7 @@
 # Create Region with proper flags and fix flags. 
 # Supports multiple owners as final arguments.
 
-*:/cregion $name [$first] [$] = >>>
+*:/cregion $name $first [$] = >>>
 	if (sk_region_exists($name)) {
 		die(color(RED).'A region by that name already exists.')
 	} else {

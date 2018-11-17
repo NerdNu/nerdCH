@@ -10,5 +10,3 @@
         )
     )
 <<<
-
-*:/furnace [$time] = call_alias('/furnace-top' $time)
