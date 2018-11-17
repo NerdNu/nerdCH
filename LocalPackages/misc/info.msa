@@ -8,16 +8,6 @@
         if (@servername == 'pve') {
                 msg(color(YELLOW).'        deadmap: https://deadmap.com')
         }
-
-        /*
-	if (@servername == 'survival') {
-		msg(color(RED).'This command is not available on the survival server.')
-	} else {
-		msg(color(GOLD).'Access various maps of our current revision here:')
-		msg(color(YELLOW).'        carto: http://nerd.nu/maps/'.@servername.'/')
-		msg(color(YELLOW).'        live map: http://nerd.nu/maps/'.@servername.'/live/')
-	}
-        */
 <<<
 
 *:/maps [$] = call_alias(concat('/map ', $))

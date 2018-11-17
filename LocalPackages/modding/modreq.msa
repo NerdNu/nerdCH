@@ -1,9 +1,0 @@
-# Shortcuts for ModReq.
-
-#*:/done-range $from $to = >>>
-#    _assertperm('admin', 0)
-#	foreach(range($from, add(1, $to)), @id,
-#		run(/done @id)
-#	) 
-#<<<
-

@@ -6,7 +6,3 @@
     @ex,
         msg(concat(color(red), 'Syntax: /time day|night|4.30pm|etc')))
 <<<
-
-#Time shortcuts
-#*:/d = call_alias(/time day)
-#*:/n = call_alias(/time night)

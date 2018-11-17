@@ -17,8 +17,6 @@
 
 /kickforrestart = call_alias('/kickall Server restarting.')
 
-#/runas $player $ = runas($player, $)
-
 /ra = /reloadaliases
 
 #

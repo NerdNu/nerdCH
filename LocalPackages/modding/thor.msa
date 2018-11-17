@@ -14,18 +14,6 @@
     call_alias(concat('/mb ', pinfo($player, 0), ' has been smote.'))
 <<<
 
-#TODO: What do we actually need from the below?
-
-#*:/warn $player [$] = >>>
-#    _assertperm('admin', 0)
-#    assign(@ploc, ploc(_getonlinename($player)))
-#    array_set(@ploc, 1, 0)
-#    lightning(@ploc)
-#    if($ != ''){
-#	tmsg($player, color(red).$)
-#    }
-#<<<
-
 *:/striket = >>>
     _assertperm('admin', 0)
     lightning(pcursor(player()))

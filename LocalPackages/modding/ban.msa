@@ -1,18 +1,4 @@
 
-*:/bitchslap $ = >>>
-	run_cmd('/ban' $)
-<<<
-/*
-*:/ban $player [$] = >>>
-	_assertperm('mod', 0)
-	if (_contains('nerd.nu/appeal', $)) {
-		runas(player(), /ban $)
-	} else {
-		runas(player(), /ban $ 'nerd.nu/appeal')
-	}
-<<<
-*/
-
 *:/rbban $p $ = >>>
 	call_alias(concat('/lbrb ', $p))
 	call_alias(concat('/ban ', $p, ' ', $))

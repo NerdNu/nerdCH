@@ -1,6 +1,3 @@
-#TODO: Shouldn't be necessary once Deaygo's TP stuff is done.
-#mods:/tphere $ = /tpohere $
-
 
 mods:/spawnp $player = runas($player, /spawn)
 
@@ -65,11 +62,6 @@ mods:/spawnp $player = runas($player, /spawn)
 	msg(@message.@results)
 <<<
 
-#*:/rain [$status='clear'] = >>>
-#    _assertperm('admin', 0)
-#    runas(~console, concat('/weather ', $status))
-#    msg(concat(color(red), 'Set weather to ', $status))
-#<<<
 
 *:/rain = >>>
     _assertperm('admin', 0)
@@ -125,9 +117,6 @@ mods:/spawnp $player = runas($player, /spawn)
     set_peffect(player(), 1, 5)
 <<<
 
-#spleef:/spleef $id = for( assign( @firstx, 730 ), lte( @firstx, 743 ), inc( @firstx ), for( assign( @firsty, 185 ), lte( @firsty, 198 ), inc( @firsty ), set_block_at(@firstx,63,@firsty,$id) ) )
-
-#TODO: Make this run /setspleef
 
 *:/drunk_spleef $ = >>>
     _assertperm('admin', 0)
@@ -173,23 +162,6 @@ mods:/spawnp $player = runas($player, /spawn)
 	}
 <<<
 
-#TODO: Probably not needed as we can just use WE's /jumpto
-
-#/jump2 = >>>
-#    try(
-#        assign(@coords, pcursor())
-#        assign(@count, 0)
-#        for(assign(@y, @coords[1]), lt(@y, 255), inc(@y),
-#            if(equals(get_block_at(@coords[0], @y, @coords[2], @coords[3]), '0:0'),
-#                inc(@count))
-#            if(equals(@count, 2),
-#                set_ploc(add(@coords[0], 0.5), subtract(@y,2), add(@coords[2], 0.5))
-#                break())),
-#    @ex, 
-#        msg(concat(color(red), 'No block in range')),
-#    array(RangeException))
-#<<<
-
 *:/rainbow = >>>
     _assertperm('admin', 0) #Sorry guys ;)
     spawn_mob('sheep:black')
@@ -210,8 +182,6 @@ mods:/spawnp $player = runas($player, /spawn)
     spawn_mob('sheep:white')
 <<<
 
-
-*:/stoplag [$] = msg('No!')
 
 *:/sayas $user [$] = >>>
     _assertperm('admin', 0)
@@ -240,88 +210,6 @@ mods:/spawnp $player = runas($player, /spawn)
 	}
 <<<
 
-
-# /count-entities <radius> [<type1> ... ]
-#	Count all entities within the specified radius of the player and show the 
-#	totals by type. An optional list of types may be specified after the radius.
-
-*:'/count-entities' = >>>
-	msg(color(RED).'Usage: /count-entities <radius> [<type1> ...]')
-	msg(color(RED).'List total entities by type within a specified radius (maximum 100).')
-	msg(color(RED).'The second and subsequent arguments are entity types, case-insensitive.')
-	die()
-<<<
-
-*:'/count-entities' $radius [$] = >>>
-	_assertperm('admin')
-	if (! is_numeric($radius)) {
-		die(color(RED).'The first argument must be the radius.')
-	}
-	@maxRadius = 200
-	@radius = if ($radius > @maxRadius, @maxRadius, $radius)
-	@types = array()
-	@counts = associative_array()
-	foreach (parse_args($), @type, 
-		array_push(@types, to_lower(@type))
-	)
-	@entities = entities_in_radius(ploc(), @radius, @types)
-	#msg(array_implode(@entities, ', '))
-	foreach (@e in @entities) {
-		@type = entity_type(@e);
-		if (@type == null) {
-			@type = 'unknown';
-		}
-		@key = to_lower(@type);
-		if (array_index_exists(@counts, @key)) {
-			inc(@counts[@key]);
-		} else {
-			@counts[@key] = 1;
-		}
-	}
-	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:')
-	foreach (array_keys(@counts), @type,
-		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
-	)
-<<<
-
-*:'/count-entities-player' $player $radius [$] = >>>
-	_assertperm('admin')
-	try (
-		pinfo($player),
-		die(color(RED) . 'The first argument must be an online player')
-	)
-	if (!is_numeric($radius)) {
-		die(color(RED).'The second argument must be the radius.')
-	}
-	@maxRadius = 200
-	@radius = if ($radius > @maxRadius, @maxRadius, $radius)
-	@types = array()
-	@counts = associative_array()
-	foreach (parse_args($), @type,
-		array_push(@types, to_lower(@type))
-	)
-	@entities = entities_in_radius(ploc($player), @radius, @types)
-	#msg(array_implode(@entities, ', '))
-	foreach (@entities, @e,
-		@key = to_lower(entity_type(@e))
-		if (array_index_exists(@counts, @key)) {
-			inc(@counts[@key])
-		} else {
-			@counts[@key] = 1
-		}
-	)
-	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of '.$player.':')
-	foreach (array_keys(@counts), @type,
-		msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type))
-	)
-<<<
-
-*:'/count-entities-all' $radius [$] = >>>
-	_assertperm('admin')
-	foreach(all_players(), @p,
-		call_alias('/count-entities-player' @p $radius $)
-	)
-<<<
 
 *:/pcheck $player $perm = >>>
 	_assertperm('admin')
