@@ -1,13 +1,3 @@
-*:/'xray-top' [$time=1d] = >>>
-	_assertperm('mod', 0)
-	run('/lb sum players destroyed block 56 since '.$time)
-<<<
-
-*:/'xray-edits' $player [$time=28d] = >>>
-	_assertperm('mod', 0)
-	run('/lb coords destroyed block 56 player '.$player.' since '.$time)
-<<<
-
 *:/'xray-rb' $player = >>>
 	_assertperm('mod', 0)
 	call_alias('/lbrb '.$player)

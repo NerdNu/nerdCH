@@ -1,8 +1,3 @@
-*:/tpchunk $x $z = >>>
-	_assertperm('restricted', 0);
-	set_ploc(player(), multiply($x, 16), array_get(ploc(player()), 1), multiply($z, 16));
-<<<
-
 *:'/visit-chunks' stop = >>>
 	_assertperm('restricted');
 	@task = get_value('visitchunks.task.'.player());

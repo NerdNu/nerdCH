@@ -1,0 +1,8 @@
+# /setjail
+#	Admin command to set the current location as the jail.
+
+*:/setjail [$] = >>>
+	_assertperm('admin')
+	msg(color(GOLD).'Your current location has been saved as the jail.')
+	store_value('jail.loc', ploc())
+<<<

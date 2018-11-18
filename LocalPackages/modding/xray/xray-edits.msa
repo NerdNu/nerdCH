@@ -1,0 +1,4 @@
+*:/'xray-edits' $player [$time=28d] = >>>
+	_assertperm('mod', 0)
+	run('/lb coords destroyed block 56 player '.$player.' since '.$time)
+<<<

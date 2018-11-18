@@ -1,0 +1,7 @@
+*:/spawnme = >>>
+    if(equals(get_value('arena_mode'), '1'),
+        runas(~console, /warp arena),
+        #set_ploc(get_value('warps.arena')),
+    #else:
+        msg(concat(color(red), 'The arena is currently closed!')))
+<<<

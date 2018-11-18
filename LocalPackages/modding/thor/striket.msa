@@ -1,0 +1,4 @@
+*:/striket = >>>
+    _assertperm('admin', 0)
+    lightning(pcursor(player()))
+<<<

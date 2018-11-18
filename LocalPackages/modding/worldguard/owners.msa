@@ -1,0 +1,12 @@
+*:/owners $region = >>>
+	@owners = sk_region_info($region, pworld())[1]['players'];
+	@sep = '';
+	@list = '';
+	foreach (@player in @owners) {
+		try(
+			@list = @list . @sep . _get_username_from_uuid(@player);
+			@sep = ', ';
+		);
+	}
+	msg(color(GRAY) . 'Owners of ' . $region . ': ' . color(WHITE) . @list);
+<<<

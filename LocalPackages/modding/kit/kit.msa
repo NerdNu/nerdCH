@@ -1,0 +1,4 @@
+*:/kit [$] = >>>
+	_assertperm('restricted', 0)
+	_kit($)
+<<<

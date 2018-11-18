@@ -1,0 +1,30 @@
+# Name History Alias
+*:/nh   = call_alias('/namehistory');
+*:/nh $ = call_alias('/namehistory ' . $);
+
+# Retrieve name history for the UUID that currently holds a name
+*:/namehistory [$player] = >>>
+	_assertperm('mod')
+	if ($player == '') {
+		die(color(RED).'Usage: /namehistory <player>')
+	}
+	@uuid = _get_puuid($player)
+	if (!@uuid) {
+		die(color(RED).'Error: could not obtain UUID for supplied username.')
+	}
+	http_request('https://api.mojang.com/user/profiles/'.@uuid.'/names', array(
+		timeout: 5000,
+		success: closure(@response){
+			@names = array()
+			@data = json_decode(@response['body'])
+			foreach(@val in @data){
+				@names[] = @val['name']
+			}
+			msg(color(GOLD).'Name change history for '.$player.': ')
+			msg(color(GRAY).array_implode(@names, ', '))
+		},
+		error: closure(@response){
+			die(color(RED).'Error: the request could not be completed.')
+		}
+	));
+<<<

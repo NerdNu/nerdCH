@@ -1,0 +1,14 @@
+*:'/lift' [$] = >>>
+	_assertperm('mod');
+	if ($ == '' || $ == 'help') {
+		die(color(GOLD).'/lift <player> - Lift the specified player up 1/2 a block.');
+	}
+	try(
+		@player = player($);
+		@loc = ploc(@player);
+		@loc['y'] += 0.5;
+		set_ploc(@player, @loc);
+	,@ex,
+		die(color(RED).$.' is not online.');
+	);
+<<<

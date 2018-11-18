@@ -1,0 +1,32 @@
+# /jail player
+#	Mute the player and send them to jail.
+
+*:/jail = >>>
+	msg(color(RED).'Usage: /jail player')
+	msg(color(RED).'Mute the player and send them to jail.')
+<<<
+
+*:/jail $player = >>>
+	_assertperm('mod')
+	@jail = get_value('jail.loc')
+	if (is_null(@jail)) {
+		die(color(RED).'No jail location has been set. Bug an admin.')
+	}
+	try(
+		@player = player($player)
+		run('/mute '.@player)
+		set_ploc(@player, @jail)
+		if (import('sharedata.source') == 'creative') {
+			set_pmode(@player, SURVIVAL)
+		}
+		tmsg(@player, color(AQUA).'You have been jailed. Please wait for a staff member to contact you.')
+
+		@mods = _get_mods()
+		foreach(@mods, @mod,
+			tmsg(@mod, color(AQUA), @player.' has been jailed by '.player())
+		)
+		console(@player.' has been jailed by '.player())
+	,#catch
+		msg(color(RED).'That player is not online.')
+	)
+<<<

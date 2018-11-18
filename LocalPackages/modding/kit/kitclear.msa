@@ -1,0 +1,4 @@
+*:/kitclear = >>>
+	_assertperm('restricted')
+	clear_value(concat('kits.', player()))
+<<<

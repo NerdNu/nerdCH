@@ -1,0 +1,13 @@
+*:/members $region = >>>
+	@info = sk_region_info($region, pworld());
+	@members = array_merge(@info[1]['players'], @info[2]['players']);
+	@sep = '';
+	@list = '';
+	foreach (@player in @members) {
+		try(
+			@list = @list . @sep . _get_username_from_uuid(@player);
+			@sep = ', ';
+		);
+	}
+	msg(color(GRAY) . 'Members of ' . $region . ': ' . color(WHITE) . @list);
+<<<

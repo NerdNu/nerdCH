@@ -1,0 +1,14 @@
+# Retrieve the UUID of a player and link to the name change history.
+*:/uuid [$] = >>>
+	_assertperm('mod');
+	if ($ == '') {
+		die(color(GOLD).'/uuid <player> - Look up UUID of player.');
+	} else {
+		@uuid = _get_puuid($);
+		if (@uuid != null) {
+			msg(color(GOLD).'https://namemc.com/s?'.@uuid);
+		} else {
+			die(color(RED).'Unable to retrieve UUID for '.$.'.');
+		}
+	}
+<<<

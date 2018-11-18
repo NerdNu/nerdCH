@@ -1,0 +1,19 @@
+*:/butcher [$] = call_alias('//butcher ' . $ )
+
+*:'//butcher' [$] = >>>
+	@args = parse_args( $ )
+	@hasRadius = null
+	foreach(@args, @value){
+		if(is_integral(@value)){
+			@hasRadius = @value
+			break()
+		}
+	}
+	if(@hasRadius === null){
+		die(color(RED).'Holy radius, batman, you were about to kill everything in the world! Specify a radius.')
+	}
+	if(@hasRadius > 100){
+		die(color(RED).'Holy radius, batman, that\'s a large radius! Tone it down some.')
+	}
+	run('/butcher '.$)
+<<<

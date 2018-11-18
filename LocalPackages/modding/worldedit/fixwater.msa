@@ -1,0 +1,9 @@
+*:/fixwater $ = call_alias(concat('//fixwater ', $))
+
+*:'//fixwater' $radius = >>>
+    if($radius > 25){
+        die(color(red) . 'Whoa, whoa, whoa. Step it down a notch, turbo.')
+    } else {
+        run('/fixwater ' . $radius)
+    }
+<<<

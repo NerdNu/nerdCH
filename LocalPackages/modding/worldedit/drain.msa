@@ -1,0 +1,11 @@
+*:/drain [$] = call_alias(concat('//drain ', $))
+
+*:'//drain' [$] = >>>
+    if(equals($, ''),
+        msg(concat(color(red), 'Syntax: /drain radius')),
+    #else:
+        if(lte($, 15),
+            run(concat('//drain ', $)),
+        #else:
+            msg(concat(color(red), '/drain radius must be <=15'))))
+<<<

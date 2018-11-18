@@ -1,0 +1,8 @@
+*:'//ramp' $x $dir1 $dir2 [$block='rail'] [$dir1_offset=1] [$dir2_offset=1] = >>>
+	_assertperm('admin', 0)
+	for (assign(@i, 0), lt(@i, $x), inc(@i),
+		run(concat('//shift ', $dir1_offset, ' ', $dir1))
+		run(concat('//shift ', $dir2_offset, ' ', $dir2))
+		run(concat('//set ', $block))
+	)
+<<<

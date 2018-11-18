@@ -1,0 +1,10 @@
+# /tpnext [player]
+#	Teleport to the next player in the list of all online players, ordered by login time.
+#	Staff members in ModMode and Admins are skipped.
+#	The optional player can be a player name or a 1-based index into the players array.
+
+*:/tpnext [$player] = >>>
+	_assertperm('restricted')
+	@index = _get_tp_index($player, 1)
+	_tp_index(@index, all_players())
+<<<

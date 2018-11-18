@@ -1,0 +1,18 @@
+# Show help for no-args invocation.
+
+nerdch.level.admin:'/region-rename' = >>>
+	msg(color(RED).'/region-rename oldName newName')
+	msg(color(RED).'    Rename a region. The new region name must not be in use.')
+	die()
+<<<
+
+nerdch.level.admin:'/region-rename' $oldName $newName = >>>
+	if (!sk_region_exists($oldName)) {
+		die(color(RED).'Region \''.$oldName.'\' does not exist in this world.')
+	}
+	if (sk_region_exists($newName)) {
+		die(color(RED).'A region named \''.$newName.'\' already exists in this world.')
+	}
+	sk_region_rename($oldName,$newName)
+	msg(color(GOLD).'Renamed region \''.$oldName.'\' as \''.$newName.'\'.')
+<<<

@@ -1,0 +1,4 @@
+*:'/overlay-on' [$] = >>>
+	_assertperm('mod',0)
+	run('/cs overlay-on '.$)
+<<<

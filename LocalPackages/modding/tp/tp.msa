@@ -1,0 +1,5 @@
+# Temp fix for using PixelCam.
+*:/tp $player $x $y $z = >>>
+	_assertperm('mod');
+	run(/tppos $x $y $z);
+<<<

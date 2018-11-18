@@ -1,0 +1,9 @@
+*:/fixlava $ = call_alias(concat('//fixlava ', $))
+
+*:'//fixlava' $radius = >>>
+    if($radius > 25){
+        die(color(red) . 'TROGDOR THE BURNINATOR can only do up to //fixlava 25. Sorry.')
+    } else {
+        run('/fixlava ' . $radius)
+    }
+<<<

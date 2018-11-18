@@ -1,0 +1,8 @@
+*:/leavearena = >>>
+    if(equals(get_value('arena_mode'), '1'),
+        runas(~console, /spawn),
+        #set_ploc(get_value(@name)
+        #set_ploc(1995,12,-1987),
+    #else:
+        msg(concat(color(red), 'The arena is currently closed!')))
+<<<

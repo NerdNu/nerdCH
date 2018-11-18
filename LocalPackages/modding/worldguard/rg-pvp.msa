@@ -1,0 +1,11 @@
+*:'/rg-pvp' $name = >>>
+        if (! sk_region_exists($name)) {
+                die(color(RED).'There is no region by that name.')
+        } else {
+                run(concat('/region flag ', $name, ' pvp allow'))
+		if (import('sharedata.source') == 'creative') {
+                        run(concat('/region flag ', $name, ' gamemode survival'))
+                        run(concat('/region flag ', $name, ' invincible deny'))
+                }
+        }
+<<<

@@ -1,0 +1,4 @@
+*:/'xray-top' [$time=1d] = >>>
+	_assertperm('mod', 0)
+	run('/lb sum players destroyed block 56 since '.$time)
+<<<

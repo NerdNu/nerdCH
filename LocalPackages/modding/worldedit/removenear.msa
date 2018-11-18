@@ -1,0 +1,19 @@
+*:/removenear [$] = call_alias(concat('//removenear ', $))
+
+*:/removenear $item $radius = >>>
+    if(gt($radius,25),
+        die(color(red) 'Whoa, whoa, whoa. Step it down a notch, turbo.'),
+    #else:
+        run(/removenear $item $radius))
+<<<
+
+*:'//removenear' [$] = >>>
+        assign(@match, parse_args($))
+        if(equals(array_size(@match), 2),
+                if(lt(@match[1], 25),
+                        run(concat('/removenear ', $)),
+                #else
+                        msg(concat(color(red), '/removenear radius must be <=25'))),
+        #else
+                msg(concat(color(red), 'Syntax: /removenear block_id radius')))
+<<<

@@ -3,21 +3,21 @@
     _assertperm('restricted', 0)
     switch($tf,
         '0',
-            
+
             #runas(~console, '/region flag arena_stands pvp')
-            
+
             #runas(~console, '//sel')
             #for(assign(@i, 1), lte(@i, 4), inc(@i),
             #    runas(~console, concat('/region select arena_door', @i))
             #    runas(~console, concat('//set ladder:', add(@i, 1))))
             #runas(~console, '//sel')
-            
+
             store_value('arena_mode', '0')
             runas(~console, /setwarp arena public false)
             broadcast(concat(color(green), 'The arena is now closed! Get out!')),
-        
-        
-        
+
+
+
         '1',
             #runas(~console, '/region flag arena_stands pvp deny')
             #runas(~console, '//sel')
@@ -25,39 +25,12 @@
             #    runas(~console, concat('/region select arena_door', @i))
             #    runas(~console, '//set 43:6'))
             #runas(~console, '//sel')
-            
+
             store_value('arena_mode', '1')
             runas(~console, /setwarp arena public true)
             broadcast(concat(color(green), 'The arena is now open! Type /spawnme to be warped to the arena!')),
-        
-        
+
+
         #default:
             msg(concat(color(gray), 'Usage: /arena <0|1>')))
-<<<
-
-*:/spawnme = >>>
-    if(equals(get_value('arena_mode'), '1'),
-        runas(~console, /warp arena),
-        #set_ploc(get_value('warps.arena')),
-    #else:
-        msg(concat(color(red), 'The arena is currently closed!')))
-<<<
-
-*:/leavearena = >>>
-    if(equals(get_value('arena_mode'), '1'),
-        runas(~console, /spawn),
-        #set_ploc(get_value(@name)
-        #set_ploc(1995,12,-1987),
-    #else:
-        msg(concat(color(red), 'The arena is currently closed!')))
-<<<
-
-#Arena plugin
-*:/boxes [$tf='0'] = >>>
-    _assertperm('restricted', 0)
-    runas(~console, '//sel')
-    for(assign(@i, 1), lte(@i, 4), inc(@i),
-        runas(~console, concat('/region select arena_box_door', @i))
-        runas(~console, concat('//set ', if(equals($tf, '1'), 'glass', 'air'))))
-    runas(~console, '//sel')
 <<<

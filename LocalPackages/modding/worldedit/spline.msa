@@ -1,0 +1,19 @@
+*:/spline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs spline $)
+<<<
+
+*:/hspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs spline h $)
+<<<
+
+*:/rspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs rspline $)
+<<<
+
+*:/hrspline [$] = >>>
+	_assertperm('mod',0)
+	run(/cs rspline h $)
+<<<

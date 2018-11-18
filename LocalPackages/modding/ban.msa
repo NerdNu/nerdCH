@@ -1,9 +1,7 @@
-
 *:/rbban $p $ = >>>
 	call_alias(concat('/lbrb ', $p))
 	call_alias(concat('/ban ', $p, ' ', $))
 <<<
-
 
 # /warncrops player [message]
 #	Warn a player for crop grief and add a note.
