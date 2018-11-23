@@ -5,6 +5,6 @@
 	set_pinv(player(), array(null: @item))
 <<<
 
-/tntall = foreach(all_players(),@p,pgive_item(@p,data_values('tnt'),64))
+/tntall = foreach(all_players(),@p,pgive_item(@p,array('tnt',64)))
 
-/giveall $item [$qty=64] = foreach(all_players(),@p,pgive_item(@p,data_values($item),$qty))
+/giveall $item [$qty=64] = foreach(all_players(),@p,pgive_item(@p,pgive_item(@p,array($item,$qty))))

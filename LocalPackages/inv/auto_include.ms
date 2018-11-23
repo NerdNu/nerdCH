@@ -11,7 +11,7 @@ proc(_parseiargs, @input,
     # m(1) = (item_name) OR (item name)
     # m(2) = space + number(s)
     #
-	@m = reg_match(^(minecraft:)?([a-zA-Z_ ]+)( [0-9]+)?, @input)
+	@m = reg_match(''^(minecraft:)?([a-zA-Z_ ]+)( [0-9]+)?$', @input)
 	if (array_index_exists(@m,0)) {
 	    if (is_null(@m[2])) {
 	        @qty = integer(1)
