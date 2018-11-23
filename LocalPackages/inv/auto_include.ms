@@ -18,7 +18,7 @@ proc(_parseiargs, @input,
 	    } else {
 	        @qty = integer(@m[2])
 	    }
-        return array(@m[1], @qty))
+        return array(@m[1], @qty)
 	} else {
 		return (null)
 	}
