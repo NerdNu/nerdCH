@@ -1,7 +1,7 @@
 *:/plugins [$] = call_alias(/pl)
 
 
-*:/pl includes [$command] [$] = >>>
+*:/pl-includes [$command] [$] = >>>
 	_assertperm('admin')
 	
 	@includes = get_value('pl.includes')
@@ -45,14 +45,14 @@
 			store_value('pl.includes', @includes)
 		
 		,#default	
-			msg(colorize('&6Usage: &e/pl includes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
+			msg(colorize('&6Usage: &e/pl-includes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
 			msg(color(GOLD).'Show or modify the list of plugins that are always included in the output of /pl.')
 			die()
 	}
 <<<
 
 
-*:/pl excludes [$command] [$] = >>>
+*:/pl-excludes [$command] [$] = >>>
 	_assertperm('admin')
 	
 	@excludes = get_value('pl.excludes')
@@ -96,7 +96,7 @@
 			store_value('pl.excludes', @excludes)
 		
 		,#default	
-			msg(colorize('&6Usage: &e/pl excludes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
+			msg(colorize('&6Usage: &e/pl-excludes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
 			msg(color(GOLD).'Show or modify the list of plugins that are always excluded from the output of /pl.')
 			die()
 	}
