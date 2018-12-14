@@ -1,10 +1,20 @@
-*:'/getmap' [$id] = >>>
-	_assertperm('restricted');
-	if ($id == '') {
-		msg(color(GOLD) . 'Usage: /getmap <map-number>');
-		msg(color(GOLD) . 'Get the map with the specified map number.');
-		die();
-	} else {
-		runas(~console, '/minecraft:give ' . player() . ' minecraft:filled_map 1 ' . $id);
-	}
+*:'/getmap' [$id=0] = >>>
+    @invArray = pinv(player(), pheld_slot(player()));
+
+    if ($id == '') {
+        msg(color(GOLD) . 'Usage: /getmap <map-number>');
+        msg(color(GOLD) . 'Get the map with the specified map number.');
+        die();
+    } else if (!@invArray) {
+        msg(color(GOLD) . 'You must be holding an empty map for this to work!');
+    } else {
+        @myItem = @invArray['name'];
+
+        if (@myItem == 'MAP') {
+            sudo('/minecraft:give ' . player() . ' minecraft:filled_map{map:' . $id .'} 1');
+            sudo('/minecraft:clear ' . player() . ' minecraft:map 1');
+        } else {
+            msg(color(GOLD) . 'You must be holding an empty map for this to work!');
+        }
+    }
 <<<
