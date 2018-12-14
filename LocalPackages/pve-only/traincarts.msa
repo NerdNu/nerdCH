@@ -1,3 +1,0 @@
-#Print train information
-#*:/tinfo = runas(~console, /train info)
-#*:/traininfo = runas(~console, /train info)
