@@ -6,18 +6,19 @@
 proc(_parseiargs, @input,
 
     # regex pattern: (* denotes nullable)
-    # *m(0) = minecraft:
-    # m(1) = (item_name) OR (item name)
-    # *m(2) = space + number(s)
+    # m(0) = whole match
+    # *m(1) = minecraft:
+    # m(2) = (item_name) OR (item name)
+    # *m(3) = space + number(s)
     #
 	@m = reg_match('^(minecraft:)?([a-zA-Z_ ]+)( [0-9]+)?$', @input)
 	if (array_index_exists(@m,0)) {
-	    if (is_null(@m[2])) {
+	    if (is_null(@m[3])) {
 	        @qty = integer(1)
 	    } else {
-	        @qty = integer(@m[2])
+	        @qty = integer(@m[3])
 	    }
-        return array(@m[1], @qty)
+        return array(@m[2], @qty)
 	} else {
 		return (null)
 	}
