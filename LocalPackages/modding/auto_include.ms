@@ -23,6 +23,28 @@ set_interval(30 * 1000, closure() {
     }
 })
 
+/**
+ * Gets the last known username from the database, or null, if no player is known with that UUID.
+ * Hyphens are automatically stripped from the UUID to match the database contents.
+ */
+proc(_get_username_from_uuid, @uuid) {
+	@nameCache = import('nameCache');
+	@uuid = replace(@uuid, '-', '');
+
+	if (array_index_exists(@nameCache, @uuid)) {
+		return(@nameCache[@uuid]);
+	}
+
+	@res = query('uuid', 'SELECT last_username FROM user WHERE uuid=?', @uuid);
+	if (length(@res) == 0) {
+		return(null);
+	} else {
+		@nameCache[@uuid] = @res[0]['last_username'];
+		export('nameCache', @nameCache);
+		return(@res[0]['last_username']);
+	}
+}
+
 # _get_tp_index(@target, @step)
 #	Return the stored player index of the next player to teleport to, for the caller.
 #	Each calling player keeps his own separate stored index.
