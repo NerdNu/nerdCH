@@ -1,7 +1,6 @@
-#TODO: Blacklisting (inc pots)
 # _parseiargs()
 #	Parse the arguments to /i and /give.
-#	If successful, return an array(@itemid, @metadata, @quantity), all entries numeric.
+#	If successful, return an array(@itemid, @metadata, @quantity).
 #	Otherwise, return null.
 
 proc(_parseiargs, @input,
@@ -9,7 +8,7 @@ proc(_parseiargs, @input,
     # regex pattern: (* denotes nullable)
     # *m(0) = minecraft:
     # m(1) = (item_name) OR (item name)
-    # m(2) = space + number(s)
+    # *m(2) = space + number(s)
     #
 	@m = reg_match('^(minecraft:)?([a-zA-Z_ ]+)( [0-9]+)?$', @input)
 	if (array_index_exists(@m,0)) {
