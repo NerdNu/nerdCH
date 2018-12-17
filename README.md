@@ -2,7 +2,7 @@ nerdCH
 ======
 The Purpose of this README
 --------------------------
-CommandHelper generates a number of default configurations in 
+CommandHelper generates a number of default configurations in
 `plugins/CommandHelper/` when the plugin first starts up:
 
  * `aliases.msa`
@@ -10,7 +10,7 @@ CommandHelper generates a number of default configurations in
  * `auto_include.ms`
  * `prefs/preferences.ini`
  * `prefs/persistence.ini`
- 
+
 Historically, we've been a bit liberal in how we modify the first three of these
 files, adding custom code to them at random, such that it is very difficult to
 identify common configuration between servers because of the sheer volume of
@@ -37,7 +37,7 @@ git clone https://github.com/NerdNu/nerdCH NerdCH
 
 ### Local Packages
 
-CommandHelper packages from the `LocalPackages/` folder of the repository on 
+CommandHelper packages from the `LocalPackages/` folder of the repository on
 disk are symlinked into the `LocalPackages/` directory of the servers.
 
 For example:
@@ -48,8 +48,8 @@ ln -fs ~/shared/NerdCH/global .
 
 ### Configuration Files
 
- * `prefs/preferences.ini` - Set `show-splash-screen=false` obviously. 
-   Historically, we also used to set `script-name=config.txt`, but that is 
+ * `prefs/preferences.ini` - Set `show-splash-screen=false` obviously.
+   Historically, we also used to set `script-name=config.txt`, but that is
    silly and confusing. We now keep the default setting, `script-name=aliases.msa`.
  * `auto_include.ms` - This is shared between all servers:
 ```
@@ -81,3 +81,26 @@ The only reasons to put things in these files are:
  * A CH alias or function accesses a configuration file in `plugins/CommandHelper/`.
    The CH `read()` function always reads files relative to the currently
    executing code. An example would be the `_kit()` function in [auto_include.ms](https://github.com/NerdNu/nerdCH/blob/master/auto_include.ms).
+
+
+### Server-Specific Packages
+
+Historically, server-specific packages (e.g. `LocalPackages/pve-only`) have been
+kept in the main `LocalPackages` directory and individual packages symlinked into
+place for each server, i.e.
+```
+cd ~/servers/pve-dev/plugins/CommandHelper/LocalPackages
+ln -fs ~/shared/NerdCH/LocalPackages/dynmap .
+ln -fs ~/shared/NerdCH/LocalPackages/global .
+...
+
+```
+It makes more sense from a practicality standpoint to isolate server-specific
+packages away from the `LocalPackages` directory so that one may then simply
+symlink the entire directory into place, followed by a server-specific package
+if applicable, i.e.
+```
+cd ~/servers/pve-dev/plugins/CommandHelper
+ln -fs ~/shared/NerdCH/LocalPackages .
+ln -fs ~/shared/NerdCH/pve/pve-only .
+```
