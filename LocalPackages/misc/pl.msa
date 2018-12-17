@@ -1,14 +1,14 @@
 *:/plugins [$] = call_alias(/pl)
 
 
-*:/pl-includes [$command] [$] = >>>
+*:/plincludes [$command] [$] = >>>
 	_assertperm('admin')
-	
+
 	@includes = get_value('pl.includes')
 	if (is_null(@includes)) {
 		@includes = array()
 	}
-	
+
 	switch ($command) {
 		'list',
 			msg(color(GOLD).'Plugins that are always included: '.color(YELLOW).array_implode(@includes, ' '))
@@ -18,7 +18,7 @@
 			if (array_size(@added) != 1) {
 				die(color(RED).'Invalid plugin name: '.$)
 			}
-			
+
 			@name = @added[0]
 			@index = array_index(@includes, @name)
 			if (is_null(@index)) {
@@ -28,7 +28,7 @@
 			} else {
 				msg(color(GOLD).'Already included: '.color(YELLOW).@name)
 			}
-			
+
 		,'remove',
 			@added = parse_args($)
 			if (array_size(@added) != 1) {
@@ -39,12 +39,12 @@
 			if (is_null(@index)) {
 				die(color(RED).'That plugin is not in the set of included plugins.')
 			}
-			
+
 			@item = array_remove(@includes, @index)
 			msg(color(GOLD).'Removed: '.color(YELLOW).@item)
 			store_value('pl.includes', @includes)
-		
-		,#default	
+
+		,#default
 			msg(colorize('&6Usage: &e/pl-includes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
 			msg(color(GOLD).'Show or modify the list of plugins that are always included in the output of /pl.')
 			die()
@@ -52,14 +52,14 @@
 <<<
 
 
-*:/pl-excludes [$command] [$] = >>>
+*:/plexcludes [$command] [$] = >>>
 	_assertperm('admin')
-	
+
 	@excludes = get_value('pl.excludes')
 	if (is_null(@excludes)) {
 		@excludes = array()
 	}
-	
+
 	switch ($command) {
 		'list',
 			msg(color(GOLD).'Plugins that are always excluded: '.color(YELLOW).array_implode(@excludes, ' '))
@@ -69,7 +69,7 @@
 			if (array_size(@added) != 1) {
 				die(color(RED).'Invalid plugin name: '.$)
 			}
-			
+
 			@name = @added[0]
 			@index = array_index(@excludes, @name)
 			if (is_null(@index)) {
@@ -79,7 +79,7 @@
 			} else {
 				msg(color(GOLD).'Already excluded: '.color(YELLOW).@name)
 			}
-			
+
 		,'remove',
 			@added = parse_args($)
 			if (array_size(@added) != 1) {
@@ -90,12 +90,12 @@
 			if (is_null(@index)) {
 				die(color(RED).'That plugin is not in the set of excluded plugins.')
 			}
-			
+
 			@item = array_remove(@excludes, @index)
 			msg(color(GOLD).'Removed: '.color(YELLOW).@item)
 			store_value('pl.excludes', @excludes)
-		
-		,#default	
+
+		,#default
 			msg(colorize('&6Usage: &e/pl-excludes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
 			msg(color(GOLD).'Show or modify the list of plugins that are always excluded from the output of /pl.')
 			die()
@@ -121,10 +121,10 @@
 		if (is_null(@excludes)) {
 			@excludes = array()
 		}
-		
-		foreach (@excludes, @item, 
+
+		foreach (@excludes, @item,
 			array_remove_values(@plugins, @item)
-		)	
+		)
 		@plugins = array_merge(@plugins, @includes)
 	}
 

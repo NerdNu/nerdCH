@@ -1,0 +1,4 @@
+*:/lbcmds $ = >>>
+	_assertperm('admin', 0)
+	run(concat('/lb player ', $, ' chat search /'))
+<<<

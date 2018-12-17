@@ -1,5 +1,4 @@
 nightvision:/nightvision = >>>
-
 	# Search the player's current potion effects for night vision.
 	foreach(get_peffect(player()), @effect,
 		if (@effect[id] == 16) {
