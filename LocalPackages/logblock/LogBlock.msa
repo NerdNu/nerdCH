@@ -18,8 +18,12 @@
 		}
 	}
 
+    if ($ == "redo") {
+        die(color(RED)."Syntax: /lbredo <player> [since]");
+    }
+
 	# No whitelist entries, therefore require 'player'.
-        if (array_contains(@args, 'player')) {
+    if (array_contains(@args, 'player')) {
 		run(/lb $);
 	} else {
 		die(color(RED).'You must specify a player.');
@@ -37,7 +41,7 @@
 	}
 	@days = _lb_retention_days()
 	run(concat('/lb player ', $player, ' area ', @radius, ' sum blocks since ', @days, ' days'))
-	
+
 	# Delay the /lookup so it follows the /lb output.
 	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
 <<<
@@ -84,16 +88,10 @@
 	@days = if (is_integral($since), $since, _lb_retention_days())
 	run(concat('/lb redo player ', $player, ' area 10000 since ', @days, ' days'))
 <<<
-#safeguard
-*:/lb redo [$] = >>>
-	_assertperm('mod', 0)
-	if (equals($, 'last'), run('/lb redo last') die())
-	if (lt(reg_count('player', $), 1), die(concat(color(red), 'lol, you forgot the player')), run(/lb redo $))
-<<<
 
 #topminer
 *:/topminer $time = >>>
-	_assertperm('mod', 0)    
+	_assertperm('mod', 0)
 	/lb time $time block diamond_ore destroyed sum players
 <<<
 

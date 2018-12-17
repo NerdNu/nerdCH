@@ -156,7 +156,7 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 				}
 			} else {
 				# No regions. Make sure the player can build at the location.
-				if (!sk_can_build(player(), pcursor())) { 
+				if (!sk_can_build(player(), pcursor())) {
 					die(color(RED).'You need to be able to build to use /signtext');
 				}
 			}
@@ -174,7 +174,7 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 /fw $colors [$fade='white'] [$type='ball_large'] [$qty=5] = >>>
 	_assertperm('admin')
 	foreach(range($qty), @i,
-		launch_firework(pcursor(), 
+		launch_firework(pcursor(),
 			array(colors: $colors, strength: 2, flicker: true, type: $type, fade: $fade)
 		)
 	)
@@ -193,48 +193,6 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 
 /lolno = /lolno help
 
-*:/fortunecookie [$=''] = >>>
-	_assertperm('admin')
-	if(pinv(player(), null) != null){
-		die(color(RED).'Clear the current slot in your inventory to use this command')
-	}
-	@fortunes = array(
-		'You will be loved long time',
-		'"Welcome" is a powerful word.',
-		'A dubious friend may be an enemy in camouflage',
-		'A feather in the hand is better than a bird in the air',
-		'A fresh start will put you on your way',
-		'A friend is a present you give yourself',
-		'A gambler not only will lose what he has, but also will lose what he doesn\'t have',
-		'A golden egg of opportunity falls into your lap this month.',
-		'A good time to finish up old tasks.',
-		'A hunch is creativity trying to tell you something.',
-		'A light heart carries you through all the hard times.',
-		'A new perspective will come with the new year.',
-		'A person is never too old to learn.',
-		'A person of words and not deeds is like a garden full of weeds.',
-		'A pleasant surprise is waiting for you.',
-		'A smile is your personal welcome mat.',
-		'A smooth long journey! Great expectations.',
-		'A soft voice may be awfully persuasive.',
-		'A truly rich life contains love and art in abundance.',
-		'You will have a bad day today',
-		'Watch out for that creeper',
-		'Hi Mom!',
-		'Don\'t let your money get in the way of being rich',
-		'Don\'t forget to brush your teeth',
-		'http://i.imgur.com/psu515W.gif',
-		'http://i.imgur.com/EUKubB9.jpg',
-		'http://www.google.com - Where the internet finds things',
-		'c.nerd.nu!',
-		'p.nerd.nu!',
-		's.nerd.nu!',
-	)
-	set_pinv(array(null: array(type: 357)))
-	set_itemmeta(null, array(lore: array(if($ == '', array_rand(@fortunes, 1, false), $))))
-	enchant_inv_unsafe(null, 'LOOT_BONUS_BLOCKS', 1)
-<<<
-
 *:/whereami [$] = >>>
 	msg(import('sharedata.source'));
 <<<
@@ -248,6 +206,6 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 	console('Online: '.array_size(all_players()))
 <<<
 
-# By popular request again . . 
+# By popular request again . .
 
 *:/bacc = /back

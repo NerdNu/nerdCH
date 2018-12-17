@@ -1,5 +1,13 @@
 # commandhelper.alias.give
 give:/i $mat [$qty=1] = >>>
+    if ($mat == 'WATER') {
+        run('/sb unsafe water');
+        die();
+    }
+    if ($mat == 'LAVA') {
+        run('/sb unsafe lava');
+        die();
+    }
     try {
         @success = pgive_item(array(name: to_upper($mat), damage: 0, qty: $qty, meta:));
         if (@success > 0) {
