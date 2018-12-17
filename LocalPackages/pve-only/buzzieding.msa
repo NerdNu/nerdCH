@@ -18,7 +18,7 @@
 				if(@currentPitch[0] == 0){
 					@pitch = 5
 				}
-				play_sound(ploc(@player), array(sound: ORB_PICKUP, pitch: @pitch, volume: 3))
+				play_sound(ploc(@player), array(sound: ENTITY_EXPERIENCE_ORB_PICKUP, pitch: @pitch, volume: 3))
 				if(@currentPitch[0] == 0, @currentPitch[0] = 1, @currentPitch[0] = 0)
 			}
 		, #catch

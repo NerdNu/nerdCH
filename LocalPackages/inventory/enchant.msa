@@ -1,15 +1,16 @@
-*:/enchant [$] = >>>
+*:/enchant $enchantment [$level=1] = >>>
     _assertperm('admin', 1)
-    assign(@m, reg_match('^(.*) ([0-9]+)$', $))
-    if(array_index_exists(@m,0),
-        try(
-            if(has_permission('nerdch.level.admin'),
-                enchant_inv_unsafe(null, @m[1], integer(@m[2])),
-            #else:
-                enchant_inv(null, @m[1], integer(@m[2])),
-            ),
-        @e,
-            msg(concat(color(red), 'Error\'d! Check the enchantment name and level'))),
-    #else:
-        msg(concat(color(red), 'Usage: /enchant <enchantment name> <level>')))
+    @isValid = is_enchantment($enchantment);
+    if (@isValid == true) {
+        try {
+            enchant_inv(null, $enchantment, $level);
+        } catch (EnchantmentException @e) {
+            msg(color(RED).'That enchantment cannot be applied to that item.');
+        } catch (RangeException @e) {
+            msg(color(RED).'That enchantment cannot be applied at that level.');
+        } catch (PlayerOfflineException @e) {
+        }
+    } else {
+        msg(color(RED).'That is not a valid enchantment.');
+    }
 <<<

@@ -1,7 +1,7 @@
 *:/who [$] = >>>
 	if ($ == 'let the dogs out?'){
 		msg('Woof; woof, woof, woof, woof')
-		play_sound(ploc(player()), array(sound: WOLF_BARK, pitch: 1, volume: 3), player())
+		play_sound(ploc(player()), array(sound: ENTITY_WOLF_AMBIENT, pitch: 1, volume: 3), player())
 	} else {
 		runas(~console, '/mv who world');
 		runas(~console, '/mv who world_the_end');

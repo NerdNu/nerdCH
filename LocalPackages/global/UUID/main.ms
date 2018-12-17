@@ -9,7 +9,7 @@ bind(player_login, null, null, @event,
 	x_new_thread('uuid_player_join', closure(){
 		// Sleep, so they are fully joined before we get their id.
 		sleep(1);
-		@pinfo = pinfo()
+		@pinfo = pinfo(@event['player'], -1);
 		@uuid = replace(@pinfo[20], '-', '');
 		@username = to_lower(strip_colors(@pinfo[0]));
 		@displayName = @pinfo[4];

@@ -1,7 +1,7 @@
 # Allow cart stacking
 
 *:/stackcarts [$] = >>>
-	@qty=ptake_item(player(),328,3000)
+    @qty = ptake_item(player(), array(name: MINECART, qty: 3000))
 	foreach (@i in 0..35){
 		@item = pinv(player(), @i)
 		if(@item==null,
