@@ -1,0 +1,7 @@
+*:/i water [$] = >>>
+	run('/sb unsafe water')
+<<<
+
+*:/i lava [$] = >>>
+	run('/sb unsafe lava')
+<<<

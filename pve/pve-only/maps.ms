@@ -8,7 +8,7 @@ bind(player_interact_entity, null, null, @event,
     # Make sure the player is holding something
     if(@item != null) {
       # And the thing they're holding is an empty map
-      if(@item['type'] == 395){
+      if(@item['type'] == "EMPTY_MAP"){
         # with a name that can be converted to an integer
         if(is_numeric(@item['meta']['display'])){
           @blacklist=array(1837)
