@@ -1,5 +1,4 @@
 
-
 *:/seen [$player] = >>>
 	_assertperm('seen')
 	if ($player == '') {
@@ -21,7 +20,7 @@
 	}
 
 	if (has_value(@key)) {
-		@format = 'EEEE, MMMM d, HH:mm' 
+		@format = 'EEEE, MMMM d, HH:mm'
 		msg(color(gold).@displayName.' was last seen on '.simple_date(@format, get_value(@key)).'\n(The current time is: '.simple_date(@format).')')
 		if (ponline($player)) {
 			msg(color(gold).'Also, they are currently online.')

@@ -7,8 +7,3 @@
 	_assertperm('admin', 0)
 	run(concat('/lb player ', $, ' chat search -/'))
 <<<
-
-*:/lbcmds $ = >>>
-	_assertperm('admin', 0)
-	run(concat('/lb player ', $, ' chat search /'))
-<<<

@@ -8,15 +8,14 @@
 <<<
 
 *:'/myregions' [$] = >>>
-        # Possibly rewrite to use sk_current_regions('player')?
-        @page = 0;
-        @name = player()
-        if ($ != "" && is_integral($)) {
-                @page = $;
-        }
-        if (@page == 0) {
-                runas(~console, '/region list -p ' . @name);
-        } else {
-                runas(~console, '/region list ' . @page . ' -p ' . @name);
-        }
+    @page = 0;
+    @name = player()
+    if ($ != "" && is_integral($)) {
+            @page = $;
+    }
+    if (@page == 0) {
+            runas(~console, '/region list -p ' . @name);
+    } else {
+            runas(~console, '/region list ' . @page . ' -p ' . @name);
+    }
 <<<
