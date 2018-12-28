@@ -82,25 +82,3 @@ The only reasons to put things in these files are:
    The CH `read()` function always reads files relative to the currently
    executing code. An example would be the `_kit()` function in [auto_include.ms](https://github.com/NerdNu/nerdCH/blob/master/auto_include.ms).
 
-
-### Server-Specific Packages
-
-Historically, server-specific packages (e.g. `LocalPackages/pve-only`) have been
-kept in the main `LocalPackages` directory and individual packages symlinked into
-place for each server, i.e.
-```
-cd ~/servers/pve-dev/plugins/CommandHelper/LocalPackages
-ln -fs ~/shared/NerdCH/LocalPackages/dynmap .
-ln -fs ~/shared/NerdCH/LocalPackages/global .
-...
-
-```
-It makes more sense from a practicality standpoint to isolate server-specific
-packages away from the `LocalPackages` directory so that one may then simply
-symlink the entire directory into place, followed by a server-specific package
-if applicable, i.e.
-```
-cd ~/servers/pve-dev/plugins/CommandHelper
-ln -fs ~/shared/NerdCH/LocalPackages .
-ln -fs ~/shared/NerdCH/pve/pve-only .
-```

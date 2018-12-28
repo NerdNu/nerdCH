@@ -7,15 +7,16 @@ bind(player_interact_entity, null, null, @event,
     @item=pinv(@event['player'],pheld_slot(@event['player']))
     # Make sure the player is holding something
     if(@item != null) {
+msg(@item);
       # And the thing they're holding is an empty map
-      if(@item['type'] == "EMPTY_MAP"){
+      if(@item['name'] == "MAP"){
         # with a name that can be converted to an integer
         if(is_numeric(@item['meta']['display'])){
           @blacklist=array(1837)
           if(!array_contains(@blacklist,integer(@item['meta']['display']))) {
             # Make a new item stack with a completed map. Set the correct map ID and quantity based on the blank map stack.
             @newitem = associative_array()
-            @newitem[pheld_slot(@event['player'])] = array(type: 358, data: integer(@item['meta']['display']), qty: @item['qty'])
+            @newitem[pheld_slot(@event['player'])] = array(name: "FILLED_MAP", meta: array(mapid: integer(@item['meta']['display'])), qty: @item['qty'])
             # Replace the blank maps with the competed maps.
             set_pinv(@event['player'],@newitem)
           } else {

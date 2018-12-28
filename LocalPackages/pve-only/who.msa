@@ -1,0 +1,6 @@
+*:/who [$] = >>>
+    sudo('/mv who world');
+    sudo('/mv who world_the_end');
+    sudo('/mv who world_nether');
+    sudo('/mv who mapworld');
+<<<
