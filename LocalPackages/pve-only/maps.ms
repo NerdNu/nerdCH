@@ -7,7 +7,6 @@ bind(player_interact_entity, null, null, @event,
     @item=pinv(@event['player'],pheld_slot(@event['player']))
     # Make sure the player is holding something
     if(@item != null) {
-msg(@item);
       # And the thing they're holding is an empty map
       if(@item['name'] == "MAP"){
         # with a name that can be converted to an integer
