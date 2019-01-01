@@ -1,5 +1,4 @@
-*:'/lift' [$] = >>>
-	_assertperm('mod');
+nerdch.level.mod:'/lift' [$] = >>>
 	if ($ == '' || $ == 'help') {
 		die(color(GOLD).'/lift <player> - Lift the specified player up 1/2 a block.');
 	}
