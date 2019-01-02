@@ -3,7 +3,7 @@
     @isValid = is_enchantment($enchantment);
     if (@isValid == true) {
         try {
-            enchant_inv(null, $enchantment, $level);
+            enchant_item(null, $enchantment, $level);
         } catch (EnchantmentException @e) {
             msg(color(RED).'That enchantment cannot be applied to that item.');
         } catch (RangeException @e) {
