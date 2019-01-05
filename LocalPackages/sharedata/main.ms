@@ -10,6 +10,8 @@ if(import('sharedata.source') == null){
 # Poll loop for reading data
 @lastRead = array(0)
 
+# temp disable
+/*
 set_interval(100, closure(
 	@data = get_value('sharedata.data')
 	@changes = false
@@ -47,4 +49,4 @@ set_interval(100, closure(
 		store_value('sharedata.data', @data)
 	}
 ))
-
+*/

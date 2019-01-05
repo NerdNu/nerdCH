@@ -284,7 +284,7 @@ bind(player_interact, null, null, @e,
 
 # Every minute, check to see if all the locations are valid signs. If not,
 # go ahead and delete it.
-set_interval(1 * 60 * 1000, closure(
+set_interval(60 * 1000, closure(
 	@signdata = get_value('easysign.signs')
 	if(!is_array(@signdata)){
 		@signdata = array()
@@ -307,4 +307,3 @@ set_interval(1 * 60 * 1000, closure(
 		)
 	)
 ))
-

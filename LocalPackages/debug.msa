@@ -1,0 +1,6 @@
+/chdebug [$enabled] = >>>
+    if (is_null($enabled)) {
+        $enabled = false;
+    }
+    set_debug_output(boolean($enabled));
+<<<

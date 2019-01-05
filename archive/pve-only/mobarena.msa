@@ -1,0 +1,24 @@
+nerdch.level.admin:'/boss-zombie' [$qty=16] = >>>
+	foreach(range($qty), @i,
+		run('/summon Zombie 9992 70 9668 {CustomName:Angry Bird,CustomNameVisible:1,ActiveEffects:[{Id:14,Amplifier:1,Duration:999999},{Id:1,Amplifier:1,Duration:999999},{Id:5,Amplifier:1,Duration:999999}],Silent:1,IsBaby:1,Riding:{id:Chicken,IsChickenJockey:1}}')
+	)
+<<<
+
+nerdch.level.admin:'/boss-witch' [$qty=16] = >>>
+	foreach(range($qty), @i,
+		run('/summon Witch 9992 70 9668 {ActiveEffects:[{Id:22,Amplifier:1,Duration:999999},{Id:21,Amplifier:1,Duration:999999}],CustomName:FAKOO,CustomNameVisible:1,Riding:{id:Blaze}}')
+	)
+<<<
+
+nerdch.level.admin:'/boss-rabbit' [$qty=16] = >>>
+	foreach(range($qty), @i,
+		run('/summon Rabbit 9992 70 9668 {CustomName:Caerbannog,CustomNameVisible:1,ActiveEffects:[{Id:1,Amplifier:2,Duration:999999},{Id:5,Amplifier:1,Duration:999999}],RabbitType:99}')
+	)
+<<<
+
+nerdch.level.admin:'/boss-guardian' [$qty=16] = >>>
+	foreach(range($qty), @i,
+		run('/summon Guardian 9992 70 9668 {CustomName:Sharknado,CustomNameVisible:1,ActiveEffects:[{Id:10,Amplifier:1,Duration:999999},{Id:11,Amplifier:1,Duration:999999}]}')
+	)
+<<<
+
