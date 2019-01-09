@@ -38,7 +38,7 @@
 					@formattedOwners = '';
 					foreach (@player in @owners) {
 						try(
-							@formattedOwners = @formattedOwners . @sep . _get_username_from_uuid(@player);
+							@formattedOwners = @formattedOwners . @sep . plast_known_name(@player);
 							@sep = ', ';
 						);
 					}

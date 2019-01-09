@@ -9,7 +9,7 @@
 
 	assign(@playerName, strip_colors($player))
 	assign(@lowerName, to_lower(@playerName))
-	assign(@uuid, _get_puuid(@lowerName))
+	assign(@uuid, puuid(@lowerName, true))
 	assign(@key, 'lastseen.' . @uuid)
 
 	if (has_value('correctPlayerName.' . @lowerName)) {
@@ -40,7 +40,7 @@
 
 	assign(@playerName, strip_colors($player))
 	assign(@lowerName, to_lower(@playerName))
-	assign(@uuid, _get_puuid(@lowerName))
+	assign(@uuid, puuid(@lowerName, true))
 
 	if (has_value('correctPlayerName.' . @lowerName)) {
 		assign(@displayName, get_value('correctPlayerName.' . @lowerName))

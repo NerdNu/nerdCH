@@ -5,7 +5,7 @@
 	@list = '';
 	foreach (@player in @members) {
 		try(
-			@list = @list . @sep . _get_username_from_uuid(@player);
+			@list = @list . @sep . plast_known_name(@player);
 			@sep = ', ';
 		);
 	}

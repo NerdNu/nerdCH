@@ -8,7 +8,7 @@
 	if ($player == '') {
 		die(color(RED).'Usage: /namehistory <player>')
 	}
-	@uuid = _get_puuid($player)
+	@uuid = puuid($player, true)
 	if (!@uuid) {
 		die(color(RED).'Error: could not obtain UUID for supplied username.')
 	}

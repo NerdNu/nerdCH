@@ -8,7 +8,7 @@
     if($ == '') {
         msg(color(DARK_RED).'Usage: /warn <player> <message>')
     } else {
-        @uuid = _get_puuid($player)
+        @uuid = puuid($player, true)
         if (@uuid == null){
             die(color(DARK_RED).'No player by that name has played here.')
         }

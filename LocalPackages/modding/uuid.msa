@@ -4,7 +4,7 @@
 	if ($ == '') {
 		die(color(GOLD).'/uuid <player> - Look up UUID of player.');
 	} else {
-		@uuid = _get_puuid($);
+		@uuid = puuid($, true);
 		if (@uuid != null) {
 			msg(color(GOLD).'https://namemc.com/s?'.@uuid);
 		} else {

@@ -1,5 +1,5 @@
-bind(player_join, null, null, @event,
-    @warnings = get_value('warnings', _get_puuid(@event['player']))
+/*bind(player_join, null, null, @event,
+    @warnings = get_value('warnings', puuid(@event['player'], true))
     if(@warnings != null) {
         msg(color(GRAY).'---------------------------------------------')
         msg(color(RED).'You been warned about something by a staff member!')
@@ -21,7 +21,7 @@ set_interval(30 * 1000, closure() {
             tmsg(@player, color(GRAY).'---------------------------------------------')
         }
     }
-})
+})*/
 
 /**
  * Gets the last known username from the database, or null, if no player is known with that UUID.
