@@ -85,15 +85,6 @@
 	run('/me drinks')
 <<<
 
-# By popular request . . .
-'//stacc' [$] = >>>
-        if ($ == '') {
-                run('//stack');
-        } else {
-                run('//stack ' . $);
-        }
-<<<
-
 *:/cs [$] = >>>
     run('/NerdClanChat:cs ' . $);
 <<<
@@ -251,5 +242,9 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 <<<
 
 # By popular request again . . 
+*:/stacc = /stack
 
 *:/bacc = /back
+
+*:/checc = /check
+
