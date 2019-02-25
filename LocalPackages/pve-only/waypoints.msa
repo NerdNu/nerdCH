@@ -22,7 +22,7 @@
 	@wp_name = $extra
     }
 
-    @uuid = _get_puuid(@player_name)
+    @uuid = puuid(@player_name, true)
     @waypoints = get_value('waypoints', @uuid)
     if(@waypoints == null) {
         die(color(red).'No waypoint named ' . $name)
@@ -77,7 +77,7 @@
         @is_own_list = true
     } 
 
-    @uuid = _get_puuid(@player)
+    @uuid = puuid(@player, true)
     @waypoints = get_value('waypoints', @uuid)  
 
     if(@waypoints == null || length(@waypoints) == 0) {
@@ -115,7 +115,7 @@
 <<<
 
 *:/setwp $name [$mode] = >>>
-    @uuid = _get_puuid(player())
+    @uuid = puuid(player(), true)
     @waypoints = get_value('waypoints', @uuid)
     if(@waypoints == null) {
         @waypoints = array()
@@ -138,7 +138,7 @@
 <<<
 
 *:/setwp $name $x $y $z [$mode] = >>>
-    @uuid = _get_puuid(player())
+    @uuid = puuid(player(), true)
     @waypoints = get_value('waypoints', @uuid)
     if(@waypoints == null) {
         @waypoints = array()
@@ -168,7 +168,7 @@
 <<<
 
 *:/delwp $name = >>>
-    @uuid = _get_puuid(player())
+    @uuid = puuid(player(), true)
     @waypoints = get_value('waypoints', @uuid)
     if(@waypoints == null) {
         die(color(red).'You have no waypoints.')
@@ -197,7 +197,7 @@
 
 *:/dumpwps $player = >>>
 	_assertperm('admin');
-	@uuid = _get_puuid($player);
+	@uuid = puuid($player, true);
 	@waypoints = get_value('waypoints', @uuid);
 	if (@waypoints == null || length(@waypoints) == 0) {
 		die(color(RED). $player . ' has no waypoints.');
