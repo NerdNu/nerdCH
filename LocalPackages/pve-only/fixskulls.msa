@@ -1,0 +1,19 @@
+# Allow all skulls in player's inventory to stack by replacing them with new, identical skulls. (Didn't find another way to force the signatures to be the same)
+
+*:/fixskulls = >>>
+	foreach(@i in 0..35) {
+		@item = pinv(player(), @i);
+		if(@item != null) {
+			if(@item['name'] == 'PLAYER_HEAD') {
+				@meta = get_itemmeta(@i);
+				@newitem = associative_array();
+				@newitem[@i] = array(name: 'PLAYER_HEAD', damage: 3, qty: @item['qty'], meta: array(owner: @meta['owner']));
+				# And replace the existing item stack with the new one
+				set_pinv(player(), @newitem);
+			}
+		}
+	}
+	msg('Skulls in your inventory will now stack with each other.');
+<<<
+
+/fs = call_alias('/fixskulls')
