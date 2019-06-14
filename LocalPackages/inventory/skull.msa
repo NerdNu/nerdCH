@@ -1,13 +1,16 @@
 
-*:/skull [$player] = >>>
+*:/skull [$player] [$texture]= >>>
 	if(!has_permission('nerdch.level.creative') && !has_permission('nerdch.level.restricted')){
 		die(color(RED).'You do not have permission for that command')
 	}
 	if($player == ''){
 		msg(color(red).'Usage: /skull $player')
 		msg(color(red).'Note that this works with offline players, but the name must be exact')
+		msg(color(red).'Usage: /skull $name $base64-encoded-texture')
+		msg(color(red).'Note that the name can not contain spaces.')
 		die()
-	} else {	
+	} else if($texture == ''){
+		#Giving skull of specified player
 		# Find the first slot that's empty
 		foreach(0..31, @i,
 			if(pinv(player(), @i) == null){
@@ -19,5 +22,20 @@
 				break()
 			}
 		)
+	} else {
+		msg(get_itemmeta(null))
+		#Giving skull with specified fake name and specified texture
+		#It is easiest to just use /minecraft:give but that can drop the item on the ground if the player has no free slots. Check for one first.
+		#Find the first slot that's empty
+		foreach(0..31, @i,
+			if(pinv(player(), @i) == null){
+				# Perfect, found it
+				@p=player()
+				sudo('/minecraft:give '.@p.' minecraft:player_head{display:{Name:"{\\"text\\":\\"'.$player.'\\"}"},SkullOwner:{Id:"7b23e73a-9026-438d-9706-3d532b424d88",Properties:{textures:[{Value:"'.$texture.'"}]}}} 1')
+				msg('Player head added with custom texture!')
+				break()
+			}
+		)
+
 	}
 <<<
