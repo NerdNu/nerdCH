@@ -1,0 +1,29 @@
+*:'/count-entities' $radius $type = >>>
+	_assertperm('admin');
+	if (! is_numeric($radius)) {
+		die(color(RED).'The first argument must be the radius.');
+	}
+	if (is_null($type) || $type == "") {
+		die(color(RED).'The second argument must be an entity type.');
+	}
+	@maxRadius = 200;
+	@radius = if ($radius > @maxRadius, @maxRadius, $radius);
+	@types = array();
+	@counts = associative_array();
+	foreach (parse_args($type), @type, array_push(@types, to_lower(@type)));
+	@entities = entities_in_radius(ploc(), @radius, @types);
+	foreach (@e in @entities) {
+		@type = entity_type(@e);
+		if (@type == null) {
+			@type = 'unknown';
+		}
+		@key = to_lower(@type);
+		if (array_index_exists(@counts, @key)) {
+			inc(@counts[@key]);
+		} else {
+			@counts[@key] = 1;
+		}
+	}
+	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:');
+	foreach (array_keys(@counts), @type, msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type)));
+<<<

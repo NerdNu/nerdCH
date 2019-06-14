@@ -203,7 +203,7 @@
 
 *:'/find-pets' $radius [$types='cat,dog,horse'] [$owner=''] [$name=''] = >>>
 	_assertperm('admin')
-	@MAX_RADIUS = 200
+	@MAX_RADIUS = 1000
 	@radius = $radius
 	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
 		die(color(RED).'The first argument must be a number no more than '.@MAX_RADIUS.'.')

@@ -4,7 +4,7 @@
 	} else {
 		if (pworld() == 'mapworld') {
 			msg(color(GOLD)."Taking you back to map world spawn.");
-			runas(~console, /mv tp player() mapworld);
+			runas(~console, '/mv tp '.player().' mapworld');
 			die();
 		} else {
 			msg(color(RED).'You can only use /spawn in the map world.');
