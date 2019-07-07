@@ -6,17 +6,20 @@
 # Longer time, a single plugin should handle actions triggered by entering
 # or leaving a region, and EasySigns-like sign clicks.
 
-*:/effect help = _effecthelp();
-
-*:/effect clear = >>>
-	_assertperm('effect');
-	foreach (@e in get_peffect()) {
-		set_peffect(player(), @e[id], @e[strength], 0);
-	}
-<<<
-
 *:/effect $id [$seconds] [$amplifier] [$hide_particles] = >>>
 	_assertperm('effect');
+
+	if ($id == 'clear') {
+		foreach (@e in get_peffect()) {
+			set_peffect(player(), @e[id], @e[strength], 0);
+		}
+		die();
+	} 
+
+	if ($id == '' || $id == 'help') {
+		_effecthelp();
+		die();
+	}
 
 	if (is_integral($id)) {
 		@id = $id;
@@ -45,5 +48,3 @@
 	set_peffect(player(), @id, @strength, @seconds, false, @particles);
 <<<
 
-*:/effect = _effecthelp();
- 
