@@ -18,6 +18,7 @@ set_interval(30 * 1000, closure() {
             tmsg(@player, color(GRAY).'---------------------------------------------')
             tmsg(@player, color(RED).'You been warned about something by a staff member!')
             tmsg(@player, color(RED)."Type '/warnings' to view your warnings.")
+            tmsg(@player, color(RED)."Type '/warnings clear 1' to clear the first warning.")
             tmsg(@player, color(GRAY).'---------------------------------------------')
         }
     }
