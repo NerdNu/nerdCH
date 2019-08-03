@@ -16,7 +16,7 @@
 			if(pinv(player(), @i) == null){
 				# Perfect, found it
 				@array = associative_array()
-				@array[@i] = array(type: 397, data: 3, meta: array(owner: $player))
+				@array[@i] = array(name: "PLAYER_HEAD", meta: array(owner: $player))
 				set_pinv(player(), @array)
 				msg('Player head added!')
 				break()
