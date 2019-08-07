@@ -1,6 +1,7 @@
 *.bak
 *.bak*
 *~
+*.swp
 LocalPackages/private/
 LocalPackages/misc/*.alerts
 .idea/
