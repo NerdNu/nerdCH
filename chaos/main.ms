@@ -1,6 +1,5 @@
 export('sharedata.source', 'chaos')
 export('sharedata.source.color', 'BLUE')
-export('global-list', true)
 
 try(
 	export('shared.firstjoin.book', read('firstjoinbook.txt')),

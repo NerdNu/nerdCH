@@ -1,6 +1,5 @@
 export('sharedata.source', 'pve')
 export('sharedata.source.color', 'GREEN')
-export('global-list', true)
 
 try(
 	export('shared.firstjoin.book', read('firstjoinbook.txt')),
