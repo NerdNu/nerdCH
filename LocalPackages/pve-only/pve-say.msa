@@ -1,0 +1,8 @@
+*:'/pve-say' $ = >>>
+	if (player() == '~console') {
+		broadcast(color(GOLD) . '[Server] ' . $);
+		die();
+	}
+
+	run('/say ' . $);
+<<<
