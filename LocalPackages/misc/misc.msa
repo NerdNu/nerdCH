@@ -36,7 +36,7 @@
 
 *:/coords = >>>
     assign(@l, ploc())
-    assign(@w, array('world': 'overworld', 'world_nether': 'nether', 'world_the_end': 'end'))
+    assign(@w, array('world': 'overworld', 'world_nether': 'nether', 'world_the_end': 'end', 'pve-events': 'events'))
     msg(concat(color(gray), 'You are in the ', @w[@l[3]], '.'))
     msg(concat(color(gray), 'X: ', integer(@l[0]), ' (+East <-> -West)'))
     msg(concat(color(gray), 'Y: ', integer(@l[1]), ' (+Up <-> -Down)'))
@@ -241,7 +241,3 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 	console('Online: '.array_size(all_players()))
 <<<
 
-# add special aliases for creative
-*://stacc [$] = run('//stack ' . $);
-*:/bacc [$] = run('/back');
-*:/checc [$] = run('/check ' . $);
