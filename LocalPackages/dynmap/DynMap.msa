@@ -1,25 +1,23 @@
 *:/dynmap = >>>
-	if (player() != '~console' && array_contains(pgroup(), 'default')) {
-		msg('/dynmap show/hide')
+	if (player() == '~console' || array_contains(pgroup(), 'super')) {
+		run('/dynmap');
 	} else {
-		run('/dynmap '.$)
+		msg(color(RED).'Usage: /dynmap [show | hide]');
 	}
 <<<
 
 *:/dynmap $ = >>>
-	if (player() != '~console' && and(array_contains(pgroup(), 'default'), not(array_contains(array('show', 'hide'), $)))) {
-		die('Unknown command. Type "/help" for help')
+	if (player() == '~console' || array_contains(pgroup(), 'super') || $ == 'show' || $ == 'hide') {
+		run('/dynmap '.$);
 	} else {
-		run('/dynmap '.$)
+		die(color(RED).'Unknown command. Type /help for help.');
 	}
 <<<
 
-*:/dmarker [$] = if(array_contains(pgroup(), 'default'), die('Unknown command. Type "/help" for help'), run('/dmarker '.$))
-
-/*
-*:/map update = >>>
-	_cooldown2(120, 'MAPUPDATE' . player())
-	runas(~console, '/dynmap radiusrender 32')
+*:/dmarker [$] = >>>
+	if (player() == '~console' || array_contains(pgroup(), 'super')) {
+		run('/dmarker '.$);
+	} else {
+		die(color(RED).'Unknown command. Type /help for help.');
+	}
 <<<
-*/
-
