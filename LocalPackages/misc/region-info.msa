@@ -14,8 +14,8 @@
             @page = $;
     }
     if (@page == 0) {
-            runas(~console, '/region list -p ' . @name);
+        sudo('/region list -p ' . @name);
     } else {
-            runas(~console, '/region list ' . @page . ' -p ' . @name);
+        sudo('/region list ' . @page . ' -p ' . @name);
     }
 <<<
