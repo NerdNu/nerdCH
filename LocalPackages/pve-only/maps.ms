@@ -1,7 +1,7 @@
 # When right clicking on an item fram with a blank map that has a name which can be converted to an integer, convert the map into a completed map with an ID matching the name converted to an integer.
 
 
-bind(player_interact_entity, null, null, @event,
+bind('player_interact_entity', null, null, @event,
   # return right away if event is not a player clicking an item frame
   if(@event['clicked'] == "ITEM_FRAME") {
     @item=pinv(@event['player'],pheld_slot(@event['player']))

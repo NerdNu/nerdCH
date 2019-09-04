@@ -1,6 +1,6 @@
 # Prototype dragon fight changes
 
-bind(creature_spawn, null, null, @event,
+bind('creature_spawn', null, null, @event,
 	if(equals(@event['type'],"ENDER_DRAGON"),
 		set_timeout(1000, closure(
 			# Double the max health of the dragon when it spawns without setting its health.
@@ -9,7 +9,7 @@ bind(creature_spawn, null, null, @event,
 	)
 )
 
-bind(entity_damage_player, null, null, @event,
+bind('entity_damage_player', null, null, @event,
 	# Make the dragon breath have special effects
 	if(equals(@event['damager'],"AREA_EFFECT_CLOUD"),
 		if(equals(@event['location']['world'],"world_the_end"),
@@ -21,7 +21,7 @@ bind(entity_damage_player, null, null, @event,
 	)
 )
 
-bind(entity_damage, null, null, @event,
+bind('entity_damage', null, null, @event,
 	if(equals(@event['type'],"ENDER_DRAGON"),
 
 		# When Shot

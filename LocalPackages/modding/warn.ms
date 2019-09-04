@@ -1,4 +1,4 @@
-bind(player_join, null, null, @event,
+bind('player_join', null, null, @event,
     @warnings = get_value('warnings', _get_puuid(@event['player']))
     if(@warnings != null) {
         msg(color(GRAY).'---------------------------------------------')

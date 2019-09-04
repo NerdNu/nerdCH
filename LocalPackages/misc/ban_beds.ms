@@ -3,7 +3,7 @@
  * This works around a minecraft bug that causes beds placed in the hell biome
  * to explode tnt like when right clicked with redstone.
  */
-bind(block_place, null, array(type: 26), @e,
+bind('block_place', null, array(type: 26), @e,
 	# Do not allow beds to be placed in the NETHER or THE_END.
 
 	@wenv = world_info(pworld())['environment']

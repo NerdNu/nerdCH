@@ -1,4 +1,4 @@
-proc(_signencode, @data,
+proc _signencode(@data) {
 	assign(@new, '')
 	for(assign(@j, 0), lt(@j, length(@data)), inc(@j),
 		assign(@new, concat(@new, 
@@ -7,21 +7,24 @@ proc(_signencode, @data,
 				color(
 					integer(
 						substr(@data, @j, add(@j,1))))))))
-	return(@new))
+	return(@new)
+}
 
-proc(_signdecode, @data,
+proc _signdecode(@data) {
 	assign(@new, '')
 	for(assign(@j, 1), lt(@j, length(@data)), inc(@j, 2),
 		assign(@new, concat(@new,
 			if(equals(substr(@data, @j, add(@j,1)), ' '),
 				':',
 				substr(@data, @j, add(@j,1))))))
-	return(@new))
+	return(@new)
+}
 
-proc(_msg2, @text,
-	msg(concat(color(10), '[SIGN] ', color(15), @text)))
+proc _msg2(@text) {
+	msg(concat(color(10), '[SIGN] ', color(15), @text))
+}
 
-bind(player_interact, null, array(block: 68, button: 'right'), @event,
+bind('player_interact', null, array(block: 68, button: 'right'), @event,
 	assign(@text, get_sign_text(@event['location']))
 	#Check if it's a trade sign...
 	assign(@command, reg_match(concat(color(1),'\\[(.*)\\]'), @text[1]))

@@ -1,4 +1,4 @@
-proc(_send_mail, @from, @to, @msg, assign(@type, null),
+proc _send_mail(@from, @to, @msg, @type = null) {
     # Send an abstract mail to someone.
     
     # Restrict permissions for this.
@@ -48,4 +48,4 @@ proc(_send_mail, @from, @to, @msg, assign(@type, null),
     )
     
     return(true)
-)
+}

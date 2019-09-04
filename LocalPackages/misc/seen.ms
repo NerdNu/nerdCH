@@ -1,4 +1,4 @@
-bind(player_join, null, null, @event,
+bind('player_join', null, null, @event,
 	assign(@playerName, strip_colors(player()))
 	assign(@lowerName, to_lower(@playerName))
 	@ip = pinfo(@playerName, 3)

@@ -1,4 +1,4 @@
-proc(_send_hand_item, @target, @i, @count,
+proc _send_hand_item(@target, @i, @count) {
     if(player() == '~console',
         msg(color(red), 'You are console. You have no hand!')
         return(false)
@@ -58,9 +58,9 @@ proc(_send_hand_item, @target, @i, @count,
             )
         )
     )
-)
+}
 
-proc(_send_item, @target, @i, @c,
+proc _send_item(@target, @i, @c) {
     # Send items, removing them from this user's inventory.
     
     if(!has_permission(player(), 'chmail.send.item') &&
@@ -159,4 +159,4 @@ proc(_send_item, @target, @i, @c,
             return(false)
         )
     )
-)
+}

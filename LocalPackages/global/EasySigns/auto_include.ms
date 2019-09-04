@@ -6,7 +6,7 @@
 # if the arguments could not be parsed.
 # @args can be an array slice created with @args[cslice(first, last)].
 
-proc(_parse_location, @args,
+proc _parse_location(@args) {
 	if (array_size(@args) != 3 && array_size(@args) != 4) {
 		return ('The location must be of the form [<world>] <x> <y> <z>.')	
 	}
@@ -29,16 +29,16 @@ proc(_parse_location, @args,
 	}
 	
 	return (array(@args[@start], @args[@start+1], @args[@start+2], @world))
-)
+}
 
 /**
  * Changes the location array's new format into the old, expected format.
  */
-proc(_easy_sign_loc_conv, @location,
+proc _easy_sign_loc_conv(@location) {
 	@array = array()
 	@array[] = integer(@location['x'])
 	@array[] = integer(@location['y'])
 	@array[] = integer(@location['z'])
 	@array[] = @location['world']
 	return(@array)
-)
+}

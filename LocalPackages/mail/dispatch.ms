@@ -1,4 +1,4 @@
-proc(_mail_dispatch, @args,
+proc _mail_dispatch(@args) {
     # Parse the incoming command, depending on it's first
     # word.
     
@@ -85,7 +85,7 @@ proc(_mail_dispatch, @args,
                 if(equals(length(@args), 2),
                     # Push the special value "i1" onto the last arg if an amount wasn't specified.
                     # This way we send the whole stack if the item is "hand", or send 1 item if it's a name.
-                    array_push(@args, i1)
+                    array_push(@args, 'i1')
                 )
                 
                 if(_send_item(@args[0], @args[1], @args[2]),
@@ -191,4 +191,4 @@ proc(_mail_dispatch, @args,
         msg('- ', color(green), '/mail set [global] <option> <value>', color(white), ': set an option.')
         die(concat('- ', color(green), '/mail delete <id>', color(white), ': delete message <id>.'))
     )
-)
+}

@@ -1,5 +1,5 @@
 
-proc(_ermagerd, @string,
+proc _ermagerd(@string) {
 	# Begin the transformations
 	@string = reg_replace('(?i)oo?r?', 'er', @string)
 	@string = reg_replace('a', 'er', @string)
@@ -8,9 +8,9 @@ proc(_ermagerd, @string,
 	@string = reg_replace('([^a-zA-Z])*?my', '$1ma', @string)
 	@string = reg_replace('[\\.,;]', '', @string) #Pfft, who needs punctuation
 	return(@string)
-)
+}
 
-proc(_effecthelp,
+proc _effecthelp() {
 	_assertperm('effect');
 	msg(color(GOLD) . 'Usage:');
 	msg(color(YELLOW) . '/effect clear ' . color(GOLD) . '- Clear all potion effects.');
@@ -21,7 +21,7 @@ proc(_effecthelp,
 	msg(color(GOLD) . '    <amplifier> - potion strength; 1, 2 etc.');
 	msg(color(GOLD) . '    <hide-particles> - if true, hide particles');
 	return (null);
-)
+}
 
 // Check the cooldown time of a command.
 //
@@ -32,7 +32,7 @@ proc(_effecthelp,
 //
 // returns: true if the cooldown is okay, or false if the timer is still
 //          running.
-proc(_checkCooldown, @commandName, @delay,
+proc _checkCooldown(@commandName, @delay) {
 	@varName = "cooldown." . @commandName . "." . player();
 	@cooldownTime = import(@varName);
 	@currentTime = time();
@@ -41,5 +41,5 @@ proc(_checkCooldown, @commandName, @delay,
 	}
 	export(@varName, @currentTime + @delay);
 	return(true);
-)
+}
 

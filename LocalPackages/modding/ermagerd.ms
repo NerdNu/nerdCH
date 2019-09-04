@@ -6,15 +6,15 @@
 export('ermagerd_players', @ermagerd_players)
 
 # See if a player is ermagerd
-proc(_is_ermagerd,
+proc _is_ermagerd() {
         @ermagerd_players = import('ermagerd_players')
         @ermagerd = array_index_exists(@ermagerd_players, '*')
                  || array_index_exists(@ermagerd_players, to_lower(player()));
         return(@ermagerd);
-)
+}
 
 # Ermagerd!
-proc(_ermagerd2, @string,
+proc _ermagerd2(@string) {
 	# Note. (?i) will ignore case
 	#       (?<!X) negative lookbehind
 	#       (?!X) negative lookahead
@@ -29,10 +29,10 @@ proc(_ermagerd2, @string,
         @string = reg_replace('(?i)my', 'MA', @string);
         @string = reg_replace('[\\.,;]', '', @string); #Pfft, who needs punctuation
         return(@string);
-)
+}
 
 # Filter chat
-bind(player_chat, null, null, @event,
+bind('player_chat', null, null, @event,
         if(!_is_ermagerd()) {
                 die();
         }
@@ -43,7 +43,7 @@ bind(player_chat, null, null, @event,
 )
 
 # Filter chat commands too! No Excape!
-bind(player_command, null, null, @event,
+bind('player_command', null, null, @event,
         @cmd = @event['prefix']
         if((@cmd == '/me' || @cmd == '/s') && _is_ermagerd()) {
                 @full_cmd = @event['command'];
