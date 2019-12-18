@@ -8,5 +8,5 @@
 			@sep = ', ';
 		);
 	}
-	msg(color(GRAY) . 'Owners of ' . $region . ': ' . color(WHITE) . @list);
+	msg(color('GRAY') . 'Owners of ' . $region . ': ' . color('WHITE') . @list);
 <<<

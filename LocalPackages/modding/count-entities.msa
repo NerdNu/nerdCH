@@ -1,10 +1,10 @@
 *:'/count-entities' $radius $type = >>>
 	_assertperm('admin');
 	if (! is_numeric($radius)) {
-		die(color(RED).'The first argument must be the radius.');
+		die(color('RED').'The first argument must be the radius.');
 	}
 	if (is_null($type) || $type == "") {
-		die(color(RED).'The second argument must be an entity type.');
+		die(color('RED').'The second argument must be an entity type.');
 	}
 	@maxRadius = 200;
 	@radius = if ($radius > @maxRadius, @maxRadius, $radius);
@@ -24,6 +24,6 @@
 			@counts[@key] = 1;
 		}
 	}
-	msg(color(GOLD).'Total entities by type within '.@radius.' blocks of you:');
-	foreach (array_keys(@counts), @type, msg(color(GOLD).sprintf('%-10d %s', @counts[@type], @type)));
+	msg(color('GOLD').'Total entities by type within '.@radius.' blocks of you:');
+	foreach (array_keys(@counts), @type, msg(color('GOLD').sprintf('%-10d %s', @counts[@type], @type)));
 <<<

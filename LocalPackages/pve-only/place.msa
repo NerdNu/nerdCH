@@ -26,7 +26,7 @@
 	@placedb = get_value('placedb')
 	@ploc=ploc()
 	if(@placedb == null){
-		msg(color(LIGHT_PURPLE).'Hmm, doesn\'t look like there are any places yet.')
+		msg(color('LIGHT_PURPLE').'Hmm, doesn\'t look like there are any places yet.')
 		die()
 	}
 	@matchSet = closure(@world, @name){
@@ -75,29 +75,29 @@
 	}
 	@printPlace = closure(@placeName, @place){
 		if(!(@ploc['world']==@place['world'])){
-			@dimdis=color(BLACK)
+			@dimdis=color('BLACK')
 			switch(@place['world']){
 				case 'world':
 					@dimdis.=', dim=0]'
-					break;
+					break();
 				case 'world_nether':
 					@dimdis.=', dim=-1]'
-					break;
+					break();
 				case 'world_the_end':
 					@dimdis.=', dim=1]'
-					break;
+					break();
 				default:
 					@dimdis.=']'
-					break;
+					break();
 			}
 		} else {
-			@dimdis=color(BLACK).'] '.color(BLUE).' Distance'.color(WHITE).': '.round(execute(@place, @ploc, @distance), 2)
+			@dimdis=color('BLACK').'] '.color('BLUE').' Distance'.color('WHITE').': '.round(execute(@place, @ploc, @distance), 2)
 		}
-		msg(color(BLACK).'['.
-		color(LIGHT_PURPLE).'Name'.color(WHITE).': '.@placeName.color(WHITE).', '.
-		color(RED).'X'.color(WHITE).': '.floor(round(@place['x'])).color(WHITE).', '.
-		color(YELLOW).'Y'.color(WHITE).': '.floor(round(@place['y'])).color(WHITE).', '.
-		color(GREEN).'Z'.color(WHITE).': '.floor(round(@place['z'])).
+		msg(color('BLACK').'['.
+		color('LIGHT_PURPLE').'Name'.color('WHITE').': '.@placeName.color('WHITE').', '.
+		color('RED').'X'.color('WHITE').': '.floor(round(@place['x'])).color('WHITE').', '.
+		color('YELLOW').'Y'.color('WHITE').': '.floor(round(@place['y'])).color('WHITE').', '.
+		color('GREEN').'Z'.color('WHITE').': '.floor(round(@place['z'])).
 		@dimdis)
 	}
 	@lookAt = closure(@loc){
@@ -132,29 +132,29 @@
 							@distO=execute(@ploc, @loc, @distance)
 
 							if(@distN<@distO){
-								msg(color(LIGHT_PURPLE).'You could save '.round((@distO-@distN)).' blocks by going through the '.color(WHITE).@closestP.color(LIGHT_PURPLE)' then '.color(WHITE).@closestD.color(LIGHT_PURPLE)' nether portals.')
+								msg(color('LIGHT_PURPLE').'You could save '.round((@distO-@distN)).' blocks by going through the '.color('WHITE').@closestP.color('LIGHT_PURPLE')' then '.color('WHITE').@closestD.color('LIGHT_PURPLE')' nether portals.')
 							}
 						} catch(IndexOverflowException @e){
 							#nothing
 						}
 						execute(@loc, @lookAt)
-						break;
+						break();
 					case 'world_nether':
 						@set=execute('Overworld', 'netherportals', @matchSet)
 						@closest=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
-						msg(color(LIGHT_PURPLE).'That place is in the Nether. Try going to the '.color(WHITE).@closest.color(LIGHT_PURPLE).' nether portal.')
+						msg(color('LIGHT_PURPLE').'That place is in the Nether. Try going to the '.color('WHITE').@closest.color('LIGHT_PURPLE').' nether portal.')
 						execute(@closest, @placedb['Overworld'][@set][@closest], @printPlace)
 						execute(@placedb['Overworld'][@set][@closest], @lookAt)
-						break;
+						break();
 					case 'world_the_end':
 						@set=execute('Overworld', 'endportals', @matchSet)
 						@closest=execute(@ploc, @placedb['Overworld'][@set], @findClosestPlace)
-						msg(color(LIGHT_PURPLE).'That place is in the End. Try going to the '.color(WHITE).@closest.color(LIGHT_PURPLE).' end portal.')
+						msg(color('LIGHT_PURPLE').'That place is in the End. Try going to the '.color('WHITE').@closest.color('LIGHT_PURPLE').' end portal.')
 						execute(@closest, @placedb['Overworld'][@set][@closest], @printPlace)
 						execute(@placedb['Overworld'][@set][@closest], @lookAt)
-						break;
+						break();
 				}
-				break;
+				break();
 			case 'world_nether':
 				switch(@loc['world']){
 					case 'world':
@@ -163,10 +163,10 @@
 						#Find the closest one to the place the player is going
 						@closest=execute(@loc, @placedb['Overworld'][@set], @findClosestPlace)
 						#Tell the player what's going on and point them to the portal
-						msg(color(LIGHT_PURPLE).'You need to go through a nether portal to get to that place. Pointing you to the portal closest to your destination!')
+						msg(color('LIGHT_PURPLE').'You need to go through a nether portal to get to that place. Pointing you to the portal closest to your destination!')
 						execute(@closest, @placedb['Nether'][@set][@closest], @printPlace)
 						execute(@placedb['Nether'][@set][@closest], @lookAt)
-						break;
+						break();
 					case 'world_the_end':
 						#find the closest nether portal to an end portal
 						@closestEndportal
@@ -184,29 +184,29 @@
 							}
 						}
 
-						msg(color(LIGHT_PURPLE).'You need to go through '.color(WHITE).@closestD.color(LIGHT_PURPLE).' nether portal then '.color(WHITE).@closestEndportal.color(LIGHT_PURPLE).' end portal to get to your destination. Here are their coordinates.')
+						msg(color('LIGHT_PURPLE').'You need to go through '.color('WHITE').@closestD.color('LIGHT_PURPLE').' nether portal then '.color('WHITE').@closestEndportal.color('LIGHT_PURPLE').' end portal to get to your destination. Here are their coordinates.')
 						execute(@closestD, @placedb['Nether'][@setN][@closestD], @printPlace)
 						execute(@closestEndportal, @placedb['Overworld'][@setE][@closestEndportal], @printPlace)
 						execute(@placedb['Nether'][@setN][@closestD], @lookAt)
 
-						break;
+						break();
 					case 'world_nether':
 						#Nothing spectial to do. Just point them to the place.
 						execute(@loc, @lookAt)
 					default:
-						msg(color(LIGHT_PURPLE).'You will need to change worlds to get to that place!')
-						break;
+						msg(color('LIGHT_PURPLE').'You will need to change worlds to get to that place!')
+						break();
 				}
-				break;
+				break();
 			case 'world_the_end':
 					if(@loc['world']=='world_the_end'){
 						execute(@loc, @lookAt)
 					} else {
-						msg(color(LIGHT_PURPLE).'You will need to change worlds to get to that place!')
+						msg(color('LIGHT_PURPLE').'You will need to change worlds to get to that place!')
 					}
-				break;
+				break();
 			default:
-				msg(color(LIGHT_PURPLE).'You will need to change worlds to get to that place!')
+				msg(color('LIGHT_PURPLE').'You will need to change worlds to get to that place!')
 		}
 
 
@@ -218,15 +218,15 @@
 #		}
 	}
 	@printPlaces = closure(@world, @set){
-		@placenames = array_sort(array_keys(@placedb[@world][@set]), STRING_IC)
+		@placenames = array_sort(array_keys(@placedb[@world][@set]), 'STRING_IC')
 		for(@i=0, @i<length(@placenames), @i++){
 			if(@i % 2 == 0){
-				@placenames[@i]=color(GRAY).@placenames[@i]
+				@placenames[@i]=color('GRAY').@placenames[@i]
 			} else {
-				@placenames[@i]=color(WHITE).@placenames[@i]
+				@placenames[@i]=color('WHITE').@placenames[@i]
 			}
 		}
-		msg(color(YELLOW).@set.' in '.@world.': '.array_implode(@placenames, ', '))
+		msg(color('YELLOW').@set.' in '.@world.': '.array_implode(@placenames, ', '))
 	}
 	#Search the given world for a set or place matching the given name.
 	@searchWorld = closure(@world, @name){
@@ -352,7 +352,7 @@ nerdch.level.admin:/addplace $place [$set] = >>>
 	}
 	@placedb[@world][@setname][$place]=ploc()
 	store_value('placedb', @placedb)
-	msg(color(LIGHT_PURPLE).$place . ' added.')
+	msg(color('LIGHT_PURPLE').$place . ' added.')
 #	call_alias('/place '.$place)
 <<<
 
@@ -363,13 +363,13 @@ nerdch.level.admin:/delplace $world $set $name = >>>
 	}
 	if(!(@placedb[$world][$set][$name]==null)){
 		array_remove(@placedb[$world][$set], $name)
-		msg(color(LIGHT_PURPLE).'Removed '.$name.' in '.$set.' in '.$world)
+		msg(color('LIGHT_PURPLE').'Removed '.$name.' in '.$set.' in '.$world)
 		if(array_size(@placedb[$world][$set])==0){
 			array_remove(@placedb[$world], $set)
-			msg(color(LIGHT_PURPLE).'Removed '.$set.' in '.$world)
+			msg(color('LIGHT_PURPLE').'Removed '.$set.' in '.$world)
 			if(array_size(@placedb[$world])==0){
 				array_remove(@placedb, $world)
-				msg(color(LIGHT_PURPLE).'Removed '.$world)
+				msg(color('LIGHT_PURPLE').'Removed '.$world)
 			}
 		}
 	}

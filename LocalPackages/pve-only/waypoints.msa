@@ -1,11 +1,11 @@
 
 
 *:/wp = >>>
-    msg(color(gold).'Help: /wp')
-    msg('  /wp [playername] <waypoint>: '.color(gray).'Gives the coordinates of, and points you towards, the given waypoint.')
-    msg('  /listwps [playername]: '.color(gray).'List your, or another player\'s waypoints.')
-    msg('  /setwp <name> [unlisted|public|private]: '.color(gray).'Creates a new waypoint at your location, with the given mode.')
-    msg('  /delwp <name>: '.color(gray).'Deletes the waypoint with the given name.')
+    msg(color('GOLD').'Help: /wp')
+    msg('  /wp [playername] <waypoint>: '.color('GRAY').'Gives the coordinates of, and points you towards, the given waypoint.')
+    msg('  /listwps [playername]: '.color('GRAY').'List your, or another player\'s waypoints.')
+    msg('  /setwp <name> [unlisted|public|private]: '.color('GRAY').'Creates a new waypoint at your location, with the given mode.')
+    msg('  /delwp <name>: '.color('GRAY').'Deletes the waypoint with the given name.')
 <<<
 
 *:/wp $name [$extra] = >>>
@@ -25,7 +25,7 @@
     @uuid = puuid(@player_name, true)
     @waypoints = get_value('waypoints', @uuid)
     if(@waypoints == null) {
-        die(color(red).'No waypoint named ' . $name)
+        die(color('RED').'No waypoint named ' . $name)
     }
 
     @waypoint = null
@@ -41,7 +41,7 @@
     }
 
     if(@waypoint == null) {
-        die(color(red)'No waypoint named ' $name '.');
+        die(color('RED')'No waypoint named ' $name '.');
     }
 
     @loc = @waypoint['loc']
@@ -59,12 +59,12 @@
 
     pfacing(@yaw, ploc()['pitch'])
 
-    msg(color(gold). @wp_name . ':')
-    msg(color(red).'X: ' .color(reset).  round(@x))
-    msg(color(yellow).'Y: '.color(reset) . round(@y))
-    msg(color(green).'Z: '.color(reset) . round(@z))
-    msg(color(blue).'Distance: ' . color(reset). round(sqrt(pow(@dx, 2) + pow(@dy, 2) + pow(@dz, 2))).'m')
-    msg(color(black).'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
+    msg(color('GOLD'). @wp_name . ':')
+    msg(color('RED').'X: ' .color('RESET').  round(@x))
+    msg(color('YELLOW').'Y: '.color('RESET') . round(@y))
+    msg(color('GREEN').'Z: '.color('RESET') . round(@z))
+    msg(color('BLUE').'Distance: ' . color('RESET'). round(sqrt(pow(@dx, 2) + pow(@dy, 2) + pow(@dz, 2))).'m')
+    msg(color('BLACK').'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
 <<<
 
 
@@ -81,7 +81,7 @@
     @waypoints = get_value('waypoints', @uuid)  
 
     if(@waypoints == null || length(@waypoints) == 0) {
-        die(color(red).'No waypoints found; type `/wp` for help.')
+        die(color('RED').'No waypoints found; type `/wp` for help.')
     }
 
     # Filter waypoints.
@@ -96,9 +96,9 @@
     }
     
     if(@is_own_list) {
-        msg(color(gold).'Your waypoints:')
+        msg(color('GOLD').'Your waypoints:')
     } else {
-        msg(color(gold).$player.'\'s public waypoints:')
+        msg(color('GOLD').$player.'\'s public waypoints:')
     }
     foreach(@name: @waypoint in @waypoints) {
         @loc = @waypoint['loc']
@@ -106,9 +106,9 @@
 	@y = round(@loc['y'])
 	@z = round(@loc['z'])
 	if(@is_own_list) {
-	    msg('  '.@name.':'.color(gray).' X: '.@x.', Y: '.@y.', Z: '.@z. ' ('.@waypoint['mode'].')')
+	    msg('  '.@name.':'.color('GRAY').' X: '.@x.', Y: '.@y.', Z: '.@z. ' ('.@waypoint['mode'].')')
 	} else {
-            msg('  '.@name.':'.color(gray).' X: '.@x. ', Y: '.@y. ', Z: '.@z)
+            msg('  '.@name.':'.color('GRAY').' X: '.@x. ', Y: '.@y. ', Z: '.@z)
 	}
     }
     msg('Type `/wp [playername] <name>` to be pointed towards the given waypoint')
@@ -120,7 +120,7 @@
     if(@waypoints == null) {
         @waypoints = array()
     } else if(array_contains_ic(array_keys(@waypoints), $name)) {
-        die(color(red).'You already have a waypoint named '.$name.'.')
+        die(color('RED').'You already have a waypoint named '.$name.'.')
     }
 
     @modes = array('public', 'private', 'unlisted')
@@ -130,10 +130,10 @@
     } else if(array_contains_ic(@modes, $mode)) {
         @mode = to_lower($mode)
     } else {
-        die(color(red). 'Usage: /wp add <name> [public|private|unlisted]')
+        die(color('RED'). 'Usage: /wp add <name> [public|private|unlisted]')
     }
     array_set(@waypoints, $name, array('loc': ploc(), 'mode': @mode))
-    msg(color(gray).'Waypoint added successfully.')
+    msg(color('GRAY').'Waypoint added successfully.')
     store_value('waypoints', @uuid, @waypoints)
 <<<
 
@@ -143,7 +143,7 @@
     if(@waypoints == null) {
         @waypoints = array()
     } else if(array_contains_ic(array_keys(@waypoints), $name)) {
-        die(color(red).'You already have a waypoint named '.$name.'.')
+        die(color('RED').'You already have a waypoint named '.$name.'.')
     }
 
     @modes = array('public', 'private', 'unlisted')
@@ -153,17 +153,17 @@
         @yint=integer($y)
         @zint=integer($z)
     } catch(CastException @e){
-        die(color(red). 'Usage: /wp add x y z <name> [public|private|unlisted]')
+        die(color('RED'). 'Usage: /wp add x y z <name> [public|private|unlisted]')
     }
     if($mode == '') {
         @mode = 'unlisted'
     } else if(array_contains_ic(@modes, $mode)) {
         @mode = to_lower($mode)
     } else {
-        die(color(red). 'Usage: /wp add x y z <name> [public|private|unlisted]')
+        die(color('RED'). 'Usage: /wp add x y z <name> [public|private|unlisted]')
     }
     array_set(@waypoints, $name, array('loc': array('x': @xint, 'y': @yint, 'z': @zint), 'mode': @mode))
-    msg(color(gray).'Waypoint added successfully.')
+    msg(color('GRAY').'Waypoint added successfully.')
     store_value('waypoints', @uuid, @waypoints)
 <<<
 
@@ -171,7 +171,7 @@
     @uuid = puuid(player(), true)
     @waypoints = get_value('waypoints', @uuid)
     if(@waypoints == null) {
-        die(color(red).'You have no waypoints.')
+        die(color('RED').'You have no waypoints.')
     }
     
     @match = null
@@ -189,7 +189,7 @@
     } else {
         store_value('waypoints', @uuid, @waypoints)
     }
-    msg(color(gray).'Waypoint removed successfully.')
+    msg(color('GRAY').'Waypoint removed successfully.')
 <<<
 
 
@@ -200,7 +200,7 @@
 	@uuid = puuid($player, true);
 	@waypoints = get_value('waypoints', @uuid);
 	if (@waypoints == null || length(@waypoints) == 0) {
-		die(color(RED). $player . ' has no waypoints.');
+		die(color('RED'). $player . ' has no waypoints.');
 	}
 
 	foreach (@name: @waypoint in @waypoints) {
@@ -208,7 +208,7 @@
 		@x = round(@loc['x'])
 		@y = round(@loc['y'])
 		@z = round(@loc['z'])
-		msg('  '.@name.':'.color(GRAY).' X: '.@x.', Y: '.@y.', Z: '.@z. ' ('.@waypoint['mode'].')');
+		msg('  '.@name.':'.color('GRAY').' X: '.@x.', Y: '.@y.', Z: '.@z. ' ('.@waypoint['mode'].')');
 	}
 <<<
 

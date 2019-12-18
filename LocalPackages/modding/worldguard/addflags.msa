@@ -1,6 +1,6 @@
 *:/addflags $name [$owner=''] = >>>
 	if (! sk_region_exists($name)) {
-		die(color(RED).'There is no region by that name.')
+		die(color('RED').'There is no region by that name.')
 	} else {
 		run(concat('/region flag ', $name, ' use allow'))
 		run(concat('/region flag ', $name, ' interact allow'))

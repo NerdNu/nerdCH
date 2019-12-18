@@ -2,32 +2,32 @@
     @uuid = _get_puuid(player())
     @warnings = get_value('warnings', @uuid)
     if(@warnings == null){
-        msg(color(DARK_RED).'You have no warnings!')
+        msg(color('DARK_RED').'You have no warnings!')
     } else {
-        msg(color(GRAY).'---------------------------------------------')
+        msg(color('GRAY').'---------------------------------------------')
         msg('Your warnings:')
         for(@i = 0, @i < array_size(@warnings), @i++) {
-            msg(color(GRAY).'['.(@i + 1).'] '.color(RED).@warnings[@i])
+            msg(color('GRAY').'['.(@i + 1).'] '.color('RED').@warnings[@i])
         }
         msg("To acknowledge a warning, type '/warnings clear <#>'.")
-        msg(color(GRAY).'---------------------------------------------')
+        msg(color('GRAY').'---------------------------------------------')
     }
 <<<
 
 *:/warnings clear $id = >>>
     if(!is_numeric($id)) {
-        die(color(DARK_RED).'Enter a number as the id!')
+        die(color('DARK_RED').'Enter a number as the id!')
     }
 
 	@uuid = _get_puuid(player())
     @warnings = get_value('warnings', @uuid)
 
     if(@warnings == null) {
-        die(color(DARK_RED).'You have no warnings!')
+        die(color('DARK_RED').'You have no warnings!')
     }
 
     if($id < 1 || $id > array_size(@warnings)) {
-        die(color(DARK_RED)."You don't have a warning with that id.")
+        die(color('DARK_RED')."You don't have a warning with that id.")
     }
 
     array_remove(@warnings, $id - 1)
@@ -36,5 +36,5 @@
     } else {
         store_value('warnings', @uuid, @warnings)
     }
-    msg(color(RED).'Warning '.$id.' removed successfully.')
+    msg(color('RED').'Warning '.$id.' removed successfully.')
 <<<

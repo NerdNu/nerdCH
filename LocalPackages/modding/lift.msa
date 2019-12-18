@@ -1,6 +1,6 @@
 nerdch.level.mod:'/lift' [$] = >>>
 	if ($ == '' || $ == 'help') {
-		die(color(GOLD).'/lift <player> - Lift the specified player up 1/2 a block.');
+		die(color('GOLD').'/lift <player> - Lift the specified player up 1/2 a block.');
 	}
 	try(
 		@player = player($);
@@ -8,6 +8,6 @@ nerdch.level.mod:'/lift' [$] = >>>
 		@loc['y'] += 0.5;
 		set_ploc(@player, @loc);
 	,@ex,
-		die(color(RED).$.' is not online.');
+		die(color('RED').$.' is not online.');
 	);
 <<<

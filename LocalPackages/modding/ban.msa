@@ -22,8 +22,8 @@
 
 	run_cmd('/addnote ' . $player . ' warned for crop grief on ' . @server);
 	call_alias('/warn ' . $player . ' ' . @warning);
-	msg(color(GOLD) . $player . ' received the following warning: ');
-	msg(color(RED) . @warning);
+	msg(color('GOLD') . $player . ' received the following warning: ');
+	msg(color('RED') . @warning);
 <<<
 
 
@@ -53,8 +53,8 @@
 
 	run_cmd('/addnote ' . $player . ' warned for general grief on ' . @server);
 	call_alias('/warn ' . $player . ' ' . @warning);
-	msg(color(GOLD) . $player . ' received the following warning: ');
-	msg(color(RED) . @warning);
+	msg(color('GOLD') . $player . ' received the following warning: ');
+	msg(color('RED') . @warning);
 <<<
 
 
@@ -67,7 +67,7 @@
 	_assertperm('admin')
 	@server = import('sharedata.source')
 	if (@server != 'survival') {
-		msg(color(RED).'Combat logging on '.@server.'? Really?')
+		msg(color('RED').'Combat logging on '.@server.'? Really?')
 	} else {
 		@additional = $
 		run_cmd('/addnote '.$player.' Warned for combat logging on Survival')
@@ -76,8 +76,8 @@
 		call_alias('/warn '.$player.' Please see nerd.nu/rules and refrain from this behavior in the future.')
 		if (@additional != '') {
 			call_alias('/warn '.$player.' '.@additional)
-			msg(color(GOLD).'Additional warning:')
-			msg(color(GOLD).@additional)
+			msg(color('GOLD').'Additional warning:')
+			msg(color('GOLD').@additional)
 		}
 	}
 <<<

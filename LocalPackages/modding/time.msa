@@ -2,7 +2,7 @@
     _assertperm('admin', 0)
     try(
         set_world_time($)
-        msg(concat(color(gray), 'Time set to ',$,'.')),
+        msg(concat(color('GRAY'), 'Time set to ',$,'.')),
     @ex,
-        msg(concat(color(red), 'Syntax: /time day|night|4.30pm|etc')))
+        msg(concat(color('RED'), 'Syntax: /time day|night|4.30pm|etc')))
 <<<

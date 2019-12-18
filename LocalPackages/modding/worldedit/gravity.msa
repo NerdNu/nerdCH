@@ -1,4 +1,4 @@
 *:/gravity [$] = >>>
 	_assertperm('admin',0)
-	run(/cs gravity)
+	run(/cs 'gravity')
 <<<

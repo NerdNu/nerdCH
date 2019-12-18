@@ -1,13 +1,14 @@
+
 # Thor everyone in region with optional message
 
 *:/thorrg = >>>
     _assertperm('admin', 0);
-    msg(color(GREEN) . 'USAGE: /thorrg REGION_NAME [MESSAGE]')
+    msg(color('GREEN') . 'USAGE: /thorrg REGION_NAME [MESSAGE]')
 <<<
 
 *:/thorregion = >>>
     _assertperm('admin', 0);
-    msg(color(GREEN) . 'USAGE: /thorregion REGION_NAME [MESSAGE]')
+    msg(color('GREEN') . 'USAGE: /thorregion REGION_NAME [MESSAGE]')
 <<<
 
 *:/thorrg $rgname [$] = call_alias("/thorregion " . $rgname . " " . $)
@@ -16,7 +17,7 @@
     _assertperm('admin', 0);
 
     if(!sk_region_exists($rgName)) {
-        die(color(RED) . 'Region "' . $rgName . '" does not exist.');
+        die(color('RED') . 'Region "' . $rgName . '" does not exist.');
     }
 
     foreach(@playerName in all_players()) {

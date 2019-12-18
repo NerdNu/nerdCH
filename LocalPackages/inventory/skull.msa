@@ -1,13 +1,13 @@
 
 *:/skull [$player] [$texture]= >>>
 	if(!has_permission('nerdch.level.creative') && !has_permission('nerdch.level.restricted')){
-		die(color(RED).'You do not have permission for that command')
+		die(color('RED').'You do not have permission for that command')
 	}
 	if($player == ''){
-		msg(color(red).'Usage: /skull $player')
-		msg(color(red).'Note that this works with offline players, but the name must be exact')
-		msg(color(red).'Usage: /skull $name $base64-encoded-texture')
-		msg(color(red).'Note that the name can not contain spaces.')
+		msg(color('RED').'Usage: /skull $player')
+		msg(color('RED').'Note that this works with offline players, but the name must be exact')
+		msg(color('RED').'Usage: /skull $name $base64-encoded-texture')
+		msg(color('RED').'Note that the name can not contain spaces.')
 		die()
 	} else if($texture == ''){
 		#Giving skull of specified player
@@ -30,7 +30,7 @@
 			if(pinv(player(), @i) == null){
 				# Perfect, found it
 				@p=player()
-				runas(~console, '/minecraft:give '.@p.' minecraft:player_head{display:{Name:"{\\"text\\":\\"'.$player.'\\"}"},SkullOwner:{Id:"7b23e73a-9026-438d-9706-3d532b424d88",Properties:{textures:[{Value:"'.$texture.'"}]}}} 1')
+				runas('~console', '/minecraft:give '.@p.' minecraft:player_head{display:{Name:"{\\"text\\":\\"'.$player.'\\"}"},SkullOwner:{Id:"7b23e73a-9026-438d-9706-3d532b424d88",Properties:{textures:[{Value:"'.$texture.'"}]}}} 1')
 				msg('Player head added with custom texture!')
 				break()
 			}

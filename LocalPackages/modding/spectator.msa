@@ -4,7 +4,7 @@ nerdch.spectator:/spectator = >>>
 
 	if (equals(pmode(@p), 'SPECTATOR')) {
 		set_pmode(@p, 'CREATIVE')
-		msg(concat(color(GRAY), @p, ' is now in creative mode'))
+		msg(concat(color('GRAY'), @p, ' is now in creative mode'))
 	} else {
 		set_pmode(@p, 'SPECTATOR')
 
@@ -13,7 +13,7 @@ nerdch.spectator:/spectator = >>>
 			set_pflight(true);
 			set_pflying(true);
 		});
-		msg(concat(color(GRAY), @p, ' is now in spectator mode'))
+		msg(concat(color('GRAY'), @p, ' is now in spectator mode'))
 	}
 <<<
 

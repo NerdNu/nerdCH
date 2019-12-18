@@ -5,18 +5,18 @@
 	assign(@p, if(equals($, ''), player(), player($)))
 	if (import('sharedata.source') == 'creative') {
 		if (has_value('modelock.'.@p)) {
-			die(color(RED).'That player\'s mode is locked.')
+			die(color('RED').'That player\'s mode is locked.')
 		}
 		if (!has_permission('commandhelper.alias.mods') && @p != player()) {
-			die(color(RED).'You can only /mode yourself!')
+			die(color('RED').'You can only /mode yourself!')
 		}
 	}
 
 	if (equals(pmode(@p), 'CREATIVE')) {
 		set_pmode(@p, 'SURVIVAL')
-		msg(concat(color(GRAY), @p, ' is now in survival mode'))
+		msg(concat(color('GRAY'), @p, ' is now in survival mode'))
 	} else {
 		set_pmode(@p, 'CREATIVE')
-		msg(concat(color(GRAY), @p, ' is now in creative mode'))
+		msg(concat(color('GRAY'), @p, ' is now in creative mode'))
 	}
 <<<

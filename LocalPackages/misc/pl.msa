@@ -129,7 +129,7 @@
 	}
 
 	array_sort(@plugins, 'STRING_IC')
-	msg('Plugins ('.array_size(@plugins).'): '.color(green).array_implode(@plugins, color(white).', '.color(green)))
+	msg('Plugins ('.array_size(@plugins).'): '.color('green').array_implode(@plugins, color('white').', '.color('green')))
 <<<
 
 
@@ -139,7 +139,7 @@
 		run(/version);
 	} else {
 		foreach (@mod in _get_mods()) {
-			tmsg(@mod, color(GRAY) . @player . ' checked the server version');
+			tmsg(@mod, color('GRAY') . @player . ' checked the server version');
 		}
 		console(@player . ' checked the server version');
 	}

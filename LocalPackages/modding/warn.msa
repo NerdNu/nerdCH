@@ -1,16 +1,16 @@
 *:/warn = >>>
     _assertperm('mod', 0)
-    msg(color(DARK_RED).'Usage: /warn <player> <message>')
+    msg(color('DARK_RED').'Usage: /warn <player> <message>')
 <<<
 
 *:/warn $player [$] = >>>
     _assertperm('mod', 0)
     if($ == '') {
-        msg(color(DARK_RED).'Usage: /warn <player> <message>')
+        msg(color('DARK_RED').'Usage: /warn <player> <message>')
     } else {
         @uuid = puuid($player, true)
         if (@uuid == null){
-            die(color(DARK_RED).'No player by that name has played here.')
+            die(color('DARK_RED').'No player by that name has played here.')
         }
         @warnings = get_value('warnings', @uuid)
         if(@warnings == null){
@@ -18,6 +18,6 @@
         }
         array_push(@warnings, $ . ' (warned by '.player().')')
         store_value('warnings', @uuid, @warnings)
-        msg(color(RED).'Warning added to '.$player.' successfully.')
+        msg(color('RED').'Warning added to '.$player.' successfully.')
     }
 <<<

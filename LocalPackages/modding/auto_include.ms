@@ -1,10 +1,10 @@
-bind(player_join, null, null, @event,
+bind('player_join', null, null, @event,
     @warnings = get_value('warnings', puuid(@event['player'], true))
     if(@warnings != null) {
-        msg(color(GRAY).'---------------------------------------------')
-        msg(color(RED).'You been warned about something by a staff member!')
-        msg(color(RED)."Type '/warnings' to view your warnings.")
-        msg(color(GRAY).'---------------------------------------------')
+        msg(color('GRAY').'---------------------------------------------')
+        msg(color('RED').'You been warned about something by a staff member!')
+        msg(color('RED')."Type '/warnings' to view your warnings.")
+        msg(color('GRAY').'---------------------------------------------')
     }
 )
 
@@ -15,11 +15,11 @@ set_interval(30 * 1000, closure() {
         @player_name = _get_username_from_uuid(substr(@key, 9))
         if(array_contains_ic(@players, @player_name)) {
             @player = player(@player_name)
-            tmsg(@player, color(GRAY).'---------------------------------------------')
-            tmsg(@player, color(RED).'You been warned about something by a staff member!')
-            tmsg(@player, color(RED)."Type '/warnings' to view your warnings.")
-            tmsg(@player, color(RED)."Type '/warnings clear 1' to clear the first warning.")
-            tmsg(@player, color(GRAY).'---------------------------------------------')
+            tmsg(@player, color('GRAY').'---------------------------------------------')
+            tmsg(@player, color('RED').'You been warned about something by a staff member!')
+            tmsg(@player, color('RED')."Type '/warnings' to view your warnings.")
+            tmsg(@player, color('RED')."Type '/warnings clear 1' to clear the first warning.")
+            tmsg(@player, color('GRAY').'---------------------------------------------')
         }
     }
 })
@@ -28,7 +28,7 @@ set_interval(30 * 1000, closure() {
  * Gets the last known username from the database, or null, if no player is known with that UUID.
  * Hyphens are automatically stripped from the UUID to match the database contents.
  */
-proc(_get_username_from_uuid, @uuid) {
+proc _get_username_from_uuid(@uuid) {
 	@nameCache = import('nameCache');
 	@uuid = replace(@uuid, '-', '');
 
@@ -54,7 +54,7 @@ proc(_get_username_from_uuid, @uuid) {
 #	*	If @target matches (inexactly) a player name, return his 0-based index.
 #	*	Otherwise, use the previously used index incremented by @step (+1 or -1).
 
-proc(_get_tp_index, @target, @step,
+proc _get_tp_index(@target, @step) {
 	if (is_numeric(@target)) {
 		return (integer(@target) - 1)
 	} else if (@target != '') {
@@ -68,13 +68,13 @@ proc(_get_tp_index, @target, @step,
 		@index = -1
 	}
 	return (@index + @step)
-)
+}
 
 
 # _tp_index(@index, @players)
 #	Teleport to @players[@index], with message and @index checking. Store updated index.
 
-proc(_tp_index, @index, @players,
+proc _tp_index(@index, @players) {
 	# Wrap around @index to a valid value in either direction.
 	@count = array_size(@players)
 	@index = mod(@count + @index, @count)
@@ -83,25 +83,25 @@ proc(_tp_index, @index, @players,
 	# Teleport.
 	@player = @players[@index]
 	if (has_permission(@player, 'nerdch.level.restricted')) {
-		msg(color(GOLD).'Skipping '.@player.' ('.(@index+1).' of '.@count.'): ModMode or Admin.')
+		msg(color('GOLD').'Skipping '.@player.' ('.(@index+1).' of '.@count.'): ModMode or Admin.')
 	} else {
 		@loc = ploc(@player)
 		@niceLoc = array(integer(@loc[0]), integer(@loc[1]), integer(@loc[2]), @loc[3])
-		msg(color(GOLD).'Teleporting you to '.@player.' ('.(@index+1).' of '.@count.') at '.@niceLoc.'.')
+		msg(color('GOLD').'Teleporting you to '.@player.' ('.(@index+1).' of '.@count.') at '.@niceLoc.'.')
 		set_ploc(@loc)
 	}
-)
+}
 
 # Return true if the player has the specified potion effect, identified by numeric type ID.
 
-proc(_has_peffect, @player, @potionID,
+proc _has_peffect(@player, @potionID) {
 	foreach (get_peffect(@player), @effect,
-		if (@effect[id] == @potionID) {
+		if (@effect['id'] == @potionID) {
 			return (true)
 		}
 	)
 	return (false)
-)
+}
 
 
 # _lb_retention_days()
@@ -110,13 +110,12 @@ proc(_has_peffect, @player, @potionID,
 # This value is set as 'lb.retention.days' in plugins/CommandHelper/main.ms. 
 # If unspecified, it defaults to 21.
 
-proc(_lb_retention_days,
+proc _lb_retention_days() {
 	@days = import('lb.retention.days')
 	return (if(is_null(@days), 21, @days))
-)
+}
 
-proc(
-	_3d_distance, @arr1, @arr2,
+proc _3d_distance(@arr1, @arr2) {
 	return(
 		floor(
 			sqrt(
@@ -126,11 +125,11 @@ proc(
 			)
 		)
 	)
-)
+}
 
-proc(_add_flags, @region, @timeout, @tries, @owner,
+proc _add_flags(@region, @timeout, @tries, @owner) {
 	if(@tries < 1) {
-		msg(color(RED).'Default flags added unsuccessfully.')
+		msg(color('RED').'Default flags added unsuccessfully.')
 	} else {
 		if(sk_region_exists(@region)) {
 			call_alias('/addflags '.@region . ' ' . @owner)
@@ -141,4 +140,4 @@ proc(_add_flags, @region, @timeout, @tries, @owner,
 			})
 		}
 	}
-)
+}

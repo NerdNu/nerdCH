@@ -7,6 +7,6 @@
 		run('/lb redo destroyed block gold_ore iron_ore coal_ore lapis_ore diamond_ore redstone_ore emerald_ore nether_quartz_ore spawner player '.$player.' since '.@days.' days')
 	))
 	set_timeout(2 * 1000, closure(
-		msg(color(GOLD).'Ore destructions by '.$player.' will be redone in '.@delay.' seconds.')
+		msg(color('GOLD').'Ore destructions by '.$player.' will be redone in '.@delay.' seconds.')
 	))
 <<<

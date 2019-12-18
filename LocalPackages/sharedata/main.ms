@@ -1,6 +1,6 @@
 
 if(import('sharedata.source') == null){
-	console(color(RED).'Could not set up sharedata, please add'
+	console(color('RED').'Could not set up sharedata, please add'
 		.' export(\'sharedata.source\', \'<server name>\')'
 		.' to the server\'s main.ms.')
 } else {

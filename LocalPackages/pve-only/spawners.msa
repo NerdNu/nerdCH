@@ -18,14 +18,14 @@ nerdch.level.admin:/defaultgolemspawner = >>>
 nerdch.level.admin:/golemspawner [$tier] = >>>
     @t = integer($tier);
     if (!is_integer(@t)) {
-        msg(color(RED)."The tier must be a positive integer.");
+        msg(color('RED')."The tier must be a positive integer.");
         die();
     }
     if (@t < 0) {
-        msg(color(RED)."The tier must be a positive integer.");
+        msg(color('RED')."The tier must be a positive integer.");
         die();
     } else if (@t > 20) {
-        msg(color(RED)."Let's not get crazy...");
+        msg(color('RED')."Let's not get crazy...");
         die();
     }
     run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{id:"minecraft:iron_golem",CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}} replace');

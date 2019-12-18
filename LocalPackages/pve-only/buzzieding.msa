@@ -4,7 +4,7 @@
 	if(import('buzzieding.interval') != null){
 		clear_task(import('buzzieding.interval'))
 		export('buzzieding.interval', null)
-		die('No more buzzieding '.color(RED).':(')
+		die('No more buzzieding '.color('RED').':(')
 	}
 
 	@player = 'buzzie71'
@@ -18,7 +18,7 @@
 				if(@currentPitch[0] == 0){
 					@pitch = 5
 				}
-				play_sound(ploc(@player), array(sound: ENTITY_EXPERIENCE_ORB_PICKUP, pitch: @pitch, volume: 3))
+				play_sound(ploc(@player), array('sound': 'ENTITY_EXPERIENCE_ORB_PICKUP', 'pitch': @pitch, 'volume': 3))
 				if(@currentPitch[0] == 0, @currentPitch[0] = 1, @currentPitch[0] = 0)
 			}
 		, #catch
@@ -26,5 +26,5 @@
 		)
 	))
 	export('buzzieding.interval', @interval)
-	die(color(GREEN).'buzzieding started :D')
+	die(color('GREEN').'buzzieding started :D')
 <<<

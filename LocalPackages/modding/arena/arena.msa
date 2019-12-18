@@ -4,33 +4,33 @@
     switch($tf,
         '0',
 
-            #runas(~console, '/region flag arena_stands pvp')
+            #runas('~console', '/region flag arena_stands pvp')
 
-            #runas(~console, '//sel')
+            #runas('~console', '//sel')
             #for(assign(@i, 1), lte(@i, 4), inc(@i),
-            #    runas(~console, concat('/region select arena_door', @i))
-            #    runas(~console, concat('//set ladder:', add(@i, 1))))
-            #runas(~console, '//sel')
+            #    runas('~console', concat('/region select arena_door', @i))
+            #    runas('~console', concat('//set ladder:', add(@i, 1))))
+            #runas('~console', '//sel')
 
             store_value('arena_mode', '0')
-            runas(~console, /setwarp arena public false)
-            broadcast(concat(color(green), 'The arena is now closed! Get out!')),
+            runas('~console', '/setwarp arena public false')
+            broadcast(concat(color('GREEN'), 'The arena is now closed! Get out!')),
 
 
 
         '1',
-            #runas(~console, '/region flag arena_stands pvp deny')
-            #runas(~console, '//sel')
+            #runas('~console', '/region flag arena_stands pvp deny')
+            #runas('~console', '//sel')
             #for(assign(@i, 1), lte(@i, 4), inc(@i),
-            #    runas(~console, concat('/region select arena_door', @i))
-            #    runas(~console, '//set 43:6'))
-            #runas(~console, '//sel')
+            #    runas('~console', concat('/region select arena_door', @i))
+            #    runas('~console', '//set 43:6'))
+            #runas('~console', '//sel')
 
             store_value('arena_mode', '1')
-            runas(~console, /setwarp arena public true)
-            broadcast(concat(color(green), 'The arena is now open! Type /spawnme to be warped to the arena!')),
+            runas('~console', '/setwarp arena public true')
+            broadcast(concat(color('GREEN'), 'The arena is now open! Type /spawnme to be warped to the arena!')),
 
 
         #default:
-            msg(concat(color(gray), 'Usage: /arena <0|1>')))
+            msg(concat(color('GRAY'), 'Usage: /arena <0|1>')))
 <<<

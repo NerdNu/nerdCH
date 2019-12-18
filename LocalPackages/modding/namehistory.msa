@@ -6,11 +6,11 @@
 *:/namehistory [$player] = >>>
 	_assertperm('mod')
 	if ($player == '') {
-		die(color(RED).'Usage: /namehistory <player>')
+		die(color('RED').'Usage: /namehistory <player>')
 	}
 	@uuid = puuid($player, true)
 	if (!@uuid) {
-		die(color(RED).'Error: could not obtain UUID for supplied username.')
+		die(color('RED').'Error: could not obtain UUID for supplied username.')
 	}
 	http_request('https://api.mojang.com/user/profiles/'.@uuid.'/names', array(
 		timeout: 5000,
@@ -20,11 +20,11 @@
 			foreach(@val in @data){
 				@names[] = @val['name']
 			}
-			msg(color(GOLD).'Name change history for '.$player.': ')
-			msg(color(GRAY).array_implode(@names, ', '))
+			msg(color('GOLD').'Name change history for '.$player.': ')
+			msg(color('GRAY').array_implode(@names, ', '))
 		},
 		error: closure(@response){
-			die(color(RED).'Error: the request could not be completed.')
+			die(color('RED').'Error: the request could not be completed.')
 		}
 	));
 <<<

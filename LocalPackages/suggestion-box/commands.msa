@@ -1,14 +1,15 @@
+
 # Note that starting the command with ! prevents all logging of the command.
 !*:'/suggestion-box' [$] = >>>
 
     if($ == ''){
         # Show usage
-        msg(color(light_purple).'Got a suggestion, but want to remain anonymous?')
-        msg(color(light_purple).'Use /suggestion-box! If your post is too long,')
-        msg(color(light_purple).'use a pastebin like'.color(red).' http://paste.thezomg.com')
-        msg(color(light_purple).'and submit the link here.')
-        msg(color(light_purple).'Your suggestion is 100% anonymous, and you can')
-        msg(color(light_purple).'audit this source code by running '.color(dark_purple).'/suggestion-box-code')
+        msg(color('light_purple').'Got a suggestion, but want to remain anonymous?')
+        msg(color('light_purple').'Use /suggestion-box! If your post is too long,')
+        msg(color('light_purple').'use a pastebin like'.color('red').' http://paste.thezomg.com')
+        msg(color('light_purple').'and submit the link here.')
+        msg(color('light_purple').'Your suggestion is 100% anonymous, and you can')
+        msg(color('light_purple').'audit this source code by running '.color('dark_purple').'/suggestion-box-code')
     } else {
         #Hash the username, so we can anonymously track users, to prevent abuse
         @hash = md5(player())
@@ -18,7 +19,7 @@
             @abusers = array()
         }
         if(array_contains(@abusers, @hash)){
-            die(color(red).'Sorry, you have been banned from using the suggestion box for abuse :(')
+            die(color('red').'Sorry, you have been banned from using the suggestion box for abuse :(')
         }
         
         @suggestions = get_value('suggestionbox.suggestions')
@@ -34,7 +35,7 @@
 
         array_push(@userSuggestions, $)
         store_value('suggestionbox.suggestions', @suggestions)
-        msg(color(gold).'Hey, thanks for your input! We appreciate your feedback!')
+        msg(color('gold').'Hey, thanks for your input! We appreciate your feedback!')
     }
     
 <<<
@@ -47,7 +48,7 @@
     # Make a list of all users that start with "$userHash"
     @len = length($userHash)
     if(@len > 32) {
-        die(color(red).'Invalid user hash')
+        die(color('red').'Invalid user hash')
     }
     @found = array()
     foreach(string @key in array_keys(@suggestions)) {
@@ -71,7 +72,7 @@
             array_remove(@suggestions, @hash)
         }
         store_value('suggestionbox.suggestions', @suggestions)
-        msg(color(gold).'Suggestion removed')
+        msg(color('gold').'Suggestion removed')
     } else {
         die('Oops, there is no suggestion with that id')
     }
@@ -85,7 +86,7 @@
 *:'/suggestion-box-abuser' $addRemove $abuserHash = >>>
     _assertperm('admin', 0)
     if($addRemove != 'add' && $addRemove != 'remove' || length($abuserHash) != 32){
-        die(color(light_purple).'Usage: /suggestion-box-abuser <add/remove> <32characterHash>')
+        die(color('light_purple').'Usage: /suggestion-box-abuser <add/remove> <32characterHash>')
     }
     @abusers = get_value('suggestionbox.abusers')
     if(!is_array(@abusers)){
@@ -97,7 +98,7 @@
         array_remove_values(@abusers, $abuserHash)
     }
     store_value('suggestionbox.abusers', @abusers)
-    msg(color(gold).'Used added/remove to/from abuser list')
+    msg(color('gold').'Used added/remove to/from abuser list')
     
 <<<
 
@@ -107,10 +108,10 @@
     @allsuggestions = get_value('suggestionbox.suggestions')
     array_iterate(@allsuggestions, closure(@userhash, @messages){
         if(length(@messages) > 0) {
-            msg(color(DARK_GREEN).'===========================')
-            msg(color(gold).'Userhash: '.@userhash)
+            msg(color('dark_green').'===========================')
+            msg(color('gold').'Userhash: '.@userhash)
             foreach(@key: @message in @messages){
-                msg(color(green).@key.'. '@message)
+                msg(color('green').@key.'. '@message)
             }
         }
     })

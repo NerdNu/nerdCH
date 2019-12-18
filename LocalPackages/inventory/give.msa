@@ -12,14 +12,14 @@ give:/i $mat [$qty=1] = >>>
         @item = _parse_item($mat, $qty)
         @success = pgive_item(@item);
         if (@success > 0) {
-            msg(color(GRAY).'Free some space in your inventory!');
+            msg(color('GRAY').'Free some space in your inventory!');
         } else {
-            msg(color(GRAY).'Gave '.@item['qty'].' of '.@item['name']);
+            msg(color('GRAY').'Gave '.@item['qty'].' of '.@item['name']);
         }
     } catch (FormatException @e) {
-        msg(color(GRAY).'No item matches "'.$mat.'"!')
+        msg(color('GRAY').'No item matches "'.$mat.'"!')
     } catch (CastException @e) {
-        msg(color(GRAY).'Usage: /i <material> [quantity]');
+        msg(color('GRAY').'Usage: /i <material> [quantity]');
     }
 <<<
 
@@ -30,16 +30,16 @@ give:/i $mat [$qty=1] = >>>
 	    @item = _parse_item($mat, $qty)
 	    @success = pgive_item(@recipient, @item);
         if (@success > 0) {
-            msg(color(GRAY).'That player has no space in their inventory!');
+            msg(color('GRAY').'That player has no space in their inventory!');
         } else {
-            msg(color(GRAY).'Gave '.@item['qty'].' of '.@item['name'].' to '.@recipient);
+            msg(color('GRAY').'Gave '.@item['qty'].' of '.@item['name'].' to '.@recipient);
         }
     } catch (FormatException @e) {
-        msg(color(GRAY).'No item matches "'.$mat.'"!')
+        msg(color('GRAY').'No item matches "'.$mat.'"!')
     } catch (PlayerOfflineException @e) {
-        msg(color(GRAY).'That player is offline!');
+        msg(color('GRAY').'That player is offline!');
     } catch (CastException @e) {
-        msg(color(GRAY).'Usage: /i <material> [quantity]');
+        msg(color('GRAY').'Usage: /i <material> [quantity]');
     }
 <<<
 

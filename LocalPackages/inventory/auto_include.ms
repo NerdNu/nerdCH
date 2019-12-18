@@ -1,7 +1,7 @@
-proc(_parse_item, @material, @quantity,
+proc _parse_item(@material, @quantity) {
 	# You can't just call data_name(). It doesn't understand 1.13 materials.
 	# Remove the minecraft: prefix, if present.
-	@NAMESPACE = "MINECRAFT:";
+	@NAMESPACE = 'MINECRAFT:';
 	@material = to_upper(@material);
 	if (string_starts_with(@material, @NAMESPACE)) {
 		@material = substr(@material, length(@NAMESPACE));
@@ -20,5 +20,5 @@ proc(_parse_item, @material, @quantity,
 		@type = @material;
 	}
 
-	return (array(name: @type, damage: 0, qty: @quantity));
-)
+	return (array('name': @type, 'damage': 0, 'qty': @quantity));
+}

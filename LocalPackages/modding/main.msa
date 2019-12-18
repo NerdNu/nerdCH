@@ -16,21 +16,21 @@ mods:/spawnp $player = runas($player, /spawn)
         try(
             assign(@loc, pcursor())
             array_set(@loc, 1, add(@loc[1], 1))
-            spawn_mob(@m[1], integer(if(not(equals(@m[2], '')),@m[2], 1)), @loc),
+            spawn_entity(@m[1], integer(if(not(equals(@m[2], '')),@m[2], 1)), @loc),
         @e,
-            msg(concat(color(red), 'Unknown mob!'))),
+            msg(concat(color('RED'), 'Unknown mob!'))),
     #else:
-        msg(concat(color(red), 'Spawns a mob on the block you\'re looking at'))
-        msg(concat(color(red), 'Usage: /spawnmob <mob>[:<data>] [quantity]')))
+        msg(concat(color('RED'), 'Spawns a mob on the block you\'re looking at'))
+        msg(concat(color('RED'), 'Usage: /spawnmob <mob>[:<data>] [quantity]')))
 <<<
 
 *:'/set-mob-effect' [$help] = >>>
 	_assertperm('admin')
-	msg(color(GOLD).'Usage:')
-	msg(color(YELLOW).'	/set-mob-effect <radius> <potionID> <strength> <duration> <ambient>')
-	msg(color(GOLD).'Potion ID is from the list at http://minecraft.gamepedia.com/Status_effect#List_of_effects')
-	msg(color(GOLD).'Duration is in seconds')
-	msg(color(GOLD).'Ambient is true|false and designates if the particle effects should be shown.')
+	msg(color('GOLD').'Usage:')
+	msg(color('YELLOW').'	/set-mob-effect <radius> <potionID> <strength> <duration> <ambient>')
+	msg(color('GOLD').'Potion ID is from the list at http://minecraft.gamepedia.com/Status_effect#List_of_effects')
+	msg(color('GOLD').'Duration is in seconds')
+	msg(color('GOLD').'Ambient is true|false and designates if the particle effects should be shown.')
 <<<
 
 *:'/set-mob-effect' $radius $potionid $strength $seconds $ambient = >>>
@@ -38,9 +38,9 @@ mods:/spawnp $player = runas($player, /spawn)
 	@MAX_RADIUS = 20
 	@radius = $radius
 	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
-		die(color(RED).'The first argument must be a number no more than '.@MAX_RADIUS.'.')
+		die(color('RED').'The first argument must be a number no more than '.@MAX_RADIUS.'.')
 	}
-	msg(color(GOLD).'Configuring mobs within'$radius'blocks to have ID'$potionid'status effect at strength'$strength'for'$seconds'seconds, ambient (visible effects) is'$ambient'.')
+	msg(color('GOLD').'Configuring mobs within'$radius'blocks to have ID'$potionid'status effect at strength'$strength'for'$seconds'seconds, ambient (visible effects) is'$ambient'.')
 	foreach (entities_in_radius(ploc(), $radius), @mob,
 		try(
 			set_mob_effect(@mob, $potionid, $strength, $seconds, $ambient,)
@@ -51,8 +51,8 @@ mods:/spawnp $player = runas($player, /spawn)
 *:'/get-mob-effects' [$] = >>>
 	_assertperm('admin')
 	@range = 3
-	@message = color(GOLD).'Mobs within '.@range.' blocks of that block have effects::'
-	@mobs = entities_in_radius(pcursor(), @range, array(WITHER, WITCH, CREEPER, SKELETON, SPIDER, GIANT, ZOMBIE, SLIME, GHAST, PIG_ZOMBIE, ENDERMAN, CAVE_SPIDER, SILVERFISH, BLAZE, MAGMA_CUBE, ENDER_DRAGON, PIG, SHEEP, COW, CHICKEN, SQUID, WOLF, MUSHROOM_COW, SNOWMAN, OCELOT, IRON_GOLEM, VILLAGER, HORSE, PLAYER,))
+	@message = color('GOLD').'Mobs within '.@range.' blocks of that block have effects::'
+	@mobs = entities_in_radius(pcursor(), @range)
 	foreach (@mobs, @mob,
 		try (
 			@effect = get_mob_effects(@mob)
@@ -67,7 +67,7 @@ mods:/spawnp $player = runas($player, /spawn)
 	assign(@pcursor, pcursor(player()))
 	lightning(array(array_get(@pcursor, 0), 0, array_get(@pcursor, 2)))
 	run('/vanish')
-	spawn_mob($mob)
+	spawn_entity($mob)
 <<<
 
 *:/kfc $player [$mob='chicken']  = >>>
@@ -76,12 +76,12 @@ mods:/spawnp $player = runas($player, /spawn)
     run('/clearinventory' $player)
     pkill($player)
     lightning(array(array_get(@pl, 0), subtract(array_get(@pl, 1), 10), array_get(@pl, 2)))
-    spawn_mob($mob, 1, @pl)
+    spawn_entity($mob, 1, @pl)
 <<<
 
 *:/hat [$data] = >>>
 	if (import('sharedata.source') == 'creative') {
-		die(color(red).'/hat is deprecated. Please use /wear instead.')
+		die(color('RED').'/hat is deprecated. Please use /wear instead.')
 	} else {
 		_assertperm('admin', 0)
 	}
@@ -110,7 +110,7 @@ mods:/spawnp $player = runas($player, /spawn)
 
 *:/fakeadminhunt $player = >>>
 	_assertperm('admin', 0);
-	broadcast(color(green).'[AdminHunt] An admin hunt has begun! Find (and kill) '.$player.' as quickly as you can!');
+	broadcast(color('GREEN').'[AdminHunt] An admin hunt has begun! Find (and kill) '.$player.' as quickly as you can!');
 <<<
 
 *:/fakeop $player = >>>
@@ -118,26 +118,26 @@ mods:/spawnp $player = runas($player, /spawn)
 	@player = player($player)
 	if(has_permission(@player, 'nerdch.level.admin')){
 		if(!has_permission('nerdch.level.admin')){
-			die(color(red).'lol, can\'t fakeop an admin')
+			die(color('RED').'lol, can\'t fakeop an admin')
 		}
 	}
 	if(import('fakeop.'.@player)){
 		unbind(import('fakeop.'.@player))
-		msg(color(GOLD).@player.' is no longer fake op\'d')
+		msg(color('GOLD').@player.' is no longer fake op\'d')
 	} else {
 		tmsg(@player, concat(color('yellow'), 'You are now op!'))
-		msg(color(GOLD).@player.' is now fake op\'d')
-		@bound = bind(player_command, null, array(player: @player), @event,
+		msg(color('GOLD').@player.' is now fake op\'d')
+		@bound = bind('player_command', null, array(player: @player), @event,
 			cancel()
 			@random = array(
-				color(red).'An error occurred while running that command. Have you tried checking your configuration? (Maybe just try running the command again)',
+				color('RED').'An error occurred while running that command. Have you tried checking your configuration? (Maybe just try running the command again)',
 				'Command run successfully',
 				'Done.',
 			)
 			msg(@random[rand(array_size(@random))])
 			@mods = _get_mods()
 			foreach(@mods, @mod,
-				tmsg(@mod, concat('[', color(red), 'Fake Op - ', player(), color(white), '] ', color(green), 'Tried running command: ', @event['command']))
+				tmsg(@mod, concat('[', color('RED'), 'Fake Op - ', player(), color('WHITE'), '] ', color('GREEN'), 'Tried running command: ', @event['command']))
     			)
 		)
 		export('fakeop.'.@player, @bound)
@@ -146,22 +146,22 @@ mods:/spawnp $player = runas($player, /spawn)
 
 *:/rainbow = >>>
     _assertperm('admin', 0) #Sorry guys ;)
-    spawn_mob('sheep:black')
-    spawn_mob('sheep:red')
-    spawn_mob('sheep:green')
-    spawn_mob('sheep:brown')
-    spawn_mob('sheep:blue')
-    spawn_mob('sheep:purple')
-    spawn_mob('sheep:cyan')
-    spawn_mob('sheep:silver')
-    spawn_mob('sheep:gray')
-    spawn_mob('sheep:pink')
-    spawn_mob('sheep:lime')
-    spawn_mob('sheep:yellow')
-    spawn_mob('sheep:light_blue')
-    spawn_mob('sheep:magenta')
-    spawn_mob('sheep:orange')
-    spawn_mob('sheep:white')
+    spawn_entity('sheep:black')
+    spawn_entity('sheep:red')
+    spawn_entity('sheep:green')
+    spawn_entity('sheep:brown')
+    spawn_entity('sheep:blue')
+    spawn_entity('sheep:purple')
+    spawn_entity('sheep:cyan')
+    spawn_entity('sheep:silver')
+    spawn_entity('sheep:gray')
+    spawn_entity('sheep:pink')
+    spawn_entity('sheep:lime')
+    spawn_entity('sheep:yellow')
+    spawn_entity('sheep:light_blue')
+    spawn_entity('sheep:magenta')
+    spawn_entity('sheep:orange')
+    spawn_entity('sheep:white')
 <<<
 
 
@@ -185,9 +185,9 @@ mods:/spawnp $player = runas($player, /spawn)
 		}
 	)
 	if (array_size(@invisible) == 0) {
-		msg(color(GOLD).'There are no invisible players within '.@radius.' blocks of you.')
+		msg(color('GOLD').'There are no invisible players within '.@radius.' blocks of you.')
 	} else {
-		msg(color(GOLD).'The following invisible players are within '.@radius.
+		msg(color('GOLD').'The following invisible players are within '.@radius.
 		    ' blocks of you: '.array_implode(@invisible, ' '))
 	}
 <<<

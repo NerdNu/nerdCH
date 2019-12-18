@@ -3,8 +3,8 @@
 
 *:'/petowner' [$] = >>>
 	@range = 3
-	@message = color(GOLD).'Pets within '.@range.' blocks of that block are owned by:'
-	@pets = entities_in_radius(pcursor(), @range, array(CAT,OCELOT,WOLF,LLAMA,DONKEY,MULE,HORSE,SKELETON_HORSE,ZOMBIE_HORSE,PARROT))
+	@message = color('GOLD').'Pets within '.@range.' blocks of that block are owned by:'
+	@pets = entities_in_radius(pcursor(), @range, array('CAT','OCELOT','WOLF','LLAMA','DONKEY','MULE','HORSE','SKELETON_HORSE','ZOMBIE_HORSE','PARROT'))
 	@results = '';
 	foreach (@pets, @pet,
 		if (is_tameable(@pet)) {
@@ -26,16 +26,16 @@
 
 *:'/spawn-tame-mob' [$help] = >>>
 	_assertperm('restricted')
-	msg(color(GOLD).'Usage variants:')
-	msg(color(YELLOW).'	/spawn-tame-mob dog|wolf <player>')
-	msg(color(YELLOW).'	/spawn-tame-mob cat|ocelot <player> [black_cat|red_cat|siamese_cat]')
-	msg(color(YELLOW).'	/spawn-tame-mob donkey|mule <player>')
-	msg(color(YELLOW).'	/spawn-tame-mob horse player [<color>] [<pattern>]')
-	msg(color(YELLOW).'	/spawn-tame-mob parrot player [<variant>]')
-	msg(color(GOLD).'For horses and cats, if extra arguments after the player are omitted, values will be chosen at random.')
-	msg(color(GOLD).'Horse colors: black, brown, chestnut, creamy, dark_brown, gray, white')
-	msg(color(GOLD).'Horse patterns: none, socks, whitefield, white_dots, black_dots')
-	msg(color(GOLD).'Parrot variants: 0=red, 1=blue, 2=green, 3=cyan, 4=silver')
+	msg(color('GOLD').'Usage variants:')
+	msg(color('YELLOW').'	/spawn-tame-mob dog|wolf <player>')
+	msg(color('YELLOW').'	/spawn-tame-mob cat|ocelot <player> [black_cat|red_cat|siamese_cat]')
+	msg(color('YELLOW').'	/spawn-tame-mob donkey|mule <player>')
+	msg(color('YELLOW').'	/spawn-tame-mob horse player [<color>] [<pattern>]')
+	msg(color('YELLOW').'	/spawn-tame-mob parrot player [<variant>]')
+	msg(color('GOLD').'For horses and cats, if extra arguments after the player are omitted, values will be chosen at random.')
+	msg(color('GOLD').'Horse colors: black, brown, chestnut, creamy, dark_brown, gray, white')
+	msg(color('GOLD').'Horse patterns: none, socks, whitefield, white_dots, black_dots')
+	msg(color('GOLD').'Parrot variants: 0=red, 1=blue, 2=green, 3=cyan, 4=silver')
 <<<
 
 *:'/spawn-tame-mob' $type $player [$color] [$pattern] = >>>
@@ -46,16 +46,16 @@
 
 	if (@mob == 'dog', @mob = 'wolf')
 	if (@mob == 'cat', @mob = 'ocelot')
-	if (! array_contains(array(wolf,ocelot,horse,donkey,mule,parrot), @mob)) {
-		die(color(RED).'We can\'t spawn a tame '.@mob.'!')
+	if (! array_contains(array('wolf','ocelot','horse','donkey','mule','parrot'), @mob)) {
+		die(color('RED').'We can\'t spawn a tame '.@mob.'!')
 	}
 
 	# Prevent the mob from spawning *inside* the block at the player's feet. ;_;
 	@loc = ploc()
-	@loc[y] = @loc[y] + 1
+	@loc['y'] = @loc['y'] + 1
 
 	if (@mob == 'ocelot') {
-		@CAT_TYPES = array(black_cat, red_cat, siamese_cat)
+		@CAT_TYPES = array('black_cat','red_cat','siamese_cat')
 
 		# If a valid cat color is specified, use it, otherwise select at random.
 		if (! array_contains(@CAT_TYPES, @color)) {
@@ -65,7 +65,7 @@
 	} else if (@mob == 'horse') {
 		@horse = _spawn_horse(@loc, @color, @pattern)
 		set_mob_owner(@horse, $player)
-		die(color(GOLD).'Spawned a horse owned by '.$player.'.')
+		die(color('GOLD').'Spawned a horse owned by '.$player.'.')
 	} else if (@mob == 'donkey' || @mob == 'mule') {
 		@mob = 'horse:'.@mob
 	} else if (@mob == 'parrot') {
@@ -78,10 +78,10 @@
 		@mob = @mob.':'.@color
 	}
 
-	@id = spawn_mob(@mob, 1, @loc)[0]
+	@id = spawn_entity(@mob, 1, @loc)[0]
 	set_entity_persistence(@id, true)
 	set_mob_owner(@id, $player)
-	msg(color(GOLD).'Spawned '.@mob.' owned by '.$player.'.')
+	msg(color('GOLD').'Spawned '.@mob.' owned by '.$player.'.')
 <<<
 
 
@@ -94,32 +94,32 @@
 *:'/send-pet-home' [$] = >>>
 	_assertperm('restricted')
 	@range = 3
-	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE,PARROT))
+	@pets = entities_in_radius(pcursor(), @range, array('OCELOT','WOLF','HORSE','PARROT'))
 	if (array_size(@pets) == 0) {
-		die(color(RED).'There are no pets within '.@range.' blocks of that block.')
+		die(color('RED').'There are no pets within '.@range.' blocks of that block.')
 	} else if (array_size(@pets) == 1) {
 		@owner = get_mob_owner(@pets[0])
 		@bed = pbed_location(@owner)
 		if (is_null(@bed)) {
-			die(color(RED).'The owner of that '.to_lower(entity_type(@pets[0])).', '.@owner.', has no bed spawn set.')
+			die(color('RED').'The owner of that '.to_lower(entity_type(@pets[0])).', '.@owner.', has no bed spawn set.')
 		} else {
 			set_ploc(@bed)
 			set_entity_loc(@pets[0], @bed)
 			set_timeout(3000, closure(set_entity_loc(@pets[0], @bed)))
-			die(color(GOLD).'Sending '.@owner.'\'s '.to_lower(entity_type(@pets[0])).' to '.@bed.'.')
+			die(color('GOLD').'Sending '.@owner.'\'s '.to_lower(entity_type(@pets[0])).' to '.@bed.'.')
 		}
 	} else {
-		msg(color(RED).'There are multiple pets at that location.')
+		msg(color('RED').'There are multiple pets at that location.')
 		call_alias('/petowner')
 	}
 <<<
 
 *:'/tppet' [$help] [$help1] = >>>
 	_assertperm('restricted')
-	msg(color(GOLD).'Usage:')
-	msg(color(YELLOW).'	/tppet x y z [<world.]')
-	msg(color(GOLD).'First pet within 3 blocks of the current cursor location will be selected for teleporting.')
-	msg(color(GOLD).'World name if provided must be exact (eg. world, world_nether, world_the_end). If not provided current world is used')
+	msg(color('GOLD').'Usage:')
+	msg(color('YELLOW').'	/tppet x y z [<world.]')
+	msg(color('GOLD').'First pet within 3 blocks of the current cursor location will be selected for teleporting.')
+	msg(color('GOLD').'World name if provided must be exact (eg. world, world_nether, world_the_end). If not provided current world is used')
 <<<
 
 *:'/tppet' $x $y $z [$world] = >>>
@@ -133,10 +133,10 @@
 	# Make a location array using the provided coords and world
 	@loc = array('x': $x, 'y': $y, 'z': $z, 'world': @world)
 	# Get all the pets within @range of the location the player is looking
-	@pets = entities_in_radius(pcursor(), @range, array(OCELOT,WOLF,HORSE,PARROT))
+	@pets = entities_in_radius(pcursor(), @range, array('OCELOT','WOLF','HORSE','PARROT'))
 	if (array_size(@pets) == 0) {
 		# Error out if there are no pets
-		die(color(RED).'There are no pets within '.@range.' blocks of that block.')
+		die(color('RED').'There are no pets within '.@range.' blocks of that block.')
 	} else if (array_size(@pets) == 1) {
 		# Teleport the player and the pet to the location
 		set_ploc(@loc)
@@ -144,7 +144,7 @@
 		set_timeout(3000, closure(set_entity_loc(@pets[0], @loc)))
 	} else {
 		# Error out if there are too many pets
-		msg(color(RED).'There are multiple pets at that location.')
+		msg(color('RED').'There are multiple pets at that location.')
 		call_alias('/petowner')
 	}
 <<<
@@ -159,20 +159,20 @@
 
 *:'/omg-ponies' = >>>
 	_assertperm('admin')
-	msg(color(GOLD).'Usage: /omg-ponies <count> <radius>')
-	msg(color(GOLD).'Spawn up to <count> horses/donkeys up to <radius> blocks from you.')
+	msg(color('GOLD').'Usage: /omg-ponies <count> <radius>')
+	msg(color('GOLD').'Spawn up to <count> horses/donkeys up to <radius> blocks from you.')
 <<<
 
 *:'/omg-ponies' $count $radius = >>>
 	_assertperm('admin')
 	if (! is_integral($count)) {
-		die(color(RED).'The count must be an integer.')
+		die(color('RED').'The count must be an integer.')
 	}
 	if ($count > 100) {
-		die(color(RED).'The count can be no more than 100.')
+		die(color('RED').'The count can be no more than 100.')
 	}
 	if (! is_numeric($radius)) {
-		die(color(RED).'The radius must be a number.')
+		die(color('RED').'The radius must be a number.')
 	}
 	for (@i = 0, @i < $count, ++@i,
 		@range = rand() * $radius
@@ -193,12 +193,12 @@
 
 *:'/find-pets' = >>>
 	_assertperm('admin')
-	msg(color(GOLD).'Usage: /find-pets <radius> [<types>=dog,cat,horse] [<owner>=\'\'] [<name>=\'\']')
-	msg(color(GOLD).'	Find pets owned by the specified owner, with the specified name, within the specified radius.')
-	msg(color(GOLD).'	Multiple types can be specified by joining them with commas.')
-	msg(color(GOLD).'	If omitted, the owner and name are unconstrained.')
-	msg(color(GOLD).'Example:')
-	msg(color(GOLD).'	/find-pets 50 dog,cat,horse totemo Fluffy')
+	msg(color('GOLD').'Usage: /find-pets <radius> [<types>=dog,cat,horse] [<owner>=\'\'] [<name>=\'\']')
+	msg(color('GOLD').'	Find pets owned by the specified owner, with the specified name, within the specified radius.')
+	msg(color('GOLD').'	Multiple types can be specified by joining them with commas.')
+	msg(color('GOLD').'	If omitted, the owner and name are unconstrained.')
+	msg(color('GOLD').'Example:')
+	msg(color('GOLD').'	/find-pets 50 dog,cat,horse totemo Fluffy')
 <<<
 
 *:'/find-pets' $radius [$types='cat,dog,horse'] [$owner=''] [$name=''] = >>>
@@ -206,7 +206,7 @@
 	@MAX_RADIUS = 1000
 	@radius = $radius
 	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
-		die(color(RED).'The first argument must be a number no more than '.@MAX_RADIUS.'.')
+		die(color('RED').'The first argument must be a number no more than '.@MAX_RADIUS.'.')
 	}
 	@types = split(',',replace(replace(to_lower($types),'dog','wolf'),'cat','ocelot'))
 
@@ -216,7 +216,7 @@
 		@limit = array_size(@mobs)
 		if (@limit > @MAX_COUNT) {
 			@limit = @MAX_COUNT
-			msg(color(RED).'There were more than '.@MAX_COUNT.' matches. Only the first '.@MAX_COUNT.' will be shown.')
+			msg(color('RED').'There were more than '.@MAX_COUNT.' matches. Only the first '.@MAX_COUNT.' will be shown.')
 		}
 
 		@message = ''
@@ -240,25 +240,25 @@
 			@mobName  = if (is_tameable(@mob), get_mob_name(@mob), '')
 			if (($owner == '' || equals_ic(@mobOwner, $owner)) && ($name  == '' || equals_ic(@mobName, $name))) {
 				inc(@count)
-			    @formattedNum = color(YELLOW) . '('.@count.') '
-			    @formattedOwner = color(WHITE) . if (@mobOwner != '', @mobOwner . '\'s ', '')
-			    @formattedType = color(YELLOW) . to_lower(entity_type(@mob)) . ' '
-			    @formattedName = color(GRAY) . '"' . @mobName . '" '
+			    @formattedNum = color('YELLOW') . '('.@count.') '
+			    @formattedOwner = color('WHITE') . if (@mobOwner != '', @mobOwner . '\'s ', '')
+			    @formattedType = color('YELLOW') . to_lower(entity_type(@mob)) . ' '
+			    @formattedName = color('GRAY') . '"' . @mobName . '" '
 				@loc = entity_loc(@mob)
-				@formattedCoords = color(GOLD) . '(' . round(@loc[0]) . ',' . round(@loc[1]) . ',' . round(@loc[2]) . ') '
+				@formattedCoords = color('GOLD') . '(' . round(@loc[0]) . ',' . round(@loc[1]) . ',' . round(@loc[2]) . ') '
 				@message = @message . @formattedNum . @formattedOwner . @formattedType . @formattedName . @formattedCoords
 			}
 		)
 
 		if (@count == 0) {
-			die(color(GOLD).'There were no matching mobs.')
+			die(color('GOLD').'There were no matching mobs.')
 		} else {
-			die(color(GOLD).'Matching mobs ['.@count.']: '.@message)
+			die(color('GOLD').'Matching mobs ['.@count.']: '.@message)
 		}
 	#catch:
 	, @ex,
-		msg(color(RED).'Something went wrong. Is the entity type name correct?')
-		die(color(RED).'')
+		msg(color('RED').'Something went wrong. Is the entity type name correct?')
+		die(color('RED').'')
 	)
 <<<
 
@@ -266,7 +266,7 @@
 
 *:'/can-pickup' = >>>
 	_assertperm('admin')
-	msg(color(GOLD).'Configuring mobs within 5 blocks to pick up items.')
+	msg(color('GOLD').'Configuring mobs within 5 blocks to pick up items.')
 	foreach (entities_in_radius(ploc(), 5), @mob,
 		try(
 			set_can_pickup_items(@mob, true)

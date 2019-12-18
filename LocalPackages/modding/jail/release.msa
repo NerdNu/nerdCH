@@ -6,23 +6,23 @@
 	_assertperm('mod')
 	@jail = get_value('jail.loc')
 	if (is_null(@jail)) {
-		die(color(RED).'No jail location has been set. Bug an admin.')
+		die(color('RED').'No jail location has been set. Bug an admin.')
 	}
 	try(
 		@player = player($player)
 		run('/unmute '.@player)
 		set_ploc(@player, get_spawn('world'))
 		if (import('sharedata.source') == 'creative') {
-			set_pmode(@player, CREATIVE)
+			set_pmode(@player, 'CREATIVE')
 		}
-		tmsg(@player, color(AQUA).'You have been released. Play nice!')
+		tmsg(@player, color('AQUA').'You have been released. Play nice!')
 
 		@mods = _get_mods()
 		foreach(@mods, @mod,
-			tmsg(@mod, color(AQUA), @player.' has been released by '.player())
+			tmsg(@mod, color('AQUA'), @player.' has been released by '.player())
 		)
 		console(@player.' has been released by '.player())
 	,#catch
-		msg(color(RED).'That player is not online.')
+		msg(color('RED').'That player is not online.')
 	)
 <<<

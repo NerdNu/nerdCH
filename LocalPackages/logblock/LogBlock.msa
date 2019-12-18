@@ -10,7 +10,7 @@
 	@args = split(' ',$);
 
 	# If the args contain a whitelisted command/param, run and exit.
-	@whitelist = array(help,commands,params,permissions,next,prev,page,tp,me,tool,toolblock,hide,sum,sel,selection,area,chestaccess);
+	@whitelist = array('help','commands','params','permissions','next','prev','page','tp','me','tool','toolblock','hide','sum','sel','selection','area','chestaccess');
 	foreach (@allowed in @whitelist) {
 		if (array_contains(@args, @allowed)) {
 			run(/lb $);
@@ -19,14 +19,14 @@
 	}
 
     if ($ == "redo") {
-        die(color(RED)."Syntax: /lbredo <player> [since]");
+        die(color('RED')."Syntax: /lbredo <player> [since]");
     }
 
 	# No whitelist entries, therefore require 'player'.
     if (array_contains(@args, 'player')) {
 		run(/lb $);
 	} else {
-		die(color(RED).'You must specify a player.');
+		die(color('RED').'You must specify a player.');
 	}
 <<<
 
@@ -37,7 +37,7 @@
 	@radius = $r
 	if (! is_integral(@radius) || @radius < 1) {
 		# Negative radius rolls back EVERYWHERE.
-		die(color(RED).'The radius must be a positive integer.')
+		die(color('RED').'The radius must be a positive integer.')
 	}
 	@days = _lb_retention_days()
 	run(concat('/lb player ', $player, ' area ', @radius, ' sum blocks since ', @days, ' days'))
@@ -61,7 +61,7 @@
 	@radius = $r
 	if (! is_integral(@radius) || @radius < 1) {
 		# Negative radius rolls back EVERYWHERE.
-		die(color(RED).'The radius must be a positive integer.')
+		die(color('RED').'The radius must be a positive integer.')
 	}
 	@days = _lb_retention_days()
 	run(concat('/lb rollback player ', $p, ' area ', @radius, ' since ', @days, ' days'))
@@ -78,7 +78,7 @@
 	@radius = $radius
 	if (! is_integral(@radius) || @radius < 1) {
 		# Negative radius rolls back EVERYWHERE.
-		die(color(RED).'The radius must be a positive integer.')
+		die(color('RED').'The radius must be a positive integer.')
 	}
 	@days = if (is_integral($since), $since, _lb_retention_days())
 	run(concat('/lb redo player ', $player, ' area ', @radius, ' since ', @days, ' days'))
@@ -92,7 +92,7 @@
 #topminer
 *:/topminer $time = >>>
 	_assertperm('mod', 0)
-	/lb time $time block diamond_ore destroyed sum players
+	run('/lb time '.$time.' block diamond_ore destroyed sum players')
 <<<
 
 *:/xraytrace $player = >>>

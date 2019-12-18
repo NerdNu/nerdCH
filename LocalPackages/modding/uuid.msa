@@ -2,13 +2,13 @@
 *:/uuid [$] = >>>
 	_assertperm('mod');
 	if ($ == '') {
-		die(color(GOLD).'/uuid <player> - Look up UUID of player.');
+		die(color('GOLD').'/uuid <player> - Look up UUID of player.');
 	} else {
 		@uuid = puuid($, true);
 		if (@uuid != null) {
-			msg(color(GOLD).'https://namemc.com/s?'.@uuid);
+			msg(color('GOLD').'https://namemc.com/s?'.@uuid);
 		} else {
-			die(color(RED).'Unable to retrieve UUID for '.$.'.');
+			die(color('RED').'Unable to retrieve UUID for '.$.'.');
 		}
 	}
 <<<

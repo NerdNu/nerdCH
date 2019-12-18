@@ -3,6 +3,6 @@
 
 *:/setjail [$] = >>>
 	_assertperm('admin')
-	msg(color(GOLD).'Your current location has been saved as the jail.')
+	msg(color('GOLD').'Your current location has been saved as the jail.')
 	store_value('jail.loc', ploc())
 <<<

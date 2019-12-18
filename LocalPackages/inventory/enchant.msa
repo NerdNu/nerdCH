@@ -5,12 +5,12 @@
         try {
             enchant_item(null, $enchantment, $level);
         } catch (EnchantmentException @e) {
-            msg(color(RED).'That enchantment cannot be applied to that item.');
+            msg(color('RED').'That enchantment cannot be applied to that item.');
         } catch (RangeException @e) {
-            msg(color(RED).'That enchantment cannot be applied at that level.');
+            msg(color('RED').'That enchantment cannot be applied at that level.');
         } catch (PlayerOfflineException @e) {
         }
     } else {
-        msg(color(RED).'That is not a valid enchantment.');
+        msg(color('RED').'That is not a valid enchantment.');
     }
 <<<

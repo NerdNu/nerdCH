@@ -2,10 +2,10 @@
 
 *:'//drain' [$] = >>>
     if(equals($, ''),
-        msg(concat(color(red), 'Syntax: /drain radius')),
+        msg(concat(color('red'), 'Syntax: /drain radius')),
     #else:
         if(lte($, 15),
             run(concat('//drain ', $)),
         #else:
-            msg(concat(color(red), '/drain radius must be <=15'))))
+            msg(concat(color('red'), '/drain radius must be <=15'))))
 <<<

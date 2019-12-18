@@ -1,9 +1,9 @@
 #Arena plugin
 *:/boxes [$tf='0'] = >>>
     _assertperm('restricted', 0)
-    runas(~console, '//sel')
+    runas('~console', '//sel')
     for(assign(@i, 1), lte(@i, 4), inc(@i),
-        runas(~console, concat('/region select arena_box_door', @i))
-        runas(~console, concat('//set ', if(equals($tf, '1'), 'glass', 'air'))))
-    runas(~console, '//sel')
+        runas('~console', concat('/region select arena_box_door', @i))
+        runas('~console', concat('//set ', if(equals($tf, '1'), 'glass', 'air'))))
+    runas('~console', '//sel')
 <<<

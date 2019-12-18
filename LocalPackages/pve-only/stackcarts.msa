@@ -1,17 +1,17 @@
 # Allow cart stacking
 
 *:/stackcarts [$] = >>>
-    @qty = ptake_item(player(), array(name: MINECART, qty: 3000))
+    @qty = ptake_item(player(), array('name': 'MINECART', 'qty': 3000))
 	foreach (@i in 0..35){
 		@item = pinv(player(), @i)
 		if(@item==null,
 			@newitem = associative_array()
 			if(@qty>64){
-				@newitem[@i] = array(name: MINECART, qty: 64)
+				@newitem[@i] = array('name': 'MINECART', 'qty': 64)
 				set_pinv(player(), @newitem)
 				@qty=@qty-64
 			} else {
-				@newitem[@i] = array(name: MINECART, qty: @qty)
+				@newitem[@i] = array('name': 'MINECART', 'qty': @qty)
 				set_pinv(player(), @newitem)
 				break()
 			}

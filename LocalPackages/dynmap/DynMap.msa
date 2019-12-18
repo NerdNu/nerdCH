@@ -2,7 +2,7 @@
 	if (player() == '~console' || array_contains(pgroup(), 'super')) {
 		run('/dynmap');
 	} else {
-		msg(color(RED).'Usage: /dynmap [show | hide]');
+		msg(color('RED').'Usage: /dynmap [show | hide]');
 	}
 <<<
 
@@ -10,7 +10,7 @@
 	if (player() == '~console' || array_contains(pgroup(), 'super') || $ == 'show' || $ == 'hide') {
 		run('/dynmap '.$);
 	} else {
-		die(color(RED).'Unknown command. Type /help for help.');
+		die(color('RED').'Unknown command. Type /help for help.');
 	}
 <<<
 
@@ -18,6 +18,6 @@
 	if (player() == '~console' || array_contains(pgroup(), 'super')) {
 		run('/dmarker '.$);
 	} else {
-		die(color(RED).'Unknown command. Type /help for help.');
+		die(color('RED').'Unknown command. Type /help for help.');
 	}
 <<<

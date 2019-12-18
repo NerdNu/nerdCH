@@ -1,6 +1,6 @@
 
 export('easysign.signs', get_value('easysign.signs'))
-bind(player_interact, null, null, @e,
+bind('player_interact', null, null, @e,
 	if(array_index_exists(@e, 'location') && is_sign_at(@e['location'])){
 		@signdata = import('easysign.signs')
 		# Have to refactor the new format to the old format.
@@ -16,7 +16,7 @@ bind(player_interact, null, null, @e,
 					# Add new types here
 					'sleep',
 						set_pbed_location(ploc())
-						msg(color(LIGHT_PURPLE).'Your bed has now been set!')
+						msg(color('LIGHT_PURPLE').'Your bed has now been set!')
 					,'warp',
 						if (is_associative(@data)) {
 							# New storage format, better for /easy-sign-info.
@@ -28,7 +28,7 @@ bind(player_interact, null, null, @e,
 					,'check-empty-inventory',
 						foreach (@item in pinv()) {
 							if (@item != null) {
-								die(color(RED) . @data['message']);
+								die(color('RED') . @data['message']);
 							}
 						}
 					,'ci',
@@ -71,7 +71,7 @@ bind(player_interact, null, null, @e,
 							@value[@id][player()] = 0
 						}
 						if(@value[@id][player()] >= @max){
-							msg(color(GREEN).'[SIGN] '.color(WHITE).'You can only get items here '.@max.' times!')
+							msg(color('GREEN').'[SIGN] '.color('WHITE').'You can only get items here '.@max.' times!')
 						} else {
 							@value[@id][player()] = @value[@id][player()] + 1
 							array_push(@value[@id], player())
@@ -124,7 +124,7 @@ bind(player_interact, null, null, @e,
 							@value[@id] = array()
 						}
 						if(array_contains(@value[@id], player())){
-							msg(color(GREEN).'[SIGN] '.color(WHITE).'You can only announce here once!')
+							msg(color('GREEN').'[SIGN] '.color('WHITE').'You can only announce here once!')
 						} else {
 							array_push(@value[@id], player())
 							store_value('easysign.announce', @value)
@@ -160,7 +160,7 @@ bind(player_interact, null, null, @e,
 							@used = @value[@id][player()]
 						}
 
-						if (@used >= @uses) { die(color(GREEN) . 'Maximum uses reached! (' . @uses . ')') }
+						if (@used >= @uses) { die(color('GREEN') . 'Maximum uses reached! (' . @uses . ')') }
 
 						if (@global) {
 							@value[@id][player()] = @value[@id] + 1
@@ -254,7 +254,7 @@ bind(player_interact, null, null, @e,
 							}
 						)
 					,'cart',
-						spawn_entity(MINECART, 1, @data['location'])
+						spawn_entity('MINECART', 1, @data['location'])
 					,'launch',
 						set_pvelocity(@data['x'], @data['y'], @data['z'])
 					,'randloc',
@@ -272,7 +272,7 @@ bind(player_interact, null, null, @e,
 						}
 					,'setbed',
 						set_pbed_location(@data['location'])
-						msg(color(LIGHT_PURPLE).'Your bed has now been set!')
+						msg(color('LIGHT_PURPLE').'Your bed has now been set!')
 				)
 			)
 			@cmdtypes = array()
@@ -295,14 +295,14 @@ set_interval(60 * 1000, closure(
 				array_remove(@signdata, @key)
 				store_value('easysign.signs', @signdata)
 				export('easysign.signs', @signdata)
-				console(color(RED).'The sign at '.@key.' is no longer a sign, so it has been deleted from easy signs')
+				console(color('RED').'The sign at '.@key.' is no longer a sign, so it has been deleted from easy signs')
 				die()
 			}
 			, @ex,
 				array_remove(@signdata, @key)
 				store_value('easysign.signs', @signdata)
 				export('easysign.signs', @signdata)
-				console(color(RED).'The sign at '.@key.' is no longer a sign, so it has been deleted from easy signs')
+				console(color('RED').'The sign at '.@key.' is no longer a sign, so it has been deleted from easy signs')
 				die()
 		)
 	)

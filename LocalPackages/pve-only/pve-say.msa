@@ -1,6 +1,6 @@
 *:'/pve-say' $ = >>>
 	if (player() == '~console') {
-		broadcast(color(GOLD) . '[Server] ' . $);
+		broadcast(color('GOLD') . '[Server] ' . $);
 		die();
 	}
 

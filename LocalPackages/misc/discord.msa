@@ -1,4 +1,4 @@
 #Allows for a player to get Discord information
 *:'/discord' [$] = >>>
-	msg(color(GOLD).'Join us on Discord! https://discord.gg/dKFfHY3')
+	msg(color('GOLD').'Join us on Discord! https://discord.gg/dKFfHY3')
 <<<

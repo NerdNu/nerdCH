@@ -10,10 +10,10 @@
 		}
 	}
 	if(@hasRadius === null){
-		die(color(RED).'Holy radius, batman, you were about to kill everything in the world! Specify a radius.')
+		die(color('RED').'Holy radius, batman, you were about to kill everything in the world! Specify a radius.')
 	}
 	if(@hasRadius > 100){
-		die(color(RED).'Holy radius, batman, that\'s a large radius! Tone it down some.')
+		die(color('RED').'Holy radius, batman, that\'s a large radius! Tone it down some.')
 	}
 	run('/butcher '.$)
 <<<

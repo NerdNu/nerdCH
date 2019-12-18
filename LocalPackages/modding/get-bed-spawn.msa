@@ -3,12 +3,12 @@
 
 nerdch.level.restricted:'/get-bed-spawn' [$] = >>>
 	if ($ == '') {
-		die(color(GOLD).'Usage: '.color(YELLOW).'/get-bed-spawn <player>'.color(WHITE).' - Show the player\'s bed spawn location.')
+		die(color('GOLD').'Usage: '.color('YELLOW').'/get-bed-spawn <player>'.color('WHITE').' - Show the player\'s bed spawn location.')
 	}
 	@loc = pbed_location($)
 	if (is_null(@loc)) {
-		msg(color(GOLD).'No bed spawn set for '.$)
+		msg(color('GOLD').'No bed spawn set for '.$)
 	} else {
-		msg(color(GOLD).$.'\'s bed is at ('.@loc[world].', '.integer(@loc[x]).', '.integer(@loc[y]).', '.integer(@loc[z]).')')
+		msg(color('GOLD').$.'\'s bed is at ('.@loc['world'].', '.integer(@loc['x']).', '.integer(@loc['y']).', '.integer(@loc['z']).')')
 	}
 <<<

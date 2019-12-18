@@ -9,5 +9,5 @@
 			@sep = ', ';
 		);
 	}
-	msg(color(GRAY) . 'Members of ' . $region . ': ' . color(WHITE) . @list);
+	msg(color('GRAY') . 'Members of ' . $region . ': ' . color('WHITE') . @list);
 <<<

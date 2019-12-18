@@ -11,7 +11,7 @@
 			_noperm();
 		}
 		execute(player(), @ci);
-		msg(color(GRAY) . 'Your inventory has been cleared.');
+		msg(color('GRAY') . 'Your inventory has been cleared.');
 	} else {
 		if (!has_permission('nerdch.level.restricted')) {
 			_noperm();
@@ -20,7 +20,7 @@
 			execute(player($), @ci);
 			run_cmd('/mb Inventory of ' . $ . ' cleared.');
 		} else {
-			msg(color(RED) . 'Player ' . $ . ' is not online!');
+			msg(color('RED') . 'Player ' . $ . ' is not online!');
 		}
 	}
 <<<

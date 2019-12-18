@@ -3,7 +3,7 @@
 	@MAX_RADIUS = 5000
 	@radius = $radius
 	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
-		die(color(RED).'The first argument must be a number no more than '.@MAX_RADIUS.'.')
+		die(color('RED').'The first argument must be a number no more than '.@MAX_RADIUS.'.')
 	}
 	@types = split(',',replace(replace(to_lower($types),'dog','wolf'),'cat','ocelot'))
 	
@@ -13,7 +13,7 @@
 		@limit = array_size(@mobs)
 		if (@limit > @MAX_COUNT) {
 			@limit = @MAX_COUNT
-			msg(color(RED).'There were more than '.@MAX_COUNT.' matches. Only the first '.@MAX_COUNT.' will be shown.')
+			msg(color('RED').'There were more than '.@MAX_COUNT.' matches. Only the first '.@MAX_COUNT.' will be shown.')
 		}
 		
 		@message = ''
@@ -37,25 +37,25 @@
 			@mobName  = if (is_tameable(@mob), get_mob_name(@mob), '')
 			if (($owner == '' || equals_ic(@mobOwner, $owner)) && ($name  == '' || equals_ic(@mobName, $name))) {
 				inc(@count)
-			    @formattedNum = color(YELLOW) . '('.@count.') ' 
-			    @formattedOwner = color(WHITE) . if (@mobOwner != '', @mobOwner . '\'s ', '')
-			    @formattedType = color(YELLOW) . to_lower(entity_type(@mob)) . ' '
-			    @formattedName = color(GRAY) . '"' . @mobName . '" '
+			    @formattedNum = color('YELLOW') . '('.@count.') ' 
+			    @formattedOwner = color('WHITE') . if (@mobOwner != '', @mobOwner . '\'s ', '')
+			    @formattedType = color('YELLOW') . to_lower(entity_type(@mob)) . ' '
+			    @formattedName = color('GRAY') . '"' . @mobName . '" '
 				@loc = entity_loc(@mob)
-				@formattedCoords = color(GOLD) . '(' . round(@loc[0]) . ',' . round(@loc[1]) . ',' . round(@loc[2]) . ') '
+				@formattedCoords = color('GOLD') . '(' . round(@loc[0]) . ',' . round(@loc[1]) . ',' . round(@loc[2]) . ') '
 				@message = @message . @formattedNum . @formattedOwner . @formattedType . @formattedName . @formattedCoords 
 			}
 		)
 		
 		if (@count == 0) {
-			die(color(GOLD).'There were no matching mobs.')
+			die(color('GOLD').'There were no matching mobs.')
 		} else {
-			die(color(GOLD).'Matching mobs ['.@count.']: '.@message)
+			die(color('GOLD').'Matching mobs ['.@count.']: '.@message)
 		}
 	#catch:
 	, @ex,  
-		msg(color(RED).'Something went wrong. Is the entity type name correct?')
-		die(color(RED).'')
+		msg(color('RED').'Something went wrong. Is the entity type name correct?')
+		die(color('RED').'')
 	)
 <<<
 
