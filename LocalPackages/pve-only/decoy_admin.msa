@@ -1,0 +1,41 @@
+#------------------------------------------------------------------------------
+# Decoys are a mob disguised as an admin to throw off players
+# during an admin hunt.
+#------------------------------------------------------------------------------
+# Initialisation for all other commands. Only needs to run once.
+
+*:'/decoy-init' = >>>
+	_assertperm('admin');
+	run('/beast-mob add decoy-admin vindicator');
+	run('/beast-mob set decoy-admin main-hand decoy-admin-sword');
+	run('/beast-mob set decoy-admin main-hand-drop-percent 0');
+	run('/beast-mob set decoy-admin can-despawn true');
+	msg(color('GOLD').'Don''t forget to define decoy-admin-sword.');
+	msg(color('GOLD').'Hold a sword and run: ');
+	msg(color('YELLOW').'/beast-item redefine decoy-admin-sword');
+<<<
+
+#------------------------------------------------------------------------------
+# Per-player initialisation. Admins run this once to define their custom mob
+# prior to running /decoy for the first time.
+
+*:'/decoy-define' [$player] = >>>
+	_assertperm('admin');
+	@player = if($player == '', player(), $player);
+	@type = 'decoy-' . @player;
+	run('/beast-mob add '.@type.' decoy-admin');
+	run('/beast-mob set '.@type.' disguise player '.@player);
+	run('/beast-mob set '.@type.' name '.@player);
+	msg(color('GOLD').'Defined a decoy version of '.color('YELLOW').@player.color('GOLD').'.');
+<<<
+
+#------------------------------------------------------------------------------
+# Spawn a decoy of yourself (if you are an admin). You must run /decoy-define
+# before running this for the first time.
+
+*:'/decoy' [$player] = >>>
+	_assertperm('admin');
+	@player = if($player == '', player(), $player);
+	@type = 'decoy-' . @player;
+	run('/beast-mob spawn '.@type.' here');
+<<<
