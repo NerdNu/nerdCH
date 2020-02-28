@@ -48,9 +48,16 @@ ln -fs ~/shared/NerdCH/global .
 
 ### Configuration Files
 
- * `prefs/preferences.ini` - Set `show-splash-screen=false` obviously.
-   Historically, we also used to set `script-name=config.txt`, but that is
-   silly and confusing. We now keep the default setting, `script-name=aliases.msa`.
+ * `prefs/preferences.ini`:
+   * Set `show-splash-screen=false` obviously.
+   * Historically, we also used to set `script-name=config.txt`, but that is
+     silly and confusing. We now keep the default setting, `script-name=aliases.msa`.
+   * Set `base-dir` so that we can access scripts in a shared location:
+     * Note that this needs to be tailored to the particular checked out branch
+       of LuckPerms and the server directory.
+```
+base-dir=/home/minecraft/shared/NerdCH-luckperms;/servers/pve-dev/plugins/CommandHelper
+```
  * `auto_include.ms` - This is shared between all servers:
 ```
 cd plugins/CommandHelper
