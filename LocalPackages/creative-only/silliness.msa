@@ -1,9 +1,9 @@
 /chickenhead = >>>
-	foreach(all_players(), @p, 
-		set_entity_rider(pinfo(@p, 13), spawn_mob('chicken')[0])
-	)
+	foreach (@p in all_players()) {
+		set_entity_rider(pinfo(@p, 13), spawn_entity('chicken')[0]);
+	}
 <<<
 
-*:/uwot = msg(color(red).'==='.color(white).'M8'.color(red).'===')
+*:/uwot = msg(color('red').'==='.color('white').'M8'.color('red').'===');
 
-*:/spoon = msg('Forks are better')
+*:/spoon = msg('Forks are better');

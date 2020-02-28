@@ -11,7 +11,7 @@
 
 	if ($id == 'clear') {
 		foreach (@e in get_peffect()) {
-			set_peffect(player(), @e[id], @e[strength], 0);
+			set_peffect(player(), @e['id'], @e['strength'], 0);
 		}
 		die();
 	} 
@@ -34,12 +34,12 @@
 		);
 		@id = array_get(@NAME_TO_ID, to_lower($id), null);
 		if (@id == null) {
-			die(color(RED) . 'That\'s not a potion name!');
+			die(color('RED') . 'That\'s not a potion name!');
 		}
 	}
 
 	if (@id == 14) {
-		die(color(RED) . 'Sorry, no invisibility. :(');
+		die(color('RED') . 'Sorry, no invisibility. :(');
 	}
 
 	@strength = min(20, if ($amplifier != '', $amplifier - 1, 0));
@@ -47,4 +47,3 @@
 	@particles = ($hide_particles != true);
 	set_peffect(player(), @id, @strength, @seconds, false, @particles);
 <<<
-

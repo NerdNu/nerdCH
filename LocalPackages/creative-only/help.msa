@@ -2,11 +2,11 @@
 # know what they're doing.
 
 *:/tpa [$] = >>>
-	msg(color(GOLD).'To teleport to any player, simply type '.color(GREEN).'/tp <PLAYER>'.color(GOLD).'. You can use '.color(GREEN).'/tpmode'.color(GOLD).' to change whether other people can teleport to you.')
+	msg(color('GOLD').'To teleport to any player, simply type '.color('GREEN').'/tp <PLAYER>'.color('GOLD').'. You can use '.color('GREEN').'/tpmode'.color('GOLD').' to change whether other people can teleport to you.')
 <<<
 
 *:/gm [$] = call_alias('/gamemode '.$)
 
 *:/gamemode [$] = >>>
-	msg(color(GOLD).'Type '.color(GREEN).'/mode'.color(GOLD).' to toggle between creative and survival mode.')
+	msg(color('GOLD').'Type '.color('GREEN').'/mode'.color('GOLD').' to toggle between creative and survival mode.')
 <<<

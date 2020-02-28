@@ -22,7 +22,7 @@ if (_config_get('features.warp.enabled', true)) {
 			if (array_size(@args) == 1) {
 				@name = @args[0];
 				store_value('warps.' . @name, ploc());
-				msg(color(gray) . 'Warp set!');
+				msg(color('GRAY') . 'Warp set!');
 			}
 		)
 	));
@@ -39,7 +39,7 @@ if (_config_get('features.warp.enabled', true)) {
 			if (array_size(@args) == 1) {
 				@name = @args[0];
 				clear_value('warps.' . @name);
-				msg(color(gray) . 'Warp deleted!');
+				msg(color('GRAY') . 'Warp deleted!');
 			}
 
 			return(false);
@@ -54,7 +54,7 @@ if (_config_get('features.warp.enabled', true)) {
 		aliases: array(),
 		executor: closure(@al, @p, @args, @cmd,
 
-			@o = 'Available warps:' . color(gray);
+			@o = 'Available warps:' . color('gray');
 
 			@count = 0;
 			#The get_value(@name) == null thing here and down there are workarounds for a bug in CH
@@ -63,9 +63,9 @@ if (_config_get('features.warp.enabled', true)) {
 					continue()
 				}
 
-				@color = 'white';
+				@color = 'WHITE';
 				if (@count % 2 == 0) {
-					@color = gray;
+					@color = 'GRAY';
 				}
 
 				@count++;
@@ -106,7 +106,7 @@ if (_config_get('features.warp.enabled', true)) {
 				)
 
 				if (@found == 0) {
-					msg(color(red) . 'Warp not found!')
+					msg(color('RED') . 'Warp not found!')
 					run('/warps')
 				}
 			}
@@ -139,11 +139,11 @@ if (_config_get('features.warp.enabled', true)) {
 					);
 
 					if (equals_ic(@found, 0)) {
-						msg(color(red) . 'Warp' substr(@name, 6) 'not found!');
+						msg(color('RED') . 'Warp' substr(@name, 6) 'not found!');
 						call_alias('/warp')
 					}
 				} else {
-					msg(color(red) . 'Player' @player 'is not online!');
+					msg(color('RED') . 'Player' @player 'is not online!');
 				}
 			}
 		)

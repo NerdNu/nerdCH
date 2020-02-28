@@ -12,12 +12,12 @@
 		try(
 			store_value(concat('homes.', @uuid, '.', @name, '.loc'), ploc())
 			store_value(concat('homes.', @uuid, '.', @name, '.mode'), @mode)
-			msg(color(gray) . 'Home set.')
+			msg(color('gray') . 'Home set.')
 		,@ex,
-			msg(color(red) . 'Home names must not contain special characters')
+			msg(color('red') . 'Home names must not contain special characters')
 		);
 	} else {
-		msg(concat(color(red), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']'))
+		msg(concat(color('red'), 'Usage: /sethome [name] [', array_implode(@modes,'|'), ']'))
 	}
 <<<
 
@@ -27,9 +27,9 @@
                 _assertperm('restricted', 1);
         }
         if(has_permission('nerdch.level.restricted')) {
-                msg(concat(color(red), 'Usage: /delhome [player] <name>'));
+                msg(concat(color('red'), 'Usage: /delhome [player] <name>'));
         } else {
-                msg(concat(color(red), 'Usage: /delhome <name>'));
+                msg(concat(color('red'), 'Usage: /delhome <name>'));
         }
         call_alias(/listhomes);
 <<<
@@ -44,7 +44,7 @@
             clear_value(@str);
             msg('Home' $home 'cleared.');
         } else {
-            msg(concat(color(red), 'Home ' , $home, ' not found.'));
+            msg(concat(color('red'), 'Home ' , $home, ' not found.'));
             call_alias(/listhomes);
         }
 <<<
@@ -57,7 +57,7 @@
             clear_value(@str);
             msg('Home' $home 'cleared.');
         } else {
-            msg(concat(color(red), 'Home ' , $home, ' not found.'));
+            msg(concat(color('red'), 'Home ' , $home, ' not found.'));
             call_alias(/listhomes $player);
         }
 <<<
@@ -90,9 +90,9 @@
             
             set_ploc(get_value(concat(@prefix, 'loc'))),
         #else:
-            msg(concat(color(red), 'You do not have permission to visit that home'))),
+            msg(concat(color('red'), 'You do not have permission to visit that home'))),
     #else:
-        msg(concat(color(red), 'Unknown home!'))
+        msg(concat(color('red'), 'Unknown home!'))
         call_alias(/listhomes))
 
 <<<
@@ -107,7 +107,7 @@
             strip_colors(player()),
             $))
     assign(@uuid, _get_puuid(@player))
-    msg(concat(color(gray), if(equals(@player, strip_colors(player())), 'Your', concat(@player, '\'s')), ' homes:'))
+    msg(concat(color('gray'), if(equals(@player, strip_colors(player())), 'Your', concat(@player, '\'s')), ' homes:'))
     if(or(
         equals(@player, strip_colors(player())),
         has_permission('homes.override')),
@@ -116,7 +116,7 @@
         foreach(array_keys(get_values(concat('homes.', @uuid))), @name,
             assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
             if(array_index_exists(@m,0),
-                msg(concat(color(gray), '  ', @m[1], ' [', get_value(concat('homes.', @uuid, '.', @m[1], '.mode')), ']')))),
+                msg(concat(color('gray'), '  ', @m[1], ' [', get_value(concat('homes.', @uuid, '.', @m[1], '.mode')), ']')))),
     #else:
         foreach(array_keys(get_values(concat('homes.', @uuid))), @name,
             assign(@m, reg_match('^homes\\..+\\.(.+)\\.loc$', @name))
@@ -124,6 +124,6 @@
                 array_index_exists(@m,0),
                 equals('public', get_value(concat('homes.', @uuid, '.', @m[1], '.mode')))),
                 
-                msg(concat(color(gray), '  ', @m[1])))))
+                msg(concat(color('gray'), '  ', @m[1])))))
    
 <<<
