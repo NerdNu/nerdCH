@@ -146,22 +146,16 @@ mods:/spawnp $player = runas($player, /spawn)
 
 *:/rainbow = >>>
     _assertperm('admin', 0) #Sorry guys ;)
-    spawn_entity('sheep:black')
-    spawn_entity('sheep:red')
-    spawn_entity('sheep:green')
-    spawn_entity('sheep:brown')
-    spawn_entity('sheep:blue')
-    spawn_entity('sheep:purple')
-    spawn_entity('sheep:cyan')
-    spawn_entity('sheep:silver')
-    spawn_entity('sheep:gray')
-    spawn_entity('sheep:pink')
-    spawn_entity('sheep:lime')
-    spawn_entity('sheep:yellow')
-    spawn_entity('sheep:light_blue')
-    spawn_entity('sheep:magenta')
-    spawn_entity('sheep:orange')
-    spawn_entity('sheep:white')
+    @index = array(0) # 1 element long array to save an integer. We need it so it works with the [not a] closure.
+    @colors = array('WHITE', 'ORANGE', 'MAGENTA', 'LIGHT_BLUE', 'YELLOW', 'LIME', 'PINK', 'GRAY', 'LIGHT_GRAY', 'CYAN', 'PURPLE', 'BLUE', 'BROWN', 'GREEN', 'RED', 'BLACK')
+    @location = ploc()
+    @location['y'] = @location['y'] + 1 # Move the sheep up 1 in the y axis
+    spawn_entity('SHEEP', array_size(@colors), @location, closure(@id) {
+            set_entity_spec(@id, array('color': @colors[@index[0]]))
+            @index[0] = @index[0] + 1
+        }
+    )
+
 <<<
 
 
