@@ -3,6 +3,74 @@
 	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'kick', $player, $))
 <<<
 
+# Ban the specified $player on behalf of the specified $staff member, from the console.
+# Subsequent args are concatenated to form the ban reason.
+*:'/ban-as' $staff $player [$] = >>>
+	if (player() != '~console') {
+		die(color('RED') . 'That command is intended for console use only!');
+	}
+	try(
+		if (! has_permission($staff, 'nerdch.level.mod')) {
+			die(color('RED') . $staff . ' is not a permitted to issue bans!');
+		}
+	,
+	# catch:
+		# CommandHelper has_permission() doesn't support offline players. @$%^#@$!!
+		die(color('RED') . 'The banning staff member must be online.');
+	);
+
+	if (_contains('nerd.nu/appeal', $)) {
+		_sendPluginMessage($staff, 'BungeeCord', array('MCBouncer', 'ban', $player, $));
+	} else {
+		_sendPluginMessage($staff, 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' nerd.nu/appeal'));
+	}
+<<<
+
+# Unban $player on behalf of $staff member, from the console.
+*:'/unban-as' $staff $player [$] = >>>
+	if (player() != '~console') {
+		die(color('RED') . 'This command is intended for console use only!');
+	}
+	try(
+		if (! has_permission($staff, 'nerdch.level.mod')) {
+			die(color('RED') . $staff . ' is not a permitted to unban!');
+		}
+	,
+	# catch:
+		die(color('RED') . 'The unbanning staff member must be online.');
+	);
+
+	_sendPluginMessage($staff, 'BungeeCord', array('MCBouncer', 'unban', $player));
+<<<
+
+# Ban anyone except staff in a specified $radius of blocks.
+# Useful for spambots at spawn.
+*:'/ban-radius' $radius [$] = >>>
+	_assertperm('mod', 0);
+	@MAX_RADIUS = 30;
+
+	@radius = $radius;
+	try(
+		if (@radius > @MAX_RADIUS) {
+			msg(color('RED') . 'The radius was limited to ' . @MAX_RADIUS . '.');
+			@radius = @MAX_RADIUS;
+		}
+
+		foreach (@p in players_in_radius(@radius)) {
+			if (! has_permission(@p, 'nerdch.level.mod')) {
+				if (_contains('nerd.nu/appeal', $)) {
+					_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', @p, $))
+				} else {
+					_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', @p, $ . ' nerd.nu/appeal'))
+				}
+			}
+		}
+	,
+	# catch:
+		die(color('RED') . 'The ban radius must be a number.');
+	);
+<<<
+
 *:/ban $player [$] = >>>
 	_assertperm('mod', 0)
 	if (_contains('nerd.nu/appeal', $)) {
