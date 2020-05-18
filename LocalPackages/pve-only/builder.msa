@@ -1,0 +1,11 @@
+*:/builder [$] = >>>
+    if (!has_permission('commandhelper.alias.builder')) {
+        die(color('RED').'You\'re not allowed to do that.');
+    }
+    if (!has_permission('nerdlist.group.modmode')) {
+        die(color('RED').'You need to be in ModMode to do this.');
+    }
+
+    msg(color('GREEN').'Bob the builder.');
+    sudo('/warp builder');
+<<<
