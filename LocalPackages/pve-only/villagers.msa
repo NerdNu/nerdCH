@@ -1,0 +1,29 @@
+// Summon a perfect farmer, with optional biome ("type") argument.
+
+*:'/summon-farmer' [$type] = >>>
+    _assertperm('admin');
+    @type = to_lower(if($type == '', 'plains', $type));
+    @VALID_TYPES = array('desert', 'jungle', 'plains', 'savanna', 'snow', 'swamp', 'taiga');
+    if (! array_contains(@VALID_TYPES, @type)) {
+        msg(color('RED') . 'Invlid villager biome.');
+        msg(color('GOLD') . 'Valid biomes: ' . color('YELLOW') . array_implode(@VALID_TYPES, color('WHITE') . ', ' . color('YELLOW')));
+        die();
+	}
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:farmer,level:5,type:' . @type . '},' .
+        'Offers:{Recipes:[' .
+            '{buy:{id:wheat,Count:20},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:potato,Count:26},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:carrot,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' . 
+            '{buy:{id:beetroot,Count:15},sell:{id:emerald,Count:1},maxUses:9999999},' . 
+            '{buy:{id:pumpkin,Count:6},sell:{id:emerald,Count:1},maxUses:9999999},'
+            '{buy:{id:emerald,Count:1},sell:{id:bread,Count:6},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:apple,Count:4},maxUses:9999999},' .
+            '{buy:{id:melon,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' . 
+            '{buy:{id:emerald,Count:1},sell:{id:cake,Count:1},maxUses:9999999},' . 
+            '{buy:{id:emerald,Count:3},sell:{id:golden_carrot,Count:3},maxUses:9999999},' . 
+            '{buy:{id:emerald,Count:4},sell:{id:glistering_melon_slice,Count:3},maxUses:9999999}' .
+        ']}}');
+<<<
