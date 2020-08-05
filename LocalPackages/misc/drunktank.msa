@@ -63,7 +63,7 @@
   # Note that . can NEVER be in a region name, so it is a
   # safe delimiter.
   @tank_list[@worldName2 . "." . $rgName] = 1;
-  export("trunktank.tanks", @tank_list);
+  export("drunktank.tanks", @tank_list);
 
   # Inline an entire closure here to deal with the drunkinness!
   @task_id = import("drunktank.taskid");
@@ -89,7 +89,7 @@
                 break;
               }
             }
-            # The player is not drunk. We ca fix that!
+            # The player is not drunk. We can fix that!
             if(@playerDrunk == false) {
               # broadcast(color(GOLD) . "@playerName is now drunk!");
               set_peffect(@playerName, 9, 1, 3600); # drunk for 1 hour.
