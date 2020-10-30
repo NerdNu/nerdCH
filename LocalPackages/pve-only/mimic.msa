@@ -1,0 +1,12 @@
+# This is just to disguise a minecart in a specific place in the event world on P
+# It's not restricted as it only affects a cart in a specific place, but it
+# will probably error out if that place is not loaded.
+*:'/mimic' = >>>
+	# get all the info we need about the player and cart
+       	@loc = array('x': '19947', 'y': '5', 'z': '20035', 'world': 'pve-events')
+	@player = array_get_rand(players_in_radius(@loc,100))
+	@cart = entities_in_radius(@loc,40,'MINECART_CHEST')[0]
+
+	# disguise the cart
+	sudo('/disguiseuuid '.@cart.' Player '.@player)
+<<<
