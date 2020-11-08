@@ -57,14 +57,18 @@
     @yaw = to_degrees(atan2(@dz, @dx))
     @yaw += 90
 
-    pfacing(@yaw, ploc()['pitch'])
-
     msg(color('GOLD'). @wp_name . ':')
     msg(color('RED').'X: ' .color('RESET').  round(@x))
     msg(color('YELLOW').'Y: '.color('RESET') . round(@y))
     msg(color('GREEN').'Z: '.color('RESET') . round(@z))
     msg(color('BLUE').'Distance: ' . color('RESET'). round(sqrt(pow(@dx, 2) + pow(@dy, 2) + pow(@dz, 2))).'m')
     msg(color('BLACK').'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
+
+    if (pvehicle() == null) {
+        pfacing(@yaw, ploc()['pitch']);
+    } else {
+        msg(color('YELLOW').'Due to a Mojang client bug, we can\'t point you in the right direction when you\'re in a vehicle (SPIGOT-6187, SPIGOT-5891).');
+    }
 <<<
 
 

@@ -108,7 +108,11 @@
 			@pitch = to_degrees(asin((@ploc['y'] - @loc['y'])/(execute(@ploc, @loc, @distance))))
 		}
 		@yaw += 90
-		pfacing(@yaw, @pitch)
+        if (pvehicle() == null) {
+            pfacing(@yaw, @pitch);
+        } else {
+            msg(color('YELLOW').'Due to a Mojang client bug, we can\'t point you in the right direction when you\'re in a vehicle (SPIGOT-6187, SPIGOT-5891).');
+        }
 	}
 	@routeTo = closure(@loc){
 		switch(@ploc['world']){
