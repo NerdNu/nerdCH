@@ -15,18 +15,22 @@ nerdch.level.admin:/defaultgolemspawner = >>>
 #
 # Creates an iron golem spawner with the specified tier.
 #
-nerdch.level.admin:/golemspawner [$tier] = >>>
+nerdch.level.admin:/golemspawner [$tier] [$mob] = >>>
+    if ($tier == '' && $mob == '') {
+        msg(color('RED').'Usage: /golemspawner [tier] [mob]');
+        die(color('RED').'    Tier is 1-20. Mob defaults to iron_golem.');
+    }
+
     @t = integer($tier);
     if (!is_integer(@t)) {
-        msg(color('RED')."The tier must be a positive integer.");
-        die();
+        die(color('RED')."The tier must be a positive integer.");
     }
-    if (@t < 0) {
-        msg(color('RED')."The tier must be a positive integer.");
-        die();
+    if (@t <= 0) {
+        die(color('RED')."The tier must be a positive integer.");
     } else if (@t > 20) {
-        msg(color('RED')."Let's not get crazy...");
-        die();
+        die(color('RED')."Let's not get crazy...");
     }
-    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{id:"minecraft:iron_golem",CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}} replace');
+
+    @m = if($mob == '', 'iron_golem', to_lower($mob));
+    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{id:"minecraft:'.@m.'",DeathLootTable:"minecraft:entities/iron_golem",CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}} replace');
 <<<
