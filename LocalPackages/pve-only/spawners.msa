@@ -32,5 +32,9 @@ nerdch.level.admin:/golemspawner [$tier] [$mob] = >>>
     }
 
     @m = if($mob == '', 'iron_golem', to_lower($mob));
-    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{id:"minecraft:'.@m.'",DeathLootTable:"minecraft:entities/iron_golem",CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}} replace');
+    @extraNBT = '';
+    if (@m == 'hoglin') {
+        @extraNBT = ',IsImmuneToZombification:1b';
+    }
+    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{id:"minecraft:'.@m.'",DeathLootTable:"minecraft:entities/iron_golem"'.@extraNBT.',CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}} replace');
 <<<
