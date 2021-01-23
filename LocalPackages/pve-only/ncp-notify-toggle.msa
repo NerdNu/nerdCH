@@ -1,11 +1,19 @@
 *:/ncp notify [$state] = >>>
 	_assertperm("mod");
-	if ($state=="on") {
-		runas(~console, '/lp user '.player().' permission set nocheatplus.notify true');
-		die('You will now recieve NCP notifications.');
-	}
-	if ($state=="off") {
-		runas(~console, '/lp user '.player().' permission set nocheatplus.notify false');
-		die('You will no longer recieve NCP notifications.');
-	}
+    @state = to_lower($state);
+	if (@state == 'on') {
+		runas('~console', '/lp user '.player().' permission set nocheatplus.notify true');
+		die(color('GOLD').'You will now recieve NCP notifications.');
+	} else if (@state == 'off') {
+		runas('~console', '/lp user '.player().' permission set nocheatplus.notify false');
+		die(color('GOLD').'You will no longer recieve NCP notifications.');
+	} else if (@state == 'toggle') {
+        if (has_permission('nocheatplus.notify')) {
+            call_alias('/ncp notify off');
+        } else { 
+            call_alias('/ncp notify on');
+        }
+    } else {
+		die(color('RED').'Usage: /ncp notify <state> - Change whether you receive NCP notifications; <state> can be on, off or toggle.');
+    }
 <<<
