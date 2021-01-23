@@ -1,29 +1,124 @@
-// Summon a perfect farmer, with optional biome ("type") argument.
-
-*:'/summon-farmer' [$type] = >>>
+// Summon a perfect farmer, with optional biome appearance argument.
+*:'/summon-farmer' [$biome] = >>>
     _assertperm('admin');
-    @type = to_lower(if($type == '', 'plains', $type));
-    @VALID_TYPES = array('desert', 'jungle', 'plains', 'savanna', 'snow', 'swamp', 'taiga');
-    if (! array_contains(@VALID_TYPES, @type)) {
-        msg(color('RED') . 'Invlid villager biome.');
-        msg(color('GOLD') . 'Valid biomes: ' . color('YELLOW') . array_implode(@VALID_TYPES, color('WHITE') . ', ' . color('YELLOW')));
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
         die();
-	}
+    }
 
-    run('/summon villager ~ ~1 ~ {VillagerData:{profession:farmer,level:5,type:' . @type . '},' .
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:farmer,level:5,type:' . @biome . '},' .
         'Offers:{Recipes:[' .
             '{buy:{id:wheat,Count:20},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:potato,Count:26},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:carrot,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' . 
-            '{buy:{id:beetroot,Count:15},sell:{id:emerald,Count:1},maxUses:9999999},' . 
-            '{buy:{id:pumpkin,Count:6},sell:{id:emerald,Count:1},maxUses:9999999},'
+            '{buy:{id:beetroot,Count:15},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:pumpkin,Count:6},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:melon,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:bread,Count:6},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:apple,Count:4},maxUses:9999999},' .
-            '{buy:{id:melon,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' . 
-            '{buy:{id:emerald,Count:1},sell:{id:cake,Count:1},maxUses:9999999},' . 
-            '{buy:{id:emerald,Count:3},sell:{id:golden_carrot,Count:3},maxUses:9999999},' . 
+            '{buy:{id:emerald,Count:1},sell:{id:cake,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:3},sell:{id:golden_carrot,Count:3},maxUses:9999999},' .
             '{buy:{id:emerald,Count:4},sell:{id:glistering_melon_slice,Count:3},maxUses:9999999}' .
+        ']}}');
+<<<
+
+// Summon a perfect-ish Mason, with optional biome appearance argument.
+*:'/summon-mason' [$biome] = >>>
+    _assertperm('admin');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    # The summon command is too long to accomplish in one step.
+    # Summon a tagged villager with some trades, then select him again by tag.
+    # Tried appending a Recipes:[] array to Offers but that doesn't work.
+    # Also tried appending [{buy:...},{buy:...}] to Offers.Recipes. Also does not work.
+    # Also tried appending {buy:...},{buy:...} to Offers.Recipes. Also does not work.
+    # Also tried multiple appand value clauses in one command. Also does not work.
+    # So, annoying as it is, we must append trades one at a time.
+    @trades = array(
+        '{buy:{id:stone,Count:20},sell:{id:emerald,Count:1},maxUses:9999999}',
+        '{buy:{id:clay,Count:10},sell:{id:emerald,Count:1},maxUses:9999999}',
+        '{buy:{id:granite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
+        '{buy:{id:diorite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
+        '{buy:{id:andesite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:brick,Count:10},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:white_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:orange_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:magenta_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:light_blue_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:yellow_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:lime_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:pink_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:gray_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:light_gray_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:cyan_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:purple_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:blue_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:brown_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:green_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:red_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:black_terracotta,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:quartz_block,Count:1},maxUses:9999999}',
+        '{buy:{id:emerald,Count:1},sell:{id:quartz_pillar,Count:1},maxUses:9999999}'
+    );
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:mason,level:5,type:' . @biome . '},' .
+        'Tags:["incomplete"],' .
+        'Offers:{Recipes:[' .
+        ']}}');
+    foreach (@trade in @trades) {
+        run('/data modify entity @e[type=villager,tag=incomplete,distance=..2,limit=1] Offers.Recipes append value ' . @trade);
+    }
+    run('/tag @e[type=villager,tag=incomplete,distance=..2] remove incomplete');
+<<<
+      
+// Summon a perfect Cleric, with optional biome appearance argument.
+*:'/summon-cleric' [$biome] = >>>
+    _assertperm('admin');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:cleric,level:5,type:' . @biome . '},' .
+        'Offers:{Recipes:[' .
+            '{buy:{id:rotten_flesh,Count:32},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:gold_ingot,Count:3},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:rabbit_foot,Count:2},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:scute,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:glass_bottle,Count:9},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:nether_wart,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:redstone,Count:2},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:lapis_lazuli,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:4},sell:{id:glowstone,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:ender_pearl,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:3},sell:{id:experience_bottle,Count:1},maxUses:9999999}' .
+        ']}}');
+<<<
+
+// Summon a perfect Butcher, with optional biome appearance argument.
+*:'/summon-butcher' [$biome] = >>>
+    _assertperm('admin');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:butcher,level:5,type:' . @biome . '},' .
+        'Offers:{Recipes:[' .
+            '{buy:{id:chicken,Count:14},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:rabbit,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:porkchop,Count:7},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:coal,Count:16},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:beef,Count:10},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:mutton,Count:7},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:dried_kelp_block,Count:10},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:sweet_berries,Count:10},sell:{id:emerald,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:rabbit_stew,Count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:cooked_chicken,Count:8},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:1},sell:{id:cooked_porkchop,Count:5},maxUses:9999999}' .
         ']}}');
 <<<
