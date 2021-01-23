@@ -41,7 +41,7 @@
     # So, annoying as it is, we must append trades one at a time.
     @trades = array(
         '{buy:{id:stone,Count:20},sell:{id:emerald,Count:1},maxUses:9999999}',
-        '{buy:{id:clay,Count:10},sell:{id:emerald,Count:1},maxUses:9999999}',
+        '{buy:{id:clay_ball,Count:10},sell:{id:emerald,Count:1},maxUses:9999999}',
         '{buy:{id:granite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
         '{buy:{id:diorite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
         '{buy:{id:andesite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
