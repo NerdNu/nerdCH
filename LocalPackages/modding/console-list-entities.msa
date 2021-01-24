@@ -1,0 +1,37 @@
+# List entities within radiius of (world, x, z) to console.
+*:'/console-list-entities' $world $centreX $centreZ $radius = >>>
+	_assertperm('admin', 0);
+
+	#@loc = array('world': $world, 'x': $centerX, 'y': $centreY, 'z': $centreZ);
+	@MAX_RADIUS = 500;
+	if ($radius > @MAX_RADIUS) {
+		die(color('RED') . 'The radius must be no more than ' . @MAX_RADIUS . '.');
+	}
+	@radius = max(0, $radius);
+
+	@minX = integer(($centreX - @radius) / 16);
+	@maxX = integer(($centreX + @radius) / 16);
+	@minZ = integer(($centreZ - @radius) / 16);
+	@maxZ = integer(($centreZ + @radius) / 16);
+
+	# Process a square of chunks around ($centreX, $centreZ).
+	# Sadly, entities_in_radius() doesn't load chunks, so we explicitly do so.
+	# cx = Chunk X, cz = Chunk Z.
+	for (assign(@cx, @minX), @cx <= @maxX, ++@cx) {
+		for (assign(@cz, @minZ), @cz <= @maxZ, ++@cz) {
+			load_chunk($world, @cx, @cz);
+
+			# When given integer X and Z coords, all_entites() considers only one chunk.
+			@entities = all_entities($world, @cx, @cz);
+			foreach (@e in @entities) {
+				console(entity_type(@e) . ' ' . entity_loc(@e));
+			}
+		}
+	}
+<<<
+
+
+*:'/console-list-entities' = >>>
+	_assertperm('admin', 0);
+	msg(color('GOLD') . 'Usage: ' . color('YELLOW') . '/console-list-entities <world> <x> <z> <radius>');
+<<<
