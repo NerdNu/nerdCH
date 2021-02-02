@@ -24,12 +24,11 @@
 			# When given integer X and Z coords, all_entites() considers only one chunk.
 			@entities = all_entities($world, @cx, @cz);
 			foreach (@e in @entities) {
-				console(entity_type(@e) . ' ' . entity_loc(@e));
+				console(@e . ' = ' . entity_type(@e) . ' ' . entity_loc(@e));
 			}
 		}
 	}
 <<<
-
 
 *:'/console-list-entities' = >>>
 	_assertperm('admin', 0);
