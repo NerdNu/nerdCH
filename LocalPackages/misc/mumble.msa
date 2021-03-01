@@ -1,5 +1,5 @@
 # Allows for a player to get mumble connection information without typing !mumble in public chat
 *:'/mumble' [$] = >>>
 	msg(colorize('&6Download Mumble from &b&nhttps://www.mumble.info/downloads/'));
-	msg(colorize('&6Join &b&nmumble.nerd.nu&6, port 6162 (voice chat).'));
+	msg(colorize('&6Join &b&nmumble.nerd.nu&6, port &b6162&6 (voice chat).'));
 <<<
