@@ -252,13 +252,13 @@
         mode: xml,
         paste_password: $,
         paste_user: player())
-    http_request('http://paste.thezomg.com/', array(
+    http_request('https://paste.thezomg.com/', array(
         params: @request,
         success:
             closure(@response) {
                 @id = xml_read(@response['body'], 'result/id')
                 @hash = xml_read(@response['body'], 'result/hash')
-                msg(sprintf('http://paste.thezomg.com/%s/%s', @id, @hash))
+                msg(sprintf('https://paste.thezomg.com/%s/%s', @id, @hash))
                 if ($ != '') {
                     msg('PW: ' . $)
                 }

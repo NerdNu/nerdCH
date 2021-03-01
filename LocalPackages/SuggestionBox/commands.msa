@@ -5,7 +5,7 @@
         # Show usage
         msg(color(light_purple).'Got a suggestion, but want to remain anonymous?')
         msg(color(light_purple).'Use /suggestion-box! If your post is too long,')
-        msg(color(light_purple).'use a pastebin like'.color(red).' http://paste.thezomg.com')
+        msg(color(light_purple).'use a pastebin like'.color(red).' https://paste.thezomg.com')
         msg(color(light_purple).'and submit the link here.')
         msg(color(light_purple).'Your suggestion is 100% anonymous, and you can')
         msg(color(light_purple).'audit this source code by running '.color(dark_purple).'/suggestion-box-code')
