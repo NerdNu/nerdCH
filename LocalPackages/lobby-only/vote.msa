@@ -1,0 +1,3 @@
+*:'/vote' [$] = >>>
+    msg(colorize('&3Click the Vote button at: &b&nhttps://minecraft-mp.com/server/178688/vote/?username='.player()));
+<<<
