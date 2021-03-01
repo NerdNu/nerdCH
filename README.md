@@ -73,6 +73,9 @@ rm main.ms
 ln -fs ~/shared/NerdCH/pve/aliases.msa .
 ln -fs ~/shared/NerdCH/pve/main.ms .
 ```
+   * Note that if `aliases.msa` doesn't exist, CommandHelper will create a default
+     version of it with unhelpful aliases for `/list` another commands. Therefore,
+     it needs to at least exist, even if empty.
 
 
 ### Guidance on the Contents of aliases.msa, main.ms, auto_include.ms
