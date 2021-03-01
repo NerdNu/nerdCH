@@ -92,3 +92,13 @@ The only reasons to put things in these files are:
    The CH `read()` function always reads files relative to the currently
    executing code. An example would be the `_kit()` function in [auto_include.ms](https://github.com/NerdNu/nerdCH/blob/master/auto_include.ms).
 
+
+### nerdch.yml
+
+This is per-server settings file that NerdCH scripts can consult to determine whether
+to enable various features. At the time of writing, only the `home/warp.ms` customises
+itself in this way.
+
+To customise `nerdch.yml` copy the file to the server's `plugins/CommandHelper/` directory
+and edit the copy.
+
