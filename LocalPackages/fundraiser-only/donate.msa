@@ -1,0 +1,11 @@
+*:/thank $user $amount = >>>
+    _assertperm('admin', 0);
+    if (!is_numeric($amount)) {
+        die("amount must be a number")
+    }
+    @amountString = string(round($amount, 2))
+    while (length(@amountString) - string_position(@amountString, '.') < 3) {
+        @amountString .= '0'
+    }
+    broadcast(color(GOLD).'Thanks to '.color(LIGHT_PURPLE).$user.color(GOLD).' for donating '.color(LIGHT_PURPLE).'$'.@amountString.color(GOLD).'!')
+<<<
