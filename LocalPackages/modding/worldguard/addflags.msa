@@ -1,26 +1,27 @@
 *:/addflags $name [$owner=''] = >>>
 	if (! sk_region_exists($name)) {
-		die(color('RED').'There is no region by that name.')
+		die(color('RED').'There is no region by that name.');
 	} else {
-		run(concat('/region flag ', $name, ' use allow'))
-		run(concat('/region flag ', $name, ' interact allow'))
-		run(concat('/region flag ', $name, ' chest-access allow'))
-		run(concat('/region flag ', $name, ' vehicle-place allow'))
-		run(concat('/region flag ', $name, ' vehicle-destroy allow'))
-		run(concat('/region flag ', $name, ' ride allow'))
-		if (import('sharedata.source') == 'creative') {
-			run(concat('/region flag ', $name, ' date ', simple_date('yyyy/MM/dd HH:mm:ss z')))
-			run(concat('/region flag ', $name, ' created-by ', player()))
+		run(concat('/region flag ', $name, ' use allow'));
+		run(concat('/region flag ', $name, ' interact allow'));
+		run(concat('/region flag ', $name, ' chest-access allow'));
+		run(concat('/region flag ', $name, ' vehicle-place allow'));
+		run(concat('/region flag ', $name, ' vehicle-destroy allow'));
+		run(concat('/region flag ', $name, ' ride allow'));
+		@server = import('sharedata.source');
+		if (@server == 'creative') {
+			run(concat('/region flag ', $name, ' date ', simple_date('yyyy/MM/dd HH:mm:ss z')));
+			run(concat('/region flag ', $name, ' created-by ', player()));
 			if($owner != '') {
-				run(concat('/region flag ', $name, ' first-owner ', $owner))
+				run(concat('/region flag ', $name, ' first-owner ', $owner));
 			}
-			run(concat('/region flag ', $name, ' -g owners worldedit allow'))
+			run(concat('/region flag ', $name, ' -g owners worldedit allow'));
 		}
-		if (import('sharedata.source') == 'pve') {
-			run(concat('/region flag ', $name, ' date ', simple_date('yyyy/MM/dd HH:mm:ss z')))
-			run(concat('/region flag ', $name, ' created-by ', player()))
-			run(concat('/region flag ', $name, ' damage-animals allow'))
-			run(concat('/region flag ', $name, ' ravager-grief deny'))
+		if (@server == 'pve' || @server == 'skyblock') {
+			run(concat('/region flag ', $name, ' date ', simple_date('yyyy/MM/dd HH:mm:ss z')));
+			run(concat('/region flag ', $name, ' created-by ', player()));
+			run(concat('/region flag ', $name, ' damage-animals allow'));
+			run(concat('/region flag ', $name, ' ravager-grief deny'));
 		}
 	}
 <<<
