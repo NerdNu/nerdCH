@@ -1,27 +1,41 @@
 *:/server $server = >>>
-	_changeserver(player(), $server)
+	_changeserver(player(), $server);
 <<<
 
 *:/server = >>>
-	msg('Usage: /server <creative|lobby|survival|pve|event>')
+	msg(colorize('&6Usage: &e/server &f<&ename&f>'));
+	msg(colorize('&f - Switch to the named server.'));
+	_listServers();
 <<<
 
-*:'/to-server' $p $s = >>>
-	_assertperm('admin')
-	_changeserver($p, $s)
+*:'/to-server' [$p] [$s] = >>>
+	_assertperm('admin');
+	if ($p == '' || $s == '') {
+		msg(colorize('&6Usage: &e/to-server &f<&eplayer&f> &f<&eserver&f>'));
+		msg(colorize('&f - Send the specified player to the named server.'));
+		_listServers();
+		die();
+	}
+	_changeserver($p, $s);
 <<<
 
 
-*:'/all-to-server' $s = >>>
-	_assertperm('admin')
+*:'/all-to-server' [$s] = >>>
+	_assertperm('admin');
+	if ($s == '') {
+		msg(colorize('&6Usage: &e/all-to-server &f<&eserver&f>'));
+		msg(colorize('&f - Send all players to the named server.'));
+		_listServers();
+		die();
+	}
 	foreach(all_players(), @p, g(
 		_changeserver(@p, $s)
-	))
+	));
 <<<
 
-*:/creative = _changeserver(player(), 'creative')
-*:/pve = _changeserver(player(), 'pve')
-*:/minigames = _changeserver(player(), 'minigames')
-*:/lobby = _changeserver(player(), 'lobby')
-*:/event = _changeserver(player(), 'event')
+*:/creative = _changeserver(player(), 'creative');
+*:/event    = _changeserver(player(), 'event');
+*:/lobby    = _changeserver(player(), 'lobby');
+*:/pve      = _changeserver(player(), 'pve');
+*:/skyblock = _changeserver(player(), 'skyblock');
 
