@@ -7,5 +7,5 @@
     while (length(@amountString) - string_position(@amountString, '.') < 3) {
         @amountString .= '0'
     }
-    broadcast(color(GOLD).'Thanks to '.color(LIGHT_PURPLE).$user.color(GOLD).' for donating '.color(LIGHT_PURPLE).'$'.@amountString.color(GOLD).'!')
+    broadcast(color('GOLD').'Thanks to '.color('LIGHT_PURPLE').$user.color('GOLD').' for donating '.color('LIGHT_PURPLE').'$'.@amountString.color('GOLD').'!')
 <<<
