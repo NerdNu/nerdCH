@@ -109,9 +109,13 @@
 		_checkCooldown("nerdch.pull", 300000) || die(color('red')."You have to wait your turn");
 	}
 	@symbols = array('7', '\u3374', '\u26c0', '\u2618', '\u260a', '\u265a');
+	@num     = length(@symbols)
 	msg(@prefix.color('RANDOM').'000');
 	set_timeout(3000, closure() {
-		broadcast(@prefix.player().' got '.array_implode(array_rand(@symbols, 3, false), ''));
+		@sym1 = @symbols[rand(@num)]
+		@sym2 = @symbols[rand(@num)]
+		@sym3 = @symbols[rand(@num)]
+		broadcast(@prefix.player().' got '.@sym1.@sym2.@sym3);
 	});
 <<<
 
