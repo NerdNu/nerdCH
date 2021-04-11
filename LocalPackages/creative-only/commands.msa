@@ -3,7 +3,7 @@
 	if (!has_permission('LolNo.admin')) {
 		die();
 	}
-		
+
 	proc _doit (@player) {
 		@mode = pmode(@player);
 		set_pmode(@player, 'SURVIVAL');
@@ -15,8 +15,8 @@
 			set_timeout(2500, closure(set_phealth(@player, 20)));
  		));
 	}
-	
-	if ($player == '') {	
+
+	if ($player == '') {
 		msg(color('light_purple').'Jumping the whole server!');
 		foreach (@player in all_players()) {
 			_doit(@player);
@@ -156,7 +156,6 @@
 	broadcast(concat(@prefix, "[", trim(player()), "'s Magic 8-Ball]: ", color('green'), @array[@i]));
 <<<
 
-
 /rainbowhat [$player] = >>>
 	@player = player();
 	if ($player != '') {
@@ -165,13 +164,14 @@
     if (import('rainbowhat.'.@player) != null) {
 		clear_task(import('rainbowhat.'.@player));
 		export('rainbowhat.'.@player, null)
+        set_pinv(@player, array(103: null))
 		die('No more rainbow hat :(');
 	}
 	msg('Rainbow hat!!!');
-	set_pinv(@player, array(103: array(type: 298)));
+	set_pinv(@player, array(103: array(name: 'LEATHER_HELMET')));
 	@currentColor = array(0);
 	@colors = array(
-		array(255, 0, 0),   #red
+        array(255, 0, 0),   #red
 		array(255, 128, 0), #orange
 		array(255, 255, 0), #yellow
 		array(0, 255, 0),   #green
@@ -181,21 +181,67 @@
 	);
 	@interval = set_interval(200, closure(
 		try(
-			if (!ponline(@player) || (pinv(@player, 103) != null && pinv(@player, 103)['type'] != 298)) {
+			if (!ponline(@player) || pinv(@player, 103) == null || pinv(@player, 103)['name'] != 'LEATHER_HELMET') {
 				clear_task();
+				export('rainbowhat.'.@player, null)
+                die('No more rainbow hat :(');
 			} else {
 				@cindex = @currentColor[0];
 				@currentColor[0] = if(@currentColor[0] >= array_size(@colors) - 1, 0, @currentColor[0] + 1);
 				@color = @colors[@currentColor[0]];
 				set_armor_color(@player, 103, @color);
 			}
-		, #catch
-			#kill the task if it shits itself, so there aren't stacktraces
-			clear_task();
-		)
+    		, #catch
+    			#kill the task if it shits itself, so there aren't stacktraces
+    			clear_task();
+    			export('rainbowhat.'.@player, null)
+    	)
 	));
 	export('rainbowhat.'.@player, @interval);
 <<<
+
+/policehat [$player] = >>>
+    @player = player()
+    if($player != '', @player = player($player))
+    if(import('policehat.'.@player) != null){
+    	clear_task(import('policehat.'.@player))
+        export('policehat.'.@player, null)
+        set_pinv(@player, array(103: null))
+        die('No more policehat hat :(')
+    }
+    msg('Police hat!!!')
+    set_pinv(@player, array(103: array(name: 'LEATHER_HELMET')))
+    @currentColor = array(0)
+    @colors = array(
+        array(255, 0, 0),   #red
+        array(0, 0, 255),   #blue
+    )
+    @interval = set_interval(200, closure(
+        try(
+            if(!ponline(@player) || pinv(@player, 103) == null || pinv(@player, 103)['name'] != 'LEATHER_HELMET'){
+                clear_task()
+                export('policehat.'.@player, null)
+                die('No more policehat hat :(')
+            } else {
+                @pitch = 1
+                if(@currentColor[0] == 0){
+                    @pitch = 5
+                }
+                play_sound(ploc(@player), array(sound: 'ENTITY_EXPERIENCE_ORB_PICKUP', pitch: @pitch))
+                @cindex = @currentColor[0]
+                @currentColor[0] = if(@currentColor[0] >= array_size(@colors) - 1, 0, @currentColor[0] + 1)
+                @color = @colors[@currentColor[0]]
+                set_armor_color(@player, 103, @color)
+            }
+            , #catch
+                #kill the task if it shits itself, so there aren't stacktraces
+                clear_task()
+                export('policehat.'.@player, null)
+        )
+    ));
+    export('policehat.'.@player, @interval)
+<<<
+
 
 /*
 *:/me $ = >>>
@@ -246,4 +292,3 @@
 	set_pflying(true);
 	msg(color('GREEN') . "You are now high as a kite.")
 <<<
-
