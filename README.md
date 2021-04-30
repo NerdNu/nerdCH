@@ -55,9 +55,12 @@ ln -fs ~/shared/NerdCH/global .
    * Set `base-dir` so that we can access scripts in a shared location:
      * Note that this needs to be tailored to the particular checked out branch
        of LuckPerms and the server directory.
+     * Note also that on the dev server, we use symlinks to ensure that the
+       specified path patches that on production, so that we don't need to modify
+       the configuration when transferring dev to prod at the start of a rev.
 ```
-base-dir=/home/minecraft/shared/NerdCH-luckperms;/servers/pve-dev/plugins/CommandHelper
-```   
+base-dir=/home/minecraft/shared/NerdCH-luckperms;/servers/pve/plugins/CommandHelper
+```
  * `auto_include.ms` - This is shared between all servers:
 ```
 cd plugins/CommandHelper
