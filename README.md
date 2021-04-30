@@ -56,7 +56,7 @@ ln -fs ~/shared/NerdCH/global .
      * Note that this needs to be tailored to the particular checked out branch
        of LuckPerms and the server directory.
      * Note also that on the dev server, we use symlinks to ensure that the
-       specified path patches that on production, so that we don't need to modify
+       specified path matches that on production, so that we don't need to modify
        the configuration when transferring dev to prod at the start of a rev.
 ```
 base-dir=/home/minecraft/shared/NerdCH-luckperms;/servers/pve/plugins/CommandHelper
