@@ -6,7 +6,7 @@
 
 *:'/decoy-init' = >>>
 	_assertperm('admin');
-	run('/beast-mob add decoy-admin vindicator');
+	run('/beast-mob add decoy-admin chicken');
 	run('/beast-mob set decoy-admin main-hand decoy-admin-sword');
 	run('/beast-mob set decoy-admin main-hand-drop-percent 0');
 	run('/beast-mob set decoy-admin can-despawn true');
