@@ -129,7 +129,7 @@ proc _3d_distance(@arr1, @arr2) {
 
 proc _add_flags(@region, @timeout, @tries, @owner) {
 	if(@tries < 1) {
-		msg(color('RED').'Default flags added unsuccessfully.')
+		msg(color('RED').'Failed to add default flags.')
 	} else {
 		if(sk_region_exists(@region)) {
 			call_alias('/addflags '.@region . ' ' . @owner)
@@ -138,6 +138,29 @@ proc _add_flags(@region, @timeout, @tries, @owner) {
 			set_timeout(@timeout, closure(){
 				_add_flags(@region, @timeout, @tries - 1, @owner)
 			})
+		}
+	}
+}
+
+
+# If the specified @region (name) exists, do something with it by running
+# @actionClosure. Otherwise, wait @timeout milliseconds before trying again.
+# Retry after subsequent timeouts at most @tries times, and if no attempts
+# succeed, send @failureMessage to player().
+#
+# WorldGuard 6+ handles "/region define" asynchronously, so to set flags
+# we must wait until it exists.
+
+proc _with_region(@region, @timeout, @tries, @actionClosure, @failureMessage) {
+	if (@tries < 1) {
+		msg(@failureMessage);
+	} else {
+		if (sk_region_exists(@region)) {
+			execute(@actionClosure);
+		} else {
+			set_timeout(@timeout, closure() {
+				_with_region(@region, @timeout, @tries - 1, @actionClosure, @failureMessage);
+			});
 		}
 	}
 }
