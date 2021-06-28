@@ -1,6 +1,6 @@
 
 export('easysign.signs', get_value('easysign.signs'))
-bind(player_interact, null, null, @e,
+bind('player_interact', null, null, @e,
 	if(array_index_exists(@e, 'location') && is_sign_at(@e['location'])){
 		@signdata = import('easysign.signs')
 		# Have to refactor the new format to the old format.
@@ -254,7 +254,7 @@ bind(player_interact, null, null, @e,
 							}
 						)
 					,'cart',
-						spawn_entity(MINECART, 1, @data['location'])
+						spawn_entity('MINECART', 1, @data['location'])
 					,'launch',
 						set_pvelocity(@data['x'], @data['y'], @data['z'])
 					,'randloc',

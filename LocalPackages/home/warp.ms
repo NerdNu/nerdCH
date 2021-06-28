@@ -65,7 +65,7 @@ if (_config_get('features.warp.enabled', true)) {
 
 				@color = 'white';
 				if (@count % 2 == 0) {
-					@color = gray;
+					@color = 'gray';
 				}
 
 				@count++;

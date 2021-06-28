@@ -1,4 +1,4 @@
-proc(_accept_item, @i,
+proc _accept_item(@i) {
     # Accept an item a user has sent us. If the inv is filled and not all items are given,
     # save the rest for later.
     
@@ -46,9 +46,9 @@ proc(_accept_item, @i,
     , @ex,
         return(false)
     )
-)
+}
 
-proc(_read_index, @player, @page,
+proc _read_index(@player, @page) {
     assign(@inbox, _player_mail(@player))
     
     # Make sure the user really does have mail.
@@ -103,9 +103,9 @@ proc(_read_index, @player, @page,
         
         return(true)
     )
-)
+}
 
-proc(_read_mail_id, @player, @i,
+proc _read_mail_id(@player, @i) {
     # Read an individual mail.
     
     # Grab the users mailbox.
@@ -140,9 +140,9 @@ proc(_read_mail_id, @player, @i,
     )
     
     return(true)
-)
+}
 
-proc(_del_mail, @player, @id,
+proc _del_mail(@player, @id) {
     # Delete an individual item.
     
     # Get their mailbox
@@ -160,4 +160,4 @@ proc(_del_mail, @player, @id,
     , # else
         return(false)
     )
-)
+}

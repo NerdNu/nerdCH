@@ -1,6 +1,6 @@
 
 
-bind(player_join, null, null, @event){
+bind('player_join', null, null, @event){
 	x_new_thread('mail_player_join', closure(){
 		// Sleep, so they are fully joined before we get their id.
 		sleep(1);

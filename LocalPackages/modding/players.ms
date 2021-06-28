@@ -8,7 +8,7 @@
 #	*	If @target matches (inexactly) a player name, return his 0-based index.
 #	*	Otherwise, use the previously used index incremented by @step (+1 or -1).
 
-proc(_get_tp_index, @target, @step,
+proc _get_tp_index(@target, @step) {
 	if (is_numeric(@target)) {
 		return (integer(@target) - 1)
 	} else if (@target != '') {
@@ -22,13 +22,13 @@ proc(_get_tp_index, @target, @step,
 		@index = -1
 	}
 	return (@index + @step)
-)
+}
 
 
 # _tp_index(@index, @players)
 #	Teleport to @players[@index], with message and @index checking. Store updated index.
 
-proc(_tp_index, @index, @players,
+proc _tp_index(@index, @players) {
 	# Wrap around @index to a valid value in either direction.
 	@count = array_size(@players)
 	@index = mod(@count + @index, @count)
@@ -44,5 +44,5 @@ proc(_tp_index, @index, @players,
 		msg(color(GOLD).'Teleporting you to '.@player.' ('.(@index+1).' of '.@count.') at '.@niceLoc.'.')
 		set_ploc(@loc)
 	}
-)
+}
 

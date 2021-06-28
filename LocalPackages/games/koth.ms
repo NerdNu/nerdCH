@@ -3,7 +3,7 @@
 # Return the team ID (0 - 15) of the current King of the Hill - the team who has
 # placed their block in the scoring location. Return -1 if nobody holds that block.
 
-proc(_koth_king,
+proc _koth_king() {
 	@location = get_value('koth.location')
 	if (!is_null(@location)) {
 		@block = get_block_at(@location)
@@ -15,7 +15,7 @@ proc(_koth_king,
 		}
 	}
 	return (-1)
-)
+}
 
 
 # _koth_score_get()
@@ -23,14 +23,14 @@ proc(_koth_king,
 # Get the array of scores, which are the number of seconds that each team (0 - 15)
 # has held the scoring block.
 
-proc(_koth_score_get,
+proc _koth_score_get() {
 	@times = get_value('koth.times')
 	if (is_null(@times)) {
 		@times = array()
 		array_resize(@times, 16, 0)
 	}
 	return (@times)
-)
+}
 
 
 # _koth_score_clear()
@@ -38,19 +38,19 @@ proc(_koth_score_get,
 # Reset the accumulated time (score) for all teams to 0.
 # Return the initialised times array.
 
-proc(_koth_score_clear,
+proc _koth_score_clear() {
 	@times = array()
 	array_resize(@times, 16, 0)
 	store_value('koth.times', @times)
 	return (@times)
-)
+}
 
 
 # _koth_score_show()
 #
 # Show the current score.
 
-proc(_koth_score_show,
+proc _koth_score_show() {
 	# The chat color corresponding to a particular team ID (wool data value) from 0 - 15.
 	@COLOR = array(
 		color(WHITE), color(GOLD), color(LIGHT_PURPLE), color(BLUE), 
@@ -75,7 +75,7 @@ proc(_koth_score_show,
 		}
 	)
 	msg(@message)
-)
+}
 
 
 # _koth_reset()
@@ -83,7 +83,7 @@ proc(_koth_score_show,
 # Clear the accumulated scores.
 # If a team block (wool) is at the scoring location, set that block to air.
 
-proc(_koth_reset,
+proc _koth_reset() {
 	_koth_score_clear()
 	@team = _koth_king()
 	if (@team >= 0) {
@@ -91,19 +91,19 @@ proc(_koth_reset,
 		@location = get_value('koth.location')
 		set_block_at(@location, 0)
 	}
-)
+}
 
 
 # _koth_stop()
 #
 # Stop the scorekeeping task.
 
-proc(_koth_stop,
+proc _koth_stop() {
 	@task = get_value('koth.task')
 	if (! is_null(@task)) {
 		clear_task(@task)
 	}
-)	
+}
 
 
 # _koth_start()
@@ -112,7 +112,7 @@ proc(_koth_stop,
 # the 'koth.block' location.  Add to the score of whichever team has their 
 # wool colour there.
 
-proc(_koth_start,
+proc _koth_start() {
 	# Period between checks in seconds.
 	@CHECK_PERIOD = 1
 
@@ -126,4 +126,4 @@ proc(_koth_start,
 		}
 	))
 	store_value('koth.task', @task)
-)
+}

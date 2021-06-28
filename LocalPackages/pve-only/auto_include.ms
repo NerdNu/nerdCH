@@ -18,13 +18,13 @@ include('pets.ms')
 #	@lowers = array(1:, one, 2: two, 3: three)
 #	@uppers = _map(@lowers, closure(@s, to_upper(@s)))
 
-proc(_map_associative, @input, @f1,
+proc _map_associative(@input, @f1) {
 	@output = array(@input)
 	foreach (array_keys(@input), @key,
 		array_set(@output, @key, execute(@input[@key], @f1))
 	)
 	return (@output)
-)
+}
 
 
 # _map(@input, @f1)
@@ -35,7 +35,7 @@ proc(_map_associative, @input, @f1,
 # Example:
 #	@intCoords = _map(ploc[0..2], closure(@value, floor(@value)))
 
-proc(_map, @input, @f1,
+proc _map(@input, @f1) {
 	@output = array()
 	foreach (@input, @value,
 		console(@value)
@@ -43,4 +43,4 @@ proc(_map, @input, @f1,
 		array_push(@output, @f1Value)
 	)
 	return (@output)
-)
+}

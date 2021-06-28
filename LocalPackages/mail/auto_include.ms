@@ -44,7 +44,7 @@ include('send.ms')
 include('senditem.ms')
 
 # Proc that will initialize multiline mail composition
-proc(_init_mail_chat, @recipient,
+proc _init_mail_chat(@recipient) {
     @mail_messages = import('mail.mail_messages')
     @recipients = import('mail.recipients')
     
@@ -61,7 +61,7 @@ proc(_init_mail_chat, @recipient,
         # If there aren't, go ahead and bind everything.
         
         # Event for accumulating chat messages to be sent back to the user upon completion of their mail message
-        bind(player_chat, 'mail-hold-back-chat', null, @event,
+        bind('player_chat', 'mail-hold-back-chat', null, @event,
         
             @mail_messages = import('mail.mail_messages')
             
@@ -74,9 +74,9 @@ proc(_init_mail_chat, @recipient,
             , # else
                 # If they aren't, first make sure that their chat doesn't go to the people composing mail.
                 foreach(array_keys(@mail_messages), @player,
-                    foreach(@event[recipients], @i,
-                        if(array_contains_ic(@event[recipients][@i], @player),
-                            array_remove(@event[recipients], @i)
+                    foreach(@event['recipients'], @i,
+                        if(array_contains_ic(@event['recipients'][@i], @player),
+                            array_remove(@event['recipients'], @i)
                         )
                     )
                 )
@@ -84,7 +84,7 @@ proc(_init_mail_chat, @recipient,
                 # Then, add their chat to each mail-composing player's hold queue.
                 @held_back_chat = import('mail.held_back_chat')
                 # The pinfo(4) here is to make sure the player's display name is used (instead of just player()) as it appears in the chat.
-                assign(@message, concat('<', pinfo(4), '> ', @event[message]))
+                assign(@message, concat('<', pinfo(4), '> ', @event['message']))
                 
                 foreach(array_keys(@mail_messages), @player,
                     assign(@held_back_chat[@player], @message)
@@ -96,7 +96,7 @@ proc(_init_mail_chat, @recipient,
         )
         
         # Event for composing multi-line mail messages
-        bind(player_chat, 'mail-compose', null, @event,
+        bind('player_chat', 'mail-compose', null, @event,
         
             @mail_messages = import('mail.mail_messages')
             @recipients = import('mail.recipients')
@@ -110,9 +110,9 @@ proc(_init_mail_chat, @recipient,
             , # else
                 # If they are, see what they typed.
                 # But first, make sure their chat message doesn't actually end up being a chat message. :P
-                assign(@event[recipients], null)
+                assign(@event['recipients'], null)
                 
-                switch(@event[message],
+                switch(@event['message'],
                     '-send',
                         # If they typed -send, send off the message!
                         _send_mail(player(), @recipients[to_lower(player())], @mail_messages[to_lower(player())], 'multiline-mail')
@@ -135,20 +135,20 @@ proc(_init_mail_chat, @recipient,
                         # Firstly, though, is there actually a mail message there yet?
                         if(not(@mail_messages[to_lower(player())]),
                             # If not, simply set the mail message to the chat message.
-                            assign(@mail_messages[to_lower(player())], @event[message])
+                            assign(@mail_messages[to_lower(player())], @event['message'])
                             
                         , # else
                             # Otherwise, append to the mail message instead.
-                            assign(@mail_messages[to_lower(player())], concat(@mail_messages[to_lower(player())], '\n', @event[message]))
+                            assign(@mail_messages[to_lower(player())], concat(@mail_messages[to_lower(player())], '\n', @event['message']))
                         )
                         
                         export('mail.mail_messages', @mail_messages)
                         
                         # Then, we give them back what they typed in the chat, for readability and mental organization.
-                        msg(color(7), @event[message])
+                        msg(color(7), @event['message'])
                     #
                 )
             )
         )
     )
-)
+}

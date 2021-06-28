@@ -1,5 +1,5 @@
 
-proc(_init_marquee, @name,
+proc _init_marquee(@name) {
 	if(!has_value('chmarquee.list')){
 		store_value('chmarquee.list', array())
 	}
@@ -8,18 +8,18 @@ proc(_init_marquee, @name,
 		array_push(@list, @name)
 		store_value('chmarquee.list', @list)
 	}
-)
+}
 
-proc(_check_marquee, @name,
+proc _check_marquee(@name) {
 	assign(@value, get_value('chmarquee.list'))
 	if(!is_array(@value) || !array_contains(@value, @name)){
 		return(false)
 	} else {
 		return(true)
 	}
-)
+}
 
-proc(_start_marquee, @name,
+proc _start_marquee(@name) {
 	#Stop the marquee if it's already started
 	marquee_stop(@name)
 	msg('Starting \''.@name.'\' marquee.')
@@ -58,13 +58,13 @@ proc(_start_marquee, @name,
 			_stop_marquee(@name)
 		)
 	))
-)
+}
 
-proc(_stop_marquee, @name,
+proc _stop_marquee(@name) {
 	marquee_stop(@name)
-)
+}
 
-proc(_remove_marquee, @name,
+proc _remove_marquee(@name) {
 	_stop_marquee(@name)
 	assign(@list, get_value('chmarquee.list'))
 	array_remove_values(@list, @name)
@@ -72,5 +72,5 @@ proc(_remove_marquee, @name,
 	foreach(array_keys(get_values('chmarquee.' . @name)), @key,
 		clear_value(@key)
 	)
-)
+}
 

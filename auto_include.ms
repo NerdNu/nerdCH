@@ -1,4 +1,4 @@
-proc(_config_get, @name, @default,
+proc _config_get(@name, @default) {
 	@config = yml_decode(read('nerdch.yml'));
 
 	@path = split('.', @name)
@@ -17,9 +17,9 @@ proc(_config_get, @name, @default,
 	}
 
 	return(@default);
-)
+}
 
-proc(_assertperm, @name, @cmodetrumps,
+proc _assertperm(@name, @cmodetrumps) {
 	if(player() == '~console', return())
 	
 	if(pisop(), return())
@@ -30,10 +30,12 @@ proc(_assertperm, @name, @cmodetrumps,
 
 	msg(concat(color(red), 'You do not have permission to do this! [ap]'))
 	die()
-)
+}
 
-# mode = AND or OR, invalid modes become AND
-proc(_assertperms, @perms, @mode, @cmodetrumps,
+/**
+ * @param mode = AND or OR, invalid modes become AND
+ */ 
+proc _assertperms(@perms, @mode, @cmodetrumps) {
 	@mode = to_upper(@mode) != 'OR';
 	msg(@mode);
 
@@ -50,22 +52,22 @@ proc(_assertperms, @perms, @mode, @cmodetrumps,
 
 	msg(color(red) . 'You do not have permission to do this! [ap]');
 	die();
-)
+}
 
-proc(_assertbool, @bool,
+proc _assertbool(@bool) {
 	if (@bool) {
 		msg(color(red) . 'You do not have permission to do this! [ap]');
 		die();
 	}
-)
+}
 
-proc(_noperm,
+proc _noperm() {
 	msg(color(red) . 'You do not have permission to do this! [ap]');
 	die();
-)
+}
 
 #Gets the mods and admins on right now
-proc(_get_mods,
+proc _get_mods() {
 	assign(@mods, array())
 	assign(@ap, all_players())
 	foreach(@ap, @p,
@@ -81,10 +83,10 @@ proc(_get_mods,
 	#		array_push(@mods, @admin)
 	#)
 	return(@mods)
-)
+}
 
 #Gets just the admins on right now
-proc(_get_admins,
+proc _get_admins() {
 	assign(@admins, array())
 	assign(@ap, all_players())
 	foreach(@ap, @p,
@@ -98,9 +100,9 @@ proc(_get_admins,
 	   if(has_permission(@p, 'nerdch.level.admin'), array_push(@admins, @p))
 	)
 	return(@admins)
-)
+}
 
-proc(_get_chat_admins,
+proc _get_chat_admins() {
 	assign(@admins, array())
 	assign(@ap, all_players())
 	foreach(@ap, @p,
@@ -114,22 +116,22 @@ proc(_get_chat_admins,
 		if(has_permission(@p, 'nerdch.level.adminchat'), array_push(@admins, @p))
 	)
 	return(@admins)
-)
+}
 
 #Messages all mods and admins
-proc(_mbroadcast, @msg,
+proc _mbroadcast(@msg) {
 		foreach(_get_mods(), @m,
 				tmsg(@m, @msg)
 		)
 		/*foreach(_get_admins(), @a,
 				tmsg(@a, @msg)
 		)*/
-)
+}
 
-proc(_getonlinename, @name,
-	if(equals(@name, ''),
-		return(player()),
-	#else:
+proc _getonlinename(@name) {
+	if(equals(@name, '')) {
+		return(player());
+	} else {
 		try(
 			assign(@name2, player(@name))
 			return(if(equals(@name, '~console'), 'console', @name2)),
@@ -137,14 +139,16 @@ proc(_getonlinename, @name,
 			try(
 				return(player(concat(color(10), @name))),
 			@ex,
-				return(null)))))
+				return(null)))
+	}
+}
 
-proc(_contains, @needle, @haystack,
+proc _contains(@needle, @haystack) {
 		assign(@repl, replace(to_lower(@haystack), to_lower(@needle), ''))
 		#if(equals(to_lower(@haystack), to_lower(@repl)), return(false), return(true))
 		return(not(equals_ic(@haystack, @repl)))
-)
-proc(_kit, @name, 
+}
+proc _kit(@name) {
 	if(equals(@name, ''),
 		assign(@kits, array())
 		foreach(reg_split('\n', read('kits.txt')), @l,
@@ -168,4 +172,5 @@ proc(_kit, @name,
 					#else:
 						break()))))
 		if(equals(@found, 0),
-			msg(concat(color(red), 'Kit not found!')))))
+			msg(concat(color(red), 'Kit not found!'))))
+}

@@ -4,7 +4,7 @@
 #	If successful, return an array(@itemid, @metadata, @quantity), all entries numeric.
 #	Otherwise, return null.
 
-proc(_parseiargs, @input, 
+proc _parseiargs(@input) {
 	@m = reg_match('^([^ :]+)(:[0-9]+)?( [0-9]+)?$', @input)
 	if (array_index_exists(@m,0)) {
 		# CH docs tell lies. @itemid can be a string, e.g. '35:15' for 'blackwool'.
@@ -37,4 +37,4 @@ proc(_parseiargs, @input,
 	} else {
 		return (null)
 	}
-)
+}

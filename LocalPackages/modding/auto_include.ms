@@ -2,14 +2,14 @@ include('players.ms')
 
 # Return true if the player has the specified potion effect, identified by numeric type ID.
 
-proc(_has_peffect, @player, @potionID,
+proc _has_peffect(@player, @potionID) {
 	foreach (get_peffect(@player), @effect,
-		if (@effect[id] == @potionID) {
+		if (@effect['id'] == @potionID) {
 			return (true)
 		}
 	)
 	return (false)
-)
+}
 
 
 # _lb_retention_days()
@@ -18,13 +18,12 @@ proc(_has_peffect, @player, @potionID,
 # This value is set as 'lb.retention.days' in plugins/CommandHelper/main.ms. 
 # If unspecified, it defaults to 21.
 
-proc(_lb_retention_days,
+proc _lb_retention_days() {
 	@days = import('lb.retention.days')
 	return (if(is_null(@days), 21, @days))
-)
+}
 
-proc(
-	_3d_distance, @arr1, @arr2,
+proc _3d_distance(@arr1, @arr2) {
 	return(
 		floor(
 			sqrt(
@@ -34,9 +33,9 @@ proc(
 			)
 		)
 	)
-)
+}
 
-proc(_add_flags, @region, @timeout, @tries, @owner,
+proc _add_flags(@region, @timeout, @tries, @owner) {
 	if(@tries < 1) {
 		msg(color(RED).'Default flags added unsuccessfully.')
 	} else {
@@ -49,4 +48,4 @@ proc(_add_flags, @region, @timeout, @tries, @owner,
 			})
 		}
 	}
-)
+}

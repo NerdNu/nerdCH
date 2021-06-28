@@ -5,9 +5,9 @@
 #
 #	Return the entity ID of the spawned horse.
 
-proc(_spawn_horse, @loc, @color, @pattern, 
-	@HORSE_COLORS = array(black, brown, chestnut, creamy, dark_brown, gray, white);
-	@HORSE_PATTERNS = array(none, socks, whitefield, white_dots, black_dots);
+proc _spawn_horse(@loc, @color, @pattern) {
+	@HORSE_COLORS = array('black', 'brown', 'chestnut', 'creamy', 'dark_brown', 'gray', 'white');
+	@HORSE_PATTERNS = array('none', 'socks', 'whitefield', 'white_dots', 'black_dots');
 
 	@color = if (is_null(@color), '', to_lower(@color));
 	@pattern = if (is_null(@pattern), '', to_lower(@pattern));
@@ -32,5 +32,4 @@ proc(_spawn_horse, @loc, @color, @pattern,
 	set_max_health(@id, 20);
 	set_mob_age(@id, 0);
 	return (@id);
-)
-
+}
