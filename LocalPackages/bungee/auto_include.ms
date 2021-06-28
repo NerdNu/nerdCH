@@ -76,3 +76,9 @@ register_command('kick', array('tabcompleter':  @mcb_tab_completer));
 register_command('ban', array('tabcompleter':  @mcb_tab_completer));
 register_command('lookup', array('tabcompleter':  @mcb_tab_completer));
 register_command('addnote', array('tabcompleter':  @mcb_tab_completer));
+
+proc _serverTabcomplete() {
+	return(get_tabcomplete_prototype(
+		array('creative', 'event', 'lobby', 'pve', 'skyblock')
+	));
+}

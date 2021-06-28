@@ -1,3 +1,7 @@
+/**
+ * @command
+ * @tabcompleter _serverTabcomplete
+ */
 *:/server $server = >>>
 	_changeserver(player(), $server);
 <<<
@@ -33,9 +37,24 @@
 	));
 <<<
 
+/**
+ * @command
+ */
 *:/creative = _changeserver(player(), 'creative');
+/**
+ * @command
+ */
 *:/event    = _changeserver(player(), 'event');
+/**
+ * @command
+ */
 *:/lobby    = _changeserver(player(), 'lobby');
+/**
+ * @command
+ */
 *:/pve      = _changeserver(player(), 'pve');
+/**
+ * @command
+ */
 *:/skyblock = _changeserver(player(), 'skyblock');
 
