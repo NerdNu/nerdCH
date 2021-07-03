@@ -22,3 +22,10 @@ bind('player_death', null, null, @e,
 		modify_event('death_message', null)
 	}
 )
+
+proc _signtextTabcompletion() {
+	return(get_tabcomplete_prototype(
+		1..4,
+		'None'
+	));
+}

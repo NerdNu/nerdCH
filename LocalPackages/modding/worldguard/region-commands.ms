@@ -66,7 +66,8 @@ register_command('claim-region', array(
 				die(colorize('&cYou must be in ModMode to use this command!'));
 			}
 
-			@region = @args[0] . '-claim';
+			@prefix = @args[0];
+			@region = @prefix . '-claim';
 			if (sk_region_exists(@region)) {
 				die(colorize('&cA region named ' . @region . ' already exists!'));
 			}
@@ -81,6 +82,7 @@ register_command('claim-region', array(
 			_with_region(@region, 250, 6,
 				closure() {
 					run('/region flag ' . @region . ' passthrough allow');
+					run('/region flag ' . @region . ' greeting &6You are now entering the ' . @prefix . ' claim.');
 					set_timeout(1000, closure() {
 						msg(colorize('&dA non-protecting claim region named ' . @region . ' was created.'));
 					});

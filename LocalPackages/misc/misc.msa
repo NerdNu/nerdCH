@@ -39,7 +39,7 @@
     msg(concat(color('gray'), 'X: ', integer(@l[0]), ' (+East <-> -West)'))
     msg(concat(color('gray'), 'Y: ', integer(@l[1]), ' (+Up <-> -Down)'))
     msg(concat(color('gray'), 'Z: ', integer(@l[2]), ' (+South <-> -North)'))
-    call_alias(/compass)
+    call_alias('/compass')
     msg(concat(color('gray'), 'Pitch: ', multiply(integer(pfacing()[1]), -1), ' degrees'))
 <<<
 
@@ -129,6 +129,10 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 	)
 <<<
 
+/**
+ * @command
+ * @tabcompleter _signtextTabcompletion
+ */
 *:/signtext [$line] [$] = >>>
 	if($line == ''){
 		msg(color('red').'Usage: /signtext $line $text')

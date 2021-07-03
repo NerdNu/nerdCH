@@ -1,7 +1,7 @@
 #Kills the player, optionally with a message
 *:/thor $player [$] = >>>
     _assertperm('admin', 0)
-    if(equals(pinfo($player)[0], 'wraithguard01'),
+    if(equals(pinfo($player)[0], 'LadyCailin'),
         lightning(ploc(player())[0..2])
         msg(color('light_purple'), 'You bitch')
         pkill(player())

@@ -164,6 +164,10 @@
 					case 'world':
 						#Get the correct name of the netherportals set
 						@set=execute('Overworld', 'netherportals', @matchSet)
+						if(@set == null) {
+							msg(color('LIGHT_PURPLE').'Can\'t find a route there! (No nether portals have been defined yet.)');
+							break();
+						}
 						#Find the closest one to the place the player is going
 						@closest=execute(@loc, @placedb['Overworld'][@set], @findClosestPlace)
 						#Tell the player what's going on and point them to the portal
@@ -178,6 +182,10 @@
 						@dist=100000
 						@setE=execute('Overworld', 'endportals', @matchSet)
 						@setN=execute('Overworld', 'netherportals', @matchSet)
+						if(@setE == null || @setN == null) {
+							msg(color('LIGHT_PURPLE').'Can\'t find a route there! (Either no nether portals or no end portals have been defined yet.)');
+							break();
+						}
 						foreach(@endportal in array_keys(@placedb['Overworld'][@setE])){
 							@currentClosestD=execute(@placedb['Overworld'][@setE][@endportal], @placedb['Overworld'][@setN], @findClosestPlace)
 							@thisDistance=execute(@placedb['Overworld'][@setE][@endportal],@placedb['Overworld'][@setN][@currentClosestD], @distance)

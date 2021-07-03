@@ -1,5 +1,8 @@
 
 # Note that starting the command with ! prevents all logging of the command.
+/**
+ * @command
+ */
 !*:'/suggestion-box' [$] = >>>
 
     if($ == ''){
@@ -12,7 +15,7 @@
         msg(color('light_purple').'audit this source code by running '.color('dark_purple').'/suggestion-box-code')
     } else {
         #Hash the username, so we can anonymously track users, to prevent abuse
-        @hash = md5(player())
+        @hash = md5(player().get_value('suggestionbox.salt'));
         @abusers = get_value('suggestionbox.abusers')
         if(!is_array(@abusers)){
             #first run
@@ -40,7 +43,22 @@
     
 <<<
 
+/**
+ * Sets the salt, which is used to calculate the hash. Changing this is allowed, but will effectively
+ * invalidate the abusers list. It isn't possible to see what this value currently is, to prevent
+ * rainbow tables, and the output of this command isn't logged.
+ * @command
+ * @permission nerdch.level.admin
+ */
+!*:'/suggestion-box-set-salt' [$] = >>>
+	store_value('suggestionbox.salt', $.(rand() * 100000000));
+<<<
 
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _suggestionBoxRemoveTabcomplete
+ */
 *:'/suggestion-box-remove' $userHash $id = >>>
     _assertperm('admin', 0)
     @suggestions = get_value('suggestionbox.suggestions')
@@ -79,10 +97,20 @@
 
 <<<
 
+/**
+ * @command
+ */
+*:'/suggestion-box-code' = >>>
+	msg('commands.msa: \n'.read('./commands.msa'));
+	msg('auto_include.msa: \n'.read('./auto_include.msa'));
+	msg('main.ms: \n'.read('./main.ms'));
+<<<
 
-*:'/suggestion-box-code' = msg(read('./commands.msa'))
-
-
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _suggestionBoxAbuserTabcomplete
+ */
 *:'/suggestion-box-abuser' $addRemove $abuserHash = >>>
     _assertperm('admin', 0)
     if($addRemove != 'add' && $addRemove != 'remove' || length($abuserHash) != 32){
@@ -102,7 +130,10 @@
     
 <<<
 
-
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
 *:'/suggestion-box-list' = >>>
     _assertperm('admin', 0)
     @allsuggestions = get_value('suggestionbox.suggestions')
@@ -115,4 +146,18 @@
             }
         }
     })
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _suggestionBoxReplyTabcomplete
+ */
+*:'/suggestion-box-reply' $userHash $ = >>>
+	@replies = get_value('suggestionbox.replies.'.$userHash);
+	if(@replies == null) {
+		@replies = array();
+	}
+	@replies[] = $;
+	store_value('suggestionbox.replies.'.$userHash, @replies);
 <<<
