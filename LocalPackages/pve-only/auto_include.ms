@@ -44,3 +44,61 @@ proc _map(@input, @f1) {
 	)
 	return (@output)
 }
+
+proc _placeTabcomplete() {
+	@places= get_value('placedb');
+	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
+	@placeCompletion = array();
+	foreach(@world in @worlds) {
+		if(array_index_exists(@places, @world)) {
+			foreach(@category: @list in @places[@world]) {
+				foreach(@key: @item in @list) {
+					@placeCompletion[] = @key;
+				}
+			}
+		}
+	}
+	return(get_tabcomplete_prototype(
+		@placeCompletion,
+		@worlds
+	));
+}
+
+proc _addPlaceTabcomplete() {
+	@setCompletion = array('Other');
+	@places = get_value('placedb');
+	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
+	foreach(@world in @worlds) {
+		if(array_index_exists(@places, @world)) {
+			foreach(@category: @list in @places[@world]) {
+				@setCompletion[] = @category;
+			}
+		}
+	}
+	return(get_tabcomplete_prototype(
+		'None',
+		array_unique(@setCompletion)
+	));
+}
+
+proc _delPlaceTabcomplete() {
+	@setCompletion = array('Other');
+	@places = get_value('placedb');
+	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
+	@placeCompletion = array();
+	foreach(@world in @worlds) {
+	        if(array_index_exists(@places, @world)) {
+	                foreach(@category: @list in @places[@world]) {
+				@setCompletion[] = @category;
+	                        foreach(@key: @item in @list) {
+	                                @placeCompletion[] = @key;
+	                        }
+	                }
+	        }
+	}
+	return(get_tabcomplete_prototype(
+		@worlds,
+		@setCompletion,
+		@placeCompletion
+	));
+}

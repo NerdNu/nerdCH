@@ -22,6 +22,10 @@
 	msg(get_value('placedb'))
 <<<
 
+/**
+ * @command
+ * @tabcompleter _placeTabcomplete
+ */
 *:/place [$] = >>>
 	@placedb = get_value('placedb')
 	@ploc=ploc()
@@ -335,6 +339,12 @@
 *:'/nearest-place' [$] = >>>
 	call_alias('/place')
 <<<
+
+/**
+ * @command
+ * @tabcompleter _addPlaceTabcomplete
+ * @permission nerdch.level.admin
+ */
 nerdch.level.admin:/addplace $place [$set] = >>>
 	@setname=$set
 	if(@setname==''){
@@ -368,6 +378,11 @@ nerdch.level.admin:/addplace $place [$set] = >>>
 #	call_alias('/place '.$place)
 <<<
 
+/**
+ * @command
+ * @tabcompleter _delPlaceTabcomplete
+ * @permission nerdch.level.admin
+ */
 nerdch.level.admin:/delplace $world $set $name = >>>
 	@placedb = get_value('placedb')
 	if(@placedb == null){
