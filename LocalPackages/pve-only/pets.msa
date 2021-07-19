@@ -201,18 +201,30 @@
 	msg(color('GOLD').'	/find-pets 50 dog,cat,horse totemo Fluffy')
 <<<
 
+
+/**
+ * Finds your pets!
+ * @command
+ */
+*:/pets = >>>
+	call_alias('/find-pets 100000 cat,dog,horse '.player());
+<<<
+
 *:'/find-pets' $radius [$types='cat,dog,horse'] [$owner=''] [$name=''] = >>>
-	_assertperm('admin')
-	@MAX_RADIUS = 1000
+	//_assertperm('admin')
+	@MAX_RADIUS = 100000
 	@radius = $radius
 	if (! is_numeric(@radius) || @radius > @MAX_RADIUS) {
 		die(color('RED').'The first argument must be a number no more than '.@MAX_RADIUS.'.')
 	}
-	@types = split(',',replace(replace(to_lower($types),'dog','wolf'),'cat','ocelot'))
+	@types = split(',',replace(to_lower($types),'dog','wolf'));
+	@owner = $owner
+	@name = $name
 
+	x_new_thread('find-pets'.string(rand()), closure() {
 	try (
 		@mobs = entities_in_radius(ploc(), @radius, @types)
-		@MAX_COUNT = 100
+		@MAX_COUNT = 100000
 		@limit = array_size(@mobs)
 		if (@limit > @MAX_COUNT) {
 			@limit = @MAX_COUNT
@@ -238,7 +250,7 @@
 			}
 
 			@mobName  = if (is_tameable(@mob), get_mob_name(@mob), '')
-			if (($owner == '' || equals_ic(@mobOwner, $owner)) && ($name  == '' || equals_ic(@mobName, $name))) {
+			if ((@owner == '' || equals_ic(@mobOwner, @owner)) && (@name  == '' || equals_ic(@mobName, @name))) {
 				inc(@count)
 			    @formattedNum = color('YELLOW') . '('.@count.') '
 			    @formattedOwner = color('WHITE') . if (@mobOwner != '', @mobOwner . '\'s ', '')
@@ -250,16 +262,21 @@
 			}
 		)
 
-		if (@count == 0) {
-			die(color('GOLD').'There were no matching mobs.')
-		} else {
-			die(color('GOLD').'Matching mobs ['.@count.']: '.@message)
-		}
+		x_run_on_main_thread_later(closure() {
+			if (@count == 0) {
+				msg(color('GOLD').'There were no matching mobs.')
+			} else {
+				msg(color('GOLD').'Matching mobs ['.@count.']: '.@message)
+			}
+		});
 	#catch:
 	, @ex,
-		msg(color('RED').'Something went wrong. Is the entity type name correct?')
-		die(color('RED').'')
+		x_run_on_main_thread_later(closure() {
+			msg(color('RED').'Something went wrong. Is the entity type name correct?')
+			die(color('RED').'')
+		});
 	)
+	});
 <<<
 
 # Configure all mobs in a range of 5 blocks to be able to pick up items.

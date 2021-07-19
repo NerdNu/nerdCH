@@ -1,4 +1,5 @@
 /**
+ * Changes the server. Run without arguments to see the valid options.
  * @command
  * @tabcompleter _serverTabcomplete
  */
@@ -23,7 +24,11 @@
 	_changeserver($p, $s);
 <<<
 
-
+/**
+ * Moves all the players to the specified server.
+ * @command
+ * @permission nerdch.level.admin
+ */
 *:'/all-to-server' [$s] = >>>
 	_assertperm('admin');
 	if ($s == '') {
@@ -38,22 +43,27 @@
 <<<
 
 /**
+ * Moves you to the creative server.
  * @command
  */
 *:/creative = _changeserver(player(), 'creative');
 /**
+ * Moves you to the event server.
  * @command
  */
 *:/event    = _changeserver(player(), 'event');
 /**
+ * Moves you to the lobby.
  * @command
  */
 *:/lobby    = _changeserver(player(), 'lobby');
 /**
+ * Moves you to the pve server.
  * @command
  */
 *:/pve      = _changeserver(player(), 'pve');
 /**
+ * Moves you to the skyblock server.
  * @command
  */
 *:/skyblock = _changeserver(player(), 'skyblock');

@@ -1,3 +1,6 @@
+/**
+ * @command
+ */
 *:/warnings = >>>
     @uuid = _get_puuid(player())
     @warnings = get_value('warnings', @uuid)

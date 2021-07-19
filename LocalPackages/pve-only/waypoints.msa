@@ -1,5 +1,8 @@
 
-
+/**
+ * @command
+ * @tabcompleter _wpTabcomplete
+ */
 *:/wp = >>>
     msg(color('GOLD').'Help: /wp')
     msg('  /wp [playername] <waypoint>: '.color('GRAY').'Gives the coordinates of, and points you towards, the given waypoint.')
@@ -62,7 +65,7 @@
     msg(color('YELLOW').'Y: '.color('RESET') . round(@y))
     msg(color('GREEN').'Z: '.color('RESET') . round(@z))
     msg(color('BLUE').'Distance: ' . color('RESET'). round(sqrt(pow(@dx, 2) + pow(@dy, 2) + pow(@dz, 2))).'m')
-    msg(color('BLACK').'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
+    // msg(color('BLACK').'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
 
     if (pvehicle() == null) {
         pfacing(@yaw, ploc()['pitch']);
@@ -72,7 +75,10 @@
 <<<
 
 
-
+/**
+ * @command
+ * @tabcompleter _listwpsTabcomplete
+ */
 *:/listwps [$player] = >>>
     @player = $player
     @is_own_list = false

@@ -1,3 +1,6 @@
+/**
+ * @command
+ */
 *:/say $ = >>>
 	if (player() == '~console') {
 		broadcast('§D[Server] ' . $);

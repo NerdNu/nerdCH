@@ -92,6 +92,9 @@
         }
 <<<
 
+/**
+ * @command
+ */
 *:/cs [$] = >>>
     run('/NerdClanChat:cs ' . $);
 <<<

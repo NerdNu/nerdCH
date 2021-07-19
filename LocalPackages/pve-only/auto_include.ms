@@ -1,5 +1,5 @@
-include('pets.ms')
-include('villagers.ms')
+include(reflect_pull('dir').'/pets.ms')
+include(reflect_pull('dir').'/villagers.ms')
 
 # Support for some basic functional programming.
 
@@ -101,4 +101,34 @@ proc _delPlaceTabcomplete() {
 		@setCompletion,
 		@placeCompletion
 	));
+}
+
+/**
+ * Get the list of WPs for a player. Note that no filtering is done on this list, it always
+ * provides the list for the requested player.
+ */
+proc _listwpNames(@player) {
+	@uuid = puuid(@player, true)
+	@waypoints = get_value('waypoints', @uuid)
+	
+	if(@waypoints == null || length(@waypoints) == 0) {
+	    return(array());
+	}
+	
+	return(array_keys(@waypoints));	
+}
+
+proc _listwpsTabcomplete() {
+	return(get_tabcomplete_prototype(
+		all_players()
+	));
+}
+
+proc _wpTabcomplete() {
+	return(get_tabcomplete_prototype(
+		closure(@alias, @sender, @args) { return(array_merge(_listwpNames(@sender), all_players())); },
+		closure(@alias, @sender, @args) { 
+			return(_listwpNames(@args[0])); 
+		}
+	));	
 }

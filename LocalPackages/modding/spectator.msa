@@ -1,4 +1,9 @@
 
+
+/**
+ * @command
+ * @permission nerdch.spectator
+ */
 nerdch.spectator:/spectator = >>>
 	assign(@p, player())
 

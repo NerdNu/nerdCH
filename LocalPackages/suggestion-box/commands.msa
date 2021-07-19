@@ -90,6 +90,7 @@
             array_remove(@suggestions, @hash)
         }
         store_value('suggestionbox.suggestions', @suggestions)
+	clear_value('suggestionbox.notes.'.@hash.'.'.$id);
         msg(color('gold').'Suggestion removed')
     } else {
         die('Oops, there is no suggestion with that id')
@@ -135,17 +136,23 @@
  * @permission nerdch.level.admin
  */
 *:'/suggestion-box-list' = >>>
-    _assertperm('admin', 0)
-    @allsuggestions = get_value('suggestionbox.suggestions')
-    array_iterate(@allsuggestions, closure(@userhash, @messages){
-        if(length(@messages) > 0) {
-            msg(color('dark_green').'===========================')
-            msg(color('gold').'Userhash: '.@userhash)
-            foreach(@key: @message in @messages){
-                msg(color('green').@key.'. '@message)
-            }
-        }
-    })
+	_assertperm('admin', 0)
+	@allsuggestions = get_value('suggestionbox.suggestions')
+	array_iterate(@allsuggestions, closure(@userhash, @messages){
+		if(length(@messages) > 0) {
+			msg(color('dark_green').'===========================')
+			msg(color('gold').'Userhash: '.@userhash)
+			foreach(@key: @message in @messages){
+				msg(color('green').@key.'. '@message);
+				@notes = get_value('suggestionbox.notes.'.@userhash.'.'.@key);
+				if(@notes != null) {
+					foreach(@note in @notes) {
+						msg('    '.color('BLUE').@note[0].': '.color('GRAY').@note[1]);
+					}
+				}
+			}	
+		}
+	})
 <<<
 
 /**
@@ -154,10 +161,55 @@
  * @tabcompleter _suggestionBoxReplyTabcomplete
  */
 *:'/suggestion-box-reply' $userHash $ = >>>
+	_assertperm('admin', 0);
 	@replies = get_value('suggestionbox.replies.'.$userHash);
 	if(@replies == null) {
 		@replies = array();
 	}
 	@replies[] = $;
 	store_value('suggestionbox.replies.'.$userHash, @replies);
+	msg(color('GOLD').'Reply sent. Don\'t forget to close out the suggestion if it\'s complete.');
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _suggestionBoxRemoveTabcomplete
+ */
+*:'/suggestion-box-note' $userhash $id [$] = >>>
+	_assertperm('admin', 0);
+	@suggestions = get_value('suggestionbox.suggestions')
+
+	# Make a list of all users that start with "$userHash"
+	@len = length($userHash)
+	if(@len > 32) {
+		die(color('red').'Invalid user hash')
+	}
+	@found = array()
+	foreach(string @key in array_keys(@suggestions)) {
+		if(string_starts_with(@key, $userhash)) {
+			array_push(@found, @key)
+	  	}
+	}
+	if(length(@found) == 0) {
+		die('Oops, that user hash doesn\'t exist')
+	}
+	if(length(@found) > 1) {
+		die('Oops, more than one hash has that prefix')
+	}
+	@hash = @found[0]
+
+	@userSuggestions = @suggestions[@hash]
+	if(!array_index_exists(@userSuggestions, $id)){
+		die(color('RED').'Cannot find a suggestion with that name.');
+	}
+
+	@notes = get_value('suggestionbox.notes.'.@hash.'.'.$id);
+	if(@notes == null) {
+		@notes = array();
+	}
+	@notes[] = array(player(), $);
+	store_value('suggestionbox.notes.'.@hash.'.'.$id, @notes);
+
+	msg(color('GOLD').'Note added.');
 <<<

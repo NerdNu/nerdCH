@@ -5,10 +5,6 @@
  * place names must be unique per world
  */
 
-#TODO
-# Rewrite the whole thing as a standalone plugin
-
-
 *:/placeraw [$] = >>>
 	@places = get_value('places')
 	foreach(@places, @place,
@@ -23,6 +19,7 @@
 <<<
 
 /**
+ * Find a list of important places. Providing a place points you in the right direction. You still have to get there though!
  * @command
  * @tabcompleter _placeTabcomplete
  */
@@ -341,6 +338,7 @@
 <<<
 
 /**
+ * Adds a place to the DB. Set is optional, and defaults to 'Other'
  * @command
  * @tabcompleter _addPlaceTabcomplete
  * @permission nerdch.level.admin
@@ -379,6 +377,7 @@ nerdch.level.admin:/addplace $place [$set] = >>>
 <<<
 
 /**
+ * Deletes a previously set place.
  * @command
  * @tabcompleter _delPlaceTabcomplete
  * @permission nerdch.level.admin
