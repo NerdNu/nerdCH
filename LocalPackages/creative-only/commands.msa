@@ -119,6 +119,39 @@
 	});
 <<<
 
+/**
+ * Roulette wheel
+ *
+**/
+*:/spin [$] = >>>
+	if(!has_permission("nerdch.spin")) {
+		die(color('red')."Roulette isn't legal in your country");
+	}
+	if(has_permission("nerdch.spin.nocooldown")) {
+		@prefix = color('GOLD');
+	} else {
+		@prefix = color('GRAY');
+		_checkCooldown("nerdch.spin", 300000) || die(color('red')."You have to wait your turn");
+	}
+	@red = array(0,
+		1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 0, 1,
+		1, 0, 1, 0, 1, 0, 1, 0, 1, 0,
+		0, 1, 0, 1, 0, 1, 0, 1);
+	@pocket = rand(length(@red)); /* 0 to 36 roulette wheel */
+	msg(@prefix.color('RANDOM').'000');
+	set_timeout(3000, closure() {
+		if (@pocket == 0) {
+			@c = color('DARK_GREEN');
+		} else if(@red[@pocket]) {
+			@c = color('RED');
+		} else {
+			@c = color('GRAY');	
+		}
+		broadcast(@prefix.player().' spun '.@c.@pocket);
+	});
+<<<
+
 # Magic 8 Ball
 *:/Magic8Ball [$] = >>>
 	if (!has_permission("nerdch.magic8ball")) {
