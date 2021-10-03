@@ -325,3 +325,9 @@
 	set_pflying(true);
 	msg(color('GREEN') . "You are now high as a kite.")
 <<<
+
+# Alias for //stack
+/stacc [$] = >>>
+	run('//stack ' .$)
+<<<
+
