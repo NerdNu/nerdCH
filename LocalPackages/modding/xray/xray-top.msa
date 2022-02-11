@@ -1,4 +1,8 @@
+/**
+ * @command
+ * @permission nerdch.level.mod
+ */
 *:/'xray-top' [$time=1d] = >>>
 	_assertperm('mod', 0)
-	run('/lb sum players destroyed block diamond_ore since '.$time)
+	run('/lb sum players destroyed block '.if(pworld()=='world_nether','ancient_debris','diamond_ore deepslate_diamond_ore').' since '.$time)
 <<<

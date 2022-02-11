@@ -1,4 +1,8 @@
+/**
+ * @command
+ * @permission nerdch.level.mod
+ */
 *:/'xray-edits' $player [$time=28d] = >>>
 	_assertperm('mod', 0)
-	run('/lb coords destroyed block diamond_ore player '.$player.' since '.$time)
+	run('/lb coords destroyed block '.if(pworld()=='world_nether','ancient_debris','diamond_ore deepslate_diamond_ore').' player '.$player.' since '.$time)
 <<<

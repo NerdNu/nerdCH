@@ -1,0 +1,41 @@
+
+
+/**
+ * Teleports the user to the proportional place in the nether, as if going through a nether portal at that location.
+ * @command
+ * @permission nerdch.level.admin
+ */
+*:/tpnether = >>>
+	_assertperm('admin');
+	
+	@ploc = ploc();
+	if(!array_contains(array('world', 'world_nether'), @ploc['world'])) {
+		die(color('RED').'This can only be used in the overworld or nether');
+	}
+	if(pmode() == 'SURVIVAL') {
+		die(color('RED').'Hold up there turbo, this command is dangerous, and you\'re in survival mode.');
+	}
+
+	double @x; double @y; double @z; string @world;
+	if(@ploc['world'] == 'world') {
+		// divide
+		@x = @ploc['x'] / 8;
+		@y = 1.0;
+		@z = @ploc['z'] / 8;
+		@world = 'world_nether';
+		// see if the y is safe
+		for(int @i = 0, @i < 256, @i++) {
+			if(get_block(array(@x, @y, @z, @world)) == 'AIR' && get_block(array(@x, @y + 1, @z, @world)) == 'AIR') {
+				@y = double(@i);
+				break();
+			}
+		}
+	} else {
+		// multiply
+		@x = @ploc['x'] * 8;
+		@z = @ploc['z'] * 8;
+		@world = 'world';
+		@y = get_highest_block_at(@x, @z, @world)['y'];
+	}
+	set_ploc(array(@x, @y, @z, @world));
+<<<

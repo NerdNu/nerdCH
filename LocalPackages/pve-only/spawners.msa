@@ -9,7 +9,7 @@ nerdch.level.admin:/quadblaze = >>>
 # Creates an iron golem spawner.
 #
 nerdch.level.admin:/defaultgolemspawner = >>>
-    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnData:{id:iron_golem},SpawnCount:3,SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25} replace');
+    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnData:{entity:{id:iron_golem}},SpawnCount:3,SpawnRange:4,RequiredPlayerRange:25,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25} replace');
 <<<
 
 #
@@ -36,5 +36,5 @@ nerdch.level.admin:/golemspawner [$tier] [$mob] = >>>
     if (@m == 'hoglin') {
         @extraNBT = ',IsImmuneToZombification:1b';
     }
-    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{id:"minecraft:'.@m.'",DeathLootTable:"minecraft:entities/iron_golem"'.@extraNBT.',CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}} replace');
+    run('/setblock ~ ~-1 ~ minecraft:spawner{SpawnCount:'.@t.',SpawnRange:4,Delay:20,MinSpawnDelay:9600,MaxSpawnDelay:9600,MaxNearbyEntities:25,RequiredPlayerRange:25,SpawnData:{entity:{id:"minecraft:'.@m.'",DeathLootTable:"minecraft:entities/iron_golem"'.@extraNBT.',CustomNameVisible:1b,PlayerCreated:0b,CustomName:"{\\"text\\":\\"Tier '.@t.'\\"}"}}} replace');
 <<<

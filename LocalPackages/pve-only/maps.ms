@@ -4,7 +4,7 @@
 
 bind('player_interact_entity', null, null, @event,
   # return right away if event is not a player clicking an item frame
-  if(@event['clicked'] == "ITEM_FRAME") {
+  if(@event['clicked'] == "ITEM_FRAME" || @event['clicked'] == "GLOW_ITEM_FRAME") {
     @item=pinv(@event['player'],pheld_slot(@event['player']))
     # Make sure the player is holding something
     if(@item != null) {

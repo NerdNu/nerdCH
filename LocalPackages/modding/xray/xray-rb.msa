@@ -1,10 +1,14 @@
+/**
+ * @command
+ * @permission nerdch.level.mod
+ */
 *:/'xray-rb' $player = >>>
 	_assertperm('mod', 0)
 	call_alias('/lbrb '.$player)
 	@days = _lb_retention_days()
 	@delay = 45
 	set_timeout(@delay * 1000, closure(
-		run('/lb redo destroyed block gold_ore iron_ore coal_ore lapis_ore diamond_ore redstone_ore emerald_ore nether_quartz_ore spawner player '.$player.' since '.@days.' days')
+		run('/lb redo destroyed block ancient_debris gold_ore iron_ore coal_ore lapis_ore diamond_ore redstone_ore emerald_ore nether_quartz_ore spawner player '.$player.' since '.@days.' days')
 	))
 	set_timeout(2 * 1000, closure(
 		msg(color('GOLD').'Ore destructions by '.$player.' will be redone in '.@delay.' seconds.')
