@@ -2,7 +2,7 @@
 /**
  * Retrieves the player's uuid from the database, or null if no player is known with that username
  */
-proc(_get_puuid, @playerName) {
+proc _get_puuid(@playerName) {
 	@playerName = to_lower(strip_colors(@playerName));
 
 	if (ponline(@playerName)) {
@@ -34,7 +34,7 @@ proc(_get_puuid, @playerName) {
  * Gets the last known username from the database, or null, if no player is known with that UUID.
  * Hyphens are automatically stripped from the UUID to match the database contents.
  */
-proc(_get_username_from_uuid, @uuid) {
+proc _get_username_from_uuid(@uuid) {
 	@nameCache = import('nameCache');
 	@uuid = replace(@uuid, '-', '');
 
@@ -55,7 +55,7 @@ proc(_get_username_from_uuid, @uuid) {
 /**
  * Gets the last known display name from the database, or null, if no player is known with that uuid
  */
-proc(_get_display_name_from_uuid, @uuid){
+proc _get_display_name_from_uuid(@uuid){
 	@res = query('uuid', 'SELECT last_display_name FROM user WHERE uuid=?', @uuid);
 	if(length(@res) == 0){
 		return(null);

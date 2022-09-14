@@ -1,0 +1,11 @@
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
+*:'/kill-entities' $radius = >>>
+	foreach(@entity in entities_in_radius(ploc(), $radius)) {
+		if(entity_type(@entity) != "PLAYER") {
+			entity_remove(@entity);
+		}
+	}
+<<<

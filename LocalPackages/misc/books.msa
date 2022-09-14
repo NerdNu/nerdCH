@@ -41,10 +41,14 @@
                 store_value('cooldowns.book',2880)
             }
 
-            # Check the last time the player ran this command.
-            @lastTime = get_value('cooldowns.book.'.player())
-            if (is_null(@lastTime)) {
-                @lastTime = 0
+            if(import('sharedata.source') == 'creative') {
+                @lastTime = 0;
+            } else {
+                # Check the last time the player ran this command.
+                @lastTime = get_value('cooldowns.book.'.player())
+                if (is_null(@lastTime)) {
+                    @lastTime = 0
+                }
             }
 
             # Admins can bypass the rate restriction to work on book text in game.

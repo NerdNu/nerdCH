@@ -10,10 +10,10 @@
 	}
 
 	switch ($command) {
-		'list',
+		case 'list':
 			msg(color(GOLD).'Plugins that are always included: '.color(YELLOW).array_implode(@includes, ' '))
 
-		,'add',
+		case 'add':
 			@added = parse_args($)
 			if (array_size(@added) != 1) {
 				die(color(RED).'Invalid plugin name: '.$)
@@ -29,7 +29,7 @@
 				msg(color(GOLD).'Already included: '.color(YELLOW).@name)
 			}
 
-		,'remove',
+		case 'remove':
 			@added = parse_args($)
 			if (array_size(@added) != 1) {
 				die(color(RED).'Invalid plugin name: '.$)
@@ -44,7 +44,7 @@
 			msg(color(GOLD).'Removed: '.color(YELLOW).@item)
 			store_value('pl.includes', @includes)
 
-		,#default
+		default:
 			msg(colorize('&6Usage: &e/pl-includes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
 			msg(color(GOLD).'Show or modify the list of plugins that are always included in the output of /pl.')
 			die()
@@ -61,10 +61,10 @@
 	}
 
 	switch ($command) {
-		'list',
+		case 'list':
 			msg(color(GOLD).'Plugins that are always excluded: '.color(YELLOW).array_implode(@excludes, ' '))
 
-		,'add',
+		case 'add':
 			@added = parse_args($)
 			if (array_size(@added) != 1) {
 				die(color(RED).'Invalid plugin name: '.$)
@@ -80,7 +80,7 @@
 				msg(color(GOLD).'Already excluded: '.color(YELLOW).@name)
 			}
 
-		,'remove',
+		case 'remove':
 			@added = parse_args($)
 			if (array_size(@added) != 1) {
 				die(color(RED).'Invalid plugin name: '.$)
@@ -95,7 +95,7 @@
 			msg(color(GOLD).'Removed: '.color(YELLOW).@item)
 			store_value('pl.excludes', @excludes)
 
-		,#default
+		default:
 			msg(colorize('&6Usage: &e/pl-excludes &f[&elist &f|&e add <name> &f|&e remove <name>&f]'))
 			msg(color(GOLD).'Show or modify the list of plugins that are always excluded from the output of /pl.')
 			die()
