@@ -138,3 +138,55 @@ register_command('public-region', array(
 			);
 		}
 ));
+
+
+# /unlogged-region <prefix> <owners>...
+# Creates a region named <prefix>-unlogged, adds standard flags and the specified owners and sets
+# the custom logblock-log-blocks and logblock-log-entities flags to deny. The region priority is
+# set to 100000 so that it would take precedence over any other regions present (unless they have a
+# high custom priority).
+
+register_command('unlogged-region', array(
+	'description': 'Create a high priority region where blocks and entities are not logged by LogBlock.',
+	'usage': colorize(
+				'&e/unlogged-region &o<prefix> <owners>... ' .
+				'&f- Create a high priority region named &o<prefix>&r-unlogged, with the specified owners, that does not log blocks or entities in LogBlock.'
+			),
+	'permission': 'nerdch.level.mod',
+	'executor':
+		closure(@alias, @sender, @args) {
+			@argCount = array_size(@args);
+			if (@argCount == 0 || (@argCount == 1 && @args[0] == 'help')) {
+				return (false);
+			}
+
+			if (! has_permission('nerdch.level.restricted')) {
+				die(colorize('&cYou must be in ModMode to use this command!'));
+			}
+
+			@prefix = @args[0];
+			@region = @prefix . '-unlogged';
+			if (sk_region_exists(@region)) {
+				die(colorize('&cA region named ' . @region . ' already exists!'));
+			}
+
+			@owners = @args[cslice(1, @argCount - 1)];
+			if (array_size(@owners) == 0) {
+				die(colorize('&cYou must specify at least one owner!'));
+			}
+
+			@ownersString = array_implode(@owners, ' ');
+			run('/create-region ' . @region . ' ' . @ownersString);
+			_with_region(@region, 250, 6,
+				closure() {
+					run('/region flag ' . @region . ' logblock-log-blocks deny');
+					run('/region flag ' . @region . ' logblock-log-entities deny');
+					run('/region priority ' . @region . ' 100000');
+					set_timeout(1000, closure() {
+						msg(colorize('&dA unlogged region named ' . @region . ' was created.'));
+					});
+				},
+				colorize("&cFailed to configure the unlogged region! It doesn't exist.")
+			);
+		}
+));
