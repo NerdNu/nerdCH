@@ -1,0 +1,17 @@
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/portalmarker $name = >>>
+	@name = $name;
+	if (pworld() == 'world') {
+		run_cmd('/addplace '.@name.' netherportals');
+		run_cmd('/dmarker add '.@name.' icon:portal id:'.@name.'-portal set:netherportals');
+		msg('Re-run the command again when you\'re in the appropriate spot in the nether (if applicable).');
+	} else if(pworld() == 'world_nether') {
+		run_cmd('/addplace '.@name.' netherportals');
+		run_cmd('/dmarker add '.@name.' icon:portal id:'.@name.'-portal-nether set:netherportals');
+		msg('Re-run the command again when you\'re in the appropriate spot in the overworld (if applicable).');
+	}
+<<<
