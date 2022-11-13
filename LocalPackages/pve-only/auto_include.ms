@@ -64,6 +64,16 @@ proc _getPlaceDB() {
 	return (get_value('placedb') ||| array());
 }
 
+# Return a list of all worlds in the place database, plus
+# at least the four common worlds: Overworld, Nether, End and Mapworld.
+
+proc _getPlaceWorlds(@placedb) {
+	return (array_unique(array_merge(
+		array_keys(@placedb),
+		array('Overworld', 'Nether', 'End', 'Mapworld')
+	)));
+}
+
 # Return the place with the specified world, set and name, or null
 # if not found. The returned place is a location array.
 
@@ -112,7 +122,7 @@ proc _removePlace(@placedb, @world, @set, @name, @chatty) {
 
 proc _placeTabcomplete() {
 	@places = _getPlaceDB();
-	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
+	@worlds = _getPlaceWorlds(@places);
 	@placeCompletion = array();
 	foreach(@world in @worlds) {
 		if(array_index_exists(@places, @world)) {
@@ -132,7 +142,7 @@ proc _placeTabcomplete() {
 proc _addPlaceTabcomplete() {
 	@setCompletion = array('Other');
 	@places = _getPlaceDB();
-	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
+	@worlds = _getPlaceWorlds(@places);
 	foreach(@world in @worlds) {
 		if(array_index_exists(@places, @world)) {
 			foreach(@category: @list in @places[@world]) {
@@ -146,26 +156,34 @@ proc _addPlaceTabcomplete() {
 	));
 }
 
-proc _delPlaceTabcomplete() {
-	@setCompletion = array('Other');
-	@places = _getPlaceDB();
-	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
-	@placeCompletion = array();
-	foreach (@world in @worlds) {
-		if (array_index_exists(@places, @world)) {
-			foreach (@category: @list in @places[@world]) {
-				@setCompletion[] = @category;
-				foreach (@key: @item in @list) {
-					@placeCompletion[] = @key;
-				}
-			}
+# Return a closure that can act as a tab completer for any
+# command that operates on a pre-existing place.
+
+proc _existingPlaceTabCompleter() {
+	return (closure(@alias, @sender, @args) {
+		@worldName = array_get(@args, 0, '');
+		@setName = array_get(@args, 1, '');
+		@placeName = array_get(@args, 2, '');
+
+		@placedb = _getPlaceDB();
+		if (array_size(@args) == 1) {
+			@filter = closure(@k, @v) { return (string_starts_with(@v, @worldName)); }
+			return (array_filter(_getPlaceWorlds(@placedb), @filter));
+		} else if (array_size(@args) == 2) {
+			@world = array_get(@placedb, @worldName, array());
+			@sets = array_merge(array_keys(@world), array('Other'));
+			@filter = closure(@k, @v) { return (string_starts_with(@v, @setName)); }
+			return (array_filter(@sets, @filter));
+		} else if (array_size(@args) == 3) {
+			@world = array_get(@placedb, @worldName, array());
+			@set = array_get(@world, @setName, array());
+			@places = array_keys(@set);
+			@filter = closure(@k, @v) { return (string_starts_with(@v, @placeName)); }
+			return (array_filter(@places, @filter));
+		} else {
+			return (array());
 		}
-	}
-	return (get_tabcomplete_prototype(
-		@worlds,
-		@setCompletion,
-		@placeCompletion
-	));
+	});
 }
 
 /**

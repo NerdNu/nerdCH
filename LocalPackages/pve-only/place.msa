@@ -335,7 +335,7 @@ nerdch.level.admin:/addplace $place [$set] = >>>
 
 	@placedb = _getPlaceDB();
 	if (_getPlace(@placedb, @world, @set, $place) != null) {
-		die(color('LIGHT_PURPLE').'Place '.$place.' in '.@set.' in '.@world.' already exists!')
+		die(color('RED').'Place '.$place.' in '.@set.' in '.@world.' already exists!')
 	}
 
 	@placedb[@world][@set][$place] = ploc()
@@ -347,21 +347,20 @@ nerdch.level.admin:/addplace $place [$set] = >>>
 /**
  * Deletes a previously set place.
  * @command
- * @tabcompleter _delPlaceTabcomplete
+ * @tabcompleter _existingPlaceTabCompleter
  * @permission nerdch.level.admin
  */
 nerdch.level.admin:/delplace $world $set $name = >>>
 	@placedb = _getPlaceDB();
 	if (_removePlace(@placedb, $world, $set, $name, true) == null) {
-		msg(color('LIGHT_PURPLE').'No matching place found.')
+		msg(color('RED').'No matching place found.')
 	}
 <<<
 
 /**
  * Renames a place.
- * Note: tab completion is the same as /delplace, intentionally.
  * @command
- * @tabcompleter _delPlaceTabcomplete
+ * @tabcompleter _existingPlaceTabCompleter
  * @permission nerdch.level.admin
  */
 nerdch.level.admin:/renameplace $world $set $oldName $newName = >>>
@@ -369,14 +368,34 @@ nerdch.level.admin:/renameplace $world $set $oldName $newName = >>>
 
 	@place = _removePlace(@placedb, $world, $set, $oldName, false);
 	if (@place == null) {
-		die(color('LIGHT_PURPLE').'No matching place found.');
+		die(color('RED').'No matching place found.');
 	}
 
 	if (_getPlace(@placedb, $world, $set, $newName) != null) {
-		die(color('LIGHT_PURPLE').'Place '.$newName.' in '.$set.' in '.$world.' already exists!');
+		die(color('RED').'Place '.$newName.' in '.$set.' in '.$world.' already exists!');
 	}
 
 	@placedb[$world][$set][$newName] = @place
 	store_value('placedb', @placedb)
 	msg(color('LIGHT_PURPLE').'Renamed '.$oldName.' to '.$newName.' in '.$set.' in '.$world.'.')
+<<<
+
+/**
+ * Teleports the player to the specified place.
+ * @command
+ * @tabcompleter _existingPlaceTabCompleter
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/tpplace $world $set $name = >>>
+	@placedb = _getPlaceDB();
+	@place = _getPlace(@placedb, $world, $set, $name);
+	if (@place == null) {
+		die(color('RED').'No matching place found.');
+	}
+
+	if (set_ploc(@place)) {
+		die(color('LIGHT_PURPLE').'Teleporting you to '.$name.' in '.$set.' in '.$world.'.');
+    } else {
+		die(color('RED').'Unable to teleport you there.');
+	}
 <<<
