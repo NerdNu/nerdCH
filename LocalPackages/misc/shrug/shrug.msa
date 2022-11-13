@@ -1,0 +1,38 @@
+
+/**
+ * Dunno, but green.
+ * @command
+ * @permission nerdch.level.mod
+ */
+*:/mbshrug = >>>
+	run_cmd('/mb '.comp_read('shrug.txt'));
+<<<
+
+/**
+ * Dunno, but gold.
+ * @command 
+ * @permission nerdch.level.admin
+ */
+*:/abshrug = >>>
+	run_cmd('/ab '.comp_read('shrug.txt'));
+<<<
+
+/**
+ * Dunno.
+ * @command
+ */
+*:/shrug = >>>
+	chat(replace(comp_read('shrug.txt'), '\n', ''));
+<<<
+
+/**
+ * Dunno, but clans.
+ * @command
+ */
+*:/cshrug [$clan] = >>>
+	if($clan) {
+		run_cmd('/c '.$clan.' '.comp_read('shrug.txt'));
+	} else {
+		run_cmd('/c '.comp_read('shrug.txt'));
+	}
+<<<
