@@ -6,7 +6,7 @@
  */
 
 *:/placeraw [$] = >>>
-	@places = get_value('places')
+	@places = _getPlaceDB();
 	foreach(@places, @place,
 		if(equals_ic(@place['name'], $)){
 			msg(@place)
@@ -15,7 +15,7 @@
 <<<
 
 *:/placedbraw = >>>
-	msg(get_value('placedb'))
+	msg(_getPlaceDB())
 <<<
 
 /**
@@ -24,12 +24,13 @@
  * @tabcompleter _placeTabcomplete
  */
 *:/place [$] = >>>
-	@placedb = get_value('placedb')
-	@ploc=ploc()
-	if(@placedb == null){
+	@placedb = _getPlaceDB();
+	if (array_size(@placedb) == 0) {
 		msg(color('LIGHT_PURPLE').'Hmm, doesn\'t look like there are any places yet.')
 		die()
 	}
+
+	@ploc = ploc()
 	@matchSet = closure(@world, @name){
 		try{
 			foreach(@set in array_keys(@placedb[@world])){
@@ -265,26 +266,8 @@
 	}
 	#parse the arguments passed.
 	@args = parse_args($)
-	
-	
-	#Translate to the friendlier world name for known worlds.
-	switch(pworld()){
-		case 'world':
-			@pworld='Overworld'
-			break();
-		case 'world_nether':
-			@pworld='Nether'
-			break();
-		case 'world_the_end':
-			@pworld='End'
-			break();
-		case 'mapworld':
-			@pworld='Mapworld';
-			break();
-		default:
-			@pworld=pworld();
-			break();
-	}
+	@pworld = _placeDBWorldName(pworld())
+
 	if(length(@args) == 0){
 		# List all the places
 		msg('All places:')
@@ -344,33 +327,18 @@
  * @permission nerdch.level.admin
  */
 nerdch.level.admin:/addplace $place [$set] = >>>
-	@setname=$set
-	if(@setname==''){
-		@setname='Other'
+	@set = $set
+	if (@set == '') {
+		@set = 'Other'
 	}
-	# Make some of the known world names friendlier 
-	switch(pworld()){
-		case 'world':
-			@world='Overworld'
-			break();
-		case 'world_nether':
-			@world='Nether'
-			break();
-		case 'world_the_end':
-			@world='End'
-			break();
-		case 'mapworld':
-			@world='Mapworld';
-			break();
-		default:
-			@world=pworld();
-			break()
+	@world = _placeDBWorldName(pworld())
+
+	@placedb = _getPlaceDB();
+	if (_getPlace(@placedb, @world, @set, $place) != null) {
+		die(color('LIGHT_PURPLE').'Place '.$place.' in '.@set.' in '.@world.' already exists!')
 	}
-	@placedb = get_value('placedb')
-	if(@placedb==null){
-		@placedb=array()
-	}
-	@placedb[@world][@setname][$place]=ploc()
+
+	@placedb[@world][@set][$place] = ploc()
 	store_value('placedb', @placedb)
 	msg(color('LIGHT_PURPLE').$place . ' added.')
 #	call_alias('/place '.$place)
@@ -383,21 +351,32 @@ nerdch.level.admin:/addplace $place [$set] = >>>
  * @permission nerdch.level.admin
  */
 nerdch.level.admin:/delplace $world $set $name = >>>
-	@placedb = get_value('placedb')
-	if(@placedb == null){
-		@places = array()
+	@placedb = _getPlaceDB();
+	if (_removePlace(@placedb, $world, $set, $name, true) == null) {
+		msg(color('LIGHT_PURPLE').'No matching place found.')
 	}
-	if(!(@placedb[$world][$set][$name]==null)){
-		array_remove(@placedb[$world][$set], $name)
-		msg(color('LIGHT_PURPLE').'Removed '.$name.' in '.$set.' in '.$world)
-		if(array_size(@placedb[$world][$set])==0){
-			array_remove(@placedb[$world], $set)
-			msg(color('LIGHT_PURPLE').'Removed '.$set.' in '.$world)
-			if(array_size(@placedb[$world])==0){
-				array_remove(@placedb, $world)
-				msg(color('LIGHT_PURPLE').'Removed '.$world)
-			}
-		}
+<<<
+
+/**
+ * Renames a place.
+ * Note: tab completion is the same as /delplace, intentionally.
+ * @command
+ * @tabcompleter _delPlaceTabcomplete
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/renameplace $world $set $oldName $newName = >>>
+	@placedb = _getPlaceDB();
+
+	@place = _removePlace(@placedb, $world, $set, $oldName, false);
+	if (@place == null) {
+		die(color('LIGHT_PURPLE').'No matching place found.');
 	}
+
+	if (_getPlace(@placedb, $world, $set, $newName) != null) {
+		die(color('LIGHT_PURPLE').'Place '.$newName.' in '.$set.' in '.$world.' already exists!');
+	}
+
+	@placedb[$world][$set][$newName] = @place
 	store_value('placedb', @placedb)
+	msg(color('LIGHT_PURPLE').'Renamed '.$oldName.' to '.$newName.' in '.$set.' in '.$world.'.')
 <<<

@@ -1,5 +1,5 @@
-include(reflect_pull('dir').'/pets.ms')
-include(reflect_pull('dir').'/villagers.ms')
+try(include(reflect_pull('dir').'/pets.ms'))
+try(include(reflect_pull('dir').'/villagers.ms'))
 
 # Support for some basic functional programming.
 
@@ -45,8 +45,73 @@ proc _map(@input, @f1) {
 	return (@output)
 }
 
+# Return the name of the specified world in the place database.
+# That name is also the friendly name presented in chat.
+
+proc _placeDBWorldName(@world) {
+	switch (@world) {
+		case 'world':         return ('Overworld');
+		case 'world_nether':  return ('Nether');
+		case 'world_the_end': return ('End');
+		case 'mapworld':      return ('Mapworld');
+		default:              return (@world);
+	}
+}
+
+# Return the place database.
+
+proc _getPlaceDB() {
+	return (get_value('placedb') ||| array());
+}
+
+# Return the place with the specified world, set and name, or null
+# if not found. The returned place is a location array.
+
+proc _getPlace(@placedb, @world, @set, @name) {
+	# Avoid IndexOverflowException.
+	if (!array_index_exists(@placedb, @world)       ||
+		!array_index_exists(@placedb[@world], @set) ||
+		!array_index_exists(@placedb[@world][@set], @name)) {
+		return (null);
+	}
+	return @placedb[@world][@set][@name];
+}
+
+# Remove and return the place specified by @name from the specified set
+# and world, or return null if no matching place was found.
+# Also, clean up any resulting empty arrays in the place database and 
+# message the command sender accordingly.
+# If @chatty is true, send messages about changes to the database.
+
+proc _removePlace(@placedb, @world, @set, @name, @chatty) {
+	if (_getPlace(@placedb, @world, @set, @name) == null) {
+		return (null);
+	}
+
+	@place = array_remove(@placedb[@world][@set], @name)
+	if (@place != null) {
+		if (@chatty) {
+			msg(color('LIGHT_PURPLE').'Removed '.@name.' in '.@set.' in '.@world.'.');
+		}
+		if (array_size(@placedb[@world][@set]) == 0) {
+			array_remove(@placedb[@world], @set);
+			if (@chatty) {
+				msg(color('LIGHT_PURPLE').'Removed '.@set.' in '.@world.'.');
+			}
+			if (array_size(@placedb[@world]) == 0) {
+				array_remove(@placedb, @world);
+				if (@chatty) {
+					msg(color('LIGHT_PURPLE').'Removed '.@world.'.');
+				}
+			}
+		}
+		store_value('placedb', @placedb);
+	}
+	return (@place);
+}
+
 proc _placeTabcomplete() {
-	@places= get_value('placedb');
+	@places = _getPlaceDB();
 	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
 	@placeCompletion = array();
 	foreach(@world in @worlds) {
@@ -66,7 +131,7 @@ proc _placeTabcomplete() {
 
 proc _addPlaceTabcomplete() {
 	@setCompletion = array('Other');
-	@places = get_value('placedb');
+	@places = _getPlaceDB();
 	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
 	foreach(@world in @worlds) {
 		if(array_index_exists(@places, @world)) {
@@ -83,20 +148,20 @@ proc _addPlaceTabcomplete() {
 
 proc _delPlaceTabcomplete() {
 	@setCompletion = array('Other');
-	@places = get_value('placedb');
+	@places = _getPlaceDB();
 	@worlds = array('Overworld', 'Nether', 'End', 'Mapworld');
 	@placeCompletion = array();
-	foreach(@world in @worlds) {
-	        if(array_index_exists(@places, @world)) {
-	                foreach(@category: @list in @places[@world]) {
+	foreach (@world in @worlds) {
+		if (array_index_exists(@places, @world)) {
+			foreach (@category: @list in @places[@world]) {
 				@setCompletion[] = @category;
-	                        foreach(@key: @item in @list) {
-	                                @placeCompletion[] = @key;
-	                        }
-	                }
-	        }
+				foreach (@key: @item in @list) {
+					@placeCompletion[] = @key;
+				}
+			}
+		}
 	}
-	return(get_tabcomplete_prototype(
+	return (get_tabcomplete_prototype(
 		@worlds,
 		@setCompletion,
 		@placeCompletion
@@ -132,3 +197,4 @@ proc _wpTabcomplete() {
 		}
 	));	
 }
+
