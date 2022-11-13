@@ -395,7 +395,54 @@ nerdch.level.admin:/tpplace $world $set $name = >>>
 
 	if (set_ploc(@place)) {
 		die(color('LIGHT_PURPLE').'Teleporting you to '.$name.' in '.$set.' in '.$world.'.');
-    } else {
+	} else {
 		die(color('RED').'Unable to teleport you there.');
+	}
+<<<
+
+/**
+ * Hacky command to move pre-existing markers added to the marker set into
+ * the set that corresponds to their place category.
+ * @command
+ * @tabcompleter _existingPlaceTabCompleter
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/placemarkers $world $set [$name] = >>>
+	# Hard-wired sets and icons.
+	run('/dmarker addset id:netherportals netherportals deficon:portal');
+	run('/dmarker addset id:endportals endportals deficon:ender');
+	run('/dmarker addset id:grinders Grinders deficon:skull');
+	run('/dmarker addset id:settlements Settlements deficon:temple');
+	run('/dmarker addset id:other Other deficon:star');
+
+	@placedb = _getPlaceDB();
+	@worldMap = array_get(@placedb, $world, associative_array());
+	@setMap = array_get(@worldMap, $set, associative_array());
+	foreach (@name : @loc in @setMap) {
+		# Compute the world-dependent suffix of the marker ID for nether portals.
+		# See the CH source of /portalmarker.
+		@markerSuffix = '';
+		if ($set == 'netherportals') {
+			if ($world == 'Overworld') {
+				@markerSuffix = '-portal';
+			} else if ($world == 'Nether') {
+				@markerSuffix = '-portal-nether';
+			}
+		}
+
+		# Delete existing marker and add it to the marker set named $set.
+		# Deleting won't work if the set: and id: don't match. Try
+		@markerID = @name . @markerSuffix;
+		@setName = to_lower($set);
+		run('/dmarker delete id:'.@markerID.' set:markers');
+		run('/dmarker delete id:'.@markerID.' set:'.@setName);
+		@addCommand = '/dmarker add id:'.@markerID.' '.@name
+				.' set:'.@setName
+				.' x:'.@loc['x']
+				.' y:'.@loc['y']
+				.' z:'.@loc['z']
+				.' world:'.@loc['world'];
+		#msg(@addCommand);
+		run_cmd(@addCommand);
 	}
 <<<
