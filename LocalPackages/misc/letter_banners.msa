@@ -1,0 +1,64 @@
+
+/**
+ * @command
+ * @param $backgroundColor [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]
+ * @param $foregroundColor [white, orange, magenta, light_blue, yellow, lime, pink, gray, light_gray, cyan, purple, blue, brown, green, red, black]
+ * @param $letter [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+ */
+*:'/letter-banner' $backgroundColor $foregroundColor $letter = >>>
+	if(pmode() != 'CREATIVE') {
+		die(color('RED').'You must be in creative mode to use that command.');
+	}
+	@backgroundColor = to_lower($backgroundColor);
+	@foregroundColor = to_lower($foregroundColor);
+	@letter = to_lower($letter);
+	@colorToNumber = array(
+		'white': 0, 'orange': 1, 'magenta': 2, 'light_blue': 3, 'yellow': 4, 'lime': 5, 'pink': 6, 'gray': 7,
+		'light_gray': 8, 'cyan': 9, 'purple': 10, 'blue': 11, 'brown': 12, 'green': 13, 'red': 14, 'black': 15
+	);
+	@array = array(
+		'a': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:rs,Color:0},{Pattern:ls,Color:0},{Pattern:ms,Color:0},{Pattern:ts,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'b': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:rs,Color:0},{Pattern:bs,Color:0},{Pattern:ts,Color:0},{Pattern:cbo,Color:16},{Pattern:ls,Color:0},{Pattern:ms,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'c': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ts,Color:0},{Pattern:bs,Color:0},{Pattern:rs,Color:0},{Pattern:ms,Color:16},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'd': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:rs,Color:0},{Pattern:bs,Color:0},{Pattern:ts,Color:0},{Pattern:cbo,Color:16},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'e': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ls,Color:0},{Pattern:ts,Color:0},{Pattern:ms,Color:0},{Pattern:bs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'f': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ms,Color:0},{Pattern:rs,Color:16},{Pattern:ts,Color:0},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'g': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:rs,Color:0},{Pattern:hh,Color:16},{Pattern:bs,Color:0},{Pattern:ls,Color:0},{Pattern:ts,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'h': '/give @p minecraft:template_banner{BlockEntityTag:{Patterns:[{Pattern:ts,Color:16},{Pattern:bs,Color:16},{Pattern:ls,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'i': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:cs,Color:0},{Pattern:ts,Color:0},{Pattern:bs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'j': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ls,Color:0},{Pattern:hh,Color:16},{Pattern:bs,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'k': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:drs,Color:0},{Pattern:hh,Color:16},{Pattern:dls,Color:0},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'l': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bs,Color:0},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'm': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:tt,Color:0},{Pattern:tts,Color:16},{Pattern:ls,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'n': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ls,Color:0},{Pattern:tt,Color:16},{Pattern:drs,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'o': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ls,Color:0},{Pattern:rs,Color:0},{Pattern:bs,Color:0},{Pattern:ts,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'p': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:rs,Color:0},{Pattern:hhb,Color:16},{Pattern:ms,Color:0},{Pattern:ts,Color:0},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'q': '/give @p minecraft:template_banner{BlockEntityTag:{Patterns:[{Pattern:mr,Color:16},{Pattern:rs,Color:0},{Pattern:ls,Color:0},{Pattern:br,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'r': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:hh,Color:0},{Pattern:cs,Color:16},{Pattern:ts,Color:0},{Pattern:ls,Color:0},{Pattern:drs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		's': '/give @p minecraft:template_banner{BlockEntityTag:{Patterns:[{Pattern:mr,Color:16},{Pattern:ms,Color:16},{Pattern:drs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		't': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ts,Color:0},{Pattern:cs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'u': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bs,Color:0},{Pattern:ls,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'v': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:dls,Color:0},{Pattern:ls,Color:0},{Pattern:bt,Color:16},{Pattern:dls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'w': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bt,Color:0},{Pattern:bts,Color:16},{Pattern:ls,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'x': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:cr,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'y': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:drs,Color:0},{Pattern:hhb,Color:16},{Pattern:dls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'z': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ts,Color:0},{Pattern:dls,Color:0},{Pattern:bs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'0': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bs,Color:0},{Pattern:ls,Color:0},{Pattern:ts,Color:0},{Pattern:rs,Color:0},{Pattern:dls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'1': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:cs,Color:0},{Pattern:tl,Color:0},{Pattern:cbo,Color:16},{Pattern:bs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'2': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ts,Color:0},{Pattern:mr,Color:16},{Pattern:bs,Color:0},{Pattern:dls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'3': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bs,Color:0},{Pattern:ms,Color:0},{Pattern:ts,Color:0},{Pattern:cbo,Color:16},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'4': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ls,Color:0},{Pattern:hhb,Color:16},{Pattern:rs,Color:0},{Pattern:ms,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'5': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bs,Color:0},{Pattern:mr,Color:16},{Pattern:ts,Color:0},{Pattern:drs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'6': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:bs,Color:0},{Pattern:rs,Color:0},{Pattern:hh,Color:16},{Pattern:ms,Color:0},{Pattern:ts,Color:0},{Pattern:ls,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'7': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:dls,Color:0},{Pattern:ts,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'8': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ts,Color:0},{Pattern:ls,Color:0},{Pattern:ms,Color:0},{Pattern:bs,Color:0},{Pattern:rs,Color:0},{Pattern:bo,Color:16}]}} 1',
+		'9': '/give @p minecraft:black_banner{BlockEntityTag:{Patterns:[{Pattern:ls,Color:0},{Pattern:hhb,Color:16},{Pattern:ms,Color:0},{Pattern:ts,Color:0},{Pattern:rs,Color:0},{Pattern:bs,Color:0},{Pattern:bo,Color:16}]}} 1'
+	);
+
+	@template = @array[@letter];
+	@template = replace(@template, 'black_banner', @backgroundColor.'_banner');
+	@template = replace(@template, 'template_banner', @foregroundColor.'_banner');
+	@template = replace(@template, 'Color:0', 'Color:'.@colorToNumber[@foregroundColor]);
+	@template = replace(@template, 'Color:16', 'Color:'.@colorToNumber[@backgroundColor]);
+	sudo(@template);
+<<<

@@ -1,0 +1,4 @@
+/** @command */
+*:/donate [$] = >>>
+	msg('Donate at '.color('BLUE').color('UNDERLINE').'https://nerd.nu/donate/');
+<<<

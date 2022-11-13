@@ -1,0 +1,6 @@
+
+/**
+ * Launches the headmart UI.
+ * @command
+ */
+*:/headmart [$] = /hdb $
