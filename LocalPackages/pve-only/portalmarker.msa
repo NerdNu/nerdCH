@@ -8,10 +8,75 @@ nerdch.level.admin:/portalmarker $name = >>>
 	if (pworld() == 'world') {
 		run_cmd('/addplace '.@name.' netherportals');
 		run_cmd('/dmarker add '.@name.' icon:portal id:'.@name.'-portal set:netherportals');
-		msg('Re-run the command again when you\'re in the appropriate spot in the nether (if applicable).');
+		msg(color('LIGHT_PURPLE').'Re-run the command again when you\'re in the appropriate spot in the nether (if applicable).');
 	} else if(pworld() == 'world_nether') {
 		run_cmd('/addplace '.@name.' netherportals');
 		run_cmd('/dmarker add '.@name.' icon:portal id:'.@name.'-portal-nether set:netherportals');
-		msg('Re-run the command again when you\'re in the appropriate spot in the overworld (if applicable).');
+		msg(color('LIGHT_PURPLE').'Re-run the command again when you\'re in the appropriate spot in the overworld (if applicable).');
 	}
 <<<
+
+/**
+ * Rename a place and dynmap markers in both the overworld and the nether with one command.
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/portalmarkerrename $oldName $newName = >>>
+	@placedb = _getPlaceDB();
+
+	@oldPlaceOverworld = _getPlace(@placedb, 'Overworld', 'netherportals', $oldName);
+	@oldPlaceNether    = _getPlace(@placedb, 'Nether',    'netherportals', $oldName);
+	if (@oldPlaceOverworld == null && @oldPlaceNether == null) {
+		die(color('RED').'Place '.$oldName.' doesn\'t exist in the overworld or the nether!');
+	}
+
+	@newPlaceOverworld = _getPlace(@placedb, 'Overworld', 'netherportals', $newName);
+	@newPlaceNether    = _getPlace(@placedb, 'Nether',    'netherportals', $newName);
+	if (@newPlaceOverworld != null) {
+		die(color('RED').'Place '.$newName.' already exists in the overworld!');
+	}
+	if (@newPlaceNether != null) {
+		die(color('RED').'Place '.$newName.' already exists in the nether!');
+	}
+
+	run_cmd('/renameplace Overworld netherportals '.$oldName.' '.$newName);
+	run_cmd('/renameplace Nether netherportals '.$oldName.' '.$newName);
+	run_cmd('/dmarker delete id:'.$oldName.'-portal set:netherportals');
+	run_cmd('/dmarker delete id:'.$oldName.'-portal-nether set:netherportals');
+
+	# @oldPlace* is non-null, @newPlace* is null. Use old vars for coords.
+	# Note that the place may not have been defined in both worlds. Test for null.
+	if (@oldPlaceOverworld != null) {
+		run_cmd('/dmarker add '.$newName.' icon:portal id:'.$newName.'-portal set:netherportals'
+				.' world:world '
+				.' x:'.@oldPlaceOverworld['x']
+				.' y:'.@oldPlaceOverworld['y']
+				.' z:'.@oldPlaceOverworld['z']);
+		msg(color('LIGHT_PURPLE').'Added map marker for '.$newName.' in the overworld.');
+	}
+	if (@oldPlaceNether != null) {
+		run_cmd('/dmarker add '.$newName.' icon:portal id:'.$newName.'-portal-nether set:netherportals'
+				.' world:world_nether '
+				.' x:'.@oldPlaceNether['x']
+				.' y:'.@oldPlaceNether['y']
+				.' z:'.@oldPlaceNether['z']);
+		msg(color('LIGHT_PURPLE').'Added map marker for '.$newName.' in the nether.');
+	}
+	msg(color('LIGHT_PURPLE').'Place '.$oldName.' and map markers renamed to '.$newName.' in the overworld and nether.');
+<<<
+
+/**
+ * Delete a place in the overworld and nether, and remove corresponding dynmap markers.
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/portalmarkerdelete $name = >>>
+	# Just try to delete everything, whether it exists or not.
+	run_cmd('/delplace Overworld netherportals '.$name);
+	run_cmd('/dmarker delete id:'.$name.'-portal set:netherportals');
+
+	run_cmd('/delplace Nether netherportals '.$name);
+	run_cmd('/dmarker delete id:'.$name.'-portal-nether set:netherportals');
+	msg(color('LIGHT_PURPLE').'Place '.$name.' and map markers removed in the overworld and nether.');
+<<<
+
