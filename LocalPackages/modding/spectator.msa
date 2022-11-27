@@ -5,20 +5,22 @@
  * @permission nerdch.spectator
  */
 nerdch.spectator:/spectator = >>>
-	assign(@p, player())
+	string @p = player();
 
 	if (equals(pmode(@p), 'SPECTATOR')) {
-		set_pmode(@p, 'CREATIVE')
-		msg(concat(color('GRAY'), @p, ' is now in creative mode'))
+		set_pmode(@p, 'CREATIVE');
+		msg(concat(color('GRAY'), @p, ' is now in creative mode'));
 	} else {
-		set_pmode(@p, 'SPECTATOR')
+		@ploc = ploc(@p);
+		set_pmode(@p, 'SPECTATOR');
 
 		# Turn on flight or you will fall to your death!
 		set_timeout(200, closure() {
+			set_ploc(@p, @ploc);
 			set_pflight(true);
 			set_pflying(true);
 		});
-		msg(concat(color('GRAY'), @p, ' is now in spectator mode'))
+		msg(concat(color('GRAY'), @p, ' is now in spectator mode'));
 	}
 <<<
 

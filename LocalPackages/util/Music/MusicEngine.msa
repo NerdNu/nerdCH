@@ -1,0 +1,6 @@
+
+/**
+ * @command
+ * @permission nerdch.level.techadmin
+ */
+/debugMusicEngine = export('music.engine.debug', !import('music.engine.debug'));

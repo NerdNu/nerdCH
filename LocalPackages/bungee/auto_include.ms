@@ -58,24 +58,20 @@ proc _sendPluginMessage(@player, @channel, @messages) {
 }
 
 
-@mcb_tab_completer = closure(@alias, @sender, @args){
-    @res = array();
-    foreach (@player in all_players()) {
-    	if (@player == @sender) {
-    		continue();
-    	}
-        if (string_position(@player, @args[-1]) == 0) {
-            @res[] = @player;
-        }
-    }
-    return(@res);
-};
-
-
-register_command('kick', array('tabcompleter':  @mcb_tab_completer));
-register_command('ban', array('tabcompleter':  @mcb_tab_completer));
-register_command('lookup', array('tabcompleter':  @mcb_tab_completer));
-register_command('addnote', array('tabcompleter':  @mcb_tab_completer));
+proc _mcb_tab_completer(@alias, @sender, @args) {
+	return closure(@alias, @sender, @args) {
+		@res = array();
+		foreach (@player in all_players()) {
+			if (@player == @sender) {
+				continue();
+			}
+			if (length(@args) > 0 && string_position(@player, @args[-1]) == 0) {
+				@res[] = @player;
+			}
+		}
+		return(@res);
+	}
+}
 
 proc _serverTabcomplete() {
 	return(get_tabcomplete_prototype(

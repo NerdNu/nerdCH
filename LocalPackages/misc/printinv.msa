@@ -1,0 +1,8 @@
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
+/printinv [$slot] = >>>
+	@slot = $slot ||| null;
+	msg(json_encode(pinv(player(), @slot)));
+<<<

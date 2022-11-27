@@ -1,6 +1,7 @@
 *:/ci [$] = >>>
 	@ci = closure(@player) {
 		@inv = pinv(@player);
+		console("Clearing @player's inventory: @inv");
 		array_iterate(@inv, closure(@key, @value) { @inv[@key] = null; });
 		set_pinv(@player, @inv);
 	};

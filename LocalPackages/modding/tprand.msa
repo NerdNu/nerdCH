@@ -1,0 +1,14 @@
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
+/tprand = >>>
+	@all_players = all_players();
+	array_remove_values(@all_players, player());
+	if(length(@all_players) == 0) {
+		die(color('GRAY')."You're all alone!");
+	}
+	@player = array_rand(@all_players, 1, false)[0];
+	msg(color('GRAY').'Sending you to '.@player);
+	set_ploc(ploc(@player));
+<<<

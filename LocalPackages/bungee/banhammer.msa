@@ -1,0 +1,8 @@
+
+'/activate-firstjoin-banhammer' = >>>
+	if(player() != "~console") {
+		die();
+	}
+	export('activate.banhammer', !import('activate.banhammer'));
+	msg("Banhammer ".if(import('activate.banhammer'), "ACTIVATED", "DISACTIVATED"));
+<<<

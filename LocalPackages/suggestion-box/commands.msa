@@ -137,7 +137,7 @@
  */
 *:'/suggestion-box-list' = >>>
 	_assertperm('admin', 0)
-	@allsuggestions = get_value('suggestionbox.suggestions')
+	@allsuggestions = get_value('suggestionbox.suggestions') ||| array();
 	array_iterate(@allsuggestions, closure(@userhash, @messages){
 		if(length(@messages) > 0) {
 			msg(color('dark_green').'===========================')

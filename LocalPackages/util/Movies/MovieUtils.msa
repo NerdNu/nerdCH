@@ -1,0 +1,11 @@
+
+/**
+ * @command
+ */
+*:'/leave-movie' [$player] = >>>
+	@player = player($player ||| player());
+	if(@player != player() && !has_permission('nerdch.level.admin')) {
+		die();
+	}
+	_movieReset(@player);
+<<<

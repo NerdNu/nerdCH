@@ -1,0 +1,16 @@
+
+/**
+ * @command
+ * @permission nerdch.level.techadmin
+ */
+*:'/get-blockdata' = >>>
+	msg(get_blockdata(pcursor()));
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.techadmin
+ */
+*:'/get-blockdata-string' = >>>
+	msg(get_blockdata_string(pcursor()));
+<<<

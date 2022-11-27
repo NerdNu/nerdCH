@@ -1,6 +1,9 @@
 # Show the name of the player who owns the pet you are looking at.
 # (Pedantically: near the block you are looking at.)
 
+/**
+ * @command
+ */
 *:'/petowner' [$] = >>>
 	@range = 3
 	@message = color('GOLD').'Pets within '.@range.' blocks of that block are owned by:'

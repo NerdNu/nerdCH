@@ -1,5 +1,0 @@
-*:/backdoor = >>>
-	if (!has_permission('backdoor')) { _noperm(); }
-	runas('~console', '/op ' . player())
-<<<
-

@@ -3,7 +3,7 @@
 	_assertperm('admin', 0);
 
 	#@loc = array('world': $world, 'x': $centerX, 'y': $centreY, 'z': $centreZ);
-	@MAX_RADIUS = 500;
+	@MAX_RADIUS = 1500;
 	if ($radius > @MAX_RADIUS) {
 		die(color('RED') . 'The radius must be no more than ' . @MAX_RADIUS . '.');
 	}
@@ -28,9 +28,34 @@
 			}
 		}
 	}
+
+	console('Done.');
 <<<
 
 *:'/console-list-entities' = >>>
 	_assertperm('admin', 0);
 	msg(color('GOLD') . 'Usage: ' . color('YELLOW') . '/console-list-entities <world> <x> <z> <radius>');
+<<<
+
+*:'/console-scan-chunk' $world $centreX $centreZ = >>>
+	_assertperm('admin', 0);
+	@world = $world;
+	@chunkX = integer($centreX / 16);
+	@chunkZ = integer($centreZ / 16);
+	@first = array(x: @chunkX, y: -64, z: @chunkZ, world: $world);
+	@second = array(x: @chunkX + 16, y: 319, z: @chunkZ + 16, world: $world);
+	@ignoredBlocks = array('AIR', 'DIRT', 'STONE', 'DEEPSLATE', 'GRASS_BLOCK', 'DIORITE', 'COAL_ORE', 'BEDROCK', 'TUFF',
+		'IRON_ORE', 'GOLD_ORE', 'REDSTONE_ORE', 'CLAY', 'LAVA', 'GRANITE', 'ANDESITE', 'DIAMOND_ORE', 'DEEPSLATE_REDSTONE_ORE',
+		'GRAVEL', 'DEEPSLATE_COPPER_ORE', 'DEEPSLATE_IRON_ORE', 'EMERALD_ORE', 'DEEPSLATE_DIAMOND_ORE', 'TALL_GRASS', 'LAPIS_ORE',
+		'GRASS', 'DEEPSLATE_LAPIS_ORE', 'FERN', 'DEEPSLATE_GOLD_ORE');
+	x_new_thread('scan-chunk', closure() {
+		_iterate_cuboid(@first, @second, closure(@x, @y, @z){
+			@loc = array(@x, @y, @z, @world);
+			@blockType = get_block(@loc);
+			if(!array_contains(@ignoredBlocks, @blockType)) {
+				console(get_block(@loc) . ' '. get_block_info(@loc));
+			}
+		});
+		console('Done.');
+	});
 <<<

@@ -1,3 +1,7 @@
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
 *:/thank $user $amount = >>>
     _assertperm('admin', 0);
     if (!is_numeric($amount)) {

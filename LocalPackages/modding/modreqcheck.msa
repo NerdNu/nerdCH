@@ -1,0 +1,2 @@
+
+*:'/modreq:check' [$] = die('Idiot, just run /check');

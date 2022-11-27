@@ -3,6 +3,7 @@
  * Kicks the specified player, optionally with a reason.
  * @command
  * @permission nerdch.level.mod
+ * @tabcompleter _mcb_tab_completer
  */
 *:/kick $player [$] = >>>
 	_assertperm('mod')
@@ -81,6 +82,7 @@
  * Bans the specified player, with the given reason. (nerd.nu/appeal is always appended).
  * @command
  * @permission nerdch.level.mod
+ * @tabcompleter _mcb_tab_completer
  */
 *:/ban $player [$] = >>>
 	_assertperm('mod', 0)
@@ -105,6 +107,7 @@
  * Looks up data on the specified player.
  * @command
  * @permission nerdch.level.mod
+ * @tabcompleter _mcb_tab_completer
  */
 *:/lookup $player = >>>
 	_assertperm('mod')
@@ -115,6 +118,7 @@
  * Adds a note to the specified palyer.
  * @command
  * @permission nerdch.level.mod
+ * @tabcompleter _mcb_tab_completer
  */
 *:/addnote $player $ = >>>
 	_assertperm('mod')
