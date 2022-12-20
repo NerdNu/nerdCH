@@ -28,7 +28,13 @@ proc _movieTweenBetween(array @start, array @finish, int @steps) {
 	@xInc = (@finish['x'] - @start['x']) / @steps;
 	@yInc = (@finish['y'] - @start['y']) / @steps;
 	@zInc = (@finish['z'] - @start['z']) / @steps;
-	@yawInc = (@finish['yaw'] - @start['yaw']) / @steps;
+	// Special logic here, since yaw specifically wraps around.
+	// We want to go the shorter distance, if start > 180 and end is < 180, which actually counts up.
+	if(@start['yaw'] > 180 && @finish['yaw'] < 180) {
+		@yawInc = (360 - @start['yaw'] + @finish['yaw']) / @steps;
+	} else {
+		@yawInc = (@finish['yaw'] - @start['yaw']) / @steps;
+	}
 	@pitchInc = (@finish['pitch'] - @start['pitch']) / @steps;
 	array @array = array(array(skippable: false, complex: @start));
 	@skippable = false;
@@ -172,6 +178,9 @@ proc _movieInjectEvents(array @actions, array @events) {
  */
 proc _movieStart(array @actions, string @player, array @resetLocation, string @movieId, string @endMode = 'SURVIVAL') {
 	_movieInit();
+	if(!ponline(@player)) {
+		return;
+	}
 	// @queue = 'moviefor'.@player;
 	@startLoc = @resetLocation;
 	@endLoc = @resetLocation;

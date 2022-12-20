@@ -27,6 +27,8 @@ proc _startMusicEngine() {
 					foreach(@player in @playersInWorld) {
 						if(!ponline(@player)) {
 							array_remove_values(@playersInWorld, @player);
+							// Clear their music model so it doesn't get stuck on
+							export('music.engine.model.'.@player, null);
 							continue;
 						}
 						stop_sound(@player, 'MUSIC_GAME', 'MUSIC');

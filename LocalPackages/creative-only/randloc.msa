@@ -1,0 +1,10 @@
+/**
+ * @command
+ */
+*:/randloc = >>>
+	// TPControl provides this, but it is broken, so this is a simple override.
+	@x = rand(-3580, 3580);
+	@z = rand(-3320, 3320);
+	@y = get_highest_block_at(@x, @z)['y'];
+	set_ploc(@x, @y, @z);
+<<<
