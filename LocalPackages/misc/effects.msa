@@ -1,0 +1,9 @@
+/**
+ * Strike safe lightning in the specified world at ($x,$y,$z).
+ * @command
+ */
+*:'/strike-wxyz' $world $x $y $z = >>>
+	_assertperm('admin');
+	@loc = associative_array('x': $x, 'y': $y, 'z': $z, 'world': $world);
+	lightning(@loc, true);
+<<<

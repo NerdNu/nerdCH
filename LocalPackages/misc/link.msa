@@ -1,0 +1,8 @@
+/**
+ * @command
+ */
+*:/link $selector $url $color $ = >>>
+	_assertperm('admin');
+	sudo('/tellraw '.$selector.' {"text":"'.$.'","color":"'.$color.'","underlined":true,"hoverEvent":{"action":"show_text","contents":[{"text":"'.$url.'","color":"gray","italic":true}]},"clickEvent":{"action":"open_url","value":"'.$url.'"}}');
+<<<
+
