@@ -61,6 +61,9 @@ proc _getMusicModel(@player) {
 
 proc _updatePlayerMusic(@player) {
 	if(_isMusicMuted(@player)) {
+		if(import('music.engine.debug')) {
+			console('Music muted for '.@player);
+		}
 		// Music is muted for this player. Do nothing this round.
 		return;
 	}

@@ -1,4 +1,5 @@
 *:/ci [$] = >>>
+
 	@ci = closure(@player) {
 		@inv = pinv(@player);
 		console("Clearing @player's inventory: @inv");
@@ -7,6 +8,16 @@
 	};
 
 	if ($ == '') {
+		if((!array_contains(pgroup(), 'modmode') || array_contains(pgroup(), 'super')) && !import('clearinvdoublecheck'.player())) {
+			export('clearinvdoublecheck'.player(), true);
+			if(array_contains(pgroup(), 'super')) {
+				die(color('LIGHT_PURPLE').'Cannot determine if you are in modmode, are you certain you want to clear your inventory? Run the command again in 5 seconds to confirm.');
+			}
+			die(color('LIGHT_PURPLE').'You are not in modmode, are you certain you want to clear your inventory? Run the command again in 5 seconds to confirm.');
+		}
+		set_timeout(5000, closure() {
+			export('clearinvdoublecheck'.player(), null);
+		});
 		# Staff and defaults with nerdch.commands.ci on Creative can clear their own inv.
 		if (!has_permission('nerdch.level.restricted') && !has_permission('nerdch.commands.ci')) {
 			_noperm();

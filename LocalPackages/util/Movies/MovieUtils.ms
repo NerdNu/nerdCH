@@ -87,11 +87,7 @@ proc _movieInit() {
 
 	bind('player_join', null, null, @event) {
 		if(get_value('movie.playerinmovie.'.player())) {
-			// Oops, they logged out during the credits, start them over now
-			set_timeout(50, closure() {
-				msg('Oops! Something happened, starting credit sequence over. Type `/leave-movie` if you want to skip.');
-				import('movie.restart')(get_value('movie.playerinmovie.'.player()), player());
-			});
+			// Oops, they logged out during the credits, they will be restarted elsewhere.
 			return();
 		}
 
@@ -278,7 +274,7 @@ proc _movieStart(array @actions, string @player, array @resetLocation, string @m
 			@time = time();
 			if(@time > @expectedTime) {
 				// Yes, skip.
-				console('Running behind, movie frame skip.');
+				// console('Running behind, movie frame skip.');
 				@run = false;
 			} else if(@time < @notBefore) {
 				// 

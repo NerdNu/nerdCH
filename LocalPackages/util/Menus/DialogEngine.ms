@@ -118,7 +118,7 @@ proc _showDialogTree(string @character, string @greeting, array @tree, string @p
 	if(length(@tree) == 0) {
 		return;
 	}
-	set_timeout(1000 + (length(@greeting) * 10), closure() {
+	set_timeout(1000 + (length(@greeting) * 15), closure() {
 		_showMenu(length(@items), @character, @items);
 	});
 }

@@ -1,9 +1,18 @@
 nerdch.level.admin:/disrandom = >>>
-        array @disguises = array('Area_Effect_Cloud', 'Armor_Stand', 'Arrow', 'Bat', 'Blaze', 'Boat', 'Cave_Spider', 'Chicken', 'Cod', 'Cow', 'Creeper', 'Dolphin', 'Donkey', 'Dragon_Fireball', 'Dropped_Item', 'Drowned', 'Egg', 'Elder_Guardian', 'Ender_Crystal', 'Ender_Dragon', 'Ender_Pearl', 'Ender_Signal', 'Enderman', 'Endermite', 'Evoker', 'Evoker_Fangs', 'Experience_Orb', 'Falling_Block', 'Fireball', 'Firework', 'Fishing_Hook', 'Ghast', 'Giant', 'Guardian', 'Horse', 'Husk', 'Illusioner', 'Iron_Golem', 'Item_Frame', 'Leash_Hitch', 'Llama', 'Llama_Spit', 'Magma_Cube', 'Minecart', 'Minecart_Chest', 'Minecart_Command', 'Minecart_Furnace', 'Minecart_Hopper', 'Minecart_Mob_Spawner', 'Minecart_Tnt', 'Mule', 'Mushroom_Cow', 'Ocelot', 'Painting', 'Parrot', 'Phantom', 'Pig', 'Pig_Zombie', 'Polar_Bear', 'Primed_Tnt', 'Pufferfish', 'Rabbit', 'Salmon', 'Sheep', 'Shulker', 'Shulker_Bullet', 'Silverfish', 'Skeleton', 'Skeleton_Horse', 'Slime', 'Small_Fireball', 'Snowball', 'Snowman', 'Spectral_Arrow', 'Spider', 'Splash_Potion', 'Squid', 'Stray', 'Thrown_Exp_Bottle', 'Tipped_Arrow', 'Trident', 'Tropical_Fish', 'Turtle', 'Vex', 'Villager', 'Vindicator', 'Witch', 'Wither', 'Wither_Skeleton', 'Wither_Skull', 'Wolf', 'Zombie', 'Zombie_Horse', 'Zombie_Villager')
+        array @disguises = array('Allay', 'Area_Effect_Cloud', 'Armor_Stand', 'Arrow', 'Axolotl', 'Bat', 'Bee', 'Blaze', 'Boat', 'Cat', 'Cave_Spider', 'Chest_Boat', 'Chicken', 'Cod', 'Cow', 'Creeper', 'Dolphin', 'Donkey', 'Dragon_Fireball', 'Drowned', 'Egg', 'Elder_Guardian', 'Ender_Crystal', 'Ender_Dragon', 'Ender_Pearl', 'Ender_Signal', 'Enderman', 'Endermite', 'Evoker', 'Evoker_Fangs', 'Experience_Orb', 'Fireball', 'Firework', 'Fishing_Hook', 'Fox', 'Frog', 'Ghast', 'Giant', 'Glow_Item_Frame', 'Glow_Squid', 'Goat', 'Guardian', 'Hoglin', 'Horse', 'Husk', 'Illusioner', 'Iron_Golem', 'Item_Frame', 'Leash_Hitch', 'libraryaddict', 'Llama', 'Llama_Spit', 'Magma_Cube', 'Marker', 'Minecart', 'Minecart_Chest', 'Minecart_Command', 'Minecart_Furnace', 'Minecart_Hopper', 'Minecart_Mob_Spawner', 'Minecart_Tnt', 'Mule', 'Mushroom_Cow', 'Ocelot', 'Painting', 'Panda', 'Parrot', 'Phantom', 'Pig', 'Piglin', 'Piglin_Brute', 'Pillager', 'Player', 'Polar_Bear', 'Primed_Tnt', 'Pufferfish', 'Rabbit', 'Ravager', 'Salmon', 'Sheep', 'Shulker', 'Shulker_Bullet', 'Silverfish', 'Skeleton', 'Skeleton_Horse', 'Slime', 'Small_Fireball', 'Snowball', 'Snowman', 'Spectral_Arrow', 'Spider', 'Splash_Potion', 'Squid', 'Stray', 'Strider', 'Tadpole', 'Thrown_Exp_Bottle', 'Trader_Llama', 'Trident', 'Tropical_Fish', 'Turtle', 'Vex', 'Villager', 'Vindicator', 'Wandering_Trader', 'Warden', 'Witch', 'Wither', 'Wither_Skeleton', 'Wither_Skull', 'Wolf', 'Zoglin', 'Zombie', 'Zombie_Horse', 'Zombie_Villager', 'Zombified_Piglin')
         run( '/dis ' . @disguises[rand(array_size(@disguises))])
-
 <<<
 
+nerdch.level.admin:/disrandomblock = >>>
+        @blocks = array_filter(all_materials(), closure(@key, @value){
+                return(material_info(@value)[isBlock])
+        });
+        run( '/dis falling_block ' . @blocks[rand(array_size(@blocks))] . ' setGridLocked true setInvisible true')
+<<<
+
+nerdch.level.admin:/disrandomitem = >>>
+        run( '/dis dropped_item ' . all_materials()[rand(array_size(all_materials()))] . ' setInvisible true')
+<<<
 
 nerdch.level.admin:/disrandomplayer = >>>
         array @players = all_players()
