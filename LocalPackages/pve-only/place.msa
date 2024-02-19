@@ -111,7 +111,7 @@
 		}
 		@yaw += 90
 		if (pvehicle() == null) {
-			@velocity = pvelocity()
+			@velocity = pvelocity();
 			pfacing(@yaw, @pitch);
 			set_pvelocity(@velocity);
 		} else {

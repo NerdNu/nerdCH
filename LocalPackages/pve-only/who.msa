@@ -1,6 +1,12 @@
+/**
+ * @command
+ */
 *:/who [$] = >>>
-    sudo('/mv who world');
-    sudo('/mv who world_the_end');
-    sudo('/mv who world_nether');
-    sudo('/mv who mapworld');
+	foreach(@world in array('world', 'world_the_end', 'world_nether', 'mapworld')) {
+		@players = all_players(@world);
+		if(length(@players) > 0) {
+			msg(color('AQUA')."Players in @world:");
+			msg(array_implode(all_players(@world), ', '));
+		}
+	}
 <<<

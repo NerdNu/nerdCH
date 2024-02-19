@@ -1,0 +1,114 @@
+
+/**
+ * Enters the minigame world. If the minigame is specified, takes you directly to that minigame, otherwise takes you to the
+ * entrance.
+ * @command
+ * @param $game [entrance]
+ */
+*:/minigames [$game='entrance'] = >>>
+	@whitelisted = get_value('minigames.whitelist');
+	if(!has_permission('nerdch.level.mod') && !array_contains(@whitelisted, player())) {
+		die('You don\'t have permission for that command.')
+	}
+	@game = 'minigame'.to_lower($game);
+	@locations = array('minigameentrance');
+	if(!array_contains(@locations, @game)) {
+		@game = 'minigameentrance';
+		msg(color('RED').'Cannot find the minigame '.$game.', sending you to the entrace instead!');
+	}
+	set_ploc(_getMinigameLocation(@game));
+<<<
+
+/**
+ * @command
+ */
+*:'/minigames-test' = >>>
+	@whitelisted = get_value('minigames.whitelist');
+	if(!has_permission('nerdch.level.mod') && !array_contains(@whitelisted, player())) {
+		die("You don't have permission for that command.");
+	}
+	set_ploc(array(x: 0, y: -59, z: 0, world: 'world_mod'));
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _getMinigameAssignLocationTabcompleter
+ */
+nerdch.level.admin:'/assign-minigame-location' $location = >>>
+	_validateMinigameLocation($location);
+	store_value('minigames.locations.'.$location, ploc());
+	export('minigames.locations', null);
+	msg(color('GREEN').'Location saved to '.$location.' as '._normalizeLocation(ploc()));
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _getMinigameAssignLocationTabcompleter
+ */
+nerdch.level.admin:'/assign-minigame-location-cursor' $location = >>>
+	_validateMinigameLocation($location);
+	store_value('minigames.locations.'.$location, pcursor());
+	export('minigames.locations', null);
+	msg(color('GREEN').'Location saved to '.$location.' as '._normalizeLocation(pcursor()));
+<<<
+
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _getMinigameAssignRegionTabcompleter
+ */
+nerdch.level.admin:'/assign-minigame-region' $region = >>>
+	_validateMinigameRegion($region);
+	@pos1 = sk_pos1();
+	@pos2 = sk_pos2();
+	if(@pos1 == null || @pos2 == null) {
+		die('Region not selected');
+	}
+	@pos1['world'] = pworld();
+	@pos2['world'] = pworld();
+	@pos1 = _normalizeLocation(@pos1);
+	@pos2 = _normalizeLocation(@pos2);
+	store_value('minigames.regions.'.$region, array(@pos1, @pos2));
+	export('minigames.regions', null);
+	msg(color('GREEN').'Region saved to '.$region.'as pos1: '._normalizeLocation(@pos1).' & pos2: '._normalizeLocation(@pos2));
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @param $player $OfflinePlayer
+ */
+nerdch.level.admin:'/add-minigame-whitelist' $player = >>>
+	@array = get_value('minigames.whitelist') ||| array();
+	if(!array_contains(get_offline_players(), $player)) {
+		die('Player not found. They must have played on the server at least once.');
+	}
+	@array[] = $player;
+	@array = array_unique(@array);
+	store_value('minigames.whitelist', @array);
+	msg(color('DARK_PURPLE').'Player "'.$player.'" added.');
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @tabcompleter _getMinigameWhitelistTabCompleter
+ */
+nerdch.level.admin:'/remove-minigame-whitelist' $player = >>>
+	@array = get_value('minigames.whitelist') ||| array();
+	if(!array_contains(@array, $player)) {
+		die($player . ' not found in whitelist.');
+	}
+	array_remove_values(@array, $player);
+	store_value('minigames.whitelist', @array);
+	msg(color('DARK_PURPLE').'Player "'.$player.'" removed.');
+<<<
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:'/list-minigame-whitelist' = msg(get_value('minigames.whitelist'));

@@ -269,7 +269,10 @@
             }))
 <<<
 
-# Edit any signed book
+/**
+ * @command
+ * @permission nerdch.level.admin
+ */
 *:'/edit' [$] = >>>
     _assertperm('admin', 0)
     @item = pinv(player(), null)

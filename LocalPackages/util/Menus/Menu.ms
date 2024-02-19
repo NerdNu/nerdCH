@@ -5,10 +5,18 @@
  * a 'onclick' attribute, which should contain a closure<void>(). This closure will be
  * called if the user selects that option. closeonclick defaults to true, but if false,
  * the menu remains open if an item is interacted with.
+ *
+ * @customModel defaults to null, but if provided, will add 9 to the inventory size, and
+ * place a barrier with the given CustomModelData at the bottom right slot.
  */
-proc _showMenu(auto @typeOrSize, string @title, array @items) {
+proc _showMenu(auto @typeOrSize, string @title, array @items, int @customModel = null) {
 	@id = player().@title;
+	if(@customModel != null && is_integer(@typeOrSize)) {
+		@typeOrSize += 9;
+		@items[@typeOrSize - 1] = array(name: 'BARRIER', meta: array(model: @customModel));
+	}
 	try {
+		delete_virtual_inventory(@id);
 		create_virtual_inventory(@id, @typeOrSize, @title, @items);
 	} catch(IllegalArgumentException @ex) {
 		return;

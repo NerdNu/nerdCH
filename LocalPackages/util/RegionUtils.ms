@@ -4,9 +4,9 @@
  */
 proc _pointInRegion(@point, @pos1, @pos2) {
 	return(
-		min(@pos1['x'], @pos2['x']) <= @point['x'] && @point['x'] <= max(@pos1['x'], @pos2['x']) &&
-		min(@pos1['y'], @pos2['y']) <= @point['y'] && @point['y'] <= max(@pos1['y'], @pos2['y']) &&
-		min(@pos1['z'], @pos2['z']) <= @point['z'] && @point['z'] <= max(@pos1['z'], @pos2['z']) &&
+		floor(min(@pos1['x'], @pos2['x'])) <= floor(@point['x']) && floor(@point['x']) <= floor(max(@pos1['x'], @pos2['x'])) &&
+		floor(min(@pos1['y'], @pos2['y'])) <= floor(@point['y']) && floor(@point['y']) <= floor(max(@pos1['y'], @pos2['y'])) &&
+		floor(min(@pos1['z'], @pos2['z'])) <= floor(@point['z']) && floor(@point['z']) <= floor(max(@pos1['z'], @pos2['z'])) &&
 		@pos1['world'] == @point['world']
 	);
 }
@@ -47,15 +47,24 @@ proc _iterate_cuboid_queue_plane(array @b1, array @b2, string @queue, Callable @
 /**
  * Given two blocks, iterates through all the blocks inside the cuboid, and calls the 
  * user defined closure on them. The used defined closure should accept 3 parameters,
- * the x, y, and z coordinates of the block. The processing of each z row happens in
+ * the x, y, and z coordinates of the block. The processing of each z (or x or y as specified with @iterateRow)
+ * row happens in
  * its own queue entry, in the given queue, for processing of large areas.
  */
-proc _iterate_cuboid_queue_row(array @b1, array @b2, string @queue, Callable @callback){
-	for(@x = min(@b1['x'], @b2['x']), @x <= max(@b1['x'], @b2['x']), @x++){
-		for(@y = min(@b1['y'], @b2['y']), @y <= max(@b1['y'], @b2['y']), @y++){
+proc _iterate_cuboid_queue_row(array @b1, array @b2, string @queue, Callable @callback, @iterateOrder = array('x', 'y', 'z', 'ascending')){
+	@xc = @iterateOrder[0];
+	@yc = @iterateOrder[1];
+	@zc = @iterateOrder[2];
+	@order = array_get(@iterateOrder, 3, 'ascending');
+	@asc = @order == 'ascending';
+	for(@x = if(@asc, min(@b1[@xc], @b2[@xc]), max(@b1[@xc], @b2[@xc])), if(@asc, @x <= max(@b1[@xc], @b2[@xc]), @x >= min(@b1[@xc], @b2[@xc])), if(@asc, @x++, @x--)){
+		for(@y = min(@b1[@yc], @b2[@yc]), @y <= max(@b1[@yc], @b2[@yc]), @y++){
 			queue_push(closure() {
-				for(@z = min(@b1['z'], @b2['z']), @z <= max(@b1['z'], @b2['z']), @z++){
-					@callback(@x, @y, @z);
+				for(@z = min(@b1[@zc], @b2[@zc]), @z <= max(@b1[@zc], @b2[@zc]), @z++){
+					@xr = switch(@iterateOrder[0], 'x', @x, 'y', @y, 'z', @z);
+					@yr = switch(@iterateOrder[1], 'x', @x, 'y', @y, 'z', @z);
+					@zr = switch(@iterateOrder[2], 'x', @x, 'y', @y, 'z', @z);
+					@callback(@xr, @yr, @zr);
 				}
 			}, @queue);
 		}
@@ -85,9 +94,17 @@ proc _getBlocksInCuboid(array @cuboidArray) {
  * the mask and pattern formats defined in WorldEdit.
  */
 proc _regionReplace(array @regionBounds, string @mask, string @pattern) {
-	sk_pos1(null, @regionBounds[0]);
-	sk_pos2(null, @regionBounds[1]);
-	sk_replace_blocks(null, @mask, @pattern);
+	@world = @regionBounds[0]['world'];
+	_iterate_cuboid(@regionBounds[0], @regionBounds[1], closure(@x, @y, @z){
+		@loc = array(x: @x, y: @y, z: @z, world: @world);
+		if(get_block(@loc) == @mask) {
+			set_block(@loc, @pattern);
+		}
+	});
+	// This is preferred, but broken.
+	// sk_pos1(null, @regionBounds[0]);
+	// sk_pos2(null, @regionBounds[1]);
+	// sk_replace_blocks(null, @mask, @pattern);
 }
 
 proc _entitiesInRegion(array @regionBounds) {

@@ -115,6 +115,7 @@ proc _showDialogTree(string @character, string @greeting, array @tree, string @p
 	if(@greeting) {
 		tmsg(@player, _storyChat(@character, @greeting));
 	}
+	
 	if(length(@tree) == 0) {
 		return;
 	}

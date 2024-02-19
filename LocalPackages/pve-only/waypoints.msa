@@ -68,7 +68,9 @@
     // msg(color('BLACK').'[name:'.@wp_name.', x:'.sprintf('%.0f', @x).', z:'.sprintf('%.0f', @z).']')
 
     if (pvehicle() == null) {
+        @velocity = pvelocity();
         pfacing(@yaw, ploc()['pitch']);
+        set_pvelocity(@velocity);
     } else {
         msg(color('YELLOW').'Due to a Mojang client bug, we can\'t point you in the right direction when you\'re in a vehicle (SPIGOT-6187, SPIGOT-5891).');
     }

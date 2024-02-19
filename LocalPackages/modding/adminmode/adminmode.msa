@@ -1,0 +1,43 @@
+
+/**
+ * @command
+ * @permission nerdch.level.admin
+ * @param $modMode [noModMode]
+ * @tabcompleter _adminModeTabcompleter
+ */
+nerdch.level.admin:/adminmode [$] = >>>
+	@modifiers = parse_args($);
+	if(array_contains(@modifiers, 'status')) {
+		die(color('GREEN')."You are currently ".if(array_contains(pgroup(), 'superduper'), '', 'NOT ').'in adminmode.');
+	}
+	if(!array_contains(pgroup(), 'super')) {
+		run('/modmode');
+		die("Only giving you modmode on this server.");
+	}
+	if(!array_contains(@modifiers, 'noModMode')) {
+		run('/modmode');
+	}
+
+
+	run('/rg bypass');
+	if(array_contains(pgroup(), 'superduper')) {
+		runas('~console', '/luckperms user '.player().' parent remove superduper');
+		store_value('adminmode.'.puuid(player(), true).'.sticky', false);
+		console('Demoting '.player().' to super');
+	} else {
+		if(array_contains(@modifiers, 'makeSticky')) {
+			store_value('adminmode.'.puuid(player(), true).'.sticky', true);
+		}
+		runas('~console', '/luckperms user '.player().' parent add superduper');
+		console('Promoting '.player().' to superduper');
+	}
+<<<
+
+/**
+ * Makes /adminmode sticky
+ * @command
+ * @permission nerdch.level.admin
+ */
+// nerdch.level.admin:'/adminmode-sticky' = >>>
+
+// <<<

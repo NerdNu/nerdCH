@@ -24,6 +24,34 @@
 
 *:/petinfo [$] = call_alias('/petowner')
 
+/**
+ * @command
+ */
+*:/assailant [$] = >>>
+	_assertperm('restricted')
+	@range = 3
+        msg(color('GOLD').'Entities within '.@range.' blocks of that block hurt by:')
+        @entities = entities_in_radius(pcursor(), @range)
+	foreach (@entities, @entity,
+
+		# Get an appropriate name for the entity
+		if(entity_type(@entity)=='PLAYER') {
+			@entityName=display_name(@entity)
+		} else if(get_mob_name(@entity)) {
+			@entityName=get_mob_name(@entity)
+		} else {
+			@entityName=entity_type(@entity)
+		}
+
+		# Look for the damage tag and print if found
+		foreach(@tag in get_scoreboard_tags(@entity)) {
+			if(string_starts_with(@tag,'BeastMaster.damage-player')){
+				msg(@entityName.' last damaged by '.substr(@tag,28))
+			}
+		}
+	)
+	console('assailant: at '.ploc().' '.player().' queried assailants at '.pcursor(), false)
+<<< 
 
 # Spawn a dog, cat or horse tamed to the specified player where you are standing.
 
