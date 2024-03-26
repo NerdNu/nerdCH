@@ -1,0 +1,1 @@
+This folder contains local commandline tools, which assist in creation of resources.

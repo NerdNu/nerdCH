@@ -20,6 +20,7 @@
 		@count = 0
 		for (@i = 0, @i < @limit, inc(@i),		
 			@mob = @mobs[@i]
+			@mobOwner = null;
 			if (is_tameable(@mob)) {
 				@mobOwner = get_mob_owner(@mob)
 				if (is_null(@mobOwner)) {

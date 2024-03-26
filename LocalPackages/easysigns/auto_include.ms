@@ -11,6 +11,8 @@ proc _parse_location(@args) {
 		return ('The location must be of the form [<world>] <x> <y> <z>.')	
 	}
 
+	@world = null;
+	@start = null;
 	if (array_size(@args) == 4) {
 		try(
 			@world = @args[0]

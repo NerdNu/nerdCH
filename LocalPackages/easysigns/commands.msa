@@ -155,14 +155,13 @@
 			if(array_size(@args) > 1){
 				die(color('RED').'Usage: /easy-sign heal [gap]')
 			}
+			@gap = 0;
 			if(array_size(@args) == 1){
 				if(!is_integral(@args[0]) || @args[0] < 0){
 					die(color('RED').'<gap> must be >= 0')
 				} else {
 					@gap = @args[0]
 				}
-			} else {
-				@gap = 0
 			}
 			execute(@gap, @standardSignUsage)
 		)
@@ -439,6 +438,7 @@
 	@i = 1
 	foreach(@signdata[@key], @cmd,
 		@data = @cmd['data']
+		@fields = null;
 		if (is_array(@data)) {
 			@fields = ''
 			@first = true

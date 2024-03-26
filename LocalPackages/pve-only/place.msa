@@ -76,6 +76,7 @@
 		return(@currentClosest)
 	}
 	@printPlace = closure(@placeName, @place){
+		@dimdis = null;
 		if(!(@ploc['world']==@place['world'])){
 			@dimdis=color('BLACK')
 			switch(@place['world']){
@@ -104,6 +105,7 @@
 	}
 	@lookAt = closure(@loc){
 		@yaw = to_degrees(atan2((@ploc['z'] - @loc['z']), (@ploc['x'] - @loc['x'])))
+		@pitch = null;
 		if (@ploc['y']==@loc['y']) {
 			@pitch = 0
 		} else {
@@ -181,8 +183,8 @@
 						break();
 					case 'world_the_end':
 						#find the closest nether portal to an end portal
-						@closestEndportal
-						@closestD
+						@closestEndportal = null;
+						@closestD = null;
 						@dist=100000
 						@setE=execute('Overworld', 'endportals', @matchSet)
 						@setN=execute('Overworld', 'netherportals', @matchSet)

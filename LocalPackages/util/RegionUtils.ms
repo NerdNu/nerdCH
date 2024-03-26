@@ -12,7 +12,7 @@ proc _pointInRegion(@point, @pos1, @pos2) {
 }
 
 /**
- * Given two blocks, iterates through all the blocks inside the cuboid, and calls the 
+ * Given two blocks, iterates through all the blocks inside the cuboid, and calls the
  * user defined closure on them. The used defined closure should accept 3 parameters,
  * the x, y, and z coordinates of the block.
  */

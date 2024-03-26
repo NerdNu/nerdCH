@@ -41,6 +41,11 @@ proc _startMusicEngine() {
 			}
 		});
 
+		foreach(@stand in get_value('music.engine.stands') ||| array()) {
+			entity_remove(@stand);
+		}
+		store_value('music.engine.stands', null);
+
 		export('music.engine.started', true);
 	}
 }
@@ -54,6 +59,15 @@ proc _getMusicModel(@player) {
 		adhocPlaying: false,
 		adhocRepeat: null,
 		adhocNext: null,
+		currentTrack: null,
+		currentFadeInSong: null,
+		fadeOutPercent: 0,
+		fadeInPercent: 100,
+		fadeOut: false,
+		crossfade: false,
+		fadeSteps: 0,
+		fadeEasing: null,
+		tracks: associative_array(),
 	);
 	export('music.engine.model.'.@player, @model);
 	return @model;
@@ -137,7 +151,7 @@ proc _updatePlayerMusic(@player) {
 			@song = @adhocNext;
 			x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @adhocNext, channel: 'MUSIC'), @player); });
 		}
-		@model['playsUntil'] = time() + (@data['music'][@song]['length'] * 1000);
+		@model['playsUntil'] = time() + @data['music'][@song]['length'];
 		@model['adhocPlaying'] = true;
 		@model['currentSong'] = @song;
 		return;
@@ -171,7 +185,7 @@ proc _updatePlayerMusic(@player) {
 			x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @song, channel: 'MUSIC'), @player); });
 			@model['playChance'] = 0;
 			@model['currentSong'] = @song;
-			@model['playsUntil'] = time() + (@data['music'][@song]['length'] * 1000);
+			@model['playsUntil'] = time() + @data['music'][@song]['length'];
 			if(array_get(@priorityZone, 'stopOnExit', false)) {
 				@model['stopPlayingIfNotInZone'] = @priorityZoneName;
 			}
@@ -208,16 +222,16 @@ proc _syncStopAndPlayNow(string @player, array @songData) {
 	@data = import('music.engine.data');
 	@song = @model['currentSong'];
 	@syncStop = @data['music'][@song]['length'];
-	@songStartTime = @model['playsUntil'] - (@syncStop * 1000);
+	@songStartTime = @model['playsUntil'] - @syncStop;
 	// Default is just "the end of the song" if no syncStops were configured.
 	@syncStops = array_get(@data['music'][@song], 'syncStops', array(@syncStop));
 	// Find the next sync stop
 	foreach(@time in @syncStops) {
-		if(time() > (@time * 1000) + @songStartTime) {
+		if(time() > @time + @songStartTime) {
 			// We've already passed this one
 			continue;
 		} else {
-			@syncStop = @time * 1000;
+			@syncStop = @time;
 			break;
 		}
 	}
@@ -269,7 +283,7 @@ proc _stopAndPlayNow(string @player, array @songData) {
 	play_named_sound(ploc(@player), array(sound: @song, channel: 'MUSIC'), @player);
 	@model['playChance'] = 0;
 	@model['currentSong'] = @song;
-	@model['playsUntil'] = time() + (@data['music'][@song]['length'] * 1000);
+	@model['playsUntil'] = time() + @data['music'][@song]['length'];
 	@model['stopPlayingIfNotInZone'] = null;
 	@model['adhocPlaying'] = true;
 	@model['adhocRepeat'] = if(array_get(@songData, 'repeat', false), @song, null);
@@ -353,21 +367,30 @@ proc _isMusicMuted(string @player) {
  * a region name, and returns a length 2 array with the region boundary for a given location.
  *
  * `music` is an associative array of associative arrays. The key of this array is the song name, and the value is a sub array.
- *     `length` is the length of the track, in seconds.
- *     `syncStops` is an array of integers, which represent times (in seconds) in the song when the song can be stopped in a musically consistent way.
+ *     `length` is the length of the track, in milliseconds.
+ *     `syncStops` is an array of integers, which represent times (in milliseconds) in the song when the song can be stopped in a musically consistent way.
+ *     `track`: If null, no track is used. If a string, creates a named track, which allows for additional features such as crossfading.
+ *         Multiple songs can have the same track, in which case, they are all managed at the same time. The song with the highest priority
+ *         is played automatically, but fades are respected the whole time the player remains in the managed region.
+ *     `attenuation`: The attenuation defined in the resource pack. Only necessary if the song will be faded.
+ *     `fadeSteps`: The number of ticks it should take to fully fade in/out a song. only necessary if the song will be faded.
  *
  * `zones` is the most complex object. This is an associative array, where the key is the name of the zone, and each value is an associative
- * array. These contain several fields, many of which are optional.
- * `regions`: This is an array of one or more actual region names for this zone. These regions can be looked up with the `regionLookup` function. Required.
- * `music`: A string or array of strings containing the song name(s) to play in this region. Must be one of the songs listed in the `music` top
- *     level key.
- * `priority`: The priority. If a player is in multiple zones, the zone with the highest priority number wins. Defaults to 0.
- * `playOnEnter`: If true, music will be selected and played as soon as the player is detected in the region, stopping other music if necessary. Defaults to false.
- * `stopOnExit`: If true, music will stop playing when the player leaves the triggering region. Defaults to false.
- * `repeat`: If true, as soon as the music stops playing, more music is selected to be played. Normally, music is only randomly selected to be played,
+ *     array. These contain several fields, many of which are optional.
+ *     `regions`: This is an array of one or more actual region names for this zone. These regions can be looked up with the `regionLookup` function. Required.
+ *     `music`: A string or array of strings containing the song name(s) to play in this region. Must be one of the songs listed in the `music` top
+ *         level key.
+ *     `priority`: The priority. If a player is in multiple zones, the zone with the highest priority number wins. Defaults to 0.
+ *     `playOnEnter`: If true, music will be selected and played as soon as the player is detected in the region, stopping other music if necessary. Defaults to false.
+ *     `stopOnExit`: If true, music will stop playing when the player leaves the triggering region. Defaults to false.
+ *     `repeat`: If true, as soon as the music stops playing, more music is selected to be played. Normally, music is only randomly selected to be played,
  *     and silence is allowed.
- * `preempt`: If the player enters this zone, and music from a lower priority region is playing, this will stop the previous song if it otherwise would
+ *     `preempt`: If the player enters this zone, and music from a lower priority region is playing, this will stop the previous song if it otherwise would
  *     play a song now.
+ *     `crossfade`: If the player moves from this zone to another, then this will fade out and start playing the new zone's music. Note
+ *         that the song needs to be in a track (even if it's the only song in the track) for this to work.
+ * `tracks` is an associative array mapping from track name to info about the track.
+ *     `defaultSong`: The song that should play by default when the zone is entered.
  */
 proc _registerMusicData(array @data) {
 	if(@data['meta']['regionLookup'] notinstanceof Callable) {
@@ -382,4 +405,92 @@ proc _registerMusicData(array @data) {
 			}
 		}
 	});
+}
+
+/**
+ * Fades out the current song for the given player. If @stop is true, also stops the track after the fade is complete.
+ * The easing is the easing used to fade the track out. If this song is not in a track, this will do nothing.
+ */
+proc _fadeOutTrack(string @trackName, string @player, string @easing = 'LINEAR') {
+	@data = import('music.engine.data');
+	@model = _getMusicModel(@player);
+	@model['currentFadeInSong'] = null;
+	@model['fadeOutPercent'] = 0;
+	@model['fadeInPercent'] = 100;
+	@model['fadeOut'] = true;
+	@model['crossfade'] = false;
+	@model['fadeSteps'] = array_get(@data[@model['currentSong']], 'fadeSteps', 20);
+	@model['fadeEasing'] = @easing;
+}
+
+/**
+ * Fades in the given song. If not already playing, starts the song on the given track. The easing is the easing used to
+ * fade the track in.
+ */
+proc _fadeInTrack(string @songName, string @player, string @easing = 'LINEAR') {
+	@data = import('music.engine.data');
+	@model = _getMusicModel(@player);
+	@model['currentFadeInSong'] = @songName;
+	@model['fadeOutPercent'] = 0;
+	@model['fadeInPercent'] = 0;
+	@model['fadeOut'] = false;
+	@model['crossfade'] = false;
+	@model['fadeSteps'] = array_get(@data[@model['currentSong']], 'fadeSteps', 20);
+	@model['fadeEasing'] = @easing;
+}
+
+/**
+ * Crossfades between two songs in the given track.
+ */
+proc _crossfadeTrack(string @trackName, string @songName, string @player, string @easing = 'LINEAR') {
+	@data = import('music.engine.data');
+	@model = _getMusicModel(@player);
+	@model['currentFadeInSong'] = @songName;
+	@model['fadeOutPercent'] = 0;
+	@model['fadeInPercent'] = 100;
+	@model['fadeOut'] = true;
+	@model['crossfade'] = true;
+	@model['fadeSteps'] = array_get(@data[@model['currentSong']], 'fadeSteps', 20);
+	@model['fadeEasing'] = @easing;
+}
+
+/**
+ * Starts the given song in a track, faded out.
+ */
+proc _startInTrack(string @songName, string @player) {
+	@data = import('music.engine.data');
+	@model = _getMusicModel(@player);
+
+	@trackData = get_value('music.engine.stands') ||| array();
+
+	// Create the display entity
+	@world = pworld(@player);
+	@stand = array_get(@model['tracks'], @songName, null);
+	@standSetup = closure(@id) {
+		set_entity_persistence(@id, true);
+		@trackData[] = @id;
+		store_value('music.engine.stands', @trackData);
+		@model['tracks'][@songName] = @id;
+		play_named_sound(@id, array(sound: @songName, channel: 'MUSIC'), @player);
+	};
+	if(@stand) {
+		@standSetup(@stand);
+	} else {
+		spawn_entity('ITEM_DISPLAY', 1, array(x: 0, y: -1000, z: 0, world: @world), @standSetup);
+	}
+}
+
+/**
+ * Stops all songs in the given track.
+ */
+proc _stopInTrack(string @trackName, string @player) {
+
+}
+
+/**
+ * Stops all songs in the current track on sync, then plays the newly provided song.
+ * Note that non-faded in songs are simply stopped immediately.
+ */
+proc _syncStopAndPlayNowInTrack(string @trackName, string @player, array @songData) {
+
 }

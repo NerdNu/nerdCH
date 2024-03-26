@@ -7,5 +7,6 @@
 	if(@player != player() && !has_permission('nerdch.level.admin')) {
 		die();
 	}
+	include('MovieUtils.ms');
 	_movieReset(@player);
 <<<

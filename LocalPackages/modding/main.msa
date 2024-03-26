@@ -55,6 +55,7 @@ nerdch.level.admin:/spawnmob $entityType [$quantity=1] = >>>
 	@range = 3
 	@message = color('GOLD').'Mobs within '.@range.' blocks of that block have effects::'
 	@mobs = entities_in_radius(pcursor(), @range)
+	@results = '';
 	foreach (@mobs, @mob,
 		try (
 			@effect = get_mob_effects(@mob)

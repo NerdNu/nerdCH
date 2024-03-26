@@ -30,6 +30,7 @@ proc _movieTweenBetween(array @start, array @finish, int @steps) {
 	@zInc = (@finish['z'] - @start['z']) / @steps;
 	// Special logic here, since yaw specifically wraps around.
 	// We want to go the shorter distance, if start > 180 and end is < 180, which actually counts up.
+	@yawInc = 0;
 	if(@start['yaw'] > 180 && @finish['yaw'] < 180) {
 		@yawInc = (360 - @start['yaw'] + @finish['yaw']) / @steps;
 	} else {
@@ -56,7 +57,8 @@ proc _movieTweenBetween(array @start, array @finish, int @steps) {
 }
 
 proc _movieReset(string @player) {
-	@movieId = get_value('movie.playerinmovie.'.@player)
+	@movieId = get_value('movie.playerinmovie.'.@player);
+	proc _stopMusic(@player);
 	if(@movieId) {
 		clear_task(import('moviefor.'.@player));
 		set_timeout(50, closure() {
