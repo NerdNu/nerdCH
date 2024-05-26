@@ -41,6 +41,8 @@
                 store_value('cooldowns.book',2880)
             }
 
+            @lastTime = null;
+
             if(import('sharedata.source') == 'creative') {
                 @lastTime = 0;
             } else {
@@ -91,6 +93,7 @@
             @e,
             msg('You must be holding a book.')
             die())
+        @booklist = null;
         if (not(has_value('books'))) {
             @booklist = array()
         } else {
@@ -212,6 +215,7 @@
             #legacy file detected, migrating to new database as "rules" book
             @pages = split('>>>>>>>>>>>>>>>>>>>\n', colorize(@file))
             store_value('books.rules', array(title: 'The Rules', author: 'nerd.nu', pages: @pages))
+            @booklist = null;
             if (not(has_value('books'))) {
                 @booklist = array()
             } else {
@@ -241,6 +245,7 @@
 # Send contents of held book to paste.thezomg.com, with optional password
 *:'/paste' [$] = >>>
     _assertperm('admin', 0)
+    @pages = null;
     try(@pages = get_itemmeta(null)['pages'],
         @e,
         msg('You must be holding a book.')
