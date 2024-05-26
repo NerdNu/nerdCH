@@ -1,6 +1,7 @@
 // Summon a perfect farmer, with optional biome appearance argument.
 *:'/summon-farmer' [$biome] = >>>
     _assertperm('admin');
+    include('villagers.ms');
     @biome = _villager_biome($biome);
     if (@biome == null) {
         die();
@@ -10,7 +11,7 @@
         'Offers:{Recipes:[' .
             '{buy:{id:wheat,Count:20},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:potato,Count:26},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:carrot,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' . 
+            '{buy:{id:carrot,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:beetroot,Count:15},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:pumpkin,Count:6},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:melon,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
@@ -27,6 +28,7 @@
 // Summon a perfect-ish Mason, with optional biome appearance argument.
 *:'/summon-mason' [$biome] = >>>
     _assertperm('admin');
+    include('villagers.ms');
     @biome = _villager_biome($biome);
     if (@biome == null) {
         die();
@@ -74,10 +76,11 @@
     }
     run('/tag @e[type=villager,tag=incomplete,distance=..2] remove incomplete');
 <<<
-      
+
 // Summon a perfect Cleric, with optional biome appearance argument.
 *:'/summon-cleric' [$biome] = >>>
     _assertperm('admin');
+    include('villagers.ms');
     @biome = _villager_biome($biome);
     if (@biome == null) {
         die();
@@ -102,6 +105,7 @@
 // Summon a perfect Butcher, with optional biome appearance argument.
 *:'/summon-butcher' [$biome] = >>>
     _assertperm('admin');
+    include('villagers.ms');
     @biome = _villager_biome($biome);
     if (@biome == null) {
         die();

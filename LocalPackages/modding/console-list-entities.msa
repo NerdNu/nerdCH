@@ -49,6 +49,7 @@
 		'GRAVEL', 'DEEPSLATE_COPPER_ORE', 'DEEPSLATE_IRON_ORE', 'EMERALD_ORE', 'DEEPSLATE_DIAMOND_ORE', 'TALL_GRASS', 'LAPIS_ORE',
 		'GRASS', 'DEEPSLATE_LAPIS_ORE', 'FERN', 'DEEPSLATE_GOLD_ORE');
 	x_new_thread('scan-chunk', closure() {
+		include('../util/RegionUtils.ms');
 		_iterate_cuboid(@first, @second, closure(@x, @y, @z){
 			@loc = array(@x, @y, @z, @world);
 			@blockType = get_block(@loc);
