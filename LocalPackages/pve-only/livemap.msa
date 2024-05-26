@@ -1,0 +1,6 @@
+# Add some aliases to ease the dynmap-bluemap transition
+
+*:/livemap $state = /bmpc $state
+*:/dynmap $state = /bmpc $state
+*:/livemap = /bmpc
+*:/dynmap = /bmpc
