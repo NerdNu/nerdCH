@@ -1,0 +1,114 @@
+/lcsGivePotato = >>>
+	drop_item(player(), import('lcsemotionalsupportpotato'));
+<<<
+
+*:/itsokpotatoimover18 = >>>
+	if(_lcsPlayerHasRottenPotato(player())) {
+		msg(_storyChat('Emotional Support Potato', 'Ah fuck, I thought you were a kid. Fucking hate kids. Even more than I hate you.'));
+	} else {
+		msg('Ok, I\'ll let the potato know next time I see it.');
+	}
+	store_value('lcs.potato.'.player().'.over18', true);
+<<<
+
+/**
+ * Potato message! Check if they have a rotten potato first, to see how snarky you can get :D
+ * @command
+ * @permission nerdch.level.admin
+ */
+ nerdch.level.admin:'/pc' $player $ = >>>
+ 	@player = player($player);
+	@hasFresh = _lcsPlayerHasFreshPotato(@player);
+	@hasRotten = _lcsPlayerHasRottenPotato(@player);
+	if(@hasFresh || @hasRotten) {
+		tmsg($player, _storyChat('Emotional Support Potato', $));
+	} else {
+		msg('Player does not have a potato, cancelling.');
+	}
+ <<<
+
+ /**
+  * Check if the player has a potato
+  * @command
+  * @permission nerdch.level.admin
+  */
+nerdch.level.admin:'/got-potato' $player = >>>
+	@player = player($player);
+	@hasFresh = _lcsPlayerHasFreshPotato(@player);
+	@hasRotten = _lcsPlayerHasRottenPotato(@player);
+	if(!@hasFresh && !@hasRotten) {
+		msg(@player . ' has no potato :(');
+	} else {
+		if(@hasFresh) {
+			msg(@player . ' has a fresh potato');
+		}
+		if(@hasRotten) {
+			msg(@player . ' has a rotten potato')
+		}
+	}
+<<<
+
+/**
+ * Check who has a potato
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:'/list-potato' = >>>
+	foreach(@player in all_players()) {
+		@hasFresh = _lcsPlayerHasFreshPotato(@player);
+		@hasRotten = _lcsPlayerHasRottenPotato(@player);
+		if(@hasFresh) {
+			msg(@player . ' has a fresh potato');
+		}
+		if(@hasRotten) {
+			msg(@player . ' has a rotten potato');
+		}
+	}
+<<<
+
+/**
+ * Force the potato to say something
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:'/force-potato-chat' = >>>
+	@player = player();
+	foreach(@slot: @item in pinv(@player)) {
+		if(@item != null && array_index_exists(@item, 'meta', 'display') && array_index_exists(@item, 'meta', 'lore') 
+				&& @item['meta']['display'] == 'Emotional Support Potato' && @item['meta']['lore'] != null ) {
+			_lcsGivePlayerEncouragement(@player, @item['meta']['repair'], @slot);
+			die();
+		}
+	}
+	msg(_storyChat('System', "You aren't carrying the potato"));
+<<<
+
+/**
+ * Advance the potato rot state.
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:'/advance-potato-rot' = >>>
+	@player = player();
+	// Oh dear. The potato is rotting.
+	@potatoSlot = null;
+	foreach(@slot: @item in pinv(@player)) {
+		if(@item != null && array_index_exists(@item, 'meta', 'display') && array_index_exists(@item, 'meta', 'lore') 
+				&& @item['meta']['display'] == 'Emotional Support Potato' && @item['meta']['lore'] != null ) {
+			@potatoSlot = @slot;
+			break;
+		}
+	}
+	if(@potatoSlot == null) {
+		die("You aren't carrying the potato.");
+	}
+	@potato = pinv(@player, @potatoSlot);
+	@potato['meta']['repair']++
+	if(@potato['meta']['repair'] == 4) {
+		tmsg(@player, color('ITALIC').color('GRAY').'You sense the potato in your inventory go bad.');
+		console('[LCS] ' . @player . '\'s Emotional Support Potato went bad.');
+		@potato['name'] = 'POISONOUS_POTATO';
+		@potato['meta']['lore'][] = 'This one seems to have gone bad.';
+	}
+	set_pinv(@player, @potatoSlot, @potato);
+<<<
