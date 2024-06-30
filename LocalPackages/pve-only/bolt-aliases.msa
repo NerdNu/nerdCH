@@ -1,0 +1,210 @@
+/** @command */
+*:/bmodify $modifier $criteria = >>>
+    if($modifier == 'add') {
+        if(string_starts_with($criteria, 'g:') || string_starts_with($criteria, 'G:') || string_starts_with($criteria, 'group:') || string_starts_with($criteria, 'GROUP:')) {
+            run('/bolt modify add normal group '.substr($criteria, 2))
+        } else {
+            run('/bolt modify add normal player '.$criteria)
+        }
+    } else if($modifier == 'remove') {
+        if(string_starts_with($criteria, 'g:') || string_starts_with($criteria, 'G:') || string_starts_with($criteria, 'group:') || string_starts_with($criteria, 'GROUP:')) {
+            run('/bolt modify remove normal group '.substr($criteria, 2))
+        } else {
+            run('/bolt modify remove normal player '.$criteria)
+        }
+    } else {
+        msg('Use /bmodify <add/remove> <PLAYER/[g:]GROUP> to modify the access list of this container.')
+    }
+<<<
+
+/** @command */
+*:/bremove = >>>
+    run('/bolt unlock')
+<<<
+
+/** @command */
+*:/bprivate = >>>
+    run('/bolt lock private')
+<<<
+
+/** @command */
+*:/bpublic = >>>
+    run('/bolt lock public')
+<<<
+
+/** @command */
+*:/bdeposit = >>>
+    run('/bolt lock deposit')
+<<<
+
+/** @command */
+*:/bwithdrawl = >>>
+    run('/bolt lock withdrawl')
+<<<
+
+/** @command */
+*:/bdisplay = >>>
+    run('/bolt lock display')
+<<<
+
+/** @command */
+*:/bpassword $password = >>>
+    if($password != '') {
+        run('/bolt modify add normal password '.$password)
+    } else {
+        msg('Use /bpassword <password> to set a password protection on a chest.')
+    }
+<<<
+
+/** @command */
+*:/bpersist = >>>
+    run('/bolt mode persist')
+<<<
+
+/** @command */
+*:/bgroup $modifier $group [$player=''] = >>>
+
+        if($group != '') {
+            switch($modifier) {
+            case 'create':
+                run('/bolt group create '.$group)
+                run('/bolt group add '.$group.' '.player())
+                break();
+            case 'delete':
+                run('/bolt group delete '.$group)
+                break();
+            case 'add':
+                if($player != '') {
+                    run('/bolt group add '.$group.' '.$player)
+                }
+                break();
+            case 'remove':
+                if($player != '') {
+                    run('/bolt group remove '.$group.' '.$player)
+                }
+                break();
+        }
+    } else {
+        msg('Use /bgroup <create/delete/add/remove> [player] to create or delete a group or to add or remove a player from a group.')
+    }
+<<<
+
+/** @command */
+*:/binfo = >>>
+    run('/bolt info')
+<<<
+
+/** @command */
+*:/btrust $modifier [$player=''] = >>>
+    switch($modifier) {
+        case 'add':
+            if($player != '') {
+                run('/bolt trust add '.$player)
+            } else {
+                msg('You forgot a player name!')
+            }
+        case 'remove':
+        if($player != '') {
+                run('/bolt trust remove '.$player)
+            } else {
+                msg('You forgot a player name!')
+            }
+        case 'list':
+            run('/bolt trust list')
+        case 'confirm':
+            run('/bolt trust confirm')
+    }
+<<<
+
+/** @command */
+*:/btransfer $player = >>>
+    if($player != '') {
+        run('/bolt transfer '.$player)
+    } else {
+        msg('Use /bolt transfer <player> to transfer the ownership of a container.')
+    }
+<<<
+
+/** @command */
+*:/bunlock $password = >>>
+    if($password != '') {
+        run('/bolt password '.$password)
+    } else {
+        msg('Use /bolt password <password> to unlock a password-protected container.')
+    }
+<<<
+
+// ADMIN
+
+/** @command */
+*:/bforceowner [$player=''] = >>>
+    if(has_permission('bolt.admin') || has_permission('bolt.command.admin.transfer') || has_permission('bolt.command.admin')) {
+        if($player != '') {
+            run('/bolt admin transfer '.$player)
+        }
+    } else {
+        msg(colorize('&r&cPERFORMING SCAN...'))
+        set_timeout(3000, closure() {
+            msg(colorize('&c&lAccess denied.'))
+        })
+    }
+<<<
+
+/** @command */
+*:/bhelp [$page=1] = >>>
+    switch($page) {
+        case 1:
+            msg(colorize('&dUse /bhelp [page] to navigate further.'))
+            msg(colorize('&9&l Player Protections - Page 1 (Section continues)'))
+            msg(colorize('&d- &b/bremove &d- &3Remove any protection (Others can lock it to them)'))
+            msg(colorize('&d- &b/lock or /bprivate &d- &3Create a private protection.'))
+            msg(colorize('&d- &b/bpublic &d- &3Create a semi-public protection. (Others can see, take, add)'))
+            msg(colorize('&d- &b/bdeposit &d- &3Create a semi-public protection. (Others see, add)'))
+            break();
+        case 2:
+            msg(colorize('&dUse /bhelp [page] to navigate further.'))
+            msg(colorize('&9&l Player Protections - Page 2'))
+            msg(colorize('&d- &b/bwithdrawl &d- &3Create a semi-public protection. (Others can see, take)'))
+            msg(colorize('&d- &b/bdisplay &d- &3Create a semi-public protection. (Others can see)'))
+            msg(colorize('&d- &b/bpassword &d- &3Create a password protection. (Others must password with /bunlock)'))
+            msg(colorize('&d- &b/bunlock <password> &d- &3Unlock a password protected chest, if correct.'))
+            break();
+        case 3:
+            msg(colorize('&dUse /bhelp [page] to navigate further.'))
+            msg(colorize('&9&l Granting Access - Page 3'))
+            msg(colorize('&d- &b/bmodify <add/remove> <PLAYER/[g:]GROUP> &d- &3Add or remove a user or group from the access list of a container.'))
+            msg(colorize('&d- &bFor players &d- &3Just use a player name. i.e. /bmodify add notch'))
+            msg(colorize('&d- &bFor groups &d- &3add g: or group: in front of the group name. i.e. /bmodify add g:mojang'))
+            break();
+        case 4:
+            msg(colorize('&dUse /bhelp [page] to navigate further.'))
+            msg(colorize('&9&l Groups - Page 4'))
+            msg(colorize('&d- &b/bgroup create <group> &d- &3 Creates a group.'))
+            msg(colorize('&d- &b/bgroup delete <group> &d- &3 Deletes a group.'))
+            msg(colorize('&d- &b/bgroup add <group> <player> &d- &3 Add user to group.'))
+            msg(colorize('&d- &b/bgroup remove <group> <player> &d- &3 Remove user from group.'))
+            break();
+        case 5:
+            msg(colorize('&dUse /bhelp [page] to navigate further.'))
+            msg(colorize('&9&l Trust - Page 5'))
+            msg(colorize('&cTrust is not a /cdefault equivalent. It grants 100% access to any and all chests you have locked, and ever will lock.'))
+            msg(colorize('&d- &b/btrust add <player> &d- &3Add a player to your trust list.'))
+            msg(colorize('&d- &b/btrust remove <player> &d- &3Remove a player from your trust list.'))
+            msg(colorize('&d- &b/btrust list  &d- &3Display your trust list.'))
+            msg(colorize('&d- &b/btrust confirm  &d- &3Confirm changes to trust list.'))
+            break();
+        case 6:
+            msg(colorize('&dUse /bhelp [page] to navigate further.'))
+            msg(colorize('&9&l Miscellaneous - Page 6'))
+            msg(colorize('&d- &b/btransfer <player> &d- &3Transfer ownership of a container to the specified player.'))
+            msg(colorize('&d- &b/binfo &d- &3Get the info (owner, access, etc.) of a container.'))
+            msg(colorize('&d- &b/bpersist &d- &3Will persist any command typed directly before or any after until this command is run again.'))
+            msg(colorize("&d- &bDon't worry, /bhappy :)"))
+            break();
+    }
+<<<
+
+/** @command */
+*:/bhappy = >>>
+    msg(colorize('&c&lYou are loved! <3'))
+<<<
