@@ -99,13 +99,13 @@
     switch($modifier) {
         case 'add':
             if($player != '') {
-                run('/bolt trust add '.$player)
+                run('/bolt trust add player '.$player)
             } else {
                 msg('You forgot a player name!')
             }
         case 'remove':
         if($player != '') {
-                run('/bolt trust remove '.$player)
+                run('/bolt trust remove player '.$player)
             } else {
                 msg('You forgot a player name!')
             }
