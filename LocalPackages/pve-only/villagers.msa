@@ -17,7 +17,7 @@
             '{buy:{id:melon,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:bread,Count:6},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
+            '{buy:{id:emerald,Count:3},sell:{id:cookie,Count:18},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:apple,Count:4},maxUses:9999999},' .
             '{buy:{id:emerald,Count:1},sell:{id:cake,Count:1},maxUses:9999999},' .
             '{buy:{id:emerald,Count:3},sell:{id:golden_carrot,Count:3},maxUses:9999999},' .
