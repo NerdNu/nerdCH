@@ -102,6 +102,24 @@
 		color('YELLOW').'Y'.color('WHITE').': '.floor(round(@place['y'])).color('WHITE').', '.
 		color('GREEN').'Z'.color('WHITE').': '.floor(round(@place['z'])).
 		@dimdis)
+                
+                switch(@place['world']) {
+                        case 'world':
+                                @world = 'Internal-overworld-waypoints'
+                        case 'world_nether':
+                                @world = 'Internal-the-nether-waypoints'
+                        case 'world_the_end':
+                                @world = 'Internal-the-end-waypoints'
+                        default:
+                             @world = 'Internal-overworld-waypoints'
+                }
+                
+                msg(color('LIGHT_PURPLE')."Xaero's: ".
+                color(WHITE).'xaero-waypoint:'.@placeName.':'.
+                trim(substr(@placeName, 0, 1))':'.
+                floor(round(@place['x'])).':'.
+                floor(round(@place['y'])).':'.
+                floor(round(@place['z'])).':1:true:0:'.@world)
 	}
 	@lookAt = closure(@loc){
 		@yaw = to_degrees(atan2((@ploc['z'] - @loc['z']), (@ploc['x'] - @loc['x'])))
@@ -318,6 +336,10 @@
 		msg('No places found matching "'.@args[0].'". Here are all the places.')
 		call_alias('/place')
 	}
+<<<
+
+*:/getworld = >>>
+        msg(pworld())
 <<<
 
 *:'/nearest-place' [$] = >>>
