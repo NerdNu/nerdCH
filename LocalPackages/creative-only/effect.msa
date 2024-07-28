@@ -5,7 +5,7 @@
 #
 # Longer time, a single plugin should handle actions triggered by entering
 # or leaving a region, and EasySigns-like sign clicks.
-
+/** @command */
 *:/effect $id [$seconds] [$amplifier] [$hide_particles] = >>>
 	_assertperm('effect');
 
@@ -30,7 +30,7 @@
 			resistance: 11, fire_resistance: 12, water_breathing: 13, invisibility: 14, blindness: 15,
 			night_vision: 16, hunger: 17, weakness: 18, poison: 19, wither: 20,
 			health_boost: 21, absorption: 22, saturation: 23, glowing: 24, levitation: 25,
-			luck: 26, unluck: 27
+			luck: 26, unluck: 27, slow_falling: 28
 		);
 		@id = array_get(@NAME_TO_ID, to_lower($id), null);
 		if (@id == null) {
