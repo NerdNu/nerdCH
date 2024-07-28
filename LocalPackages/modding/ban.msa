@@ -29,7 +29,7 @@
 	}
 	@warning .= ' Please read http://nerd.nu/help/pve/#grief.';
 
-	run_cmd('/addnote ' . $player . ' warned for crop grief on ' . @server . ' ' . simple_date('FF MMM yyyy'));
+	run_cmd('/addnote ' . $player . ' warned for crop grief on ' . @server . ' ' . simple_date('dd MMM yyyy'));
 	call_alias('/warn ' . $player . ' ' . @warning);
 	msg(color('GOLD') . $player . ' received the following warning: ');
 	msg(color('RED') . @warning);
@@ -63,7 +63,7 @@
 	}
 	@warning .= ' Please read http://nerd.nu/help/pve/#grief.';
 
-	run_cmd('/addnote ' . $player . ' warned for general grief on ' . @server . ' ' . simple_date('FF MMM yyyy'));
+	run_cmd('/addnote ' . $player . ' warned for general grief on ' . @server . ' ' . simple_date('dd MMM yyyy'));
 	call_alias('/warn ' . $player . ' ' . @warning);
 	msg(color('GOLD') . $player . ' received the following warning: ');
 	msg(color('RED') . @warning);

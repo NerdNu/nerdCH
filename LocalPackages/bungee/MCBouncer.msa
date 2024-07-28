@@ -94,9 +94,9 @@
 	_assertperm('mod', 0)
         @server = import('sharedata.source');
 	if (_contains('nerd.nu/appeal', $)) {
-		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' on ' . @server . ' ' . simple_date('FF MMM yyyy')))
+		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' on ' . @server . ' ' . simple_date('dd MMM yyyy')))
 	} else {
-		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' on ' . @server . ' nerd.nu/appeal ' .simple_date('FF MMM yyyy')))
+		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' on ' . @server . ' nerd.nu/appeal ' .simple_date('dd MMM yyyy')))
 	}
 <<<
 
@@ -129,7 +129,7 @@
 *:/addnote $player $ = >>>
 	_assertperm('mod')
         @server = import('sharedata.source');
-	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'addnote', $player, $ . ' on ' . @server . ' ' . simple_date('FF MMM yyyy')))
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'addnote', $player, $ . ' on ' . @server . ' ' . simple_date('dd MMM yyyy')))
 <<<
 
 /**
