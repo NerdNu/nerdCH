@@ -1,0 +1,23 @@
+// For fun commands that don't really fit anywhere else.
+
+// Aliases for the normal things players scream when a restart is near.
+
+/**
+ * @command
+ */
+/pants = /nextrestart
+
+/**
+ * @command
+ */
+/replant = nextrestart
+
+/**
+ * @command
+ */
+/repant = nextrestart
+
+/**
+ * @command
+ */
+/repent = nextrestart

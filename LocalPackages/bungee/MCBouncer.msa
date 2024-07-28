@@ -10,6 +10,13 @@
 	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'kick', $player, $))
 <<<
 
+/**
+ * @command
+*/
+/vulcanhackkick $player = >>>
+        _sendPluginMessage('CONSOLE', 'BungeeCord', array('MCBouncer', 'kick', $player, 'Moved wrongly (Are you using a hacked client?)'))
+<<<
+
 # Ban the specified $player on behalf of the specified $staff member, from the console.
 # Subsequent args are concatenated to form the ban reason.
 *:'/ban-as' $staff $player [$] = >>>
@@ -82,14 +89,14 @@
  * Bans the specified player, with the given reason. (nerd.nu/appeal is always appended).
  * @command
  * @permission nerdch.level.mod
- * @tabcompleter _mcb_tab_completer
  */
 *:/ban $player [$] = >>>
 	_assertperm('mod', 0)
+        @server = import('sharedata.source');
 	if (_contains('nerd.nu/appeal', $)) {
-		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $))
+		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' on ' . @server . ' ' . simple_date('FF MMM yyyy')))
 	} else {
-		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' nerd.nu/appeal'))
+		_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'ban', $player, $ . ' on ' . @server . ' nerd.nu/appeal ' .simple_date('FF MMM yyyy')))
 	}
 <<<
 
@@ -118,11 +125,11 @@
  * Adds a note to the specified palyer.
  * @command
  * @permission nerdch.level.mod
- * @tabcompleter _mcb_tab_completer
  */
 *:/addnote $player $ = >>>
 	_assertperm('mod')
-	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'addnote', $player, $))
+        @server = import('sharedata.source');
+	_sendPluginMessage(player(), 'BungeeCord', array('MCBouncer', 'addnote', $player, $ . ' on ' . @server . ' ' . simple_date('FF MMM yyyy')))
 <<<
 
 /**

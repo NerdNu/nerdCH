@@ -3,10 +3,19 @@
 	call_alias(concat('/ban ', $p, ' ', $))
 <<<
 
+
+
+# /warngrief player [message]
+# 	Warn a player for general grief by mail and add a note.
+
 # /warncrops player [message]
 #	Warn a player for crop grief and add a note.
 #	The player name must match exactly.
 #	Additional arguments after the player name are appeneded to the warning.
+
+/**
+ * @command
+ */
 
 *:/warncrops $player [$] = >>>
 	_assertperm('mod');
@@ -20,12 +29,15 @@
 	}
 	@warning .= ' Please read http://nerd.nu/help/pve/#grief.';
 
-	run_cmd('/addnote ' . $player . ' warned for crop grief on ' . @server);
+	run_cmd('/addnote ' . $player . ' warned for crop grief on ' . @server . ' ' . simple_date('FF MMM yyyy'));
 	call_alias('/warn ' . $player . ' ' . @warning);
 	msg(color('GOLD') . $player . ' received the following warning: ');
 	msg(color('RED') . @warning);
 <<<
 
+/**
+ * @command
+ */
 
 # /warngrief player [message]
 # 	Warn a player for general grief by mail and add a note.
@@ -51,12 +63,15 @@
 	}
 	@warning .= ' Please read http://nerd.nu/help/pve/#grief.';
 
-	run_cmd('/addnote ' . $player . ' warned for general grief on ' . @server);
+	run_cmd('/addnote ' . $player . ' warned for general grief on ' . @server . ' ' . simple_date('FF MMM yyyy'));
 	call_alias('/warn ' . $player . ' ' . @warning);
 	msg(color('GOLD') . $player . ' received the following warning: ');
 	msg(color('RED') . @warning);
 <<<
 
+/**
+ * @command
+ */
 
 # /warncombat player [message]
 # 	Warn a player for combat logging.
@@ -82,6 +97,9 @@
 	}
 <<<
 
+/**
+ * @command
+ */
 
 # /bancrops player [message]
 #	Ban a player for crop grief. Additional aruments are added to the ban message after a semicolon.
@@ -97,6 +115,9 @@
 	call_alias('/ban '.$player.' '.@message)
 <<<
 
+/**
+ * @command
+ */
 
 # /rbbancrops player [message]
 #	Ban the player for crop grief (as with /bancrops) and do a full global rollback.
@@ -106,6 +127,9 @@
 	call_alias(concat('/lbrb ', $player))
 <<<
 
+/**
+ * @command
+ */
 
 # /bangrief player [message]
 #	Ban a player for general grief. Additional aruments are added to the ban message after a semicolon.
@@ -121,6 +145,9 @@
 	call_alias('/ban '.$player.' '.@message)
 <<<
 
+/**
+ * @command
+ */
 
 # /rbbangrief player [message]
 #	Ban the player for general grief (as with /bangrief) and do a full global rollback.
