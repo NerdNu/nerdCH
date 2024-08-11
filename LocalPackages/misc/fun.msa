@@ -2,22 +2,31 @@
 
 // Aliases for the normal things players scream when a restart is near.
 
-/**
- * @command
- */
-/pants = /nextrestart
 
 /**
  * @command
  */
-/replant = nextrestart
+*:/pants = >>>
+        run_cmd('/nextrestart')
+<<<
 
 /**
  * @command
  */
-/repant = nextrestart
+*:/replant = >>>
+        run_cmd('/nextrestart')
+<<<
 
 /**
  * @command
  */
-/repent = nextrestart
+*:/repant = >>>
+        run_cmd('/nextrestart')
+<<<
+
+/**
+ * @command
+ */
+*:/repent = >>>
+        run_cmd('/nextrestart')
+<<<
