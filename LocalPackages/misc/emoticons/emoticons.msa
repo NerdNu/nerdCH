@@ -1,0 +1,160 @@
+// SHRUG
+
+/**
+ * Dunno, but green.
+ * @command
+ * @permission nerdch.level.mod
+ */
+*:/mbshrug = >>>
+	run_cmd('/mb '.comp_read('shrug.txt'));
+<<<
+
+/**
+ * Dunno, but gold.
+ * @command 
+ * @permission nerdch.level.admin
+ */
+*:/abshrug = >>>
+	run_cmd('/ab '.comp_read('shrug.txt'));
+<<<
+
+/**
+ * Dunno.
+ * @command
+ */
+*:/shrug = >>>
+	chat(replace(comp_read('shrug.txt'), '\n', ''));
+<<<
+
+/**
+ * Dunno, but clans.
+ * @command
+ */
+*:/cshrug [$clan] = >>>
+	if($clan) {
+		run_cmd('/c '.$clan.' '.comp_read('shrug.txt'));
+	} else {
+		run_cmd('/c '.comp_read('shrug.txt'));
+	}
+<<<
+
+// TABLEFLIP
+
+/**
+ * ANGER.
+ * @command
+ */
+*:/tableflip = >>>
+        chat(replace(comp_read('tableflip.txt'), '\n', ''))
+<<<
+
+/**
+ * ANGER. CLANCHAT EDITION.
+ * @command
+ */
+*:/ctableflip [$clan] = >>>
+        if($clan) {
+                run_cmd('/c '.$clan.' '.comp_read('tableflip.txt'))
+        } else {
+                run_cmd('/c '.comp_read('tableflip.txt'))
+        }
+<<<
+
+/**
+ * ANGER. MOD EDITION.
+ * @command
+ * @permission nerdch.level.mod
+ */
+*:/mbtableflip = >>>
+        run_cmd('/mb '.comp_read('tableflip.txt'))
+<<<
+
+/**
+ * ANGER. ADMIN EDITION.
+ * @command
+ * @permission nerdch.level.admin
+ */
+*:/abtableflip = >>>
+        run_cmd('/ab '.comp_read('tableflip.txt'))
+<<<
+
+// UNFLIP
+
+/**
+ * Calme.
+ * @command
+ */
+*:/unflip = >>>
+        chat(replace(comp_read('unflip.txt'), '\n', ''))
+<<<
+
+/**
+ * Calme. Clanchat edition.
+ * @command
+ */
+*:/cunflip [$clan] = >>>
+        if($clan) {
+                run_cmd('/c '.$clan.' '.comp_read('unflip.txt'))
+        } else {
+                run_cmd('/c '.comp_read('unflip.txt'))
+        }
+<<<
+
+/**
+ * Calme. Mod edition.
+ * @command
+ * @permission nerdch.level.mod
+ */
+*:/mbunflip = >>>
+        run_cmd('/mb '.comp_read('unflip.txt'))
+<<<
+
+/**
+ * Calme. Admin edition.
+ * @command
+ * @permission nerdch.level.admin
+ */
+*:/abunflip = >>>
+        run_cmd('/ab '.comp_read('unflip.txt'))
+<<<
+
+// CHEER
+
+
+/**
+ * Yipee!!!
+ * @command
+ */
+*:/cheer = >>>
+        chat(replace(comp_read('cheer.txt'), '\n', ''))
+<<<
+
+/**
+ * Yipee!!! Clanchat edition!!!
+ * @command
+ */
+*:/ccheer [$clan] = >>>
+        if($clan) {
+                run_cmd('/c '.$clan.' '.comp_read('cheer.txt'))
+        } else {
+                run_cmd('/c '.comp_read('cheer.txt'))
+        }
+<<<
+
+/**
+ * Yipee!!! Mod edition!!!
+ * @command
+ * @permission nerdch.level.mod
+ */
+*:/mbcheer = >>>
+        run_cmd('/mb '.comp_read('cheer.txt'))
+<<<
+
+/**
+ * Yipee!!! Admin edition!!!
+ * @command
+ * @permission nerdch.level.admin
+ */
+*:/abcheer = >>>
+        run_cmd('/ab '.comp_read('cheer.txt'))
+<<<
