@@ -1,5 +1,5 @@
 *:'/help-reload' = >>>
-	if(array_contains(pgroup(@player), 'moderators')) {
-		sudo(/help-load https://raw.githubusercontent.com/NerdNu/HelpHelp-Markdown/refs/heads/main/PvE.md)
+	if(array_contains(pgroup(player()), 'moderators')) {
+		sudo('/help-load https://raw.githubusercontent.com/NerdNu/HelpHelp-Markdown/refs/heads/main/PvE.md')
 	}
 <<<
