@@ -179,6 +179,26 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 <<<
 
 
+*:/waxon = >>>
+        _assertperm('admin')
+        if(is_sign_at(pcursor())){
+                run(/data modify block integer(pcursor()[0]) integer(pcursor()[1]) integer(pcursor()[2]) is_waxed set value 1b)
+        } else {
+                die('You aren\'t looking at a sign!')
+        }
+<<<
+
+*:/waxoff = >>>
+        _assertperm('admin')
+        if(is_sign_at(pcursor())){
+                run(/data modify block integer(pcursor()[0]) integer(pcursor()[1]) integer(pcursor()[2]) is_waxed set value 0b)
+        } else {
+                die('You aren\'t looking at a sign!')
+        }
+<<<
+
+
+
 /fw $colors [$fade='white'] [$type='ball_large'] [$qty=5] = >>>
 	_assertperm('admin')
 	foreach(range($qty), @i,
