@@ -204,3 +204,12 @@ nerdch.level.admin:/spawnmob $entityType [$quantity=1] = >>>
                 }
         });
 <<<
+
+/**
+ * @command
+ */
+*:/addmoderator $player = >>>
+    _assertperm('admin')
+    sudo('/lp user '.$player.' parent add moderators')
+    msg(colorize('&c&lPlayer &3&l'.$player.'&c&l successfully granted moderator access.'))
+<<<

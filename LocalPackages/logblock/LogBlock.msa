@@ -52,7 +52,7 @@
 	run(concat('/lb player ', $player, ' area 10000 sum blocks since ', @days, ' days'))
 
 	# Delay the /lookup so it follows the /lb output.
-	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
+	set_timeout(1000, closure(run_cmd('/bminfo -n ' . $player)))
 <<<
 
 #rollback

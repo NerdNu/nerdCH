@@ -5,102 +5,6 @@
 
 
 
-# /warngrief player [message]
-# 	Warn a player for general grief by mail and add a note.
-
-# /warncrops player [message]
-#	Warn a player for crop grief and add a note.
-#	The player name must match exactly.
-#	Additional arguments after the player name are appeneded to the warning.
-
-/**
- * @command
- */
-
-*:/warncrops $player [$] = >>>
-	_assertperm('mod');
-	@server = import('sharedata.source');
-	@additional = $;
-
-	@warning = 'If you take crops planted by someone else, you must replant them. ' . 
-				'That includes: wheat, carrots, potatoes, beetroot, nether warts, sugar cane, cactus and cocoa.';
-	if (@additional != '') {
-		@warning .= ' ' . @additional;
-	}
-	@warning .= ' Please read http://nerd.nu/help/pve/#grief.';
-
-	run_cmd('/addnote ' . $player . ' warned for crop grief on ' . @server . ' ' . simple_date('dd MMM yyyy'));
-	call_alias('/warn ' . $player . ' ' . @warning);
-	msg(color('GOLD') . $player . ' received the following warning: ');
-	msg(color('RED') . @warning);
-<<<
-
-/**
- * @command
- */
-
-# /warngrief player [message]
-# 	Warn a player for general grief by mail and add a note.
-#	The player name must match exactly.
-#	Additional arguments after the player name are appeneded to the warning.
-
-*:/warngrief $player [$] = >>>
-	_assertperm('mod');
-	@server = import('sharedata.source');
-	@additional = $;
-
-	@warning = 'You must not edit other players\' builds without permission.';
-	if (@server == 'survival') {
-		@warning .= ' You can break into a base to fight, but you must put back the blocks immediately.';
-	} else if (@server == 'creative') {
-		@warning .= ' Only staff members are allowed to clear old builds.';
-	} else if (@server == 'pve') {
-		@warning .= ' Do not steal blocks. There is no such thing as an "abandoned" build.';
-	}
-
-	if (@additional != '') {
-		@warning .= ' ' . @additional;
-	}
-	@warning .= ' Please read http://nerd.nu/help/pve/#grief.';
-
-	run_cmd('/addnote ' . $player . ' warned for general grief on ' . @server . ' ' . simple_date('dd MMM yyyy'));
-	call_alias('/warn ' . $player . ' ' . @warning);
-	msg(color('GOLD') . $player . ' received the following warning: ');
-	msg(color('RED') . @warning);
-<<<
-
-/**
- * @command
- */
-
-# /warncombat player [message]
-# 	Warn a player for combat logging.
-#	The player name must match exactly.
-# 	Additional arguments after the player name are an extra mail message.
-
-*:/warncombat $player [$] = >>>
-	_assertperm('admin')
-	@server = import('sharedata.source')
-	if (@server != 'survival') {
-		msg(color('RED').'Combat logging on '.@server.'? Really?')
-	} else {
-		@additional = $
-		run_cmd('/addnote '.$player.' Warned for combat logging on Survival')
-		call_alias('/warn '.$player.' This is a warning for your recent combat logging.')
-		call_alias('/warn '.$player.' Any abuse of login to evade or gain an edge in combat is against the rules.')
-		call_alias('/warn '.$player.' Please see nerd.nu/rules and refrain from this behavior in the future.')
-		if (@additional != '') {
-			call_alias('/warn '.$player.' '.@additional)
-			msg(color('GOLD').'Additional warning:')
-			msg(color('GOLD').@additional)
-		}
-	}
-<<<
-
-/**
- * @command
- */
-
 # /bancrops player [message]
 #	Ban a player for crop grief. Additional aruments are added to the ban message after a semicolon.
 #	The player name must match exactly.
@@ -134,7 +38,6 @@
 # /bangrief player [message]
 #	Ban a player for general grief. Additional aruments are added to the ban message after a semicolon.
 #	The player name must match exactly.
-
 *:/bangrief $player [$] = >>>
 	_assertperm('mod')
 	@server = import('sharedata.source')
