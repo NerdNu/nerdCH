@@ -37,7 +37,7 @@ set_timeout(2000, closure() {
 		}
 	});
 	
-	bind('player_join', null, null, @event, @emotionalSupportPotato) {
+	/*bind('player_join', null, null, @event, @emotionalSupportPotato) {
 		if(!get_value('firstpotatoisfree.'.puuid(@event['player'], true))) {
 			set_timeout(2000, closure() {
 				drop_item(@event['player'], @emotionalSupportPotato);
@@ -50,7 +50,7 @@ set_timeout(2000, closure() {
 				tmsg(@event['player'], _storyChat('Emotional Support Potato', 'AHAHAHAHAHA! There was no restart, that was me, but I got you good xD'));
 			});
 		}
-	}
+	}*/
 
 	bind('player_consume', null, null, @event) {
 		if(@event['item']['name'] == 'POTATO' && rand() > 0.6 && _lcsPlayerHasRottenPotato(player())) {

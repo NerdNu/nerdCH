@@ -237,3 +237,17 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 # By popular request again . .
 
 *:/bacc = /back
+
+# For JChance
+
+/**
+ * @command
+*/
+
+*:/formerheadadminmode = >>>
+     if(has_permission('nerd.formerhadmin')) {
+          msg(colorize('&6Wow, a former head admin! Gold star! &e★'))
+     } else {
+          msg(colorize('&cHey! You were never a head admin (probably)!'))
+     } 
+<<<

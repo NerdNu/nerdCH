@@ -145,11 +145,11 @@ proc _updatePlayerMusic(@player) {
 		@song = null;
 		if(@adhocRepeat != null) {
 			@song = @adhocRepeat;
-			x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @adhocRepeat, channel: 'MUSIC'), @player); });
+			//x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @adhocRepeat, channel: 'MUSIC'), @player); });
 			@model['adhocRepeat'] = @song;
 		} else {
 			@song = @adhocNext;
-			x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @adhocNext, channel: 'MUSIC'), @player); });
+			//x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @adhocNext, channel: 'MUSIC'), @player); });
 		}
 		@model['playsUntil'] = time() + @data['music'][@song]['length'];
 		@model['adhocPlaying'] = true;
@@ -182,7 +182,7 @@ proc _updatePlayerMusic(@player) {
 		if(array_get(@priorityZone, 'repeat', false) || rand() + 0.1 < @model['playChance']) {
 			// Select another song immediately
 			@song = array_get_rand(@eligibleMusic);
-			x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @song, channel: 'MUSIC'), @player); });
+			//x_run_on_main_thread_now(closure() { play_named_sound(ploc(@player), array(sound: @song, channel: 'MUSIC'), @player); });
 			@model['playChance'] = 0;
 			@model['currentSong'] = @song;
 			@model['playsUntil'] = time() + @data['music'][@song]['length'];
