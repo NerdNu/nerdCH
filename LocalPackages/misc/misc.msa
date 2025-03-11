@@ -178,19 +178,22 @@ nerdch.level.admin:'/mobride-r' $mob $radius = >>>
 	}
 <<<
 
+# Adds the waxed state to a sign without needing honeycomb.
 
 *:/waxon = >>>
         _assertperm('admin')
-        if(is_sign_at(pcursor())){
-                run(/data modify block integer(pcursor()[0]) integer(pcursor()[1]) integer(pcursor()[2]) is_waxed set value 1b)
-        } else {
-                die('You aren\'t looking at a sign!')
-        }
+		if(_isSign(player())) {
+			run(/data modify block integer(pcursor()[0]) integer(pcursor()[1]) integer(pcursor()[2]) is_waxed set value 1b)
+		} else {
+			die('You aren\'t looking at a sign!')
+		}
 <<<
+
+# Removes the waxes state of a sign without needing an axe.
 
 *:/waxoff = >>>
         _assertperm('admin')
-        if(is_sign_at(pcursor())){
+        if(_isSign(player())){
                 run(/data modify block integer(pcursor()[0]) integer(pcursor()[1]) integer(pcursor()[2]) is_waxed set value 0b)
         } else {
                 die('You aren\'t looking at a sign!')
