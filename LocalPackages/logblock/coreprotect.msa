@@ -48,10 +48,14 @@
 
 *:/trace $player = >>>
 	_assertperm('mod', 0)
-	@days = _lb_retention_days()
-	run(concat('/lb player ', $player, ' area 10000 sum blocks since ', @days, ' days'))
+        msg(color('RED').'Number of blocks broken by this player...')
+        run(concat('/co lookup user: ', $player, ' action: -block time: 30d radius: #global #count'))
+
+        set_timeout(1000, closure(msg(color('GREEN').'Number of blocks placed by this player...')))
+        set_timeout(1000, closure(run(concat('/co lookup user: ', $player, ' action: +block time: 30d radius: #global #count'))))
 
 	# Delay the /lookup so it follows the /lb output.
+        set_timeout(1000, closure(run_cmd('/bminfo ' . $player)))
 	set_timeout(1000, closure(run_cmd('/bminfo -n ' . $player)))
 <<<
 
