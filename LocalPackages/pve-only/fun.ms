@@ -4,7 +4,7 @@ bind('player_interact', null, array(itemname: 'SADDLE', button: 'right'), @event
 	}
 	@allowed = array('AXOLOTL', 'CHICKEN', 'COD', 'COW', 'FOX', 'GOAT', 'LLAMA', 'MUSHROOM_COW', 'OCELOT', 'PANDA', 'POLAR_BEAR', 'RABBIT', 'SALMON',
 		'SHEEP', 'SQUID', 'TROPICAL_FISH', 'TURTLE');
-	if(array_contains(pgroup(), 'super')) {
+	if(array_contains(pgroup(), 'admins')) {
 		@allowed[] = 'PLAYER';
 		@allowed[] = 'BEE';
 		@allowed[] = 'CAT';

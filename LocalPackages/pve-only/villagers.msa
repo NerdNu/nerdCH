@@ -126,3 +126,133 @@
             '{buy:{id:emerald,Count:1},sell:{id:cooked_porkchop,Count:5},maxUses:9999999}' .
         ']}}');
 <<<
+
+// ================ LIBRARIANS ================
+
+// Summon a perfect tool librarian
+*:'/summon-tool' [$biome] = >>>
+    _assertperm('admin');
+    include('villagers.ms');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:librarian,level:5,type:' . @biome . '},' .
+        'Offers:{Recipes:[' .
+            '{buy:{id:paper,count:24},sell:{id:emerald,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:9},sell:{id:bookshelf,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:lantern,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{mending:1}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{unbreaking:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{efficiency:5}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{fortune:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{luck_of_the_sea:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{lure:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{silk_touch:1}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{vanishing_curse:1}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:glass,count:4},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:20},sell:{id:name_tag,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:5},sell:{id:clock,count:1},rewardExp:0b,maxUses:999999}' .
+        ']}}');
+<<<
+
+// Summon a perfect armour librarian
+*:'/summon-armor' [$biome] = >>>
+    _assertperm('admin');
+    include('villagers.ms');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:librarian,level:5,type:' . @biome . '},' .
+        'Offers:{Recipes:[' .
+            '{buy:{id:paper,count:24},sell:{id:emerald,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:9},sell:{id:bookshelf,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:lantern,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{aqua_affinity:1}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{blast_protection:4}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{binding_curse:1}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{depth_strider:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{feather_falling:4}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{fire_protection:4}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{frost_walker:2}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{projectile_protection:4}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{protection:4}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{respiration:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{thorns:3}}},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:glass,count:4},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:20},sell:{id:name_tag,count:1},rewardExp:0b,maxUses:999999},' .
+            '{buy:{id:emerald,count:5},sell:{id:clock,count:1},rewardExp:0b,maxUses:999999}' .
+        ']}}');
+<<<
+
+// Summon a perfect armour librarian, the British way
+*:'/summon-armour' [$biome] = >>>
+    run_cmd('/summon-armor ' . $biome);
+<<<
+
+// Summon a perfect melee weapon librarian
+*:'/summon-melee' [$biome] = >>>
+    _assertperm('admin');
+    include('villagers.ms');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:librarian,level:5,type:' . @biome . '},PersistenceRequired:1,' .
+    'Offers:{Recipes:[' .
+        '{buy:{id:paper,count:24},sell:{id:emerald,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:9},sell:{id:bookshelf,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:1},sell:{id:lantern,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{bane_of_arthropods:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{breach:4}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{density:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{efficiency:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{fire_aspect:2}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{looting:3}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{impaling:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{knockback:2}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{sharpness:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{smite:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{sweeping_edge:3}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:1},sell:{id:glass,count:4},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:20},sell:{id:name_tag,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:5},sell:{id:clock,count:1},rewardExp:0b,maxUses:999999}' .
+    ']}}');
+
+<<<
+
+// Summon a perfect ranged weapon librarian
+*:'/summon-ranged' [$biome] = >>>
+    _assertperm('admin');
+    include('villagers.ms');
+    @biome = _villager_biome($biome);
+    if (@biome == null) {
+        die();
+    }
+
+    run('/summon villager ~ ~1 ~ {VillagerData:{profession:librarian,level:5,type:' . @biome . '},PersistenceRequired:1,' .
+    'Offers:{Recipes:[' .
+        '{buy:{id:paper,count:24},sell:{id:emerald,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:9},sell:{id:bookshelf,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:1},sell:{id:lantern,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{channeling:1}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{flame:1}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{impaling:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{infinity:1}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{loyalty:3}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{riptide:3}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{multishot:1}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{piercing:2}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{power:5}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{punch:2}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{quick_charge:3}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:1},sell:{id:glass,count:4},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:20},sell:{id:name_tag,count:1},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:5},sell:{id:clock,count:1},rewardExp:0b,maxUses:999999}' .
+    ']}}');
+
+<<<

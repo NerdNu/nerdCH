@@ -1,0 +1,29 @@
+*:/plugins = call_alias(/pl)
+
+*:/pl = >>>
+	@plugins = get_server_info(9)
+	@player = player();
+
+	if ($ == 'shown' || (player() != '~console' && array_contains(pgroup(), 'default'))) {
+		console(concat(@player, ' checked the plugin list'))
+		foreach(_get_mods(), @mod,
+			tmsg(@mod, concat(color('gray'), @player, ' checked the plugin list'))
+		)
+	}
+	run("/bukkit:plugins")
+<<<
+
+
+*:/version [$plugin] = >>>
+	run("/version " . $plugin);
+	@player = player()
+	foreach (@mod in _get_mods()) {
+			tmsg(@mod, color('GRAY') . @player . ' checked the server version');
+		}
+	console(@player . ' checked the server version');
+<<<
+
+
+*:/about [$]         = call_alias('/version');
+*:/ver [$]           = call_alias('/version');
+*:/icanhasbukkit [$] = call_alias('/version');

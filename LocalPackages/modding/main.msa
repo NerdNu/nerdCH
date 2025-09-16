@@ -66,12 +66,6 @@ nerdch.level.admin:/spawnmob $entityType [$quantity=1] = >>>
 	msg(@message.@results)
 <<<
 
-*:/supavanish [$mob='chicken'] = >>>
-	_assertperm('admin', 0)
-	assign(@pcursor, pcursor(player()))
-	run('/vanish')
-<<<
-
 *:/kfc $player [$mob='chicken']  = >>>
 	_assertperm('admin', 0)
 	assign(@pl, ploc($player))
@@ -212,4 +206,45 @@ nerdch.level.admin:/spawnmob $entityType [$quantity=1] = >>>
     _assertperm('admin')
     sudo('/lp user '.$player.' parent add moderators')
     msg(colorize('&c&lPlayer &3&l'.$player.'&c&l successfully granted moderator access.'))
+<<<
+
+/**
+ * @command
+ */
+*:/fixmodmode $mode = >>>
+    array @mods = array('AdmiralAntilles', 'assasymphoni', 'Bluuefuzzy', 'Bobosozeli', 'bookey42', 'buzzie71', 'CaptainShivy', 'CaptainWolfgang', 'CARnivore_nds', 'Fluffhead555', 'gk_ryo', 'iceberg76', 'iNerd71', 'jchance', 'King_of_queso', 'NastyHabits', 'rukEEEa', 'tadrogers'  , 'ToddChavay', 'Verros', 'Za_Zaa', 'zburdsal', 'Zomise', 'Herobong');
+    array @admins = array('pez252', 'Andromeda4210', 'defiex', 'fazaden', 'PPGOME', 'Challenger2', 'Deaygo', 'nels_nelson', 'Oxion_', 'AndyJF', 'Bardidley', 'marting11', 'cheezychicken', 'cujobear', 'ghrey303', 'Spook6', 'TemporarilyAlive');
+    @player = player();
+    if(array_contains(@mods, @player)) {
+        if($mode == "modmode") {
+            runas("~console", "/lp user ".@player." parent cleartrack modmode-track")
+            runas("~console", "/lp user ".@player." parent settrack modmode-track modmode")
+            msg("Fixed.")
+        } else if($mode == "normal") {
+            runas("~console", "/lp user ".@player." parent cleartrack modmode-track")
+            runas("~console", "/lp user ".@player." parent settrack modmode-track moderators")
+            msg("Fixed.")
+        } else {
+            msg("Invalid input! Expected /fixmodmode modmode OR /fixmodmode normal.")
+        }
+    } else if(array_contains(@admins, @player)) {
+          if($mode == "modmode") {
+              runas("~console", "/lp user ".@player." parent cleartrack modmode-track")
+              runas("~console", "/lp user ".@player." parent settrack modmode-track modmode")
+              msg("Fixed.")
+          } else if($mode == "normal") {
+              runas("~console", "/lp user ".@player." parent cleartrack modmode-track")
+              runas("~console", "/lp user ".@player." parent settrack modmode-track moderators")
+              runas("~console", "/lp user ".@player." parent cleartrack adminmode-track")
+              runas("~console", "/lp user ".@player." parent settrack adminmode-track admins")
+              msg("Fixed.")
+          } else if($mode == "adminmode") {
+              runas("~console", "/lp user ".@player." parent cleartrack adminmode-track")
+              runas("~console", "/lp user ".@player." parent settrack adminmode-track adminmode")
+          } else {
+              msg("Invalid input! Expected /fixmodmode modmode OR /fixmodmode normal.")
+          }
+    } else {
+        msg("You're not a moderator, sneaky!");
+    }
 <<<

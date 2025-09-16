@@ -32,49 +32,49 @@
 
 
 #trace
-*:'/trace-r' $player $r = >>>
-	_assertperm('mod', 0)
-	@radius = $r
-	if (! is_integral(@radius) || @radius < 1) {
-		# Negative radius rolls back EVERYWHERE.
-		die(color('RED').'The radius must be a positive integer.')
-	}
-	@days = _lb_retention_days()
-	run(concat('/lb player ', $player, ' area ', @radius, ' sum blocks since ', @days, ' days'))
+#*:'/trace-r' $player $r = >>>
+#	_assertperm('mod', 0)
+#	@radius = $r
+#	if (! is_integral(@radius) || @radius < 1) {
+#		# Negative radius rolls back EVERYWHERE.
+#		die(color('RED').'The radius must be a positive integer.')
+#	}
+#	@days = _lb_retention_days()
+#	run(concat('/lb player ', $player, ' area ', @radius, ' sum blocks since ', @days, ' days'))
+#
+#	# Delay the /lookup so it follows the /lb output.
+#	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
+#<<<
 
-	# Delay the /lookup so it follows the /lb output.
-	set_timeout(1000, closure(run_cmd('/lookup ' . $player)))
-<<<
-
-*:/trace $player = >>>
-	_assertperm('mod', 0)
-        msg(color('RED').'Number of blocks broken by this player...')
-        run(concat('/co lookup user: ', $player, ' action: -block time: 30d radius: #global #count'))
-
-        set_timeout(1000, closure(msg(color('GREEN').'Number of blocks placed by this player...')))
-        set_timeout(1000, closure(run(concat('/co lookup user: ', $player, ' action: +block time: 30d radius: #global #count'))))
-
-	# Delay the /lookup so it follows the /lb output.
-        set_timeout(1000, closure(run_cmd('/bminfo ' . $player)))
-	set_timeout(1000, closure(run_cmd('/bminfo -n ' . $player)))
-<<<
+#*:/trace $player = >>>
+#	_assertperm('mod', 0)
+#        msg(color('RED').'Number of blocks broken by this player...')
+#        run(concat('/co lookup user: ', $player, ' action: -block time: 30d radius: #global #count'))
+#
+#        set_timeout(1000, closure(msg(color('GREEN').'Number of blocks placed by this player...')))
+#        set_timeout(1000, closure(run(concat('/co lookup user: ', $player, ' action: +block time: 30d radius: #global #count'))))
+#
+#	# Delay the /lookup so it follows the /lb output.
+#        set_timeout(1000, closure(run_cmd('/bminfo ' . $player)))
+#	set_timeout(1000, closure(run_cmd('/bminfo -n ' . $player)))
+#<<<
 
 #rollback
-*:'/lbrb-r' $p $r = >>>
-	_assertperm('mod', 0)
-	@radius = $r
-	if (! is_integral(@radius) || @radius < 1) {
-		# Negative radius rolls back EVERYWHERE.
-		die(color('RED').'The radius must be a positive integer.')
-	}
-	@days = _lb_retention_days()
-	run(concat('/lb rollback player ', $p, ' area ', @radius, ' since ', @days, ' days'))
-<<<
-*:/lbrb $p = >>>
-	_assertperm('mod', 0)
-	@days = _lb_retention_days()
-	run(concat('/lb rollback player ', $p, ' since ', @days, ' days'))
-<<<
+#*:'/lbrb-r' $p $r = >>>
+#	_assertperm('mod', 0)
+#	@radius = $r
+#	if (! is_integral(@radius) || @radius < 1) {
+#		# Negative radius rolls back EVERYWHERE.
+#		die(color('RED').'The radius must be a positive integer.')
+#	}
+#	@days = _lb_retention_days()
+#	run(concat('/lb rollback player ', $p, ' area ', @radius, ' since ', @days, ' days'))
+#<<<
+#*:/lbrb $p = >>>
+#	_assertperm('mod', 0)
+#	@days = _lb_retention_days()
+#	run(concat('/lb rollback player ', $p, ' since ', @days, ' days'))
+#<<<
 
 #redo
 *:'/lbredo-r' $player $radius [$since] = >>>

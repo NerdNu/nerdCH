@@ -3,7 +3,7 @@
 /**
  * @command
  */
-!*:'/suggestion-box' [$] = >>>
+*:'/suggestion-box' [$] = >>>
 
     if($ == ''){
         # Show usage
@@ -50,7 +50,7 @@
  * @command
  * @permission nerdch.level.admin
  */
-!*:'/suggestion-box-set-salt' [$] = >>>
+*:'/suggestion-box-set-salt' [$] = >>>
 	store_value('suggestionbox.salt', $.(rand() * 100000000));
 <<<
 

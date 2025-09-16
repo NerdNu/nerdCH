@@ -1,0 +1,17 @@
+/**
+ * @command
+ */
+*:/checkclaim = >>>
+    @regions = sk_current_regions();
+    if(array_size(@regions) < 1) {
+        die(colorize("&6You're not in any regions or claims! \n&aYou should be okay to build, but be careful and watch for nearby claims. Make a modreq if you're ever unsure."))
+    }
+
+    msg(colorize("&6You're in the following regions/claims: &b" . array_implode(@regions, ', ')))
+    msg(colorize("&cYou're not allowed to build here."))
+<<<
+
+/**
+ * @command
+ */
+ *:/canibuildhere = call_alias("/checkclaim");

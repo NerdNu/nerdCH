@@ -30,7 +30,7 @@
 			if(pinv(player(), @i) == null){
 				# Perfect, found it
 				@p=player()
-				runas('~console', '/minecraft:give '.@p.' minecraft:player_head{display:{Name:"{\\"text\\":\\"'.$player.'\\"}"},SkullOwner:{Id:"7b23e73a-9026-438d-9706-3d532b424d88",Properties:{textures:[{Value:"'.$texture.'"}]}}} 1')
+                                runas('~console', '/give '.@p.' player_head[profile={name:'.$player.',properties:[{value:"'.$texture.'",name:textures}]}]')
 				msg('Player head added with custom texture!')
 				break()
 			}

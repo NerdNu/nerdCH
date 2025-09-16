@@ -1,3 +1,7 @@
+// THIS FILE SHOULD NOT BE REMOVED.
+// Even though BanManager handled warnings now, players who got warnings through this system before
+// Need to still be warned and have the ability to have their warnings removed.
+
 /**
  * @command
  */

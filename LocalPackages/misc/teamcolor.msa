@@ -1,7 +1,0 @@
-*:/teamcolor $color [$] = >>>
-	_assertperm('admin')
-	@names = parse_args($)
-	foreach(@name in @names){
-		set_list_name(@name,'§'.$color.@name)
-	}
-<<<

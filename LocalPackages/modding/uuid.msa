@@ -1,4 +1,7 @@
 # Retrieve the UUID of a player and link to the name change history.
+/**
+ * @command
+ */
 *:/uuid [$] = >>>
 	_assertperm('mod');
 	if ($ == '') {

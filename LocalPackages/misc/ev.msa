@@ -1,0 +1,23 @@
+# Collection of commands to manage entity visibility.
+
+/**
+ * @command
+ */
+#*:/ev = >>>
+#        msg(color('LIGHT_PURPLE')."@console="Items found at ".ploc()['world']." ".ploc()['x'].",".ploc()['y'].",".ploc()['z']." by whodis:"
+#        @uuids=array()
+#        @entities=entities_in_radius(ploc(), 5, 'DROPPED_ITEM')
+#        if(array_size(@entities) > 0) {
+#                foreach(@item in @entities) {
+#                        array_push(@uuids,entity_spec(@item)['thrower'])
+#                        @console=@console." ".entity_spec(@item)['itemstack']['name'].':'.plast_known_name(entity_spec(@item)['thrower'])
+#                }
+#                msg(color('LIGHT_PURPLE')."Items on the ground owned by the following players:")
+#                foreach(@uuid in array_unique(@uuids)) {
+#                        msg(color('LIGHT_PURPLE').plast_known_name(@uuid))
+#                }
+#                console(@console)
+#        } else {
+#                msg(color('RED')."No items on ground in 5 block radius")
+#        }
+#<<<

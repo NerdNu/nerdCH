@@ -4,3 +4,10 @@
 *:/dynmap $state = /bmpc $state
 *:/bmap = /bmpc
 *:/dynmap = /bmpc
+
+# Alias to handle BlueMapMC
+
+*:/'mapfill' = >>>
+    run('/bmdiscover');
+    sudo('/bluemap update');
+<<<

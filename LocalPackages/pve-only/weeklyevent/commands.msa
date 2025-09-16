@@ -1,0 +1,26 @@
+/**
+ * Sets up a new weekly event place and livemap marker. Will be removed after the specified amount of days.
+ * @command
+ * @permission nerdch.level.admin
+ */
+nerdch.level.admin:/setupevent $days = >>>
+    if(has_value('event.endtime')) {
+        runas("~console", "/bmarker delete world weeklyevent eventmarker");
+        msg("Overriding the existing event marker's location...")
+    }
+
+    @location = ploc()
+
+    call_alias("/delplace Overworld Other Event");
+	call_alias("/addplace Event Other");
+	runas("~console", "/bmarker create poi world weeklyevent");
+    runas("~console", "/bmarker-setup id eventmarker");
+    runas("~console", "/bmarker-setup label eventmarker");
+    runas("~console", "/bmarker-setup position " . array_get(@location, 0) . " " . array_get(@location, 1) . " " . array_get(@location, 2));
+    runas("~console", "/bmarker-setup icon https://i.imgur.com/wg4ETC4.png");
+    runas("~console", "/bmarker-setup build");
+
+    @dateToRemove = time() + (86400000 * $days)
+    store_value('event.endtime', @dateToRemove)
+
+<<<

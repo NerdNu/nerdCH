@@ -19,3 +19,8 @@
 		msg(color('RED')."No items on ground in 5 block radius")
 	}
 <<<
+
+/**
+ * @command
+ */
+ *:/deathpile = call_alias("/whodis");
