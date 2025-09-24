@@ -9,19 +9,19 @@
 
     run('/summon villager ~ ~1 ~ {VillagerData:{profession:farmer,level:5,type:' . @biome . '},' .
         'Offers:{Recipes:[' .
-            '{buy:{id:wheat,Count:20},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:potato,Count:26},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:carrot,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:beetroot,Count:15},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:pumpkin,Count:6},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:melon,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:bread,Count:6},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:pumpkin_pie,Count:4},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:3},sell:{id:cookie,Count:18},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:apple,Count:4},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:cake,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:3},sell:{id:golden_carrot,Count:3},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:4},sell:{id:glistering_melon_slice,Count:3},maxUses:9999999}' .
+            '{buy:{id:wheat,count:20},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:potato,count:26},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:carrot,count:22},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:beetroot,count:15},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:pumpkin,count:6},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:melon,count:4},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:bread,count:6},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:pumpkin_pie,count:4},maxUses:9999999},' .
+            '{buy:{id:emerald,count:3},sell:{id:cookie,count:18},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:apple,count:4},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:cake,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:3},sell:{id:golden_carrot,count:3},maxUses:9999999},' .
+            '{buy:{id:emerald,count:4},sell:{id:glistering_melon_slice,count:3},maxUses:9999999}' .
         ']}}');
 <<<
 
@@ -42,30 +42,30 @@
     # Also tried multiple appand value clauses in one command. Also does not work.
     # So, annoying as it is, we must append trades one at a time.
     @trades = array(
-        '{buy:{id:stone,Count:20},sell:{id:emerald,Count:1},maxUses:9999999}',
-        '{buy:{id:clay_ball,Count:10},sell:{id:emerald,Count:1},maxUses:9999999}',
-        '{buy:{id:granite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
-        '{buy:{id:diorite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
-        '{buy:{id:andesite,Count:16},sell:{id:emerald,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:brick,Count:10},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:white_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:orange_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:magenta_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:light_blue_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:yellow_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:lime_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:pink_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:gray_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:light_gray_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:cyan_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:purple_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:blue_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:brown_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:green_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:red_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:black_terracotta,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:quartz_block,Count:1},maxUses:9999999}',
-        '{buy:{id:emerald,Count:1},sell:{id:quartz_pillar,Count:1},maxUses:9999999}'
+        '{buy:{id:stone,count:20},sell:{id:emerald,count:1},maxUses:9999999}',
+        '{buy:{id:clay_ball,count:10},sell:{id:emerald,count:1},maxUses:9999999}',
+        '{buy:{id:granite,count:16},sell:{id:emerald,count:1},maxUses:9999999}',
+        '{buy:{id:diorite,count:16},sell:{id:emerald,count:1},maxUses:9999999}',
+        '{buy:{id:andesite,count:16},sell:{id:emerald,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:brick,count:10},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:white_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:orange_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:magenta_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:light_blue_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:yellow_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:lime_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:pink_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:gray_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:light_gray_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:cyan_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:purple_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:blue_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:brown_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:green_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:red_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:black_terracotta,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:quartz_block,count:1},maxUses:9999999}',
+        '{buy:{id:emerald,count:1},sell:{id:quartz_pillar,count:1},maxUses:9999999}'
     );
     run('/summon villager ~ ~1 ~ {VillagerData:{profession:mason,level:5,type:' . @biome . '},' .
         'Tags:["incomplete"],' .
@@ -88,17 +88,17 @@
 
     run('/summon villager ~ ~1 ~ {VillagerData:{profession:cleric,level:5,type:' . @biome . '},' .
         'Offers:{Recipes:[' .
-            '{buy:{id:rotten_flesh,Count:32},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:gold_ingot,Count:3},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:rabbit_foot,Count:2},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:scute,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:glass_bottle,Count:9},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:nether_wart,Count:22},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:redstone,Count:2},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:lapis_lazuli,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:4},sell:{id:glowstone,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:ender_pearl,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:3},sell:{id:experience_bottle,Count:1},maxUses:9999999}' .
+            '{buy:{id:rotten_flesh,count:32},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:gold_ingot,count:3},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:rabbit_foot,count:2},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:scute,count:4},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:glass_bottle,count:9},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:nether_wart,count:22},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:redstone,count:2},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:lapis_lazuli,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:4},sell:{id:glowstone,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:ender_pearl,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:3},sell:{id:experience_bottle,count:1},maxUses:9999999}' .
         ']}}');
 <<<
 
@@ -113,17 +113,17 @@
 
     run('/summon villager ~ ~1 ~ {VillagerData:{profession:butcher,level:5,type:' . @biome . '},' .
         'Offers:{Recipes:[' .
-            '{buy:{id:chicken,Count:14},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:rabbit,Count:4},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:porkchop,Count:7},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:coal,Count:16},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:beef,Count:10},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:mutton,Count:7},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:dried_kelp_block,Count:10},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:sweet_berries,Count:10},sell:{id:emerald,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:rabbit_stew,Count:1},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:cooked_chicken,Count:8},maxUses:9999999},' .
-            '{buy:{id:emerald,Count:1},sell:{id:cooked_porkchop,Count:5},maxUses:9999999}' .
+            '{buy:{id:chicken,count:14},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:rabbit,count:4},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:porkchop,count:7},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:coal,count:16},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:beef,count:10},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:mutton,count:7},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:dried_kelp_block,count:10},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:sweet_berries,count:10},sell:{id:emerald,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:rabbit_stew,count:1},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:cooked_chicken,count:8},maxUses:9999999},' .
+            '{buy:{id:emerald,count:1},sell:{id:cooked_porkchop,count:5},maxUses:9999999}' .
         ']}}');
 <<<
 
@@ -210,7 +210,6 @@
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{bane_of_arthropods:5}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{breach:4}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{density:5}}},rewardExp:0b,maxUses:999999},' .
-        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{efficiency:5}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{fire_aspect:2}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{looting:3}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{impaling:5}}},rewardExp:0b,maxUses:999999},' .
@@ -241,12 +240,11 @@
         '{buy:{id:emerald,count:1},sell:{id:lantern,count:1},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{channeling:1}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{flame:1}}},rewardExp:0b,maxUses:999999},' .
-        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{impaling:5}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{infinity:1}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{loyalty:3}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{riptide:3}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{multishot:1}}},rewardExp:0b,maxUses:999999},' .
-        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{piercing:2}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{piercing:4}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{power:5}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{punch:2}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{quick_charge:3}}},rewardExp:0b,maxUses:999999},' .
