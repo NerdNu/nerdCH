@@ -18,12 +18,16 @@
 	run("/version " . $plugin);
 	@player = player()
 	foreach (@mod in _get_mods()) {
-			tmsg(@mod, color('GRAY') . @player . ' checked the server version');
-		}
+                if($plugin) {
+                        tmsg(@mod, color('GRAY') . @player . ' checked the version of ' . $plugin);
+                } else {
+                        tmsg(@mod, color('GRAY') . @player . ' checked the server version');
+                }
+	}
 	console(@player . ' checked the server version');
 <<<
 
 
-*:/about [$]         = call_alias('/version');
-*:/ver [$]           = call_alias('/version');
+*:/about [$]         = call_alias('/version ' . $);
+*:/ver [$]           = call_alias('/version ' . $);
 *:/icanhasbukkit [$] = call_alias('/version');
