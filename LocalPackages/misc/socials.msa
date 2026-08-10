@@ -1,26 +1,26 @@
 # Allows for a player to get mumble connection information without typing !mumble in public chat
-/**
- * @command
- */
-*:'/mumble' [$] = >>>
-	call_alias('/socials')
-<<<
+#/**
+# * @command
+# */
+#*:'/mumble' [$] = >>>
+#	call_alias('/socials')
+#<<<
 
 #Allows for a player to get Discord information
 /**
  * @command
  */
 *:'/discord' [$] = >>>
-	call_alias('/socials')
+	msg(color('GOLD').'Join us on Discord:'.color('AQUA').' https://discord.gg/uywR8Vng65');
 <<<
 
-/**
- * @command
- */
- *:'/socials' [$] = >>>
-    msg(color('DARK_GREEN').'Our community uses both Discord and Mumble!')
-    msg(color('GOLD').'Join us on Discord:'.color('AQUA').' https://discord.gg/dKFfHY3')
-    msg('')
-    msg(colorize('&9Download Mumble from &bhttps://www.mumble.info/downloads/'));
-	msg(colorize('&9Join &bmumble.nerd.nu&9, port &b6162&9 (voice chat).'));
- <<<
+#/**
+# * @command
+# */
+# *:'/socials' [$] = >>>
+#    msg(color('DARK_GREEN').'Our community uses both Discord and Mumble!')
+#    msg(color('GOLD').'Join us on Discord:'.color('AQUA').' https://discord.gg/dKFfHY3')
+#    msg('')
+#    msg(colorize('&9Download Mumble from &bhttps://www.mumble.info/downloads/'));
+#	msg(colorize('&9Join &bmumble.nerd.nu&9, port &b6162&9 (voice chat).'));
+# <<<
