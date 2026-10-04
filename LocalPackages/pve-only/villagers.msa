@@ -217,6 +217,7 @@
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{sharpness:5}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{smite:5}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{sweeping_edge:3}}},rewardExp:0b,maxUses:999999},' .
+        '{buy:{id:emerald,count:32},buyB:{id:book,count:1},sell:{id:enchanted_book,count:1,components:{stored_enchantments:{lunge:3}}},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:1},sell:{id:glass,count:4},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:20},sell:{id:name_tag,count:1},rewardExp:0b,maxUses:999999},' .
         '{buy:{id:emerald,count:5},sell:{id:clock,count:1},rewardExp:0b,maxUses:999999}' .

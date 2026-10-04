@@ -212,7 +212,7 @@ nerdch.level.admin:/spawnmob $entityType [$quantity=1] = >>>
  * @command
  */
 *:/fixmodmode $mode = >>>
-    array @mods = array('AdmiralAntilles', 'assasymphoni', 'Bluuefuzzy', 'Bobosozeli', 'bookey42', 'buzzie71', 'CaptainShivy', 'CaptainWolfgang', 'CARnivore_nds', 'Fluffhead555', 'gk_ryo', 'iceberg76', 'iNerd71', 'jchance', 'King_of_queso', 'NastyHabits', 'rukEEEa', 'tadrogers'  , 'ToddChavay', 'Verros', 'Za_Zaa', 'zburdsal', 'Zomise', 'Herobong');
+    array @mods = array('AdmiralAntilles', 'assasymphoni', 'Bluuefuzzy', 'Bobosozeli', 'BookeyMonster', 'buzzie71', 'CaptainShivy', 'CaptainWolfgang', 'CARnivore_nds', 'Fluffhead555', 'gk_ryo', 'iceberg76', 'iNerd71', 'jchance', 'King_of_queso', 'NastyHabits', 'rukEEEa', 'tadrogers'  , 'ToddChavay', 'Verros', 'Za_Zaa', 'zburdsal', 'Zomise', 'Herobong');
     array @admins = array('pez252', 'Andromeda4210', 'defiex', 'fazaden', 'PPGOME', 'Challenger2', 'Deaygo', 'nels_nelson', 'Oxion_', 'AndyJF', 'Bardidley', 'marting11', 'cheezychicken', 'cujobear', 'ghrey303', 'Spook6', 'TemporarilyAlive');
     @player = player();
     if(array_contains(@mods, @player)) {
